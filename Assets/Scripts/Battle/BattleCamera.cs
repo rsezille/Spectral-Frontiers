@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(Camera))]
 public class BattleCamera : MonoBehaviour {
     private Camera cam;
 

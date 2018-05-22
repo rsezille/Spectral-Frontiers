@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(Collider2D))]
 public class Square : MonoBehaviour {
     public SpriteRenderer sprite;
 

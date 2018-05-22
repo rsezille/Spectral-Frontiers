@@ -1,6 +1,11 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+/**
+ * Main Battle manager
+ * Instantiate one manager for each battle step (BattlePlacingManager, BattleFightManager, BattleVictoryManager)
+ * and dispatch events and tasks to them
+ */
 public class BattleManager : MonoBehaviour {
     private static BattleManager _instance;
 

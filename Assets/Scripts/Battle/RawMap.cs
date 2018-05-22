@@ -1,9 +1,7 @@
 ﻿[System.Serializable]
-public class RawMap
-{
+public class RawMap {
     [System.Serializable]
-    public struct RawSquare
-    {
+    public struct RawSquare {
         public int x_map;
         public int y_map;
         public string tile;

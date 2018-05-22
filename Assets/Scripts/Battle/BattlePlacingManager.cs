@@ -48,6 +48,14 @@ public class BattlePlacingManager {
         }
     }
 
+    public void SetCurrentPlacingChar(Character character) {
+        if (battleManager.placingAlliedChars.Contains(character)) {
+            SetCurrentPlacingChar(battleManager.placingAlliedChars.IndexOf(character));
+        } else {
+            Debug.LogWarning("Trying to set an inexisting character");
+        }
+    }
+
     public void SetCurrentPlacingChar(int index) {
         if (index >= 0 && index <= battleManager.placingAlliedChars.Count - 1) {
             if (battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar != null) {
@@ -61,14 +69,6 @@ public class BattlePlacingManager {
             }
         } else {
             Debug.LogWarning("Trying to set an out of bound index");
-        }
-    }
-
-    public void SetCurrentPlacingChar(Character character) {
-        if (battleManager.placingAlliedChars.Contains(character)) {
-            SetCurrentPlacingChar(battleManager.placingAlliedChars.IndexOf(character));
-        } else {
-            Debug.LogWarning("Trying to set an inexisting character");
         }
     }
 
