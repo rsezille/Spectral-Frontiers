@@ -17,6 +17,11 @@ public class BoardChar : MonoBehaviour {
     public Side side;
     public Square square; // The square the character is placed on
 
+    // BoardChar HUD
+    public GameObject charHUDTransform;
+    public Text characterName;
+    public Image healthBar;
+
     public BattleManager battleManager; // Shortcut for BattleManager.instance
 
     public int movementPoints; // At the beginning of each turn, movementPoints = character.movementPoints
@@ -30,13 +35,30 @@ public class BoardChar : MonoBehaviour {
 
         // Disable the glow outline
         outline.gameObject.SetActive(false);
+
+        // Put the HUD above the sprite
+        charHUDTransform.transform.position += new Vector3(0f, sprite.bounds.size.y + 0.3f);
     }
 
     void Start() {
         gameObject.name = character.name; // To find it inside the editor
+
+        characterName.text = character.name;
+
+        healthBar.transform.localScale = new Vector3(
+            (float)character.GetCurrentHP() / (float)character.GetMaxHP(),
+            healthBar.transform.localScale.y,
+            healthBar.transform.localScale.z
+        );
     }
 
-    void Update() {}
+    void Update() {
+        healthBar.transform.localScale = new Vector3(
+            (float)character.GetCurrentHP() / (float)character.GetMaxHP(),
+            healthBar.transform.localScale.y,
+            healthBar.transform.localScale.z
+        );
+    }
 
     /**
      * Called by Board
@@ -57,7 +79,14 @@ public class BoardChar : MonoBehaviour {
     /**
      * Called by Board
      */
-    void Click() {}
+    void Click() {
+        if (side == Side.Ally) {
+            if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing) {
+                // Focus the clicked character as the current one to place
+                battleManager.placing.SetCurrentPlacingChar(this.character);
+            }
+        }
+    }
 
     public void SetSquare(Square s) {
         if (square != null) {
@@ -75,5 +104,7 @@ public class BoardChar : MonoBehaviour {
 
     private void SetSortingOrder(int sortingOrder) {
         sprite.sortingOrder = sortingOrder;
+        outline.sortingOrder = sortingOrder;
+        charHUDTransform.transform.GetComponentInChildren<Canvas>().sortingOrder = sortingOrder;
     }
 }

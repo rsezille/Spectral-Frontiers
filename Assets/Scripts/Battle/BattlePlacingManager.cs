@@ -60,7 +60,15 @@ public class BattlePlacingManager {
                 battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar.outline.gameObject.SetActive(true);
             }
         } else {
-            Debug.LogWarning("Trying to set an out of bound index");//TODO: logger class
+            Debug.LogWarning("Trying to set an out of bound index");
+        }
+    }
+
+    public void SetCurrentPlacingChar(Character character) {
+        if (battleManager.placingAlliedChars.Contains(character)) {
+            SetCurrentPlacingChar(battleManager.placingAlliedChars.IndexOf(character));
+        } else {
+            Debug.LogWarning("Trying to set an inexisting character");
         }
     }
 
