@@ -24,6 +24,10 @@ public class BattleManager : MonoBehaviour {
     public BattleFightManager fight;
     public BattleVictoryManager victory;
 
+    // Events
+    public delegate void EnterStepPlacing();
+    public static event EnterStepPlacing OnEnterBattleStepPlacing;
+
     public static BattleManager instance {
         get {
             if (_instance == null)
@@ -52,6 +56,8 @@ public class BattleManager : MonoBehaviour {
 
         battleCamera.ResetCameraSize();
         battleCamera.SetPosition(board.squares[0, 0]);
+
+        EnterBattleStepPlacing();
     }
 
     // Update is called once per frame
@@ -78,5 +84,12 @@ public class BattleManager : MonoBehaviour {
                 victory.Update();
                 break;
         }
+    }
+
+    public void EnterBattleStepPlacing() {
+        currentBattleStep = BattleStep.Placing;
+
+        if (OnEnterBattleStepPlacing != null)
+            OnEnterBattleStepPlacing();
     }
 }

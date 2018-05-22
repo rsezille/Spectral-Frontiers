@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class Square : MonoBehaviour {
     public SpriteRenderer sprite;
@@ -12,8 +13,13 @@ public class Square : MonoBehaviour {
 
     public bool isMouseOver = false;
 
+    // Colors
+    public Color placingStartMouseOverColor = new Color(0.3f, 0.3f, 1f, 1f);
+
     void Awake() {
         sprite = GetComponent<SpriteRenderer>();
+
+        BattleManager.OnEnterBattleStepPlacing += OnEnterBattleStepPlacing;
     }
 
     // Must be called when the tiles GameObjects are created
@@ -31,6 +37,39 @@ public class Square : MonoBehaviour {
             (-(y + x) / 2f) + (vOffset / (sprite.bounds.size.y * Globals.TileHeight / 2)),
             0f
         );
+    }
+
+    private void OnEnterBattleStepPlacing() {
+        if (start) {
+            StartCoroutine("IsStartingSquare", Color.blue);
+        }
+    }
+
+    IEnumerator IsStartingSquare(Color targetColor) {
+        float initialFade = 0.2f;
+        float maxFade = 0.6f;
+        float smoothness = 0.02f;
+        float duration = 2f;
+        float progress = initialFade;
+        float increment = smoothness / duration;
+
+        while (BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Placing) {
+            if (isMouseOver) {
+                sprite.color = placingStartMouseOverColor;
+            } else {
+                sprite.color = Color.Lerp(Color.white, targetColor, progress);
+            }
+
+            if (progress > maxFade || progress < initialFade) {
+                increment = -increment;
+            }
+
+            progress += increment;
+
+            yield return new WaitForSeconds(smoothness);
+        }
+
+        sprite.color = Color.white;
     }
 
     /**
