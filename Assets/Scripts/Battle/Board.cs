@@ -9,7 +9,7 @@ using RawSquare = RawMap.RawSquare;
 public class Board : MonoBehaviour {
     private RawMap rawMap;
 
-    private GameObject previousMapObject = null; // Used to detect a mouse leave
+    private GameObject previousBoardItem = null; // Used to detect a mouse leave
 
     public Transform boardSquares;
     public Square[,] squares;
@@ -21,29 +21,29 @@ public class Board : MonoBehaviour {
         if (BattleManager.instance.currentTurnStep != BattleManager.TurnStep.Status) {
             Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            GameObject mapObject = GetTouchedGameObject(position);
+            GameObject boardItem = GetTouchedBoardItem(position);
 
-            if (previousMapObject != null && previousMapObject != mapObject) {
-                previousMapObject.SendMessage("MouseLeave");
+            if (previousBoardItem != null && previousBoardItem != boardItem) {
+                previousBoardItem.SendMessage("MouseLeave");
             }
 
-            if (mapObject != null) {
+            if (boardItem != null) {
                 if (Input.GetButtonDown(InputBinds.Click)) {
-                    mapObject.SendMessage("Click");
+                    boardItem.SendMessage("Click");
                 }
 
-                if (mapObject == previousMapObject) {
+                if (boardItem == previousBoardItem) {
                     //mapObject.SendMessage("MouseOver");
                 } else {
-                    mapObject.SendMessage("MouseEnter");
+                    boardItem.SendMessage("MouseEnter");
                 }
             }
 
-            previousMapObject = mapObject;
+            previousBoardItem = boardItem;
         }
     }
 
-    private GameObject GetTouchedGameObject(Vector3 position) {
+    private GameObject GetTouchedBoardItem(Vector3 position) {
         GameObject boardItem = null;
 
         foreach (RaycastHit2D hit in Physics2D.RaycastAll(position, Vector2.zero)) {
