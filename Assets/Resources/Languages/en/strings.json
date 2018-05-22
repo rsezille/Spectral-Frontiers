@@ -1,0 +1,324 @@
+{
+  "list": [
+    {
+      "id": "app.lang",
+      "text": "English"
+    },
+    {
+      "id": "app.lang.choose_language",
+      "text": "Choose your language"
+    },
+    {
+      "id": "app.lang.change_language",
+      "text": "You will be able to change the language later in the settings menu."
+    },
+    {
+      "id": "battle.flash.allied_turn",
+      "text": "Your turn"
+    },
+    {
+      "id": "battle.flash.enemys_turn",
+      "text": "Enemy's turn"
+    },
+    {
+      "id": "battle.hud.info.turn",
+      "text": "Turn: "
+    },
+    {
+      "id": "battle.hud.placing.prev_char",
+      "text": "Previous character"
+    },
+    {
+      "id": "battle.hud.placing.next_char",
+      "text": "Next character"
+    },
+    {
+      "id": "battle.hud.placing.no_char",
+      "text": "No remaining character"
+    },
+    {
+      "id": "battle.hud.placing.max_chars",
+      "text": "Max chars: "
+    },
+    {
+      "id": "battle.hud.placing.placed_chars",
+      "text": "Placed chars: "
+    },
+    {
+      "id": "battle.hud.placing.current_char",
+      "text": "Current char: "
+    },
+    {
+      "id": "battle.hud.placing.start",
+      "text": "Press Space to begin the fight!"
+    },
+    {
+      "id": "battle.hud.placing.status",
+      "text": "Status"
+    },
+    {
+      "id": "battle.hud.placing.remove",
+      "text": "Remove"
+    },
+    {
+      "id": "battle.hud.menu.camera",
+      "text": "Camera"
+    },
+    {
+      "id": "battle.hud.menu.move",
+      "text": "Move"
+    },
+    {
+      "id": "battle.hud.menu.action",
+      "text": "Action"
+    },
+    {
+      "id": "battle.hud.menu.attack",
+      "text": "Attack"
+    },
+    {
+      "id": "battle.hud.menu.skill",
+      "text": "Skill"
+    },
+    {
+      "id": "battle.hud.menu.item",
+      "text": "Item"
+    },
+    {
+      "id": "battle.hud.menu.wait",
+      "text": "Wait"
+    },
+    {
+      "id": "battle.hud.menu.status",
+      "text": "Status"
+    },
+    {
+      "id": "battle.hud.menu.end_turn",
+      "text": "End Turn"
+    },
+    {
+      "id": "battle.hud.menu.help.camera",
+      "text": "Use the camera freely"
+    },
+    {
+      "id": "battle.hud.menu.help.move",
+      "text": "Move the character to a free square"
+    },
+    {
+      "id": "battle.hud.menu.help.attack",
+      "text": "Do a basic attack with your weapon"
+    },
+    {
+      "id": "battle.hud.menu.help.skill",
+      "text": "Use a skill or a spell"
+    },
+    {
+      "id": "battle.hud.menu.help.wait",
+      "text": "Select the next allied character"
+    },
+    {
+      "id": "battle.hud.menu.help.status",
+      "text": "Show character's information"
+    },
+    {
+      "id": "battle.hud.menu.help.end_turn",
+      "text": "End your turn ans start the enemy's one"
+    },
+    {
+      "id": "battle.hud.status.title",
+      "text": "Status"
+    },
+    {
+      "id": "battle.hud.status.back",
+      "text": "Back"
+    },
+    {
+      "id": "battle.hud.status.quit",
+      "text": "Quit"
+    },
+    {
+      "id": "battle.hud.victory.won",
+      "text": "Congratulations! You have won."
+    },
+    {
+      "id": "battle.hud.victory.money",
+      "text": "You get "
+    },
+    {
+      "id": "battle.hud.victory.duration",
+      "text": "Duration: "
+    },
+    {
+      "id": "battle.hud.victory.turn",
+      "text": "turn"
+    },
+    {
+      "id": "battle.hud.victory.validate_key",
+      "text": "Press the Validate key to go back to the InGameState."
+    },
+    {
+      "id": "character.stats.hp",
+      "text": "HP"
+    },
+    {
+      "id": "character.stats.sp",
+      "text": "SP"
+    },
+    {
+      "id": "character.stats.str",
+      "text": "STR"
+    },
+    {
+      "id": "character.stats.res",
+      "text": "RES"
+    },
+    {
+      "id": "character.stats.health_points",
+      "text": "Health Points"
+    },
+    {
+      "id": "character.stats.skill_points",
+      "text": "Skill Points"
+    },
+    {
+      "id": "character.stats.strength",
+      "text": "Strength"
+    },
+    {
+      "id": "character.stats.resistance",
+      "text": "Resistance"
+    },
+    {
+      "id": "character.equipment",
+      "text": "Equipment"
+    },
+    {
+      "id": "character.equipment.main_hand",
+      "text": "Main hand"
+    },
+    {
+      "id": "character.equipment.off_hand",
+      "text": "Off hand"
+    },
+    {
+      "id": "character.equipment.head",
+      "text": "Head"
+    },
+    {
+      "id": "character.equipment.body",
+      "text": "Body"
+    },
+    {
+      "id": "character.equipment.hands",
+      "text": "Hands"
+    },
+    {
+      "id": "character.equipment.legs",
+      "text": "Legs"
+    },
+    {
+      "id": "character.equipment.feet",
+      "text": "Feet"
+    },
+    {
+      "id": "character.equipment.none",
+      "text": "none"
+    },
+    {
+      "id": "dialogbox.text.world",
+      "text": "Phantom Edge"
+    },
+    {
+      "id": "ingame.menu.missions",
+      "text": "Select a mission"
+    },
+    {
+      "id": "ingame.menu.return",
+      "text": "Quit"
+    },
+    {
+      "id": "ingame.mission_menu.return",
+      "text": "Back"
+    },
+    {
+      "id": "gameover.menu.continue",
+      "text": "Continue"
+    },
+    {
+      "id": "gameover.menu.titlescreen",
+      "text": "Back to Title Screen"
+    },
+    {
+      "id": "gameover.menu.quit",
+      "text": "Quit"
+    },
+    {
+      "id": "map.001.name",
+      "text": "Grassland"
+    },
+    {
+      "id": "mission.story_01.name",
+      "text": "First mission"
+    },
+    {
+      "id": "mission.story_01.description",
+      "text": "Test first mission description"
+    },
+    {
+      "id": "mission.story_02.name",
+      "text": "Second mission"
+    },
+    {
+      "id": "mission.story_02.description",
+      "text": "This is your 2nd mission!"
+    },
+    {
+      "id": "monster.goblin.name",
+      "text": "Goblin"
+    },
+    {
+      "id": "monster.goblin.description",
+      "text": "An ugly goblin"
+    },
+    {
+      "id": "monster.orc.name",
+      "text": "Orc"
+    },
+    {
+      "id": "monster.orc.description",
+      "text": "An ugly orc"
+    },
+    {
+      "id": "newgame.name.enter",
+      "text": "Enter your name: "
+    },
+    {
+      "id": "options.menu.choose_language",
+      "text": "Choose your language"
+    },
+    {
+      "id": "options.menu.return",
+      "text": "Back to Title Screen"
+    },
+    {
+      "id": "player.money",
+      "text": "Gold"
+    },
+    {
+      "id": "title.menu.new",
+      "text": "New Game"
+    },
+    {
+      "id": "title.menu.load",
+      "text": "Load Game"
+    },
+    {
+      "id": "title.menu.options",
+      "text": "Options"
+    },
+    {
+      "id": "title.menu.quit",
+      "text": "Quit"
+    }
+  ]
+}

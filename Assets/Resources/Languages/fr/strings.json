@@ -1,0 +1,212 @@
+{
+  "list": [
+    {
+      "id": "app.lang",
+      "text": "Français"
+    },
+    {
+      "id": "app.lang.choose_language",
+      "text": "Choisissez votre langue"
+    },
+    {
+      "id": "app.lang.change_language",
+      "text": "Vous pourrez changer la langue plus tard dans les Options."
+    },
+    {
+      "id": "battle.hud.info.turn",
+      "text": "Tour : "
+    },
+    {
+      "id": "battle.hud.placing.prev_char",
+      "text": "Personnage suivant"
+    },
+    {
+      "id": "battle.hud.placing.next_char",
+      "text": "Personnage précédent"
+    },
+    {
+      "id": "battle.hud.placing.no_char",
+      "text": "Aucun personnage restant"
+    },
+    {
+      "id": "battle.hud.placing.max_chars",
+      "text": "Pers. max : "
+    },
+    {
+      "id": "battle.hud.placing.placed_chars",
+      "text": "Pers. placés : "
+    },
+    {
+      "id": "battle.hud.placing.current_char",
+      "text": "Pers. actuel : "
+    },
+    {
+      "id": "battle.hud.placing.start",
+      "text": "Appuyez sur Espace pour commencer le combat !"
+    },
+    {
+      "id": "battle.hud.menu.camera",
+      "text": "Caméra"
+    },
+    {
+      "id": "battle.hud.menu.move",
+      "text": "Déplacement"
+    },
+    {
+      "id": "battle.hud.menu.action",
+      "text": "Action"
+    },
+    {
+      "id": "battle.hud.menu.wait",
+      "text": "Attendre"
+    },
+    {
+      "id": "battle.hud.menu.status",
+      "text": "Statut"
+    },
+    {
+      "id": "battle.hud.menu.end_turn",
+      "text": "Fin du Tour"
+    },
+    {
+      "id": "battle.hud.victory.won",
+      "text": "Félicitations ! Vous avez gagné."
+    },
+    {
+      "id": "battle.hud.victory.money",
+      "text": "Vous obtenez "
+    },
+    {
+      "id": "battle.hud.victory.duration",
+      "text": "Durée : "
+    },
+    {
+      "id": "battle.hud.victory.turn",
+      "text": "tour"
+    },
+    {
+      "id": "battle.hud.victory.validate_key",
+      "text": "Appuyez sur la touche Entrée pour revenir au InGameState."
+    },
+    {
+      "id": "character.stats.hp",
+      "text": "PV"
+    },
+    {
+      "id": "character.stats.sp",
+      "text": "PC"
+    },
+    {
+      "id": "character.stats.str",
+      "text": "FOR"
+    },
+    {
+      "id": "character.stats.res",
+      "text": "RES"
+    },
+    {
+      "id": "character.stats.health_points",
+      "text": "Points de Vie"
+    },
+    {
+      "id": "character.stats.skill_points",
+      "text": "Points de Compétence"
+    },
+    {
+      "id": "character.stats.strength",
+      "text": "Force"
+    },
+    {
+      "id": "character.stats.resistance",
+      "text": "Résistance"
+    },
+    {
+      "id": "character.equipment",
+      "text": "Equipement"
+    },
+    {
+      "id": "character.equipment.main_hand",
+      "text": "Main principale"
+    },
+    {
+      "id": "character.equipment.off_hand",
+      "text": "Main secondaire"
+    },
+    {
+      "id": "character.equipment.head",
+      "text": "Tête"
+    },
+    {
+      "id": "character.equipment.body",
+      "text": "Corps"
+    },
+    {
+      "id": "character.equipment.hands",
+      "text": "Mains"
+    },
+    {
+      "id": "character.equipment.legs",
+      "text": "Jambes"
+    },
+    {
+      "id": "character.equipment.feet",
+      "text": "Pieds"
+    },
+    {
+      "id": "character.equipment.none",
+      "text": "aucun"
+    },
+    {
+      "id": "dialogbox.text.world",
+      "text": "TX n°4818"
+    },
+    {
+      "id": "ingame.menu.return",
+      "text": "Revenir à l'Ecran Titre"
+    },
+    {
+      "id": "gameover.menu.continue",
+      "text": "Continuer"
+    },
+    {
+      "id": "gameover.menu.titlescreen",
+      "text": "Revenir à l'Ecran Titre"
+    },
+    {
+      "id": "gameover.menu.quit",
+      "text": "Quitter"
+    },
+    {
+      "id": "newgame.name.enter",
+      "text": "Entrez votre nom : "
+    },
+    {
+      "id": "options.menu.choose_language",
+      "text": "Choisissez votre langage"
+    },
+    {
+      "id": "options.menu.return",
+      "text": "Revenir à l'Ecran Titre"
+    },
+    {
+      "id": "player.money",
+      "text": "Or"
+    },
+    {
+      "id": "title.menu.new",
+      "text": "Nouvelle partie"
+    },
+    {
+      "id": "title.menu.load",
+      "text": "Charger une partie"
+    },
+    {
+      "id": "title.menu.options",
+      "text": "Options"
+    },
+    {
+      "id": "title.menu.quit",
+      "text": "Quitter"
+    }
+  ]
+}

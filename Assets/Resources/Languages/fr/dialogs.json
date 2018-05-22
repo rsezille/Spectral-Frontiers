@@ -1,0 +1,8 @@
+{
+  "list": [
+    {
+      "id": "prologue_01",
+      "text": "Welcome in this awesome game, [player_name]!\\nAre you ready to face all the dangers?\\n. . .\\nYou are now in the world of [t_world]\\nLet's go!"
+    }
+  ]
+}
