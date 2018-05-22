@@ -1,0 +1,37 @@
+{
+  "id": "story_01",
+  "map": "001",
+  "max_chars": 4,
+  "background": {
+    "id": null,
+    "main_color": "0059B8",
+    "sub_color": "73AFF0"
+  },
+  "foreground": {
+    "image": "fg_beam",
+    "alpha": null,
+    "mode_add": true,
+    "color": null,
+    "speed_mvt": null,
+    "move_dir": 0
+  },
+  "parents": null,
+  "children": [
+    "002"
+  ],
+  "is_storyline": true,
+  "enemies": [
+    {
+      "key": "goblin",
+      "level": 1,
+      "posX": 0,
+      "posY": 3
+    },
+    {
+      "key": "orc",
+      "level": 1,
+      "posX": 0,
+      "posY": 4
+    }
+  ]
+}

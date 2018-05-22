@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 /**
  * GameManager is the same accross all scenes and is instantiated by the loader.
@@ -8,6 +9,8 @@ public class GameManager : MonoBehaviour {
     public static GameManager instance = null;
 
     public Player player;
+
+    private Dictionary<string, RawMission> missions;
 
     // Game initialization
     void Awake() {
@@ -25,5 +28,18 @@ public class GameManager : MonoBehaviour {
         DontDestroyOnLoad(gameObject);
 
         Debug.Log("Game Manager awakes");
+
+        InitMissions();
+    }
+
+    private void InitMissions() {
+        missions = new Dictionary<string, RawMission>();
+
+        TextAsset[] jsonMissions = Resources.LoadAll<TextAsset>("Missions");
+
+        foreach (TextAsset jsonMission in jsonMissions) {
+            RawMission mission = JsonUtility.FromJson<RawMission>(jsonMission.text);
+            missions.Add(mission.id, mission);
+        }
     }
 }
