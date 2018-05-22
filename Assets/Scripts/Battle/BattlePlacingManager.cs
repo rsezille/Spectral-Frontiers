@@ -91,11 +91,11 @@ public class BattlePlacingManager {
             if (battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar != null) {
                 Object.Destroy(battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar.gameObject);
 
-                battleManager.alliedMapChars.Remove(battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar);
+                battleManager.alliedBoardChars.Remove(battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar);
                 battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar.square.boardChar = null;
                 battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar.character.boardChar = null;
 
-                if (battleManager.alliedMapChars.Count <= 0) {
+                if (battleManager.alliedBoardChars.Count <= 0) {
                     battleManager.placingHUD.startBattleText.gameObject.SetActive(false);
                 }
             } else {
@@ -105,7 +105,7 @@ public class BattlePlacingManager {
     }
 
     public void RefreshStartBattleText() {
-        if (battleManager.alliedMapChars.Count <= 0) {
+        if (battleManager.alliedBoardChars.Count <= 0) {
             battleManager.placingHUD.startBattleText.gameObject.SetActive(false);
         } else {
             battleManager.placingHUD.startBattleText.gameObject.SetActive(true);
@@ -137,6 +137,33 @@ public class BattlePlacingManager {
             progress += increment;
 
             yield return new WaitForSeconds(smoothness);
+        }
+    }
+
+    /**
+     * Place the current character on the specified tile
+     */
+    public void PlaceMapChar(Square square) {
+        if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing) {
+            if (square.boardChar == null) {
+                if (battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar != null) {
+                    battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar.SetSquare(square);
+                    battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar.outline.gameObject.SetActive(true);
+                } else {
+                    BoardChar bc = BattleManager.Instantiate(battleManager.testBoardChar, square.transform.position, Quaternion.identity) as BoardChar;
+                    bc.character = battleManager.placingAlliedChars[battleManager.placingCharIndex];
+                    bc.side = BoardChar.Side.Ally;
+                    bc.SetSquare(square);
+
+                    bc.character.boardChar = bc;
+                    battleManager.alliedBoardChars.Add(bc);
+
+                    bc.transform.SetParent(battleManager.transform);
+                    bc.outline.gameObject.SetActive(true);
+
+                    RefreshStartBattleText();
+                }
+            }
         }
     }
 }

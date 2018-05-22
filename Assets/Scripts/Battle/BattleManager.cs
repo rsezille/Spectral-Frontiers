@@ -18,10 +18,12 @@ public class BattleManager : MonoBehaviour {
     public Board board;
     public BattleCamera battleCamera;
 
+    public BoardChar testBoardChar; //TODO
+
     // Characters
     public List<Character> placingAlliedChars;
     public int placingCharIndex;
-    public List<BoardChar> alliedMapChars;
+    public List<BoardChar> alliedBoardChars;
 
     // HUD
     public PlacingHUD placingHUD;

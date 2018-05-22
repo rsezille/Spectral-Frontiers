@@ -91,5 +91,14 @@ public class Square : MonoBehaviour {
     /**
      * Called by Board
      */
-    void Click() {}
+    void Click() {
+        switch (BattleManager.instance.currentBattleStep) {
+            case BattleManager.BattleStep.Placing:
+                if (start && boardChar == null) {
+                    BattleManager.instance.placing.PlaceMapChar(this);
+                }
+
+                break;
+        }
+    }
 }

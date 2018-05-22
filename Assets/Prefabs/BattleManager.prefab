@@ -51,5 +51,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2aedffb3b1afda4488a84901ff55dca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tile: {fileID: 0}
+  currentBattleStep: 0
+  currentTurnStep: 0
+  turn: 0
   board: {fileID: 0}
+  battleCamera: {fileID: 0}
+  testBoardChar: {fileID: 114098185219839834, guid: 5b54b037a1a820242bdf8e21d98b6fad,
+    type: 2}
+  placingCharIndex: 0
+  alliedBoardChars: []
+  placingHUD: {fileID: 0}
