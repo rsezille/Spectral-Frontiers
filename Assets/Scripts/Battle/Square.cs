@@ -11,10 +11,12 @@ public class Square : MonoBehaviour {
     public bool start = false; // Starting tile
     public bool solid = false; // Collision detection
 
-    public bool isMouseOver = false;
-
     // Colors
     public Color placingStartMouseOverColor = new Color(0.3f, 0.3f, 1f, 1f);
+
+    public bool isMouseOver = false;
+
+    public BoardChar boardChar;
 
     void Awake() {
         sprite = GetComponent<SpriteRenderer>();
