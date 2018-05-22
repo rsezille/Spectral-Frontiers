@@ -61,3 +61,4 @@ MonoBehaviour:
   placingCharIndex: 0
   alliedBoardChars: []
   placingHUD: {fileID: 0}
+  statusHUD: {fileID: 0}

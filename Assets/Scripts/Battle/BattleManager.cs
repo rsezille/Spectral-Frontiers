@@ -27,6 +27,7 @@ public class BattleManager : MonoBehaviour {
 
     // HUD
     public PlacingHUD placingHUD;
+    public StatusHUD statusHUD;
 
     // Events
     public delegate void EnterStepPlacing();
@@ -52,10 +53,6 @@ public class BattleManager : MonoBehaviour {
         fight = new BattleFightManager();
         victory = new BattleVictoryManager();
 
-        board = (Board) FindObjectOfType(typeof(Board));
-        battleCamera = (BattleCamera) FindObjectOfType(typeof(BattleCamera));
-        placingHUD = (PlacingHUD) FindObjectOfType(typeof(PlacingHUD));
-
         currentBattleStep = BattleStep.Placing;
         currentTurnStep = TurnStep.None;
         turn = 1;
@@ -65,6 +62,7 @@ public class BattleManager : MonoBehaviour {
 
         // Disable all HUD by default
         placingHUD.gameObject.SetActive(false);
+        statusHUD.gameObject.SetActive(false);
     }
 
     void Start() {
@@ -115,7 +113,11 @@ public class BattleManager : MonoBehaviour {
             currentTurnStep = TurnStep.Status;
             placingHUD.SetActive(false);
 
-            //statusHUD.Show(placing.GetCurrentPlacingChar());
+            statusHUD.Show(placing.GetCurrentPlacingChar());
         }
+    }
+
+    public void EnterTurnStepNone() {
+        currentTurnStep = TurnStep.None;
     }
 }
