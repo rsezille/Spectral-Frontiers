@@ -1,3 +1,4 @@
 ﻿public class BattleVictoryManager {
-    public void Update() { }
+    // Called by BattleManager
+    public void Update() {}
 }
