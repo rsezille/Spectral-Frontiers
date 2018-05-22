@@ -3,6 +3,8 @@ using System.IO;
 using RawSquare = RawMap.RawSquare;
 
 public class BattleManager : MonoBehaviour {
+    private static BattleManager _instance;
+
     public enum BattleStep {
         Placing, Fight, Victory
     };
@@ -21,6 +23,15 @@ public class BattleManager : MonoBehaviour {
     public BattlePlacingManager placing;
     public BattleFightManager fight;
     public BattleVictoryManager victory;
+
+    public static BattleManager instance {
+        get {
+            if (_instance == null)
+                _instance = FindObjectOfType<BattleManager>();
+
+            return _instance;
+        }
+    }
 
     // Initialization
     void Awake() {

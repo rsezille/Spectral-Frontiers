@@ -4,12 +4,65 @@ using RawSquare = RawMap.RawSquare;
 
 /**
  * Load the map
+ * Compute the mouse position and dispatch events to the first object hit
  */
 public class Board : MonoBehaviour {
     private RawMap rawMap;
 
-    public Square[,] squares;
+    private GameObject previousMapObject = null; // Used to detect a mouse leave
+
     public Transform boardSquares;
+    public Square[,] squares;
+
+    /**
+     * Compute the current mouse position and dispatch events to the first object hit
+     */
+    void Update() {
+        if (BattleManager.instance.currentTurnStep != BattleManager.TurnStep.Status) {
+            Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            GameObject mapObject = GetTouchedGameObject(position);
+
+            if (previousMapObject != null && previousMapObject != mapObject) {
+                previousMapObject.SendMessage("MouseLeave");
+            }
+
+            if (mapObject != null) {
+                if (Input.GetButtonDown(InputBinds.Click)) {
+                    mapObject.SendMessage("Click");
+                }
+
+                if (mapObject == previousMapObject) {
+                    //mapObject.SendMessage("MouseOver");
+                } else {
+                    mapObject.SendMessage("MouseEnter");
+                }
+            }
+
+            previousMapObject = mapObject;
+        }
+    }
+
+    private GameObject GetTouchedGameObject(Vector3 position) {
+        GameObject boardItem = null;
+
+        foreach (RaycastHit2D hit in Physics2D.RaycastAll(position, Vector2.zero)) {
+            if (hit.collider.tag == "HUD") {
+                return null;
+            }
+
+            if (hit.collider.tag == "BoardItem") {
+                int raySo = hit.collider.gameObject.GetComponent<SpriteRenderer>().sortingOrder;
+
+                // Retrieve the closiest map object, the one we are seeing
+                if (boardItem == null || raySo > boardItem.GetComponent<SpriteRenderer>().sortingOrder) {
+                    boardItem = hit.collider.gameObject;
+                }
+            }
+        }
+
+        return boardItem;
+    }
 
     public void loadMap(string map) {
         boardSquares = new GameObject("BoardSquares").transform;
