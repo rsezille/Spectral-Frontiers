@@ -1,0 +1,17 @@
+{
+  "id": "orc",
+  "ai_type": "normal",
+  "spells": [],
+  "baseHP": 30,
+  "baseMP": 0,
+  "baseAtk": 10,
+  "baseDef": 5,
+  "basePow": 0,
+  "baseRes": 0,
+  "hpPerLevel": 7,
+  "mpPerLevel": 0,
+  "atkPerLevel": 3,
+  "defPerLevel": 2,
+  "powPerLevel": 0,
+  "resPerLevel": 0
+}
