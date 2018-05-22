@@ -26,7 +26,7 @@ public class Square : MonoBehaviour {
 
         transform.position = new Vector3(
             x - y,
-            (-(y + x) / 2f) + (vOffset / (sprite.bounds.size.y * 64 / 2)),
+            (-(y + x) / 2f) + (vOffset / (sprite.bounds.size.y * Globals.TileHeight / 2)),
             0f
         );
     }
