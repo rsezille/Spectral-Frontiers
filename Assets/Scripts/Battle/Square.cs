@@ -10,6 +10,8 @@ public class Square : MonoBehaviour {
     public bool start = false; // Starting tile
     public bool solid = false; // Collision detection
 
+    public bool isMouseOver = false;
+
     void Awake() {
         sprite = GetComponent<SpriteRenderer>();
     }
@@ -30,4 +32,23 @@ public class Square : MonoBehaviour {
             0f
         );
     }
+
+    /**
+     * Called by Board
+     */
+    void MouseEnter() {
+        isMouseOver = true;
+    }
+
+    /**
+     * Called by Board
+     */
+    void MouseLeave() {
+        isMouseOver = false;
+    }
+
+    /**
+     * Called by Board
+     */
+    void Click() {}
 }
