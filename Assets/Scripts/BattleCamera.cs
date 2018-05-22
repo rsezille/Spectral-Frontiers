@@ -52,4 +52,19 @@ public class BattleCamera : MonoBehaviour {
     public void ResetCameraSize() {
         cam.orthographicSize = Screen.height / (Globals.TileHeight * 2f);
     }
+
+    public void SetPosition(Square square) {
+        SetPosition(square, false);
+    }
+
+    public void SetPosition(Square square, bool smooth) {
+        target = new Vector3(
+            square.x - square.y,
+            -(square.y + square.x) / 2f + square.vOffset / (square.sprite.bounds.size.y * Globals.TileHeight / 2),
+            transform.position.z
+        );
+
+        isAutoMoving = true;
+        this.smooth = smooth;
+    }
 }
