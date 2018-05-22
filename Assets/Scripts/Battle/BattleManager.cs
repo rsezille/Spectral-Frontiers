@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using System.IO;
-using RawSquare = RawMap.RawSquare;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class BattleManager : MonoBehaviour {
     private static BattleManager _instance;
@@ -19,14 +18,22 @@ public class BattleManager : MonoBehaviour {
     public Board board;
     public BattleCamera battleCamera;
 
-    // Dedicated managers for each BattleStep
-    public BattlePlacingManager placing;
-    public BattleFightManager fight;
-    public BattleVictoryManager victory;
+    // Characters
+    public List<Character> placingAlliedChars;
+    public int placingCharIndex;
+    public List<BoardChar> alliedMapChars;
+
+    // HUD
+    public PlacingHUD placingHUD;
 
     // Events
     public delegate void EnterStepPlacing();
     public static event EnterStepPlacing OnEnterBattleStepPlacing;
+
+    // Dedicated managers for each BattleStep
+    public BattlePlacingManager placing;
+    public BattleFightManager fight;
+    public BattleVictoryManager victory;
 
     public static BattleManager instance {
         get {
@@ -45,10 +52,17 @@ public class BattleManager : MonoBehaviour {
 
         board = (Board) FindObjectOfType(typeof(Board));
         battleCamera = (BattleCamera) FindObjectOfType(typeof(BattleCamera));
+        placingHUD = (PlacingHUD) FindObjectOfType(typeof(PlacingHUD));
 
         currentBattleStep = BattleStep.Placing;
         currentTurnStep = TurnStep.None;
         turn = 1;
+
+        placingCharIndex = 0;
+        placingAlliedChars = new List<Character>();
+
+        // Disable all HUD by default
+        placingHUD.gameObject.SetActive(false);
     }
 
     void Start() {
@@ -88,8 +102,18 @@ public class BattleManager : MonoBehaviour {
 
     public void EnterBattleStepPlacing() {
         currentBattleStep = BattleStep.Placing;
+        placingHUD.SetActive(true);
 
         if (OnEnterBattleStepPlacing != null)
             OnEnterBattleStepPlacing();
+    }
+
+    public void EnterTurnStepStatusFromPlacing() {
+        if (currentTurnStep != TurnStep.Status) {
+            currentTurnStep = TurnStep.Status;
+            placingHUD.SetActive(false);
+
+            //statusHUD.Show(placing.GetCurrentPlacingChar());
+        }
     }
 }

@@ -13,6 +13,7 @@ public class BoardChar : MonoBehaviour {
     public Character character;
 
     public SpriteRenderer sprite;
+    public SpriteRenderer outline;
     public Side side;
     public Square square; // The square the character is placed on
 
@@ -26,6 +27,9 @@ public class BoardChar : MonoBehaviour {
         battleManager = BattleManager.instance;
 
         sprite = GetComponent<SpriteRenderer>();
+
+        // Disable the glow outline
+        outline.gameObject.SetActive(false);
     }
 
     void Start() {
@@ -37,12 +41,18 @@ public class BoardChar : MonoBehaviour {
     /**
      * Called by Board
      */
-    void MouseEnter() {}
+    void MouseEnter() {
+        outline.gameObject.SetActive(true);
+    }
 
     /**
      * Called by Board
      */
-    void MouseLeave() {}
+    void MouseLeave() {
+        if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing && battleManager.placing.GetCurrentPlacingChar().boardChar != this) {
+            outline.gameObject.SetActive(false);
+        }
+    }
 
     /**
      * Called by Board
