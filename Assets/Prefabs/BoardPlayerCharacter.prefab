@@ -128,9 +128,11 @@ GameObject:
   - component: {fileID: 114218011024368482}
   - component: {fileID: 114114744037974550}
   - component: {fileID: 114515143091738508}
+  - component: {fileID: 114576763524298736}
+  - component: {fileID: 114321648030043348}
   m_Layer: 0
   m_Name: BoardPlayerCharacter
-  m_TagString: BoardItem
+  m_TagString: Undefined
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -234,12 +236,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite: {fileID: 0}
   outline: {fileID: 212655140477621836}
-  side: 0
-  square: {fileID: 0}
   charHUDTransform: {fileID: 1335408821512494}
   characterName: {fileID: 114442776269453614}
   healthBar: {fileID: 114150521523237966}
   battleManager: {fileID: 0}
+  boardEntity: {fileID: 0}
+  side: {fileID: 0}
 --- !u!114 &114100747827134434
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -324,8 +326,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfeeaa4852a508d41859c79ee1f78f2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  side: 0
-  squares: []
+  size: 1
+  square: {fileID: 0}
+--- !u!114 &114321648030043348
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1878317023255400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ef9e01027bf6d544af3773541851950, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  value: 0
 --- !u!114 &114330847492693880
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -414,6 +428,65 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionTokens: 0
+--- !u!114 &114576763524298736
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1878317023255400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cd9c33e7e21c044ab97c7d4f1b9c420, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MouseEnter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114098185219839834}
+        m_MethodName: MouseEnter
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  MouseLeave:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114098185219839834}
+        m_MethodName: MouseLeave
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  Click:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114098185219839834}
+        m_MethodName: Click
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114592040441239950
 MonoBehaviour:
   m_ObjectHideFlags: 1

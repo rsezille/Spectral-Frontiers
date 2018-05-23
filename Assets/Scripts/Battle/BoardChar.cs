@@ -6,8 +6,8 @@ using UnityEngine.UI;
  * Manage graphics, movements, the Character data, etc.
  */
 [RequireComponent(typeof(BoardEntity), typeof(Movable), typeof(Actionable))]
-[RequireComponent(typeof(Side))]
-public class BoardChar : MonoBehaviour {
+[RequireComponent(typeof(Side), typeof(MouseReactive))]
+public class BoardChar : MonoBehaviour, IBoardMouseReactive {
     public Character character;
 
     public SpriteRenderer sprite;
@@ -59,25 +59,25 @@ public class BoardChar : MonoBehaviour {
     }
 
     /**
-     * Called by Board
+     * Triggered by Board
      */
-    void MouseEnter() {
+    public void MouseEnter() {
         outline.gameObject.SetActive(true);
     }
 
     /**
-     * Called by Board
+     * Triggered by Board
      */
-    void MouseLeave() {
+    public void MouseLeave() {
         if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing && battleManager.placing.GetCurrentPlacingChar().boardChar != this) {
             outline.gameObject.SetActive(false);
         }
     }
 
     /**
-     * Called by Board
+     * Triggered by Board
      */
-    void Click() {
+    public void Click() {
         if (side.value == Side.Type.Player) {
             if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing) {
                 // Focus the clicked character as the current one to place

@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(SpriteRenderer))]
-[RequireComponent(typeof(Collider2D))]
-public class Square : MonoBehaviour {
+[RequireComponent(typeof(SpriteRenderer), typeof(Collider2D), typeof(MouseReactive))]
+public class Square : MonoBehaviour, IBoardMouseReactive {
     public SpriteRenderer sprite;
 
     // Positionning
@@ -77,23 +76,23 @@ public class Square : MonoBehaviour {
     }
 
     /**
-     * Called by Board
+     * Triggered by Board
      */
-    void MouseEnter() {
+    public void MouseEnter() {
         isMouseOver = true;
     }
 
     /**
-     * Called by Board
+     * Triggered by Board
      */
-    void MouseLeave() {
+    public void MouseLeave() {
         isMouseOver = false;
     }
 
     /**
-     * Called by Board
+     * Triggered by Board
      */
-    void Click() {
+    public void Click() {
         switch (BattleManager.instance.currentBattleStep) {
             case BattleManager.BattleStep.Placing:
                 if (start && boardEntity == null) {

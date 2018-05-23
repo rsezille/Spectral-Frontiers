@@ -9,7 +9,7 @@ using RawSquare = RawMap.RawSquare;
 public class Board : MonoBehaviour {
     private RawMap rawMap;
 
-    private GameObject previousBoardItem = null; // Used to detect a mouse leave
+    private MouseReactive previousMouseEntity = null; // Used to detect a mouse leave
 
     public Transform boardSquares;
     public Square[,] squares;
@@ -21,47 +21,50 @@ public class Board : MonoBehaviour {
         if (BattleManager.instance.currentTurnStep != BattleManager.TurnStep.Status) {
             Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            GameObject boardItem = GetTouchedBoardItem(position);
+            MouseReactive entity = GetTouchedEntity(position);
 
-            if (previousBoardItem != null && previousBoardItem != boardItem) {
-                previousBoardItem.SendMessage("MouseLeave");
+            if (previousMouseEntity != null && previousMouseEntity != entity) {
+                previousMouseEntity.MouseLeave.Invoke();
             }
 
-            if (boardItem != null) {
+            if (entity != null) {
                 if (Input.GetButtonDown(InputBinds.Click)) {
-                    boardItem.SendMessage("Click");
+                    entity.Click.Invoke();
                 }
 
-                if (boardItem == previousBoardItem) {
-                    //boardItem.SendMessage("MouseOver");
+                if (entity == previousMouseEntity) {
+                    //entity.MouseOver.Invoke();
                 } else {
-                    boardItem.SendMessage("MouseEnter");
+                    entity.MouseEnter.Invoke();
                 }
             }
 
-            previousBoardItem = boardItem;
+            previousMouseEntity = entity;
         }
     }
 
-    private GameObject GetTouchedBoardItem(Vector3 position) {
-        GameObject boardItem = null;
+    private MouseReactive GetTouchedEntity(Vector3 position) {
+        MouseReactive entity = null;
 
         foreach (RaycastHit2D hit in Physics2D.RaycastAll(position, Vector2.zero)) {
             if (hit.collider.tag == "HUD") {
                 return null;
             }
 
-            if (hit.collider.tag == "BoardMouseReactive") {
+            MouseReactive mr = hit.collider.gameObject.GetComponent<MouseReactive>();
+
+            // Only trigger game objects that react to the mouse
+            if (mr) {
                 int raySo = hit.collider.gameObject.GetComponent<SpriteRenderer>().sortingOrder;
 
                 // Retrieve the closiest map object, the one we are seeing
-                if (boardItem == null || raySo > boardItem.GetComponent<SpriteRenderer>().sortingOrder) {
-                    boardItem = hit.collider.gameObject;
+                if (entity == null || raySo > entity.GetComponent<SpriteRenderer>().sortingOrder) {
+                    entity = mr;
                 }
             }
         }
 
-        return boardItem;
+        return entity;
     }
 
     public void loadMap(string map) {
