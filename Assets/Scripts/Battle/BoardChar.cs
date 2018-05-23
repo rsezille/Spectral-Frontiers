@@ -5,17 +5,13 @@ using UnityEngine.UI;
  * Represent a placed character (ally or enemy) on the battlefield
  * Manage graphics, movements, the Character data, etc.
  */
+[RequireComponent(typeof(BoardEntity), typeof(Movable), typeof(Actionable))]
+[RequireComponent(typeof(Side))]
 public class BoardChar : MonoBehaviour {
-    public enum Side {
-        Ally, Enemy
-    }
-
     public Character character;
 
     public SpriteRenderer sprite;
     public SpriteRenderer outline;
-    public Side side;
-    public Square square; // The square the character is placed on
 
     // BoardChar HUD
     public GameObject charHUDTransform;
@@ -23,10 +19,6 @@ public class BoardChar : MonoBehaviour {
     public Image healthBar;
 
     public BattleManager battleManager; // Shortcut for BattleManager.instance
-
-    public int movementPoints; // At the beginning of each turn, movementPoints = character.movementPoints
-    public int fightMovements; // At the beginning of each turn, fightMovement = character.movementTokens
-    public int fightActions; // At the beginning of each turn, fightAction = character.actionTokens
 
     void Awake() {
         battleManager = BattleManager.instance;
@@ -80,7 +72,7 @@ public class BoardChar : MonoBehaviour {
      * Called by Board
      */
     void Click() {
-        if (side == Side.Ally) {
+        if (GetComponent<Side>().side == Side.Type.Player) {
             if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing) {
                 // Focus the clicked character as the current one to place
                 battleManager.placing.SetCurrentPlacingChar(this.character);
@@ -88,17 +80,25 @@ public class BoardChar : MonoBehaviour {
         }
     }
 
-    public void SetSquare(Square s) {
-        if (square != null) {
-            square.boardChar = null;
+    /**
+     * TODO: SetSquareS ?
+     * We consider that this function is only for entities that takes only one square
+     */
+    public void SetSquare(Square targetedSquare) {
+        if (GetComponent<BoardEntity>().squares.Count > 1)
+            return;
+
+        if (GetComponent<BoardEntity>().squares.Count == 1) {
+            GetComponent<BoardEntity>().squares[0].boardEntity = null;
         }
 
-        square = s;
+        GetComponent<BoardEntity>().squares.Clear();
 
-        if (square != null) {
-            square.boardChar = this;
-            transform.position = square.transform.position;
-            SetSortingOrder(square.sprite.sortingOrder + 1);
+        if (targetedSquare != null) {
+            GetComponent<BoardEntity>().squares.Add(targetedSquare);
+            targetedSquare.boardEntity = GetComponent<BoardEntity>();
+            transform.position = targetedSquare.transform.position;
+            SetSortingOrder(targetedSquare.sprite.sortingOrder + 1); // TODO: to event
         }
     }
 

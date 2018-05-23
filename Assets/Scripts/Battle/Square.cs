@@ -18,7 +18,7 @@ public class Square : MonoBehaviour {
 
     public bool isMouseOver = false;
 
-    public BoardChar boardChar;
+    public BoardEntity boardEntity;
 
     void Awake() {
         sprite = GetComponent<SpriteRenderer>();
@@ -96,7 +96,7 @@ public class Square : MonoBehaviour {
     void Click() {
         switch (BattleManager.instance.currentBattleStep) {
             case BattleManager.BattleStep.Placing:
-                if (start && boardChar == null) {
+                if (start && boardEntity == null) {
                     BattleManager.instance.placing.PlaceMapChar(this);
                 }
 
