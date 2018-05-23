@@ -33,7 +33,7 @@ public class Board : MonoBehaviour {
                 }
 
                 if (boardItem == previousBoardItem) {
-                    //mapObject.SendMessage("MouseOver");
+                    //boardItem.SendMessage("MouseOver");
                 } else {
                     boardItem.SendMessage("MouseEnter");
                 }

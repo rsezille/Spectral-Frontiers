@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 
 /**
  * Represent an entity which is displayed on a square (or several).
