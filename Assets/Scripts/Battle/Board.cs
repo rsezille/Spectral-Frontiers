@@ -51,7 +51,7 @@ public class Board : MonoBehaviour {
                 return null;
             }
 
-            if (hit.collider.tag == "BoardItem") {
+            if (hit.collider.tag == "BoardMouseReactive") {
                 int raySo = hit.collider.gameObject.GetComponent<SpriteRenderer>().sortingOrder;
 
                 // Retrieve the closiest map object, the one we are seeing

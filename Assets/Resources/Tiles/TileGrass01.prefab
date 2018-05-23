@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 114750190798853314}
   m_Layer: 0
   m_Name: TileGrass01
-  m_TagString: BoardItem
+  m_TagString: BoardMouseReactive
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -57,7 +57,7 @@ PolygonCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0.3}
     oldSize: {x: 2, y: 1.25}
     newSize: {x: 2, y: 1.25}
     adaptiveTilingThreshold: 0.5
@@ -92,7 +92,7 @@ MonoBehaviour:
   solid: 0
   placingStartMouseOverColor: {r: 0.3, g: 0.3, b: 1, a: 1}
   isMouseOver: 0
-  boardChar: {fileID: 0}
+  boardEntity: {fileID: 0}
 --- !u!212 &212707660983246688
 SpriteRenderer:
   m_ObjectHideFlags: 1
