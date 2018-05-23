@@ -5,5 +5,5 @@ public class Side : MonoBehaviour {
         Player, Enemy, Neutral
     };
 
-    public Type side;
+    public Type value;
 }

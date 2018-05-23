@@ -20,7 +20,13 @@ public class BoardChar : MonoBehaviour {
 
     public BattleManager battleManager; // Shortcut for BattleManager.instance
 
+    public BoardEntity boardEntity;
+    public Side side;
+
     void Awake() {
+        boardEntity = GetComponent<BoardEntity>();
+        side = GetComponent<Side>();
+
         battleManager = BattleManager.instance;
 
         sprite = GetComponent<SpriteRenderer>();
@@ -72,7 +78,7 @@ public class BoardChar : MonoBehaviour {
      * Called by Board
      */
     void Click() {
-        if (GetComponent<Side>().side == Side.Type.Player) {
+        if (side.value == Side.Type.Player) {
             if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing) {
                 // Focus the clicked character as the current one to place
                 battleManager.placing.SetCurrentPlacingChar(this.character);
@@ -85,18 +91,18 @@ public class BoardChar : MonoBehaviour {
      * We consider that this function is only for entities that takes only one square
      */
     public void SetSquare(Square targetedSquare) {
-        if (GetComponent<BoardEntity>().squares.Count > 1)
+        if (boardEntity.squares.Count > 1)
             return;
 
-        if (GetComponent<BoardEntity>().squares.Count == 1) {
-            GetComponent<BoardEntity>().squares[0].boardEntity = null;
+        if (boardEntity.squares.Count == 1) {
+            boardEntity.squares[0].boardEntity = null;
         }
 
-        GetComponent<BoardEntity>().squares.Clear();
+        boardEntity.squares.Clear();
 
         if (targetedSquare != null) {
-            GetComponent<BoardEntity>().squares.Add(targetedSquare);
-            targetedSquare.boardEntity = GetComponent<BoardEntity>();
+            boardEntity.squares.Add(targetedSquare);
+            targetedSquare.boardEntity = boardEntity;
             transform.position = targetedSquare.transform.position;
             SetSortingOrder(targetedSquare.sprite.sortingOrder + 1); // TODO: to event
         }
