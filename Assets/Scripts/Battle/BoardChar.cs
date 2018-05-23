@@ -85,26 +85,18 @@ public class BoardChar : MonoBehaviour {
             }
         }
     }
-
-    /**
-     * TODO: SetSquareS ?
-     * We consider that this function is only for entities that takes only one square
-     */
+    
     public void SetSquare(Square targetedSquare) {
-        if (boardEntity.squares.Count > 1)
-            return;
-
-        if (boardEntity.squares.Count == 1) {
-            boardEntity.squares[0].boardEntity = null;
+        if (boardEntity.square != null) {
+            boardEntity.square.boardEntity = null;
         }
 
-        boardEntity.squares.Clear();
+        boardEntity.square = targetedSquare;
 
         if (targetedSquare != null) {
-            boardEntity.squares.Add(targetedSquare);
             targetedSquare.boardEntity = boardEntity;
             transform.position = targetedSquare.transform.position;
-            SetSortingOrder(targetedSquare.sprite.sortingOrder + 1); // TODO: to event
+            SetSortingOrder(targetedSquare.sprite.sortingOrder + 1);
         }
     }
 

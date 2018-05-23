@@ -160,7 +160,7 @@ public class BattlePlacingManager {
                 } else {
                     BoardChar bc = BattleManager.Instantiate(battleManager.testBoardChar, square.transform.position, Quaternion.identity) as BoardChar;
                     bc.character = battleManager.placingAlliedChars[battleManager.placingCharIndex];
-                    bc.GetComponent<Side>().side = Side.Type.Player;
+                    bc.GetComponent<Side>().value = Side.Type.Player;
                     bc.SetSquare(square);
 
                     bc.character.boardChar = bc;
