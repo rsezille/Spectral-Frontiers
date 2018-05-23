@@ -100,7 +100,7 @@ public class BattlePlacingManager {
                 Object.Destroy(battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar.gameObject);
 
                 battleManager.alliedBoardChars.Remove(battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar);
-                battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar.square.boardChar = null;
+                battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar.SetSquare(null);
                 battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar.character.boardChar = null;
 
                 if (battleManager.alliedBoardChars.Count <= 0) {
@@ -153,14 +153,14 @@ public class BattlePlacingManager {
      */
     public void PlaceMapChar(Square square) {
         if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing) {
-            if (square.boardChar == null) {
+            if (square.boardEntity == null) {
                 if (battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar != null) {
                     battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar.SetSquare(square);
                     battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar.outline.gameObject.SetActive(true);
                 } else {
                     BoardChar bc = BattleManager.Instantiate(battleManager.testBoardChar, square.transform.position, Quaternion.identity) as BoardChar;
                     bc.character = battleManager.placingAlliedChars[battleManager.placingCharIndex];
-                    bc.side = BoardChar.Side.Ally;
+                    bc.GetComponent<Side>().value = Side.Type.Player;
                     bc.SetSquare(square);
 
                     bc.character.boardChar = bc;

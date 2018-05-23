@@ -5,17 +5,13 @@ using UnityEngine.UI;
  * Represent a placed character (ally or enemy) on the battlefield
  * Manage graphics, movements, the Character data, etc.
  */
+[RequireComponent(typeof(BoardEntity), typeof(Movable), typeof(Actionable))]
+[RequireComponent(typeof(Side))]
 public class BoardChar : MonoBehaviour {
-    public enum Side {
-        Ally, Enemy
-    }
-
     public Character character;
 
     public SpriteRenderer sprite;
     public SpriteRenderer outline;
-    public Side side;
-    public Square square; // The square the character is placed on
 
     // BoardChar HUD
     public GameObject charHUDTransform;
@@ -24,11 +20,13 @@ public class BoardChar : MonoBehaviour {
 
     public BattleManager battleManager; // Shortcut for BattleManager.instance
 
-    public int movementPoints; // At the beginning of each turn, movementPoints = character.movementPoints
-    public int fightMovements; // At the beginning of each turn, fightMovement = character.movementTokens
-    public int fightActions; // At the beginning of each turn, fightAction = character.actionTokens
+    public BoardEntity boardEntity;
+    public Side side;
 
     void Awake() {
+        boardEntity = GetComponent<BoardEntity>();
+        side = GetComponent<Side>();
+
         battleManager = BattleManager.instance;
 
         sprite = GetComponent<SpriteRenderer>();
@@ -80,25 +78,25 @@ public class BoardChar : MonoBehaviour {
      * Called by Board
      */
     void Click() {
-        if (side == Side.Ally) {
+        if (side.value == Side.Type.Player) {
             if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing) {
                 // Focus the clicked character as the current one to place
                 battleManager.placing.SetCurrentPlacingChar(this.character);
             }
         }
     }
-
-    public void SetSquare(Square s) {
-        if (square != null) {
-            square.boardChar = null;
+    
+    public void SetSquare(Square targetedSquare) {
+        if (boardEntity.square != null) {
+            boardEntity.square.boardEntity = null;
         }
 
-        square = s;
+        boardEntity.square = targetedSquare;
 
-        if (square != null) {
-            square.boardChar = this;
-            transform.position = square.transform.position;
-            SetSortingOrder(square.sprite.sortingOrder + 1);
+        if (targetedSquare != null) {
+            targetedSquare.boardEntity = boardEntity;
+            transform.position = targetedSquare.transform.position;
+            SetSortingOrder(targetedSquare.sprite.sortingOrder + 1);
         }
     }
 
