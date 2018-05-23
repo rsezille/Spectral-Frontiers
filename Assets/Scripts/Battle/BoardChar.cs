@@ -7,7 +7,7 @@ using UnityEngine.UI;
  */
 [RequireComponent(typeof(BoardEntity), typeof(Movable), typeof(Actionable))]
 [RequireComponent(typeof(Side), typeof(MouseReactive))]
-public class BoardChar : MonoBehaviour, IBoardMouseReactive {
+public class BoardChar : MonoBehaviour {
     public Character character;
 
     public SpriteRenderer sprite;

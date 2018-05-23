@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer), typeof(Collider2D), typeof(MouseReactive))]
-public class Square : MonoBehaviour, IBoardMouseReactive {
+public class Square : MonoBehaviour {
     public SpriteRenderer sprite;
 
     // Positionning
