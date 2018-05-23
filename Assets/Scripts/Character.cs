@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 /**
- * Represent a character, which can be an allie or an enemy (a monster, etc.)
+ * Represent a character, which can be an allie or an enemy
  */
 public class Character {
     public const int MAXIMUM_LEVEL = 50;
