@@ -23,7 +23,7 @@ public class BattlePlacingManager {
     // Event
     public void OnEnterBattleStepPlacing() {
         // Create a temporary list with all available characters from the player
-        foreach (Character character in GameManager.instance.player.ownedChars) {
+        foreach (Character character in GameManager.instance.player.characters) {
             battleManager.placingAlliedChars.Add(character);
         }
     }

@@ -4,7 +4,7 @@ public class Player {
     public string playerName;
     public int gold;
 
-    public List<Character> ownedChars = new List<Character>();
+    public List<Character> characters = new List<Character>();
 
     public Player() {
         playerName = Globals.DefaultPlayerName;
@@ -15,11 +15,11 @@ public class Player {
         Character mew = new Character("Mew");
         Character kupo = new Character("Kupo");
 
-        ownedChars.Add(ritz);//TODO
+        characters.Add(ritz);//TODO
         ritz.SetCurrentHP(10);
-        ownedChars.Add(mew);//TODO
+        characters.Add(mew);//TODO
         mew.SetCurrentHP(20);
-        ownedChars.Add(kupo);//TODO
+        characters.Add(kupo);//TODO
         kupo.SetCurrentHP(30);
     }
 }
