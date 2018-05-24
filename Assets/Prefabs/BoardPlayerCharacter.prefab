@@ -142,7 +142,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1878317023255400}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.349813, y: -2.3758922, z: 18.36}
+  m_LocalPosition: {x: -1.4331335, y: -2.4160647, z: 18.36}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4099789109804748}
@@ -165,7 +165,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
-    oldSize: {x: 0.28125, y: 1.203125}
+    oldSize: {x: 0.34375, y: 1.234375}
     newSize: {x: 0.28125, y: 1.203125}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -470,11 +470,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44c664165fb40744fba8fc2684d28cd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _glowColor: {r: 0, g: 1, b: 0.9489832, a: 1}
-  _glowBrightness: 7.38
+  _glowColor: {r: 1, g: 1, b: 1, a: 1}
+  _glowBrightness: 4.03
   _outlineWidth: 1
-  _alphaThreshold: 0.01
-  _drawOutside: 0
+  _alphaThreshold: 0
+  _drawOutside: 1
   _enableInstancing: 0
 --- !u!114 &114857869112159002
 MonoBehaviour:
@@ -527,7 +527,7 @@ SpriteRenderer:
   m_SortingLayerID: -1725305475
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: eb392b6173db7f948aa641c142527903, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d48d2f376b6305b4e897788ab5fb6aff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
