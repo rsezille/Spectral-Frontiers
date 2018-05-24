@@ -1,6 +1,7 @@
 ﻿// Draws an HDR outline over the sprite borders. 
 // Based on Sprites/Default shader from Unity 2017.3.
 // Version 2018/05/24 (master) By https://github.com/Elringus
+// WARNING: Well check all modifications when upgrading from source, because this file has been modified from the original one
 
 Shader "Sprites/Outline"
 {
