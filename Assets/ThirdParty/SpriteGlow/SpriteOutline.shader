@@ -159,7 +159,7 @@ Shader "Sprites/Outline"
                     fixed pixelLeftAlpha = pixelLeftTexCoord.x < 0.0 ? 0.0 : tex2Dgrad(_MainTex, pixelLeftTexCoord, texDdx, texDdy).a;
                     if (pixelLeftAlpha <= alphaThreshold) return 1;
 
-                    if (i > outlineSize) break;
+                    if (i >= outlineSize) break;
                 }
 
                 return 0;
@@ -195,7 +195,7 @@ Shader "Sprites/Outline"
                     fixed pixelLeftAlpha = tex2Dgrad(_MainTex, pixelLeftTexCoord, texDdx, texDdy).a;
                     if (pixelLeftAlpha > alphaThreshold) return 1;
 
-                    if (i > outlineSize) break;
+                    if (i >= outlineSize) break;
                 }
 
                 return 0;
