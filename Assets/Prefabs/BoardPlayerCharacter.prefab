@@ -114,7 +114,7 @@ GameObject:
   - component: {fileID: 114576763524298736}
   - component: {fileID: 114321648030043348}
   - component: {fileID: 114745606959568802}
-  - component: {fileID: 111472797670633834}
+  - component: {fileID: 114628054442890148}
   m_Layer: 0
   m_Name: BoardPlayerCharacter
   m_TagString: Untagged
@@ -143,7 +143,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1878317023255400}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.5162778, y: -1.8753246, z: 18.36}
+  m_LocalPosition: {x: 0, y: 0, z: 18.36}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4099789109804748}
@@ -194,21 +194,6 @@ PolygonCollider2D:
       - {x: -0.082410395, y: 0.46097496}
       - {x: -0.053355545, y: 0.41727865}
       - {x: -0.10117018, y: 0.3729561}
---- !u!111 &111472797670633834
-Animation:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1878317023255400}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 6abe948c6e24a3c4b9469c2b19272973, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: 6abe948c6e24a3c4b9469c2b19272973, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
 --- !u!114 &114098185219839834
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -221,13 +206,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprite: {fileID: 0}
-  outline: {fileID: 0}
   charHUDTransform: {fileID: 1335408821512494}
   characterName: {fileID: 114442776269453614}
   healthBar: {fileID: 114150521523237966}
   battleManager: {fileID: 0}
   boardEntity: {fileID: 0}
   side: {fileID: 0}
+  outline: {fileID: 0}
 --- !u!114 &114100747827134434
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -475,6 +460,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.3137255}
   m_EffectDistance: {x: 0, y: 0}
   m_UseGraphicAlpha: 0
+--- !u!114 &114628054442890148
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1878317023255400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f239a0c988648624b9f6600a3fcaa8a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minBrightness: 1
+  maxBrightness: 4.5
+  time: 1
 --- !u!114 &114745606959568802
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -486,8 +485,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44c664165fb40744fba8fc2684d28cd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _glowColor: {r: 0.9764151, g: 1, b: 0.9873289, a: 1}
-  _glowBrightness: 2.88
+  _glowColor: {r: 1, g: 1, b: 1, a: 1}
+  _glowBrightness: 1
   _outlineWidth: 1
   _alphaThreshold: 0
   _drawOutside: 1
