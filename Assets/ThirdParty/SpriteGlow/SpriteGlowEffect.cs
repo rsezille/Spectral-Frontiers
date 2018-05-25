@@ -75,7 +75,7 @@ namespace SpriteGlow {
 
         [Tooltip("Base color of the glow.")]
         [SerializeField] private Color _glowColor = Color.white;
-        [Tooltip("The brightness (power) of the glow."), Range(1, 10)]
+        [Tooltip("The brightness (power) of the glow."), Range(0, 10)]
         [SerializeField] private float _glowBrightness = 2f;
         [Tooltip("Width of the outline, in texels."), Range(0, 10)]
         [SerializeField] private int _outlineWidth = 1;

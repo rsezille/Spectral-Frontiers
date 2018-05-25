@@ -114,6 +114,7 @@ GameObject:
   - component: {fileID: 114576763524298736}
   - component: {fileID: 114321648030043348}
   - component: {fileID: 114745606959568802}
+  - component: {fileID: 111472797670633834}
   m_Layer: 0
   m_Name: BoardPlayerCharacter
   m_TagString: Untagged
@@ -142,7 +143,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1878317023255400}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.4331335, y: -2.4160647, z: 18.36}
+  m_LocalPosition: {x: -2.5162778, y: -1.8753246, z: 18.36}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4099789109804748}
@@ -193,6 +194,21 @@ PolygonCollider2D:
       - {x: -0.082410395, y: 0.46097496}
       - {x: -0.053355545, y: 0.41727865}
       - {x: -0.10117018, y: 0.3729561}
+--- !u!111 &111472797670633834
+Animation:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1878317023255400}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 6abe948c6e24a3c4b9469c2b19272973, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 6abe948c6e24a3c4b9469c2b19272973, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!114 &114098185219839834
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -470,8 +486,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44c664165fb40744fba8fc2684d28cd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _glowColor: {r: 1, g: 1, b: 1, a: 1}
-  _glowBrightness: 4.03
+  _glowColor: {r: 0.9764151, g: 1, b: 0.9873289, a: 1}
+  _glowBrightness: 2.88
   _outlineWidth: 1
   _alphaThreshold: 0
   _drawOutside: 1
