@@ -90,6 +90,10 @@ public class BattleManager : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.P)) {
             battleCamera.SetPosition(board.squares[0, 0], true);
         }
+
+        if (Input.GetAxis(InputBinds.Zoom) != 0) {
+            battleCamera.Zoom(Input.GetAxis(InputBinds.Zoom));
+        }
 #endif
 
         switch (currentBattleStep) {
