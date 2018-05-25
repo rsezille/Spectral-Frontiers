@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using SpriteGlow;
 
 /**
  * Represent a placed character (ally or enemy) on the battlefield
  * Manage graphics, movements, the Character data, etc.
  */
 [RequireComponent(typeof(BoardEntity), typeof(Movable), typeof(Actionable))]
-[RequireComponent(typeof(Side), typeof(MouseReactive))]
+[RequireComponent(typeof(Side), typeof(MouseReactive), typeof(SpriteGlowEffect))]
 public class BoardChar : MonoBehaviour {
     public Character character;
 
     public SpriteRenderer sprite;
-    public SpriteRenderer outline;
 
     // BoardChar HUD
     public GameObject charHUDTransform;
@@ -22,17 +22,19 @@ public class BoardChar : MonoBehaviour {
 
     public BoardEntity boardEntity;
     public Side side;
+    public SpriteGlowEffect outline;
 
     void Awake() {
         boardEntity = GetComponent<BoardEntity>();
         side = GetComponent<Side>();
+        outline = GetComponent<SpriteGlowEffect>();
 
         battleManager = BattleManager.instance;
 
         sprite = GetComponent<SpriteRenderer>();
 
         // Disable the glow outline
-        outline.gameObject.SetActive(false);
+        outline.enabled = false;
 
         // Put the HUD above the sprite
         charHUDTransform.transform.position += new Vector3(0f, sprite.bounds.size.y + 0.3f);
@@ -62,7 +64,7 @@ public class BoardChar : MonoBehaviour {
      * Triggered by Board
      */
     public void MouseEnter() {
-        outline.gameObject.SetActive(true);
+        outline.enabled = true;
     }
 
     /**
@@ -70,7 +72,7 @@ public class BoardChar : MonoBehaviour {
      */
     public void MouseLeave() {
         if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing && battleManager.placing.GetCurrentPlacingChar().boardChar != this) {
-            outline.gameObject.SetActive(false);
+            outline.enabled = false;
         }
     }
 
@@ -102,7 +104,6 @@ public class BoardChar : MonoBehaviour {
 
     private void SetSortingOrder(int sortingOrder) {
         sprite.sortingOrder = sortingOrder;
-        outline.sortingOrder = sortingOrder;
         charHUDTransform.transform.GetComponentInChildren<Canvas>().sortingOrder = sortingOrder;
     }
 }
