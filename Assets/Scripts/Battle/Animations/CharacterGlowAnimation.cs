@@ -2,6 +2,9 @@
 using SpriteGlow;
 using DG.Tweening;
 
+/**
+ * TODO: May have a performance improvement: pause the DOTween animation when the glow is disabled
+ */
 [RequireComponent(typeof(SpriteGlowEffect))]
 public class CharacterGlowAnimation : MonoBehaviour {
     public float minBrightness = 1f;
