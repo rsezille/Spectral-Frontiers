@@ -59,13 +59,13 @@ public class BattlePlacingManager {
     public void SetCurrentPlacingChar(int index) {
         if (index >= 0 && index <= battleManager.placingAlliedChars.Count - 1) {
             if (battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar != null) {
-                battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar.outline.gameObject.SetActive(false);
+                battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar.outline.enabled = false;
             }
 
             battleManager.placingCharIndex = index;
 
             if (battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar != null) {
-                battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar.outline.gameObject.SetActive(true);
+                battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar.outline.enabled = true;
             }
         } else {
             Debug.LogWarning("Trying to set an out of bound index");
@@ -156,7 +156,7 @@ public class BattlePlacingManager {
             if (square.boardEntity == null) {
                 if (battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar != null) {
                     battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar.SetSquare(square);
-                    battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar.outline.gameObject.SetActive(true);
+                    battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar.outline.enabled = true;
                 } else {
                     BoardChar bc = BattleManager.Instantiate(battleManager.testBoardChar, square.transform.position, Quaternion.identity) as BoardChar;
                     bc.character = battleManager.placingAlliedChars[battleManager.placingCharIndex];
@@ -167,7 +167,7 @@ public class BattlePlacingManager {
                     battleManager.alliedBoardChars.Add(bc);
 
                     bc.transform.SetParent(battleManager.transform);
-                    bc.outline.gameObject.SetActive(true);
+                    bc.outline.enabled = true;
 
                     RefreshStartBattleText();
                 }
