@@ -13,11 +13,6 @@ public class BoardChar : MonoBehaviour {
 
     public SpriteRenderer sprite;
 
-    // BoardChar HUD
-    public GameObject charHUDTransform;
-    public Text characterName;
-    public Image healthBar;
-
     public BattleManager battleManager; // Shortcut for BattleManager.instance
 
     public BoardEntity boardEntity;
@@ -35,29 +30,10 @@ public class BoardChar : MonoBehaviour {
 
         // Disable the glow outline
         outline.enabled = false;
-
-        // Put the HUD above the sprite
-        charHUDTransform.transform.position += new Vector3(0f, sprite.bounds.size.y + 0.3f);
     }
 
     void Start() {
         gameObject.name = character.name; // To find it inside the editor
-
-        characterName.text = character.name;
-
-        healthBar.transform.localScale = new Vector3(
-            (float)character.GetCurrentHP() / (float)character.GetMaxHP(),
-            healthBar.transform.localScale.y,
-            healthBar.transform.localScale.z
-        );
-    }
-
-    void Update() {
-        healthBar.transform.localScale = new Vector3(
-            (float)character.GetCurrentHP() / (float)character.GetMaxHP(),
-            healthBar.transform.localScale.y,
-            healthBar.transform.localScale.z
-        );
     }
 
     /**
@@ -104,6 +80,11 @@ public class BoardChar : MonoBehaviour {
 
     private void SetSortingOrder(int sortingOrder) {
         sprite.sortingOrder = sortingOrder;
-        charHUDTransform.transform.GetComponentInChildren<Canvas>().sortingOrder = sortingOrder;
+
+        Component[] HUDs = transform.GetComponentsInChildren<Canvas>();
+
+        foreach (Canvas canvas in HUDs) {
+            canvas.sortingOrder = sortingOrder;
+        }
     }
 }
