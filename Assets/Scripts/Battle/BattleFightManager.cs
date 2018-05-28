@@ -14,6 +14,9 @@
         battleManager.currentBoardChar.outline.enabled = true;
     }
 
+    // Called by BattleManager
+    public void EnterTurnStepStatus() {}
+
     // Called by FightHUD
     public void Move() {
         if (battleManager.currentTurnStep == BattleManager.TurnStep.Move) {

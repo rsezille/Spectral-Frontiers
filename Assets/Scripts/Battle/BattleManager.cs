@@ -138,17 +138,26 @@ public class BattleManager : MonoBehaviour {
         currentBattleStep = BattleStep.Victory;
     }
 
-    public void EnterTurnStepStatusFromPlacing() {
+    /**
+     * Common to Placing and Fight steps
+     */
+    public void EnterTurnStepStatus() {
         if (currentTurnStep != TurnStep.Status) {
             currentTurnStep = TurnStep.Status;
-            placingHUD.SetActive(false);
 
-            statusHUD.Show(placing.GetCurrentPlacingChar());
+            switch (currentBattleStep) {
+                case BattleStep.Placing:
+                    placing.EnterTurnStepStatus();
+                    break;
+                case BattleStep.Fight:
+                    fight.EnterTurnStepStatus();
+                    break;
+            }
         }
     }
 
     /**
-     * Common to Placing, Fight & Victory steps
+     * Common to Placing, Fight and Victory steps
      */
     public void EnterTurnStepNone() {
         currentTurnStep = TurnStep.None;

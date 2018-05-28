@@ -15,7 +15,7 @@ public class PlacingHUD : MonoBehaviour {
 
     private void Start() {
         removeButton.GetComponent<Button>().onClick.AddListener(BattleManager.instance.placing.RemoveCurrentMapChar);
-        statusButton.GetComponent<Button>().onClick.AddListener(BattleManager.instance.EnterTurnStepStatusFromPlacing);
+        statusButton.GetComponent<Button>().onClick.AddListener(BattleManager.instance.EnterTurnStepStatus);
     }
 
     private void Update() {

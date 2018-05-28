@@ -25,6 +25,13 @@ public class BattlePlacingManager {
     // Called by BattleManager
     public void EnterTurnStepNone() {}
 
+    // Called by BattleManager
+    public void EnterTurnStepStatus() {
+        battleManager.placingHUD.SetActive(false);
+
+        battleManager.statusHUD.Show(GetCurrentPlacingChar());
+    }
+
     // Event
     public void OnEnterBattleStepPlacing() {
         // Create a temporary list with all available characters from the player
