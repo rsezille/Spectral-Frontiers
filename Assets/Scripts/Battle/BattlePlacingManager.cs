@@ -7,8 +7,6 @@ public class BattlePlacingManager {
 
     public BattlePlacingManager() {
         battleManager = BattleManager.instance;
-
-        BattleManager.OnEnterBattleStepPlacing += OnEnterBattleStepPlacing;
     }
 
     // Called by BattleManager
@@ -18,7 +16,7 @@ public class BattlePlacingManager {
         } else if (Input.GetButtonDown(InputBinds.Next)) {
             NextPlacingChar();
         } else if (Input.GetButtonDown(InputBinds.SpecialKey1)) {
-            battleManager.EnterBattleStepFight();
+            battleManager.fight.EnterBattleStepFight();
         }
     }
 
@@ -32,12 +30,16 @@ public class BattlePlacingManager {
         battleManager.statusHUD.Show(GetCurrentPlacingChar());
     }
 
-    // Event
-    public void OnEnterBattleStepPlacing() {
+    public void EnterBattleStepPlacing() {
         // Create a temporary list with all available characters from the player
         foreach (Character character in GameManager.instance.player.characters) {
             battleManager.placingAlliedChars.Add(character);
         }
+
+        battleManager.currentBattleStep = BattleManager.BattleStep.Placing;
+        battleManager.placingHUD.SetActive(true);
+
+        battleManager.EventOnEnterPlacing();
     }
 
     private void PreviousPlacingChar() {

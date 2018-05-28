@@ -28,6 +28,19 @@
         }
     }
 
+    public void EnterBattleStepFight() {
+        if (battleManager.playerBoardChars.Count > 0) {
+            if (battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar != null) {
+                battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar.outline.enabled = false;
+            }
+
+            battleManager.currentBattleStep = BattleManager.BattleStep.Fight;
+            battleManager.placingHUD.gameObject.SetActive(false);
+            battleManager.fightHUD.gameObject.SetActive(true);
+            battleManager.NewPlayerTurn();
+        }
+    }
+
     private void EnterTurnStepMove() {
 
     }

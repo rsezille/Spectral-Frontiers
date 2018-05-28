@@ -24,11 +24,7 @@ public class Square : MonoBehaviour {
     private void Awake() {
         sprite = GetComponent<SpriteRenderer>();
 
-        BattleManager.OnEnterBattleStepPlacing += OnEnterBattleStepPlacing;
-    }
-
-    private void Update() {
-        
+        BattleManager.instance.OnEnterPlacing += OnEnterPlacing;
     }
 
     // Must be called when the tiles GameObjects are created
@@ -49,7 +45,7 @@ public class Square : MonoBehaviour {
         );
     }
 
-    private void OnEnterBattleStepPlacing() {
+    private void OnEnterPlacing() {
         if (start) {
             StartCoroutine("IsStartingSquare", placingStartMouseOverColor);
         }

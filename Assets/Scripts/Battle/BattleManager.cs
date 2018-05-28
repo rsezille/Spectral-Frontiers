@@ -38,8 +38,8 @@ public class BattleManager : MonoBehaviour {
     public FightHUD fightHUD;
 
     // Events
-    public delegate void EnterStepPlacing();
-    public static event EnterStepPlacing OnEnterBattleStepPlacing;
+    public delegate void EnterStepEvent();
+    public event EnterStepEvent OnEnterPlacing;
 
     // Dedicated managers for each BattleStep
     public BattlePlacingManager placing;
@@ -80,7 +80,7 @@ public class BattleManager : MonoBehaviour {
         battleCamera.ResetCameraSize();
         battleCamera.SetPosition(board.squares[0, 0]);
 
-        EnterBattleStepPlacing();
+        placing.EnterBattleStepPlacing();
     }
 
     // Update is called once per frame
@@ -113,29 +113,10 @@ public class BattleManager : MonoBehaviour {
         }
     }
 
-    public void EnterBattleStepPlacing() {
-        currentBattleStep = BattleStep.Placing;
-        placingHUD.SetActive(true);
-
-        if (OnEnterBattleStepPlacing != null)
-            OnEnterBattleStepPlacing();
-    }
-
-    public void EnterBattleStepFight() {
-        if (playerBoardChars.Count > 0) {
-            if (placingAlliedChars[placingCharIndex].boardChar != null) {
-                placingAlliedChars[placingCharIndex].boardChar.outline.enabled = false;
-            }
-
-            currentBattleStep = BattleStep.Fight;
-            placingHUD.gameObject.SetActive(false);
-            fightHUD.gameObject.SetActive(true);
-            NewPlayerTurn();
+    public void EventOnEnterPlacing() {
+        if (OnEnterPlacing != null) {
+            OnEnterPlacing();
         }
-    }
-
-    public void EnterBattleStepVictory() {
-        currentBattleStep = BattleStep.Victory;
     }
 
     /**
