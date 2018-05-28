@@ -9,7 +9,7 @@ public class TranslatedText : MonoBehaviour {
     Text textBox;
 
     // Don't use awake as the LanguageManager needs to be loaded
-    void Start() {
+    private void Start() {
         if (textBox == null) {
             textBox = GetComponent<Text>();
         }

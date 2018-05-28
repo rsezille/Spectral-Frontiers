@@ -19,10 +19,14 @@ public class Square : MonoBehaviour {
 
     public BoardEntity boardEntity;
 
-    void Awake() {
+    private void Awake() {
         sprite = GetComponent<SpriteRenderer>();
 
         BattleManager.OnEnterBattleStepPlacing += OnEnterBattleStepPlacing;
+    }
+
+    private void Update() {
+        
     }
 
     // Must be called when the tiles GameObjects are created

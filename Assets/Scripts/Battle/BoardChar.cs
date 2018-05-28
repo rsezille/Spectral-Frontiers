@@ -19,7 +19,7 @@ public class BoardChar : MonoBehaviour {
     public Side side;
     public SpriteGlowEffect outline;
 
-    void Awake() {
+    private void Awake() {
         boardEntity = GetComponent<BoardEntity>();
         side = GetComponent<Side>();
         outline = GetComponent<SpriteGlowEffect>();
@@ -32,7 +32,7 @@ public class BoardChar : MonoBehaviour {
         outline.enabled = false;
     }
 
-    void Start() {
+    private void Start() {
         gameObject.name = character.name; // To find it inside the editor
     }
 

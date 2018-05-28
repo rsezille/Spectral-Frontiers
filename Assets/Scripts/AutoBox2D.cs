@@ -9,7 +9,7 @@ public class AutoBox2D : MonoBehaviour {
     private BoxCollider2D box;
     private RectTransform rect;
 
-    void Awake() {
+    private void Awake() {
         if (rect == null) {
             rect = gameObject.GetComponent<RectTransform>();
         }

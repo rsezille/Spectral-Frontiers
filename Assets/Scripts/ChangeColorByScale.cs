@@ -14,13 +14,13 @@ public class ChangeColorByScale : MonoBehaviour {
     public Color minColor = Color.red;
     public Color maxColor = Color.green;
 
-    void Awake() {
+    private void Awake() {
         if (image == null) {
             image = GetComponent<Image>();
         }
     }
 
-    void Update() {
+    private void Update() {
         image.color = Color.Lerp(
             minColor,
             maxColor,

@@ -54,7 +54,7 @@ public class BattleManager : MonoBehaviour {
     }
 
     // Initialization
-    void Awake() {
+    private void Awake() {
         placing = new BattlePlacingManager();
         fight = new BattleFightManager();
         victory = new BattleVictoryManager();
@@ -72,7 +72,7 @@ public class BattleManager : MonoBehaviour {
         fightHUD.gameObject.SetActive(false);
     }
 
-    void Start() {
+    private void Start() {
         board.loadMap("001");
 
         battleCamera.ResetCameraSize();
@@ -82,7 +82,7 @@ public class BattleManager : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update() {
+    private void Update() {
 #if UNITY_EDITOR
         // Do not use InputBinds as this code is for editor only
         if (Input.GetKeyDown(KeyCode.O)) {

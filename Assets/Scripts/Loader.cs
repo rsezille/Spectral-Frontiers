@@ -9,7 +9,7 @@ public class Loader : MonoBehaviour {
     public GameObject gameManager;
 
     // Initialization
-    void Awake() {
+    private void Awake() {
         if (GameManager.instance == null) {
             Debug.Log("Game is starting...");
             Instantiate(gameManager);

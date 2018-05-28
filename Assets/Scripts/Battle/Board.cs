@@ -17,7 +17,7 @@ public class Board : MonoBehaviour {
     /**
      * Compute the current mouse position and dispatch events to the first object hit
      */
-    void Update() {
+    private void Update() {
         if (BattleManager.instance.currentTurnStep != BattleManager.TurnStep.Status) {
             Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 

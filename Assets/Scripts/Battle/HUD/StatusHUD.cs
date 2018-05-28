@@ -16,7 +16,7 @@ public class StatusHUD : MonoBehaviour {
     private float rotationSpeed = 5f;
     private bool isGoingDisabled = false; // True during the disabling animation
 
-    void Start() {
+    private void Start() {
         backButton.GetComponent<Button>().onClick.AddListener(Hide);
         quitButton.GetComponent<Button>().onClick.AddListener(Quit);
     }

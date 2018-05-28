@@ -13,12 +13,12 @@ public class PlacingHUD : MonoBehaviour {
 
     public RectTransform placingHUDRect;
 
-    void Start() {
+    private void Start() {
         removeButton.GetComponent<Button>().onClick.AddListener(BattleManager.instance.placing.RemoveCurrentMapChar);
         statusButton.GetComponent<Button>().onClick.AddListener(BattleManager.instance.EnterTurnStepStatusFromPlacing);
     }
 
-    void Update() {
+    private void Update() {
         // Remove button
         if (BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Placing) {
             if (BattleManager.instance.placing.GetCurrentPlacingChar().boardChar != null && !removeButton.activeSelf) {

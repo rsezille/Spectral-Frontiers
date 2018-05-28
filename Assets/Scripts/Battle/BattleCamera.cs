@@ -8,11 +8,11 @@ public class BattleCamera : MonoBehaviour {
     // Camera speed
     public float speed = 7f;
 
-    void Awake() {
+    private void Awake() {
         battleCamera = GetComponent<Camera>();
     }
 
-    void Update() {
+    private void Update() {
         float tmpSpeed = speed;
 
         // Lower the speed if the camera is going diagonally

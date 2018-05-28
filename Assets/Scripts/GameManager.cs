@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour {
     private Dictionary<string, RawMonster> monsters;
 
     // Game initialization
-    void Awake() {
+    private void Awake() {
         if (instance == null) {
             instance = this;
         } else if (instance != this) {
