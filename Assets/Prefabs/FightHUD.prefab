@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 224292989963070508}
   - component: {fileID: 222897952105903646}
   - component: {fileID: 114419668103500036}
+  - component: {fileID: 114583176033167134}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -38,6 +39,7 @@ GameObject:
   - component: {fileID: 224398327932097126}
   - component: {fileID: 222222557250861828}
   - component: {fileID: 114242654517208834}
+  - component: {fileID: 114323987359349960}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -55,6 +57,7 @@ GameObject:
   - component: {fileID: 224822439894374946}
   - component: {fileID: 222150590930884044}
   - component: {fileID: 114085689731582050}
+  - component: {fileID: 114865677939833134}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -123,6 +126,7 @@ GameObject:
   - component: {fileID: 224839089512599808}
   - component: {fileID: 222409562792913388}
   - component: {fileID: 114281893166354192}
+  - component: {fileID: 114177270082850466}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -158,6 +162,7 @@ GameObject:
   - component: {fileID: 224031845206913326}
   - component: {fileID: 222408049932006138}
   - component: {fileID: 114236853014211502}
+  - component: {fileID: 114081176326208690}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -192,6 +197,7 @@ GameObject:
   - component: {fileID: 224938429499513042}
   - component: {fileID: 222439820831506542}
   - component: {fileID: 114134731489228204}
+  - component: {fileID: 114616179078791134}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -315,6 +321,7 @@ GameObject:
   - component: {fileID: 224565595904958828}
   - component: {fileID: 222040106807169248}
   - component: {fileID: 114647600812291058}
+  - component: {fileID: 114717174816436682}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -420,6 +427,7 @@ GameObject:
   - component: {fileID: 224661384946887076}
   - component: {fileID: 222351481232210092}
   - component: {fileID: 114551354615374962}
+  - component: {fileID: 114972189062948470}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -475,7 +483,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 114224124244742388}
   m_OnClick:
     m_PersistentCalls:
@@ -509,6 +517,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114081176326208690
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1302639732519908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a0ee8ea2e7f7f143976e407dd70b08c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114085689731582050
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -657,7 +676,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 114583308540021816}
   m_OnClick:
     m_PersistentCalls:
@@ -673,6 +692,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8fabdb8a3aa3cf14e8e6027654aa1ff9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114177270082850466
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1262368470344372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a0ee8ea2e7f7f143976e407dd70b08c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114209868735312648
@@ -828,6 +858,17 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: battle.hud.menu.wait
+--- !u!114 &114323987359349960
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1033631194060738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a0ee8ea2e7f7f143976e407dd70b08c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114371200797447978
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -924,7 +965,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 114471614599939864}
   m_OnClick:
     m_PersistentCalls:
@@ -998,7 +1039,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 114856252484221378}
   m_OnClick:
     m_PersistentCalls:
@@ -1066,7 +1107,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 114098542980102484}
   m_OnClick:
     m_PersistentCalls:
@@ -1140,13 +1181,24 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 114883565875505486}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114583176033167134
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1022088300187596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a0ee8ea2e7f7f143976e407dd70b08c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114583308540021816
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1174,6 +1226,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114616179078791134
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1411551163686746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a0ee8ea2e7f7f143976e407dd70b08c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114647600812291058
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1207,6 +1270,17 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: battle.hud.menu.move
+--- !u!114 &114717174816436682
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1702077530005094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a0ee8ea2e7f7f143976e407dd70b08c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114727571505560270
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1310,6 +1384,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114865677939833134
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1120085967605210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a0ee8ea2e7f7f143976e407dd70b08c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114879176543020528
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1425,13 +1510,24 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 114934143599072282}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114972189062948470
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1989607033982210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a0ee8ea2e7f7f143976e407dd70b08c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114982549907807076
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1466,7 +1562,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 114209868735312648}
   m_OnClick:
     m_PersistentCalls:
