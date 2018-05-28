@@ -13,7 +13,9 @@ public class Square : MonoBehaviour {
     public bool solid = false; // Collision detection
 
     // Colors
-    public Color placingStartMouseOverColor = new Color(0.3f, 0.3f, 1f, 1f);
+    public static Color defaultColor = new Color(1f, 1f, 1f, 0f);
+    public static Color overingColor = new Color(0f, 0f, 0f, 0.2f);
+    public static Color placingStartMouseOverColor = new Color(0.14f, 0.36f, 0.92f, 0.62f);
 
     public bool isMouseOver = false;
 
@@ -38,6 +40,7 @@ public class Square : MonoBehaviour {
         solid = rawSquare.solid;
 
         sprite.sortingOrder = (x + y * mapWidth) * 10;
+        sprite.color = defaultColor;
 
         transform.position = new Vector3(
             x - y,
@@ -48,15 +51,15 @@ public class Square : MonoBehaviour {
 
     private void OnEnterBattleStepPlacing() {
         if (start) {
-            StartCoroutine("IsStartingSquare", Color.blue);
+            StartCoroutine("IsStartingSquare", placingStartMouseOverColor);
         }
     }
 
     IEnumerator IsStartingSquare(Color targetColor) {
-        float initialFade = 0.2f;
-        float maxFade = 0.6f;
+        float initialFade = 0.30f;
+        float maxFade = 0.78f;
         float smoothness = 0.02f;
-        float duration = 2f;
+        float duration = 1f;
         float progress = initialFade;
         float increment = smoothness / duration;
 
@@ -64,7 +67,7 @@ public class Square : MonoBehaviour {
             if (isMouseOver) {
                 sprite.color = placingStartMouseOverColor;
             } else {
-                sprite.color = Color.Lerp(Color.white, targetColor, progress);
+                sprite.color = Color.Lerp(new Color(placingStartMouseOverColor.r, placingStartMouseOverColor.g, placingStartMouseOverColor.b, 0f), targetColor, progress);
             }
 
             if (progress > maxFade || progress < initialFade) {
@@ -76,7 +79,7 @@ public class Square : MonoBehaviour {
             yield return new WaitForSeconds(smoothness);
         }
 
-        sprite.color = Color.white;
+        sprite.color = defaultColor;
     }
 
     /**
@@ -84,6 +87,7 @@ public class Square : MonoBehaviour {
      */
     public void MouseEnter() {
         isMouseOver = true;
+        sprite.color = overingColor;
     }
 
     /**
@@ -91,6 +95,7 @@ public class Square : MonoBehaviour {
      */
     public void MouseLeave() {
         isMouseOver = false;
+        sprite.color = defaultColor;
     }
 
     /**

@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 114291179619601002}
   m_Layer: 0
   m_Name: StatusButton
-  m_TagString: Untagged
+  m_TagString: HUD
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 224361135426694898}
   m_Layer: 0
   m_Name: PlacingHUDRect
-  m_TagString: Untagged
+  m_TagString: HUD
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -203,7 +203,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1992849058947250
 GameObject:
   m_ObjectHideFlags: 1

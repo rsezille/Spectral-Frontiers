@@ -150,7 +150,6 @@ MonoBehaviour:
   vOffset: 0
   start: 0
   solid: 0
-  placingStartMouseOverColor: {r: 0.3, g: 0.3, b: 1, a: 1}
   isMouseOver: 0
   boardEntity: {fileID: 0}
 --- !u!212 &212707660983246688
@@ -168,7 +167,7 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 04fb81b83bf627d449f7f72b7df6dfc0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -189,7 +188,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 0eb78b9ce7c484a4e8315b5d711a7c90, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
