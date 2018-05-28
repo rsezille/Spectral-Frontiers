@@ -68,7 +68,8 @@ public class Board : MonoBehaviour {
     }
 
     public void loadMap(string map) {
-        boardSquares = new GameObject("BoardSquares").transform;
+        boardSquares = new GameObject("Squares").transform;
+        boardSquares.SetParent(this.transform);
 
         TextAsset jsonMap = Resources.Load("Maps/" + map) as TextAsset;
 
