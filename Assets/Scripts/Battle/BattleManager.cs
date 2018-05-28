@@ -12,8 +12,8 @@ public class BattleManager : MonoBehaviour {
     public enum BattleStep {
         Placing, Fight, Victory
     };
-    public enum TurnStep { // None during BattleSteps Placing & Victory ; Placing can be None or Status
-        None, Wait, Move, Attack, Skill, Enemy, Status
+    public enum TurnStep { // Placing: None or Status - Fight: None, Move, Attack, Skill, Enemy, Status - Victory: None
+        None, Move, Attack, Skill, Enemy, Status
     };
 
     public BattleStep currentBattleStep;
@@ -28,7 +28,9 @@ public class BattleManager : MonoBehaviour {
     // Characters
     public List<Character> placingAlliedChars;
     public int placingCharIndex;
-    public List<BoardChar> alliedBoardChars;
+    public List<BoardChar> playerBoardChars;
+    public List<BoardChar> enemyBoardChars;
+    public BoardChar currentBoardChar;
 
     // HUD
     public PlacingHUD placingHUD;
@@ -120,7 +122,7 @@ public class BattleManager : MonoBehaviour {
     }
 
     public void EnterBattleStepFight() {
-        if (alliedBoardChars.Count > 0) {
+        if (playerBoardChars.Count > 0) {
             if (placingAlliedChars[placingCharIndex].boardChar != null) {
                 placingAlliedChars[placingCharIndex].boardChar.outline.enabled = false;
             }
@@ -128,8 +130,12 @@ public class BattleManager : MonoBehaviour {
             currentBattleStep = BattleStep.Fight;
             placingHUD.gameObject.SetActive(false);
             fightHUD.gameObject.SetActive(true);
-            //NewAlliedTurn();
+            NewPlayerTurn();
         }
+    }
+
+    public void EnterBattleStepVictory() {
+        currentBattleStep = BattleStep.Victory;
     }
 
     public void EnterTurnStepStatusFromPlacing() {
@@ -141,7 +147,32 @@ public class BattleManager : MonoBehaviour {
         }
     }
 
+    /**
+     * Common to Placing, Fight & Victory steps
+     */
     public void EnterTurnStepNone() {
         currentTurnStep = TurnStep.None;
+
+        switch (currentBattleStep) {
+            case BattleStep.Placing:
+                placing.EnterTurnStepNone();
+                break;
+            case BattleStep.Fight:
+                fight.EnterTurnStepNone();
+                break;
+            case BattleStep.Victory:
+                victory.EnterTurnStepNone();
+                break;
+        }
+    }
+
+    public void NewPlayerTurn() {
+        currentBoardChar = playerBoardChars[0];
+
+        foreach (BoardChar bc in playerBoardChars) {
+            bc.NewTurn();
+        }
+
+        EnterTurnStepNone();
     }
 }

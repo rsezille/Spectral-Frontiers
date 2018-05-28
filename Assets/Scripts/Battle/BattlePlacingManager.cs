@@ -22,6 +22,9 @@ public class BattlePlacingManager {
         }
     }
 
+    // Called by BattleManager
+    public void EnterTurnStepNone() {}
+
     // Event
     public void OnEnterBattleStepPlacing() {
         // Create a temporary list with all available characters from the player
@@ -101,11 +104,11 @@ public class BattlePlacingManager {
             if (battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar != null) {
                 Object.Destroy(battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar.gameObject);
 
-                battleManager.alliedBoardChars.Remove(battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar);
+                battleManager.playerBoardChars.Remove(battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar);
                 battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar.SetSquare(null);
                 battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar.character.boardChar = null;
 
-                if (battleManager.alliedBoardChars.Count <= 0) {
+                if (battleManager.playerBoardChars.Count <= 0) {
                     battleManager.placingHUD.startBattleText.gameObject.SetActive(false);
                 }
             } else {
@@ -115,7 +118,7 @@ public class BattlePlacingManager {
     }
 
     public void RefreshStartBattleText() {
-        if (battleManager.alliedBoardChars.Count <= 0) {
+        if (battleManager.playerBoardChars.Count <= 0) {
             battleManager.placingHUD.startBattleText.gameObject.SetActive(false);
         } else {
             battleManager.placingHUD.startBattleText.gameObject.SetActive(true);
@@ -166,7 +169,7 @@ public class BattlePlacingManager {
                     bc.SetSquare(square);
 
                     bc.character.boardChar = bc;
-                    battleManager.alliedBoardChars.Add(bc);
+                    battleManager.playerBoardChars.Add(bc);
 
                     bc.transform.SetParent(battleManager.transform);
                     bc.outline.enabled = true;

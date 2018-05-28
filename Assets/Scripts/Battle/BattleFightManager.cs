@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class BattleFightManager {
+﻿public class BattleFightManager {
     private BattleManager battleManager; // Shortcut for BattleManager.instance
 
     public BattleFightManager() {
@@ -10,7 +8,24 @@ public class BattleFightManager {
     // Called by BattleManager
     public void Update() {}
 
+    // Called by BattleManager
+    public void EnterTurnStepNone() {
+        battleManager.battleCamera.SetPosition(battleManager.currentBoardChar.boardEntity.square, true);
+        battleManager.currentBoardChar.outline.enabled = true;
+    }
+
+    // Called by FightHUD
     public void Move() {
-        Debug.Log("Move!");
+        if (battleManager.currentTurnStep == BattleManager.TurnStep.Move) {
+            battleManager.EnterTurnStepNone();
+        } else {
+            if (battleManager.currentBoardChar.movable.CanMove()) {
+                EnterTurnStepMove();
+            }
+        }
+    }
+
+    private void EnterTurnStepMove() {
+
     }
 }
