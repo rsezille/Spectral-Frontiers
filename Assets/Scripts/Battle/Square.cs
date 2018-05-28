@@ -3,6 +3,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer), typeof(Collider2D), typeof(MouseReactive))]
 public class Square : MonoBehaviour {
+    private BattleManager battleManager;
     public SpriteRenderer sprite;
 
     // Positionning
@@ -25,9 +26,12 @@ public class Square : MonoBehaviour {
     public bool isMovementMarked = false;
 
     private void Awake() {
+        battleManager = BattleManager.instance;
+
         sprite = GetComponent<SpriteRenderer>();
 
-        BattleManager.instance.OnEnterPlacing += OnEnterPlacing;
+        battleManager.OnEnterPlacing += OnEnterPlacing;
+        battleManager.OnLeavingMove += OnLeavingMove;
     }
 
     // Must be called when the tiles GameObjects are created
@@ -52,6 +56,11 @@ public class Square : MonoBehaviour {
         if (start) {
             StartCoroutine("IsStartingSquare", placingStartColor);
         }
+    }
+
+    private void OnLeavingMove() {
+        isMovementMarked = false;
+        sprite.color = defaultColor;
     }
 
     IEnumerator IsStartingSquare(Color targetColor) {
@@ -87,6 +96,10 @@ public class Square : MonoBehaviour {
     public void MouseEnter() {
         isMouseOver = true;
         sprite.color = overingColor;
+
+        if (battleManager.currentTurnStep == BattleManager.TurnStep.Move && isMovementMarked) {
+            sprite.color = new Color(movementColor.r, movementColor.g + 0.2f, movementColor.b, movementColor.a);
+        }
     }
 
     /**
@@ -95,6 +108,10 @@ public class Square : MonoBehaviour {
     public void MouseLeave() {
         isMouseOver = false;
         sprite.color = defaultColor;
+
+        if (battleManager.currentTurnStep == BattleManager.TurnStep.Move && isMovementMarked) {
+            sprite.color = movementColor;
+        }
     }
 
     /**

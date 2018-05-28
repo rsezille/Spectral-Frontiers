@@ -40,6 +40,7 @@ public class BattleManager : MonoBehaviour {
     // Events
     public delegate void EnterStepEvent();
     public event EnterStepEvent OnEnterPlacing;
+    public event EnterStepEvent OnLeavingMove;
 
     // Dedicated managers for each BattleStep
     public BattlePlacingManager placing;
@@ -119,19 +120,27 @@ public class BattleManager : MonoBehaviour {
         }
     }
 
+    public void EventOnLeavingMove() {
+        if (OnLeavingMove != null) {
+            OnLeavingMove();
+        }
+    }
+
     /**
      * Common to Placing and Fight steps
      */
     public void EnterTurnStepStatus() {
         if (currentTurnStep != TurnStep.Status) {
+            TurnStep previousTurnStep = currentTurnStep;
+
             currentTurnStep = TurnStep.Status;
 
             switch (currentBattleStep) {
                 case BattleStep.Placing:
-                    placing.EnterTurnStepStatus();
+                    placing.EnterTurnStepStatus(previousTurnStep);
                     break;
                 case BattleStep.Fight:
-                    fight.EnterTurnStepStatus();
+                    fight.EnterTurnStepStatus(previousTurnStep);
                     break;
             }
         }
@@ -141,18 +150,22 @@ public class BattleManager : MonoBehaviour {
      * Common to Placing, Fight and Victory steps
      */
     public void EnterTurnStepNone() {
-        currentTurnStep = TurnStep.None;
+        if (currentTurnStep != TurnStep.None) {
+            TurnStep previousTurnStep = currentTurnStep;
 
-        switch (currentBattleStep) {
-            case BattleStep.Placing:
-                placing.EnterTurnStepNone();
-                break;
-            case BattleStep.Fight:
-                fight.EnterTurnStepNone();
-                break;
-            case BattleStep.Victory:
-                victory.EnterTurnStepNone();
-                break;
+            currentTurnStep = TurnStep.None;
+
+            switch (currentBattleStep) {
+                case BattleStep.Placing:
+                    placing.EnterTurnStepNone(previousTurnStep);
+                    break;
+                case BattleStep.Fight:
+                    fight.EnterTurnStepNone(previousTurnStep);
+                    break;
+                case BattleStep.Victory:
+                    victory.EnterTurnStepNone(previousTurnStep);
+                    break;
+            }
         }
     }
 

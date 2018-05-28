@@ -11,13 +11,17 @@ public class BattleFightManager {
     public void Update() {}
 
     // Called by BattleManager
-    public void EnterTurnStepNone() {
+    public void EnterTurnStepNone(BattleManager.TurnStep previousTurnStep) {
+        if (previousTurnStep == BattleManager.TurnStep.Move) {
+            battleManager.EventOnLeavingMove();
+        }
+
         battleManager.battleCamera.SetPosition(battleManager.currentBoardChar.boardEntity.square, true);
         battleManager.currentBoardChar.outline.enabled = true;
     }
 
     // Called by BattleManager
-    public void EnterTurnStepStatus() {}
+    public void EnterTurnStepStatus(BattleManager.TurnStep previousTurnStep) {}
 
     // Called by FightHUD
     public void Move() {
