@@ -7,4 +7,5 @@
 
     public const string Next = "input.next";
     public const string Previous = "input.previous";
+    public const string SpecialKey1 = "input.special_key_1";
 }

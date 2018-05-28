@@ -17,6 +17,8 @@ public class BattlePlacingManager {
             PreviousPlacingChar();
         } else if (Input.GetButtonDown(InputBinds.Next)) {
             NextPlacingChar();
+        } else if (Input.GetButtonDown(InputBinds.SpecialKey1)) {
+            battleManager.EnterBattleStepFight();
         }
     }
 

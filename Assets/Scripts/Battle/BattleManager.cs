@@ -117,6 +117,19 @@ public class BattleManager : MonoBehaviour {
             OnEnterBattleStepPlacing();
     }
 
+    public void EnterBattleStepFight() {
+        if (alliedBoardChars.Count > 0) {
+            if (placingAlliedChars[placingCharIndex].boardChar != null) {
+                placingAlliedChars[placingCharIndex].boardChar.outline.enabled = false;
+            }
+
+            currentBattleStep = BattleStep.Fight;
+            placingHUD.gameObject.SetActive(false);
+            //fightHUD.gameObject.SetActive(true);
+            //NewAlliedTurn();
+        }
+    }
+
     public void EnterTurnStepStatusFromPlacing() {
         if (currentTurnStep != TurnStep.Status) {
             currentTurnStep = TurnStep.Status;
