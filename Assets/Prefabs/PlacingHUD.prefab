@@ -40,6 +40,7 @@ GameObject:
   - component: {fileID: 222201512649234418}
   - component: {fileID: 114807357268640470}
   - component: {fileID: 114291179619601002}
+  - component: {fileID: 114786552696407756}
   m_Layer: 0
   m_Name: StatusButton
   m_TagString: HUD
@@ -203,7 +204,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1992849058947250
 GameObject:
   m_ObjectHideFlags: 1
@@ -555,6 +556,17 @@ MonoBehaviour:
   removeButton: {fileID: 1701947058419180}
   statusButton: {fileID: 1388497802460816}
   placingHUDRect: {fileID: 224361135426694898}
+--- !u!114 &114786552696407756
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1388497802460816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de8a78c2993d17342b9d35f5b879985a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114807357268640470
 MonoBehaviour:
   m_ObjectHideFlags: 1
