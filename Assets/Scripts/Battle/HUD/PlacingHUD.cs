@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class PlacingHUD : MonoBehaviour {
@@ -14,8 +15,8 @@ public class PlacingHUD : MonoBehaviour {
     public RectTransform placingHUDRect;
 
     private void Start() {
-        removeButton.GetComponent<Button>().onClick.AddListener(BattleManager.instance.placing.RemoveCurrentMapChar);
-        statusButton.GetComponent<Button>().onClick.AddListener(BattleManager.instance.EnterTurnStepStatus);
+        removeButton.AddListener(EventTriggerType.PointerClick, BattleManager.instance.placing.RemoveCurrentMapChar);
+        statusButton.AddListener(EventTriggerType.PointerClick, BattleManager.instance.EnterTurnStepStatus);
     }
 
     private void Update() {

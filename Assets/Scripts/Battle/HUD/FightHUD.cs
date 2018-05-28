@@ -6,6 +6,6 @@ public class FightHUD : MonoBehaviour {
     public GameObject moveButton;
 
     private void Start() {
-        moveButton.AddEventTriggerAndListener(EventTriggerType.PointerClick, BattleManager.instance.fight.Move);
+        moveButton.AddListener(EventTriggerType.PointerClick, BattleManager.instance.fight.Move);
     }
 }
