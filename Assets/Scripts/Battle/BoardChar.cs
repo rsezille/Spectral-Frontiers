@@ -18,11 +18,15 @@ public class BoardChar : MonoBehaviour {
     public BoardEntity boardEntity;
     public Side side;
     public SpriteGlowEffect outline;
+    public Movable movable;
+    public Actionable actionable;
 
     private void Awake() {
         boardEntity = GetComponent<BoardEntity>();
         side = GetComponent<Side>();
         outline = GetComponent<SpriteGlowEffect>();
+        movable = GetComponent<Movable>();
+        actionable = GetComponent<Actionable>();
 
         battleManager = BattleManager.instance;
 
@@ -86,5 +90,11 @@ public class BoardChar : MonoBehaviour {
         foreach (Canvas canvas in HUDs) {
             canvas.sortingOrder = sortingOrder;
         }
+    }
+
+    public void NewTurn() {
+        actionable.actionTokens = character.actionTokens;
+        movable.movementTokens = character.movementTokens;
+        movable.movementPoints = character.movementPoints;
     }
 }
