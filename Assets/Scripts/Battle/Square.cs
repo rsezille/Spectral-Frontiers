@@ -15,11 +15,14 @@ public class Square : MonoBehaviour {
     // Colors
     public static Color defaultColor = new Color(1f, 1f, 1f, 0f);
     public static Color overingColor = new Color(0f, 0f, 0f, 0.2f);
-    public static Color placingStartMouseOverColor = new Color(0.14f, 0.36f, 0.92f, 0.62f);
+    public static Color placingStartColor = new Color(0.14f, 0.36f, 0.92f, 0.62f);
+    public static Color movementColor = new Color(0.12f, 0.57f, 0.2f, 0.63f);
 
     public bool isMouseOver = false;
 
     public BoardEntity boardEntity;
+
+    public bool isMovementMarked = false;
 
     private void Awake() {
         sprite = GetComponent<SpriteRenderer>();
@@ -47,7 +50,7 @@ public class Square : MonoBehaviour {
 
     private void OnEnterPlacing() {
         if (start) {
-            StartCoroutine("IsStartingSquare", placingStartMouseOverColor);
+            StartCoroutine("IsStartingSquare", placingStartColor);
         }
     }
 
@@ -61,9 +64,9 @@ public class Square : MonoBehaviour {
 
         while (BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Placing) {
             if (isMouseOver) {
-                sprite.color = placingStartMouseOverColor;
+                sprite.color = placingStartColor;
             } else {
-                sprite.color = Color.Lerp(new Color(placingStartMouseOverColor.r, placingStartMouseOverColor.g, placingStartMouseOverColor.b, 0f), targetColor, progress);
+                sprite.color = Color.Lerp(new Color(placingStartColor.r, placingStartColor.g, placingStartColor.b, 0f), targetColor, progress);
             }
 
             if (progress > maxFade || progress < initialFade) {
@@ -106,5 +109,11 @@ public class Square : MonoBehaviour {
 
                 break;
         }
+    }
+
+    public void MarkForMovement() {
+        isMovementMarked = true;
+
+        sprite.color = movementColor;
     }
 }

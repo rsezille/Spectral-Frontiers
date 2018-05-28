@@ -11,8 +11,12 @@ public class Board : MonoBehaviour {
 
     private MouseReactive previousMouseEntity = null; // Used to detect a mouse leave
 
-    public Transform boardSquares;
+    public Transform boardSquaresTransform;
     public Square[,] squares;
+
+    public string mapName;
+    private int width;
+    private int height;
 
     /**
      * Compute the current mouse position and dispatch events to the first object hit
@@ -68,15 +72,18 @@ public class Board : MonoBehaviour {
     }
 
     public void loadMap(string map) {
-        boardSquares = new GameObject("Squares").transform;
-        boardSquares.SetParent(this.transform);
+        boardSquaresTransform = new GameObject("Squares").transform;
+        boardSquaresTransform.SetParent(this.transform);
 
         TextAsset jsonMap = Resources.Load("Maps/" + map) as TextAsset;
 
         if (jsonMap != null) {
             rawMap = JsonUtility.FromJson<RawMap>(jsonMap.text);
+            mapName = rawMap.name;
+            width = rawMap.width;
+            height = rawMap.height;
 
-            squares = new Square[rawMap.width, rawMap.height];
+            squares = new Square[width, height];
 
             foreach (RawSquare rawSquare in rawMap.squares) {
                 float x = rawSquare.x_map - rawSquare.y_map; //TODO: test with ymap - xmap
@@ -90,12 +97,23 @@ public class Board : MonoBehaviour {
 
                     Square square = Instantiate(tile.GetComponent<Square>(), new Vector3(x, y, 0f), Quaternion.identity) as Square;
                     squares[rawSquare.x_map, rawSquare.y_map] = square;
-                    square.Init(rawSquare, rawMap.width);
-                    square.transform.SetParent(boardSquares);
+                    square.Init(rawSquare, width);
+                    square.transform.SetParent(boardSquaresTransform);
                 }
             }
         } else {
             Debug.LogError("Map not found! " + map);
         }
+    }
+
+    /**
+     * Return the square according to x and y coordinates ; null if coordinates are outside the board
+     */
+    public Square GetSquare(int x, int y) {
+        if (x > width - 1 || x < 0 || y > height - 1 || y < 0) {
+            return null;
+        }
+
+        return squares[x, y];
     }
 }
