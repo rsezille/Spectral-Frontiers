@@ -13,6 +13,7 @@ public class Board : MonoBehaviour {
 
     public Transform boardSquaresTransform;
     public Square[,] squares;
+    public PathFinder pathFinder;
 
     public string mapName;
     public int width { get; private set; }
@@ -101,6 +102,8 @@ public class Board : MonoBehaviour {
                     square.transform.SetParent(boardSquaresTransform);
                 }
             }
+
+            pathFinder = new PathFinder(this, this.width + this.height);
         } else {
             Debug.LogError("Map not found! " + map);
         }

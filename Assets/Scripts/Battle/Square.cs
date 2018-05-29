@@ -118,10 +118,25 @@ public class Square : MonoBehaviour {
      * Triggered by Board
      */
     public void Click() {
-        switch (BattleManager.instance.currentBattleStep) {
+        switch (battleManager.currentBattleStep) {
             case BattleManager.BattleStep.Placing:
-                if (start && boardEntity == null) {
+                if (start && IsNotBlocking()) {
                     BattleManager.instance.placing.PlaceMapChar(this);
+                }
+
+                break;
+            case BattleManager.BattleStep.Fight:
+                if (isMovementMarked && battleManager.currentTurnStep == BattleManager.TurnStep.Move) {
+                    Path p = battleManager.board.pathFinder.FindPath(
+                        battleManager.currentBoardChar.boardEntity.square.x,
+                        battleManager.currentBoardChar.boardEntity.square.y,
+                        this.x,
+                        this.y
+                    );
+
+                    if (p != null) {
+                        battleManager.currentBoardChar.Move(p, true);
+                    }
                 }
 
                 break;
@@ -132,5 +147,9 @@ public class Square : MonoBehaviour {
         isMovementMarked = true;
 
         sprite.color = movementColor;
+    }
+
+    public bool IsNotBlocking() {
+        return boardEntity == null;
     }
 }

@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
+using System.Collections;
 using SpriteGlow;
 
 /**
@@ -96,5 +96,68 @@ public class BoardChar : MonoBehaviour {
         actionable.actionTokens = character.actionTokens;
         movable.movementTokens = character.movementTokens;
         movable.movementPoints = character.movementPoints;
+    }
+
+    public void Move(Path p, bool cameraFollow = false) {
+        if (movable.CanMove()) {
+            StartCoroutine(MoveThroughPath(p, cameraFollow));
+            movable.movementTokens--;
+        }
+    }
+
+    IEnumerator MoveThroughPath(Path path, bool cameraFollow = false) {
+        if (cameraFollow) {
+            //battleManager.battleCamera.forceMoving = true;
+        }
+
+        //isMoving = true;
+        int current = 0;
+        Vector3 initialPos = this.transform.position;
+        float frac = 0f;
+
+        if (battleManager.currentTurnStep != BattleManager.TurnStep.Enemy) {
+            //battleManager.fightHUD.SetFightMenuActive(false);
+        }
+
+        while (this.transform.position != path.GetStep(path.steps.Count - 1).transform.position
+               && movable.movementPoints > 0
+               && path.GetStep(current).IsNotBlocking()) {
+            this.transform.position = Vector3.Lerp(initialPos, path.GetStep(current).transform.position, frac);
+
+            if (cameraFollow) {
+                /*battleManager.battleCamera.SetTarget(new Vector3(
+                    this.transform.position.x,
+                    this.transform.position.y,
+                    battleManager.battleCamera.transform.position.z));*/
+                //battleManager.battleCamera.isAutoMoving = true;
+            }
+
+            if ((frac >= 0.25 && (path.GetStep(current).x - boardEntity.square.x > 0 || path.GetStep(current).y - boardEntity.square.y > 0)) ||
+                    (frac >= 0.75 && (path.GetStep(current).x - boardEntity.square.x < 0 || path.GetStep(current).y - boardEntity.square.y < 0))) {
+                SetSortingOrder(path.GetStep(current).sprite.sortingOrder + 1);
+            }
+
+            if (frac >= 1) {
+                this.SetSquare(path.GetStep(current));
+                initialPos = this.transform.position;
+                current++;
+                frac = 0f;
+                movable.movementPoints--;
+            }
+
+            frac += 1f * Time.deltaTime;
+            yield return null;
+        }
+
+        if (cameraFollow) {
+            //BattleManager.cam.forceMoving = false;
+        }
+
+        //isMoving = false;
+        if (battleManager.currentTurnStep != BattleManager.TurnStep.Enemy) {
+            //bm.fightHUD.SetFightMenuActive(true);
+
+            battleManager.EnterTurnStepNone();
+        }
     }
 }
