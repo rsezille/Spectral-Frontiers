@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using SpriteGlow;
+using DG.Tweening;
 
 /**
  * Represent a placed character (ally or enemy) on the battlefield
@@ -15,11 +16,14 @@ public class BoardChar : MonoBehaviour {
 
     public BattleManager battleManager; // Shortcut for BattleManager.instance
 
-    public BoardEntity boardEntity;
+    // Components
+    private BoardEntity boardEntity;
     public Side side;
     public SpriteGlowEffect outline;
     public Movable movable;
     public Actionable actionable;
+
+    public bool isMoving = false;
 
     private void Awake() {
         boardEntity = GetComponent<BoardEntity>();
@@ -67,7 +71,11 @@ public class BoardChar : MonoBehaviour {
             }
         }
     }
-    
+
+    public Square GetSquare() {
+        return boardEntity.square;
+    }
+
     public void SetSquare(Square targetedSquare) {
         if (boardEntity.square != null) {
             boardEntity.square.boardEntity = null;
@@ -100,60 +108,44 @@ public class BoardChar : MonoBehaviour {
 
     public void Move(Path p, bool cameraFollow = false) {
         if (movable.CanMove()) {
-            StartCoroutine(MoveThroughPath(p, cameraFollow));
+            StartCoroutine(MoveThroughPath(p));
             movable.movementTokens--;
         }
     }
 
-    IEnumerator MoveThroughPath(Path path, bool cameraFollow = false) {
-        if (cameraFollow) {
-            //battleManager.battleCamera.forceMoving = true;
-        }
+    IEnumerator MoveThroughPath(Path path) {
+        isMoving = true;
+        float duration = 0.5f;
 
-        //isMoving = true;
-        int current = 0;
-        Vector3 initialPos = this.transform.position;
-        float frac = 0f;
+        Tween cameraAnimation = battleManager.battleCamera.transform.DOMove(new Vector3(transform.position.x, transform.position.y, battleManager.battleCamera.transform.position.z), 0.5f);
+        yield return cameraAnimation.WaitForCompletion();
 
-        if (battleManager.currentTurnStep != BattleManager.TurnStep.Enemy) {
-            //battleManager.fightHUD.SetFightMenuActive(false);
-        }
+        for (int i = 0; i < path.steps.Count; i++) {
+            Tween characterAnimation = this.transform.DOMove(path.steps[i].transform.position, duration).SetEase(Ease.Linear);
+            cameraAnimation = battleManager.battleCamera.transform.DOMove(new Vector3(
+                path.steps[i].transform.position.x,
+                path.steps[i].transform.position.y,
+                battleManager.battleCamera.transform.position.z), duration).SetEase(Ease.Linear);
 
-        while (this.transform.position != path.GetStep(path.steps.Count - 1).transform.position
-               && movable.movementPoints > 0
-               && path.GetStep(current).IsNotBlocking()) {
-            this.transform.position = Vector3.Lerp(initialPos, path.GetStep(current).transform.position, frac);
+            yield return characterAnimation.WaitForPosition(duration / 4);
 
-            if (cameraFollow) {
-                /*battleManager.battleCamera.SetTarget(new Vector3(
-                    this.transform.position.x,
-                    this.transform.position.y,
-                    battleManager.battleCamera.transform.position.z));*/
-                //battleManager.battleCamera.isAutoMoving = true;
+            if (path.steps[i].x - boardEntity.square.x > 0 || path.steps[i].y - boardEntity.square.y > 0) {
+                SetSortingOrder(path.steps[i].sprite.sortingOrder + 1);
             }
 
-            if ((frac >= 0.25 && (path.GetStep(current).x - boardEntity.square.x > 0 || path.GetStep(current).y - boardEntity.square.y > 0)) ||
-                    (frac >= 0.75 && (path.GetStep(current).x - boardEntity.square.x < 0 || path.GetStep(current).y - boardEntity.square.y < 0))) {
-                SetSortingOrder(path.GetStep(current).sprite.sortingOrder + 1);
+            yield return characterAnimation.WaitForPosition(duration * 3 / 4);
+
+            if (path.steps[i].x - boardEntity.square.x < 0 || path.steps[i].y - boardEntity.square.y < 0) {
+                SetSortingOrder(path.steps[i].sprite.sortingOrder + 1);
             }
 
-            if (frac >= 1) {
-                this.SetSquare(path.GetStep(current));
-                initialPos = this.transform.position;
-                current++;
-                frac = 0f;
-                movable.movementPoints--;
-            }
-
-            frac += 1f * Time.deltaTime;
-            yield return null;
+            yield return characterAnimation.WaitForCompletion();
         }
 
-        if (cameraFollow) {
-            //BattleManager.cam.forceMoving = false;
-        }
+        SetSquare(path.steps[path.steps.Count - 1]);
 
-        //isMoving = false;
+        isMoving = false;
+
         if (battleManager.currentTurnStep != BattleManager.TurnStep.Enemy) {
             //bm.fightHUD.SetFightMenuActive(true);
 

@@ -16,7 +16,7 @@ public class BattleFightManager {
             battleManager.EventOnLeavingMove();
         }
 
-        battleManager.battleCamera.SetPosition(battleManager.currentBoardChar.boardEntity.square, true);
+        battleManager.battleCamera.SetPosition(battleManager.currentBoardChar.GetSquare(), true);
         battleManager.currentBoardChar.outline.enabled = true;
     }
 
@@ -51,7 +51,7 @@ public class BattleFightManager {
         battleManager.currentTurnStep = BattleManager.TurnStep.Move;
 
         List<Square> ts = new List<Square>();
-        ts.Add(battleManager.currentBoardChar.boardEntity.square);
+        ts.Add(battleManager.currentBoardChar.GetSquare());
 
         List<Square> ts2 = new List<Square>();
 

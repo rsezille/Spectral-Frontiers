@@ -35,11 +35,7 @@ public class BattleCamera : MonoBehaviour {
         battleCamera.orthographicSize = Screen.height / (Globals.TileHeight * 2f);
     }
 
-    public void SetPosition(Square square) {
-        SetPosition(square, false);
-    }
-
-    public void SetPosition(Square square, bool smooth) {
+    public void SetPosition(Square square, bool smooth = false, float duration = 1f) {
         Vector3 target = new Vector3(
             square.x - square.y,
             -(square.y + square.x) / 2f + square.vOffset / (square.sprite.bounds.size.y * Globals.TileHeight / 2),
@@ -49,7 +45,7 @@ public class BattleCamera : MonoBehaviour {
         if (!smooth) {
             transform.position = target;
         } else {
-            transform.DOMove(target, 1).SetEase(Ease.OutCubic);
+            transform.DOMove(target, duration).SetEase(Ease.OutCubic);
         }
     }
 }

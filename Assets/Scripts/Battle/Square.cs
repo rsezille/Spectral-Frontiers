@@ -128,8 +128,8 @@ public class Square : MonoBehaviour {
             case BattleManager.BattleStep.Fight:
                 if (isMovementMarked && battleManager.currentTurnStep == BattleManager.TurnStep.Move) {
                     Path p = battleManager.board.pathFinder.FindPath(
-                        battleManager.currentBoardChar.boardEntity.square.x,
-                        battleManager.currentBoardChar.boardEntity.square.y,
+                        battleManager.currentBoardChar.GetSquare().x,
+                        battleManager.currentBoardChar.GetSquare().y,
                         this.x,
                         this.y
                     );
