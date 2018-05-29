@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 114783227314841444}
   m_Layer: 0
   m_Name: Attack
-  m_TagString: Untagged
+  m_TagString: HUD
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -216,9 +216,10 @@ GameObject:
   - component: {fileID: 224822547830529886}
   - component: {fileID: 222733853401664128}
   - component: {fileID: 114372266554200118}
+  - component: {fileID: 114180460340090102}
   m_Layer: 0
   m_Name: SelectedSquare
-  m_TagString: Untagged
+  m_TagString: HUD
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -237,7 +238,7 @@ GameObject:
   - component: {fileID: 114746314848725644}
   m_Layer: 0
   m_Name: Wait
-  m_TagString: Untagged
+  m_TagString: HUD
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -256,7 +257,7 @@ GameObject:
   - component: {fileID: 114828042529617228}
   m_Layer: 0
   m_Name: Item
-  m_TagString: Untagged
+  m_TagString: HUD
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -275,7 +276,7 @@ GameObject:
   - component: {fileID: 114493610290587798}
   m_Layer: 0
   m_Name: EndTurn
-  m_TagString: Untagged
+  m_TagString: HUD
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -309,9 +310,10 @@ GameObject:
   - component: {fileID: 224502134963922086}
   - component: {fileID: 222569196489548662}
   - component: {fileID: 114879176543020528}
+  - component: {fileID: 114673095152986014}
   m_Layer: 0
   m_Name: FightMenu
-  m_TagString: Untagged
+  m_TagString: HUD
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -348,7 +350,7 @@ GameObject:
   - component: {fileID: 114488160509212112}
   m_Layer: 0
   m_Name: Status
-  m_TagString: Untagged
+  m_TagString: HUD
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -367,7 +369,7 @@ GameObject:
   - component: {fileID: 114408525015464348}
   m_Layer: 0
   m_Name: Action
-  m_TagString: Untagged
+  m_TagString: HUD
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -399,9 +401,10 @@ GameObject:
   - component: {fileID: 224905887740427524}
   - component: {fileID: 222106202361105410}
   - component: {fileID: 114045682679486784}
+  - component: {fileID: 114227520187293484}
   m_Layer: 0
   m_Name: CurrentSquare
-  m_TagString: Untagged
+  m_TagString: HUD
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -420,7 +423,7 @@ GameObject:
   - component: {fileID: 114491115896228976}
   m_Layer: 0
   m_Name: Skill
-  m_TagString: Untagged
+  m_TagString: HUD
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -714,6 +717,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a0ee8ea2e7f7f143976e407dd70b08c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114180460340090102
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1439655669205694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de8a78c2993d17342b9d35f5b879985a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114209868735312648
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -768,6 +782,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114227520187293484
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1944365169321288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de8a78c2993d17342b9d35f5b879985a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114236853014211502
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1323,6 +1348,17 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: battle.hud.menu.move
+--- !u!114 &114673095152986014
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1633489316019972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de8a78c2993d17342b9d35f5b879985a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114717174816436682
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -8,4 +8,11 @@ public class FightHUD : MonoBehaviour {
     private void Start() {
         moveButton.AddListener(EventTriggerType.PointerClick, BattleManager.instance.fight.Move);
     }
+
+    // Compute all checks on buttons availability
+    public void Refresh() {
+        BoardChar boardChar = BattleManager.instance.currentBoardChar;
+
+        moveButton.GetComponent<Button>().interactable = boardChar.movable.movementTokens > 0;
+    }
 }

@@ -16,6 +16,8 @@ public class BattleFightManager {
             battleManager.EventOnLeavingMove();
         }
 
+        battleManager.fightHUD.Refresh();
+
         battleManager.battleCamera.SetPosition(battleManager.currentBoardChar.GetSquare(), true);
         battleManager.currentBoardChar.outline.enabled = true;
     }
