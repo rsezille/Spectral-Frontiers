@@ -15,8 +15,8 @@ public class Board : MonoBehaviour {
     public Square[,] squares;
 
     public string mapName;
-    private int width;
-    private int height;
+    public int width { get; private set; }
+    public int height { get; private set; }
 
     /**
      * Compute the current mouse position and dispatch events to the first object hit
