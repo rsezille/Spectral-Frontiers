@@ -62,22 +62,22 @@ public class BattleFightManager {
                 Square west = battleManager.board.GetSquare(t.x - 1, t.y);
                 Square east = battleManager.board.GetSquare(t.x + 1, t.y);
 
-                if (north != null && !north.isMovementMarked && north.boardEntity == null) {
+                if (north != null && !north.isMovementMarked && north.IsNotBlocking()) {
                     north.MarkForMovement();
                     ts2.Add(north);
                 }
 
-                if (south != null && !south.isMovementMarked && south.boardEntity == null) {
+                if (south != null && !south.isMovementMarked && south.IsNotBlocking()) {
                     south.MarkForMovement();
                     ts2.Add(south);
                 }
 
-                if (west != null && !west.isMovementMarked && west.boardEntity == null) {
+                if (west != null && !west.isMovementMarked && west.IsNotBlocking()) {
                     west.MarkForMovement();
                     ts2.Add(west);
                 }
 
-                if (east != null && !east.isMovementMarked && east.boardEntity == null) {
+                if (east != null && !east.isMovementMarked && east.IsNotBlocking()) {
                     east.MarkForMovement();
                     ts2.Add(east);
                 }

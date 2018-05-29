@@ -167,7 +167,7 @@ public class BattlePlacingManager {
      */
     public void PlaceMapChar(Square square) {
         if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing) {
-            if (square.boardEntity == null) {
+            if (square.IsNotBlocking()) {
                 if (battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar != null) {
                     battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar.SetSquare(square);
                     battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar.outline.enabled = true;
