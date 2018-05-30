@@ -87,7 +87,7 @@ public class PlacingHUD : MonoBehaviour {
             isGoingEnabled = false;
             startBattleText.gameObject.SetActive(false);
             
-            placingHUDRect.DOAnchorPos3D(new Vector3(0f, -250f, 0f), speed).SetEase(Ease.InCubic).OnComplete(DisableGameObject);
+            placingHUDRect.DOAnchorPos3D(new Vector3(0f, -250f, 0f), speed).SetEase(Ease.OutCubic).OnComplete(DisableGameObject);
         }
     }
 

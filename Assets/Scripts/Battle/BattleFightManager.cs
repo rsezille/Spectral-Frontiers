@@ -43,8 +43,8 @@ public class BattleFightManager {
             }
 
             battleManager.currentBattleStep = BattleManager.BattleStep.Fight;
-            battleManager.placingHUD.gameObject.SetActive(false);
-            battleManager.fightHUD.gameObject.SetActive(true);
+            battleManager.placingHUD.SetActiveWithAnimation(false);
+            battleManager.fightHUD.SetActiveWithAnimation(true);
             battleManager.NewPlayerTurn();
         }
     }
