@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using DG.Tweening;
+using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class StatusHUD : MonoBehaviour {
@@ -14,11 +16,19 @@ public class StatusHUD : MonoBehaviour {
     public GameObject quitButton;
 
     private float rotationSpeed = 5f;
+    private float animationSpeed = 0.6f;
     private bool isGoingDisabled = false; // True during the disabling animation
+    private bool isGoingEnabled = false;
+
+    public BattleManager battleManager;
+
+    private void Awake() {
+        battleManager = BattleManager.instance;
+    }
 
     private void Start() {
-        backButton.GetComponent<Button>().onClick.AddListener(Hide);
-        quitButton.GetComponent<Button>().onClick.AddListener(Quit);
+        backButton.AddListener(EventTriggerType.PointerClick, Hide);
+        quitButton.AddListener(EventTriggerType.PointerClick, Quit);
     }
 
     public void Show(BoardChar bc) {
@@ -28,7 +38,7 @@ public class StatusHUD : MonoBehaviour {
 
     public void Show(Character c) {
         character = c;
-
+        
         // When switching characters but staying on the status HUD (can't switch during disabling animation)
         if (gameObject.activeSelf && !isGoingDisabled) {
             StopAllCoroutines();
@@ -39,64 +49,46 @@ public class StatusHUD : MonoBehaviour {
                 speed: rotationSpeed
             ));
         } else { // When activating the status HUD
-            StopAllCoroutines();
-
+            isGoingEnabled = true;
             isGoingDisabled = false; // In case we open/close the HUD too fast
 
             gameObject.SetActive(true);
             UpdateText();
 
-            StartCoroutine(GenericCoroutine.ToggleItem(
-                blockMiddle,
-                new Vector3(blockMiddle.anchoredPosition3D.x, -1000f, blockMiddle.anchoredPosition3D.z),
-                new Vector3(blockMiddle.anchoredPosition3D.x, 0f, blockMiddle.anchoredPosition3D.z)
-            ));
-            StartCoroutine(GenericCoroutine.ToggleItem(
-                blockTop,
-                new Vector3(blockTop.anchoredPosition3D.x, blockTop.sizeDelta.y, blockTop.anchoredPosition3D.z),
-                new Vector3(blockTop.anchoredPosition3D.x, 0f, blockTop.anchoredPosition3D.z)
-            ));
-            StartCoroutine(GenericCoroutine.ToggleItem(
-                blockBottom,
-                new Vector3(blockBottom.anchoredPosition3D.x, -blockBottom.sizeDelta.y, blockBottom.anchoredPosition3D.z),
-                new Vector3(blockBottom.anchoredPosition3D.x, 0f, blockBottom.anchoredPosition3D.z)
-            ));
+            blockMiddle.anchoredPosition3D = new Vector3(blockMiddle.anchoredPosition3D.x, -1000f, blockMiddle.anchoredPosition3D.z);
+            blockMiddle.DOAnchorPos3D(new Vector3(blockMiddle.anchoredPosition3D.x, 0f, blockMiddle.anchoredPosition3D.z), animationSpeed).SetEase(Ease.OutCubic);
+
+            blockTop.anchoredPosition3D = new Vector3(blockTop.anchoredPosition3D.x, blockTop.sizeDelta.y, blockTop.anchoredPosition3D.z);
+            blockTop.DOAnchorPos3D(new Vector3(blockTop.anchoredPosition3D.x, 0f, blockTop.anchoredPosition3D.z), animationSpeed).SetEase(Ease.OutCubic);
+
+            blockBottom.anchoredPosition3D = new Vector3(blockBottom.anchoredPosition3D.x, -blockBottom.sizeDelta.y, blockBottom.anchoredPosition3D.z);
+            blockBottom.DOAnchorPos3D(new Vector3(blockBottom.anchoredPosition3D.x, 0f, blockBottom.anchoredPosition3D.z), animationSpeed).SetEase(Ease.OutCubic);
         }
     }
 
     public void Hide() {
         boardChar = null;
         character = null;
+        
+        isGoingEnabled = false;
+        isGoingDisabled = true;
 
-        if (gameObject.activeSelf && !isGoingDisabled) {
-            isGoingDisabled = true;
-            StopAllCoroutines();
-            StartCoroutine(GenericCoroutine.ToggleItem(
-                blockMiddle,
-                new Vector3(blockMiddle.anchoredPosition3D.x, 0f, blockMiddle.anchoredPosition3D.z),
-                new Vector3(blockMiddle.anchoredPosition3D.x, -1000f, blockMiddle.anchoredPosition3D.z),
-                DisableGameObject
-            ));
-            StartCoroutine(GenericCoroutine.ToggleItem(
-                blockTop,
-                new Vector3(blockTop.anchoredPosition3D.x, 0f, blockTop.anchoredPosition3D.z),
-                new Vector3(blockTop.anchoredPosition3D.x, blockTop.sizeDelta.y + 10f, blockTop.anchoredPosition3D.z),
-                DisableGameObject
-            ));
-            StartCoroutine(GenericCoroutine.ToggleItem(
-                blockBottom,
-                new Vector3(blockBottom.anchoredPosition3D.x, 0f, blockBottom.anchoredPosition3D.z),
-                new Vector3(blockBottom.anchoredPosition3D.x, -blockBottom.sizeDelta.y, blockBottom.anchoredPosition3D.z),
-                DisableGameObject
-            ));
+        blockMiddle.anchoredPosition3D = new Vector3(blockMiddle.anchoredPosition3D.x, 0f, blockMiddle.anchoredPosition3D.z);
+        blockMiddle.DOAnchorPos3D(new Vector3(blockMiddle.anchoredPosition3D.x, -1000f, blockMiddle.anchoredPosition3D.z), animationSpeed).SetEase(Ease.OutCubic);
 
-            if (BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Fight) {
-                //BattleManager.instance.fightHUD.SetActive(true);
-                //BattleManager.instance.EnterTurnStepWait();
-            } else if (BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Placing) {
-                BattleManager.instance.placingHUD.SetActive(true);
-                BattleManager.instance.EnterTurnStepNone();
-            }
+        blockTop.anchoredPosition3D = new Vector3(blockTop.anchoredPosition3D.x, 0f, blockTop.anchoredPosition3D.z);
+        blockTop.DOAnchorPos3D(new Vector3(blockTop.anchoredPosition3D.x, blockTop.sizeDelta.y + 10f, blockTop.anchoredPosition3D.z), animationSpeed).SetEase(Ease.OutCubic);
+
+        blockBottom.anchoredPosition3D = new Vector3(blockBottom.anchoredPosition3D.x, 0f, blockBottom.anchoredPosition3D.z);
+        blockBottom.DOAnchorPos3D(new Vector3(blockBottom.anchoredPosition3D.x, -blockBottom.sizeDelta.y, blockBottom.anchoredPosition3D.z), animationSpeed).SetEase(Ease.OutCubic)
+            .OnComplete(DisableGameObject);
+
+        if (BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Fight) {
+            //BattleManager.instance.fightHUD.SetActive(true);
+            //BattleManager.instance.EnterTurnStepWait();
+        } else if (BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Placing) {
+            BattleManager.instance.placingHUD.SetActiveWithAnimation(true);
+            BattleManager.instance.EnterTurnStepNone();
         }
     }
 
@@ -121,6 +113,8 @@ public class StatusHUD : MonoBehaviour {
     }
 
     void DisableGameObject() {
+        if (isGoingEnabled) return;
+
         isGoingDisabled = false;
         gameObject.SetActive(false);
     }

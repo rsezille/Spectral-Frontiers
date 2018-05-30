@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using DG.Tweening;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -14,32 +15,40 @@ public class PlacingHUD : MonoBehaviour {
 
     public RectTransform placingHUDRect;
 
+    private bool isGoingEnabled = false;
+
+    public BattleManager battleManager;
+
+    private void Awake() {
+        battleManager = BattleManager.instance;
+    }
+
     private void Start() {
-        removeButton.AddListener(EventTriggerType.PointerClick, BattleManager.instance.placing.RemoveCurrentMapChar);
-        statusButton.AddListener(EventTriggerType.PointerClick, BattleManager.instance.EnterTurnStepStatus);
+        removeButton.AddListener(EventTriggerType.PointerClick, battleManager.placing.RemoveCurrentMapChar);
+        statusButton.AddListener(EventTriggerType.PointerClick, battleManager.EnterTurnStepStatus);
     }
 
     private void Update() {
         // Remove button
-        if (BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Placing) {
-            if (BattleManager.instance.placing.GetCurrentPlacingChar().boardChar != null && !removeButton.activeSelf) {
+        if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing) {
+            if (battleManager.placing.GetCurrentPlacingChar().boardChar != null && !removeButton.activeSelf) {
                 removeButton.SetActive(true);
-            } else if (BattleManager.instance.placing.GetCurrentPlacingChar().boardChar == null && removeButton.activeSelf) {
+            } else if (battleManager.placing.GetCurrentPlacingChar().boardChar == null && removeButton.activeSelf) {
                 removeButton.SetActive(false);
             }
         }
 
         // Current character text
-        if (BattleManager.instance.placing.GetCurrentPlacingChar().boardChar != null) {
+        if (battleManager.placing.GetCurrentPlacingChar().boardChar != null) {
             currentCharText.color = Color.gray;
         } else {
             currentCharText.color = Color.white;
         }
 
-        currentCharText.text = BattleManager.instance.placing.GetCurrentPlacingChar().name;
+        currentCharText.text = battleManager.placing.GetCurrentPlacingChar().name;
 
         // Previous character text
-        Character previousCharacter = BattleManager.instance.placing.GetPreviousPlacingChar();
+        Character previousCharacter = battleManager.placing.GetPreviousPlacingChar();
 
         if (previousCharacter.boardChar != null) {
             previousCharText.color = Color.gray;
@@ -50,7 +59,7 @@ public class PlacingHUD : MonoBehaviour {
         previousCharText.text = "Previous [" + KeyCode.A + "]\n" + previousCharacter.name; //TODO: Custom InputManager + LanguageManager with a multi key translation
 
         // Next character text
-        Character nextCharacter = BattleManager.instance.placing.GetNextPlacingChar();
+        Character nextCharacter = battleManager.placing.GetNextPlacingChar();
 
         if (nextCharacter.boardChar != null) {
             nextCharText.color = Color.gray;
@@ -61,31 +70,30 @@ public class PlacingHUD : MonoBehaviour {
         nextCharText.text = "Next [" + KeyCode.E + "]\n" + nextCharacter.name; //TODO: Custom InputManager + LanguageManager with a multi key translation
     }
 
-    public void SetActive(bool active) {
-        StopAllCoroutines();
-
+    public void SetActiveWithAnimation(bool active) {
+        float speed = 0.6f;
+        
         if (active) {
-            this.gameObject.SetActive(active);
-            StartCoroutine(GenericCoroutine.MoveRectTransformSmooth(
-                placingHUDRect,
-                new Vector3(0f, -250f, 0f),
-                new Vector3(0f, 0f, 0f),
-                0.25f
-            ));
+            isGoingEnabled = true;
+            this.gameObject.SetActive(true);
+
+            if (placingHUDRect.anchoredPosition3D != new Vector3(0f, 0f, 0f)) {
+                placingHUDRect.anchoredPosition3D = new Vector3(0f, -250f, 0f);
+                placingHUDRect.DOAnchorPos3D(new Vector3(0f, 0f, 0f), speed).SetEase(Ease.OutCubic);
+            }
+            
             BattleManager.instance.placing.RefreshStartBattleText();
         } else {
+            isGoingEnabled = false;
             startBattleText.gameObject.SetActive(false);
-            StartCoroutine(GenericCoroutine.MoveRectTransformSmooth(
-                placingHUDRect,
-                new Vector3(0f, 0f, 0f),
-                new Vector3(0f, -250f, 0f),
-                0.25f,
-                DisableGameObject
-            ));
+            
+            placingHUDRect.DOAnchorPos3D(new Vector3(0f, -250f, 0f), speed).SetEase(Ease.InCubic).OnComplete(DisableGameObject);
         }
     }
 
-    private void DisableGameObject() {
-        this.gameObject.SetActive(false);
+    void DisableGameObject() {
+        if (isGoingEnabled) return;
+        
+        gameObject.SetActive(false);
     }
 }
