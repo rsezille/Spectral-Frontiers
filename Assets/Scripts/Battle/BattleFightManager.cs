@@ -38,8 +38,8 @@ public class BattleFightManager {
 
     public void EnterBattleStepFight() {
         if (battleManager.playerBoardChars.Count > 0) {
-            if (battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar != null) {
-                battleManager.placingAlliedChars[battleManager.placingCharIndex].boardChar.outline.enabled = false;
+            if (battleManager.playerPlacingChars[battleManager.placingCharIndex].boardChar != null) {
+                battleManager.playerPlacingChars[battleManager.placingCharIndex].boardChar.outline.enabled = false;
             }
 
             battleManager.currentBattleStep = BattleManager.BattleStep.Fight;

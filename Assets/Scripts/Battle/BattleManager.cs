@@ -26,7 +26,7 @@ public class BattleManager : MonoBehaviour {
     public BoardChar testBoardChar; //TODO
 
     // Characters
-    public List<Character> placingAlliedChars;
+    public List<Character> playerPlacingChars;
     public int placingCharIndex;
     public List<BoardChar> playerBoardChars;
     public List<BoardChar> enemyBoardChars;
@@ -67,7 +67,7 @@ public class BattleManager : MonoBehaviour {
         turn = 1;
 
         placingCharIndex = 0;
-        placingAlliedChars = new List<Character>();
+        playerPlacingChars = new List<Character>();
 
         // Disable all HUD by default
         placingHUD.gameObject.SetActive(false);
