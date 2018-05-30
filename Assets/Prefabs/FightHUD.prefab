@@ -706,6 +706,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveButton: {fileID: 1613841934877412}
+  fightMenu: {fileID: 224502134963922086}
+  currentSquare: {fileID: 224905887740427524}
+  selectedSquare: {fileID: 224822547830529886}
 --- !u!114 &114177270082850466
 MonoBehaviour:
   m_ObjectHideFlags: 1
