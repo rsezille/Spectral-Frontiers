@@ -57,7 +57,7 @@ public class FightHUD : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
-    public void SetSelectedSquare(Square square) {
+    public void SquareHovered(Square square) {
         // if (BattleManager.instance.currentBattleStep != BattleManager.BattleStep.Fight) return;
         // It would be more optimized but we would lose the current square information when entering FightStep
 

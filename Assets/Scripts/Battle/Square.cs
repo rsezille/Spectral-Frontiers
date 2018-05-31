@@ -94,7 +94,7 @@ public class Square : MonoBehaviour {
      * Triggered by Board
      */
     public void MouseEnter() {
-        battleManager.fightHUD.SetSelectedSquare(this);
+        battleManager.fightHUD.SquareHovered(this);
         isMouseOver = true;
         sprite.color = overingColor;
 
@@ -107,7 +107,7 @@ public class Square : MonoBehaviour {
      * Triggered by Board
      */
     public void MouseLeave() {
-        battleManager.fightHUD.SetSelectedSquare(null);
+        battleManager.fightHUD.SquareHovered(null);
         isMouseOver = false;
         sprite.color = defaultColor;
 
