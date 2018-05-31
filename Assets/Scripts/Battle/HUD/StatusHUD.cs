@@ -15,7 +15,7 @@ public class StatusHUD : MonoBehaviour {
     public GameObject backButton;
     public GameObject quitButton;
 
-    private float rotationSpeed = 5f;
+    private float rotationSpeed = 0.2f;
     private float animationSpeed = 0.6f;
     private bool isGoingDisabled = false; // True during the disabling animation
     private bool isGoingEnabled = false;
@@ -41,13 +41,11 @@ public class StatusHUD : MonoBehaviour {
         
         // When switching characters but staying on the status HUD (can't switch during disabling animation)
         if (gameObject.activeSelf && !isGoingDisabled) {
-            StopAllCoroutines();
-            StartCoroutine(GenericCoroutine.RotateRectTransform(
-                blockMiddle,
-                Quaternion.Euler(0f, 90f, 0f),
-                callback: () => { ToggleAndText(); },
-                speed: rotationSpeed
-            ));
+            blockMiddle.DORotate(new Vector3(0f, 90f, 0f), rotationSpeed).SetEase(Ease.Linear)
+            .OnComplete(() => {
+                UpdateText();
+                blockMiddle.DORotate(new Vector3(0f, 0f, 0f), rotationSpeed).SetEase(Ease.Linear);
+            });
         } else { // When activating the status HUD
             isGoingEnabled = true;
             isGoingDisabled = false; // In case we open/close the HUD too fast
@@ -90,16 +88,6 @@ public class StatusHUD : MonoBehaviour {
             BattleManager.instance.placingHUD.SetActiveWithAnimation(true);
             BattleManager.instance.EnterTurnStepNone();
         }
-    }
-
-    private void ToggleAndText() {
-        UpdateText();
-
-        StartCoroutine(GenericCoroutine.RotateRectTransform(
-            blockMiddle,
-            Quaternion.Euler(0f, 0f, 0f),
-            speed: rotationSpeed
-        ));
     }
 
     private void UpdateText() {
