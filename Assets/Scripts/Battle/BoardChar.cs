@@ -48,6 +48,7 @@ public class BoardChar : MonoBehaviour {
      * Triggered by Board
      */
     public void MouseEnter() {
+        battleManager.fightHUD.SetSelectedSquare(this.boardEntity.square);
         outline.enabled = true;
     }
 
@@ -55,6 +56,8 @@ public class BoardChar : MonoBehaviour {
      * Triggered by Board
      */
     public void MouseLeave() {
+        battleManager.fightHUD.SetSelectedSquare(null);
+
         if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing && battleManager.placing.GetCurrentPlacingChar().boardChar != this) {
             outline.enabled = false;
         }

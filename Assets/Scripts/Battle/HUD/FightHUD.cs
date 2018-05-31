@@ -47,9 +47,34 @@ public class FightHUD : MonoBehaviour {
         }
     }
 
-    void DisableGameObject() {
+    private void DisableGameObject() {
         if (isGoingEnabled) return;
 
         gameObject.SetActive(false);
+    }
+
+    public void SetSelectedSquare(Square square) {
+        // if (BattleManager.instance.currentBattleStep != BattleManager.BattleStep.Fight) return;
+        // It would be more optimized but we would lose the current square information when entering FightStep
+
+        Text selectedSquareText = selectedSquare.GetComponentInChildren<Text>();
+
+        if (square == null) {
+            selectedSquareText.text = "Square: none";
+        } else {
+            selectedSquareText.text = "Square: [" + square.x + "," + square.y + "]";
+
+            if (square.boardEntity != null) {
+                BoardChar boardCharacter = square.boardEntity.GetComponent<BoardChar>();
+
+                if (boardCharacter != null) {
+                    selectedSquareText.text += "\nCharacter: " + boardCharacter.character.name + " (" + boardCharacter.character.GetCurrentHP() + "/" + boardCharacter.character.GetMaxHP() + ")";
+                } else {
+                    selectedSquareText.text += "\nCharacter: none";
+                }
+            } else {
+                selectedSquareText.text += "\nCharacter: none";
+            }
+        }
     }
 }
