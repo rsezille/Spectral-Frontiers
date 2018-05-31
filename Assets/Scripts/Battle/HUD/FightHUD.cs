@@ -12,13 +12,19 @@ public class FightHUD : MonoBehaviour {
 
     private bool isGoingEnabled = false;
 
+    public BattleManager battleManager;
+
+    private void Awake() {
+        battleManager = BattleManager.instance;
+    }
+
     private void Start() {
-        moveButton.AddListener(EventTriggerType.PointerClick, BattleManager.instance.fight.Move);
+        moveButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Move);
     }
 
     // Compute all checks on buttons availability
     public void Refresh() {
-        BoardChar boardChar = BattleManager.instance.currentBoardChar;
+        BoardChar boardChar = battleManager.currentBoardChar;
 
         moveButton.GetComponent<Button>().interactable = boardChar.movable.movementTokens > 0;
     }
@@ -75,6 +81,18 @@ public class FightHUD : MonoBehaviour {
             } else {
                 selectedSquareText.text += "\nCharacter: none";
             }
+        }
+    }
+
+    public void UpdateCurrentSquare() {
+        Text currentSquareText = currentSquare.GetComponentInChildren<Text>();
+
+        if (battleManager.currentBoardChar != null) {
+            currentSquareText.text =
+                battleManager.currentBoardChar.character.name +
+                "\n" + battleManager.currentBoardChar.character.GetCurrentHP() + "/" + battleManager.currentBoardChar.character.GetMaxHP() + " HP";
+        } else {
+            currentSquareText.text = "No currently selected character";
         }
     }
 }
