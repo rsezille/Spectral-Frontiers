@@ -13,8 +13,16 @@ public class BattlePlacingManager {
     public void Update() {
         if (Input.GetButtonDown(InputBinds.Previous)) {
             PreviousPlacingChar();
+
+            if (battleManager.currentTurnStep == BattleManager.TurnStep.Status) {
+                battleManager.statusHUD.Show(battleManager.playerPlacingChars[battleManager.placingCharIndex]);
+            }
         } else if (Input.GetButtonDown(InputBinds.Next)) {
             NextPlacingChar();
+
+            if (battleManager.currentTurnStep == BattleManager.TurnStep.Status) {
+                battleManager.statusHUD.Show(battleManager.playerPlacingChars[battleManager.placingCharIndex]);
+            }
         } else if (Input.GetButtonDown(InputBinds.SpecialKey1)) {
             battleManager.fight.EnterBattleStepFight();
         }
@@ -53,10 +61,6 @@ public class BattlePlacingManager {
             } else {
                 SetCurrentPlacingChar(battleManager.placingCharIndex - 1);
             }
-
-            if (battleManager.currentTurnStep == BattleManager.TurnStep.Status) {
-                battleManager.statusHUD.Show(battleManager.playerPlacingChars[battleManager.placingCharIndex]);
-            }
         }
     }
 
@@ -66,10 +70,6 @@ public class BattlePlacingManager {
                 SetCurrentPlacingChar(0);
             } else {
                 SetCurrentPlacingChar(battleManager.placingCharIndex + 1);
-            }
-
-            if (battleManager.currentTurnStep == BattleManager.TurnStep.Status) {
-                battleManager.statusHUD.Show(battleManager.playerPlacingChars[battleManager.placingCharIndex]);
             }
         }
     }
