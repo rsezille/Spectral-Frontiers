@@ -71,15 +71,12 @@ public class StatusHUD : MonoBehaviour {
         isGoingEnabled = false;
         isGoingDisabled = true;
 
-        blockMiddle.anchoredPosition3D = new Vector3(blockMiddle.anchoredPosition3D.x, 0f, blockMiddle.anchoredPosition3D.z);
         blockMiddle.DOAnchorPos3D(new Vector3(blockMiddle.anchoredPosition3D.x, -1000f, blockMiddle.anchoredPosition3D.z), animationSpeed).SetEase(Ease.OutCubic);
 
-        blockTop.anchoredPosition3D = new Vector3(blockTop.anchoredPosition3D.x, 0f, blockTop.anchoredPosition3D.z);
         blockTop.DOAnchorPos3D(new Vector3(blockTop.anchoredPosition3D.x, blockTop.sizeDelta.y + 10f, blockTop.anchoredPosition3D.z), animationSpeed).SetEase(Ease.OutCubic);
 
-        blockBottom.anchoredPosition3D = new Vector3(blockBottom.anchoredPosition3D.x, 0f, blockBottom.anchoredPosition3D.z);
         blockBottom.DOAnchorPos3D(new Vector3(blockBottom.anchoredPosition3D.x, -blockBottom.sizeDelta.y, blockBottom.anchoredPosition3D.z), animationSpeed).SetEase(Ease.OutCubic)
-            .OnComplete(DisableGameObject);
+        .OnComplete(DisableGameObject);
 
         if (BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Fight) {
             //BattleManager.instance.fightHUD.SetActive(true);
@@ -100,7 +97,7 @@ public class StatusHUD : MonoBehaviour {
         statusText.text += "MagRes: " + character.GetMagicalResistance();
     }
 
-    void DisableGameObject() {
+    private void DisableGameObject() {
         if (isGoingEnabled) return;
 
         isGoingDisabled = false;
