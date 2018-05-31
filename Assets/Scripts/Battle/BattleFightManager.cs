@@ -29,8 +29,13 @@ public class BattleFightManager {
 
     // Called by BattleManager
     public void EnterTurnStepNone(BattleManager.TurnStep previousTurnStep) {
-        if (previousTurnStep == BattleManager.TurnStep.Move) {
-            battleManager.EventOnLeavingMove();
+        switch (previousTurnStep) {
+            case BattleManager.TurnStep.Move:
+                battleManager.EventOnLeavingMove();
+                break;
+            case BattleManager.TurnStep.Status:
+                battleManager.fightHUD.SetActiveWithAnimation(true);
+                break;
         }
 
         battleManager.fightHUD.Refresh();

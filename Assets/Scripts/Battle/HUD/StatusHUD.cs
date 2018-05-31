@@ -78,13 +78,7 @@ public class StatusHUD : MonoBehaviour {
         blockBottom.DOAnchorPos3D(new Vector3(blockBottom.anchoredPosition3D.x, -blockBottom.sizeDelta.y, blockBottom.anchoredPosition3D.z), animationSpeed).SetEase(Ease.OutCubic)
         .OnComplete(DisableGameObject);
 
-        if (battleManager.currentBattleStep == BattleManager.BattleStep.Fight) {
-            battleManager.fightHUD.SetActiveWithAnimation(true);
-            battleManager.EnterTurnStepNone();
-        } else if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing) {
-            battleManager.placingHUD.SetActiveWithAnimation(true);
-            battleManager.EnterTurnStepNone();
-        }
+        battleManager.EnterTurnStepNone();
     }
 
     private void UpdateText() {

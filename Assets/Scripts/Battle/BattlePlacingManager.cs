@@ -21,7 +21,11 @@ public class BattlePlacingManager {
     }
 
     // Called by BattleManager
-    public void EnterTurnStepNone(BattleManager.TurnStep previousTurnStep) {}
+    public void EnterTurnStepNone(BattleManager.TurnStep previousTurnStep) {
+        if (previousTurnStep == BattleManager.TurnStep.Status) {
+            battleManager.placingHUD.SetActiveWithAnimation(true);
+        }
+    }
 
     // Called by BattleManager
     public void EnterTurnStepStatus(BattleManager.TurnStep previousTurnStep) {
