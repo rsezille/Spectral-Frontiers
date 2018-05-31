@@ -78,12 +78,12 @@ public class StatusHUD : MonoBehaviour {
         blockBottom.DOAnchorPos3D(new Vector3(blockBottom.anchoredPosition3D.x, -blockBottom.sizeDelta.y, blockBottom.anchoredPosition3D.z), animationSpeed).SetEase(Ease.OutCubic)
         .OnComplete(DisableGameObject);
 
-        if (BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Fight) {
-            //BattleManager.instance.fightHUD.SetActive(true);
-            //BattleManager.instance.EnterTurnStepWait();
-        } else if (BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Placing) {
-            BattleManager.instance.placingHUD.SetActiveWithAnimation(true);
-            BattleManager.instance.EnterTurnStepNone();
+        if (battleManager.currentBattleStep == BattleManager.BattleStep.Fight) {
+            battleManager.fightHUD.SetActiveWithAnimation(true);
+            battleManager.EnterTurnStepNone();
+        } else if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing) {
+            battleManager.placingHUD.SetActiveWithAnimation(true);
+            battleManager.EnterTurnStepNone();
         }
     }
 

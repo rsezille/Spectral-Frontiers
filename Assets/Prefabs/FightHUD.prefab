@@ -707,6 +707,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveButton: {fileID: 1613841934877412}
   waitButton: {fileID: 1481788281385398}
+  statusButton: {fileID: 1705415096737308}
   fightMenu: {fileID: 224502134963922086}
   currentSquare: {fileID: 224905887740427524}
   selectedSquare: {fileID: 224822547830529886}
@@ -1648,7 +1649,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 114934143599072282}
   m_OnClick:
     m_PersistentCalls:

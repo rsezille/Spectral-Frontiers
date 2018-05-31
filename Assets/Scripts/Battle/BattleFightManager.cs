@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class BattleFightManager {
     private BattleManager battleManager; // Shortcut for BattleManager.instance
@@ -8,7 +9,23 @@ public class BattleFightManager {
     }
 
     // Called by BattleManager
-    public void Update() {}
+    public void Update() {
+        if (battleManager.currentTurnStep == BattleManager.TurnStep.Status) {
+            if (Input.GetButtonDown(InputBinds.Previous)) {
+                battleManager.statusHUD.Show(
+                    battleManager.playerBoardChars.IndexOf(battleManager.statusHUD.boardChar) <= 0 ?
+                    battleManager.playerBoardChars[battleManager.playerBoardChars.Count - 1] :
+                    battleManager.playerBoardChars[battleManager.playerBoardChars.IndexOf(battleManager.statusHUD.boardChar) - 1]
+                );
+            } else if (Input.GetButtonDown(InputBinds.Next)) {
+                battleManager.statusHUD.Show(
+                    battleManager.playerBoardChars.IndexOf(battleManager.statusHUD.boardChar) >= battleManager.playerBoardChars.Count - 1 ?
+                    battleManager.playerBoardChars[0] :
+                    battleManager.playerBoardChars[battleManager.playerBoardChars.IndexOf(battleManager.statusHUD.boardChar) + 1]
+                );
+            }
+        }
+    }
 
     // Called by BattleManager
     public void EnterTurnStepNone(BattleManager.TurnStep previousTurnStep) {
@@ -23,7 +40,11 @@ public class BattleFightManager {
     }
 
     // Called by BattleManager
-    public void EnterTurnStepStatus(BattleManager.TurnStep previousTurnStep) {}
+    public void EnterTurnStepStatus(BattleManager.TurnStep previousTurnStep) {
+        battleManager.fightHUD.SetActiveWithAnimation(false);
+
+        battleManager.statusHUD.Show(battleManager.GetSelectedBoardChar());
+    }
 
     // Called by FightHUD
     public void Move() {
@@ -41,6 +62,11 @@ public class BattleFightManager {
         battleManager.EnterTurnStepNone();
 
         SelectNextPlayerBoardChar();
+    }
+
+    // Called by FightHUD
+    public void Status() {
+        battleManager.EnterTurnStepStatus();
     }
 
     public void EnterBattleStepFight() {
