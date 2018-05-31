@@ -19,6 +19,7 @@ public class Loader : MonoBehaviour {
             switch (SceneManager.GetActiveScene().name) {
                 case Scenes.Battle:
                     Debug.Log("First scene: Battle");
+                    GameManager.instance.missionToLoad = "story_01";
                     LanguageManager.getInstance().loadDefaultLanguage();
                     break;
             }

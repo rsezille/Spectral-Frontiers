@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour {
     private Dictionary<string, RawMission> missions;
     private Dictionary<string, RawMonster> monsters;
 
+    public string missionToLoad;
+
     // Game initialization
     private void Awake() {
         if (instance == null) {
@@ -54,6 +56,16 @@ public class GameManager : MonoBehaviour {
         foreach (TextAsset jsonMonster in jsonMonsters) {
             RawMonster monster = JsonUtility.FromJson<RawMonster>(jsonMonster.text);
             monsters.Add(monster.id, monster);
+        }
+    }
+
+    public RawMission GetMissionToLoad() {
+        if (missions.ContainsKey(missionToLoad)) {
+            return missions[missionToLoad];
+        } else {
+            Debug.LogError("MissionToLoad not found");
+
+            return null;
         }
     }
 }

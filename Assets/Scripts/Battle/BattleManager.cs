@@ -25,6 +25,8 @@ public class BattleManager : MonoBehaviour {
 
     public BoardChar testBoardChar; //TODO
 
+    public RawMission mission;
+
     // Characters
     public List<Character> playerPlacingChars;
     public int placingCharIndex;
@@ -76,7 +78,8 @@ public class BattleManager : MonoBehaviour {
     }
 
     private void Start() {
-        board.loadMap("001");
+        mission = GameManager.instance.GetMissionToLoad();
+        board.loadMap(mission.map);
 
         battleCamera.ResetCameraSize();
         battleCamera.SetPosition(board.squares[0, 0]);
