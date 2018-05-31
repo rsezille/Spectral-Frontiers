@@ -29,13 +29,13 @@ public class PlacingHUD : MonoBehaviour {
     }
 
     private void Update() {
+        if (battleManager.currentBattleStep != BattleManager.BattleStep.Placing) return;
+
         // Remove button
-        if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing) {
-            if (battleManager.placing.GetCurrentPlacingChar().boardChar != null && !removeButton.activeSelf) {
-                removeButton.SetActive(true);
-            } else if (battleManager.placing.GetCurrentPlacingChar().boardChar == null && removeButton.activeSelf) {
-                removeButton.SetActive(false);
-            }
+        if (battleManager.placing.GetCurrentPlacingChar().boardChar != null && !removeButton.activeSelf) {
+            removeButton.SetActive(true);
+        } else if (battleManager.placing.GetCurrentPlacingChar().boardChar == null && removeButton.activeSelf) {
+            removeButton.SetActive(false);
         }
 
         // Current character text
