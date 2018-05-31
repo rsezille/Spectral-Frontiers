@@ -84,6 +84,16 @@ public class BattleManager : MonoBehaviour {
         battleCamera.ResetCameraSize();
         battleCamera.SetPosition(board.squares[0, 0]);
 
+        foreach (RawMission.RawEnemy enemy in mission.enemies) {
+            Character enemyChar = new Character(enemy.key);
+            BoardChar mc = Instantiate(testBoardChar, board.GetSquare(enemy.posX, enemy.posY).transform.position, Quaternion.identity) as BoardChar;
+            mc.character = enemyChar;
+            mc.side.value = Side.Type.Neutral;
+            mc.SetSquare(board.GetSquare(enemy.posX, enemy.posY));
+            enemyBoardChars.Add(mc);
+            mc.transform.SetParent(this.transform);
+        }
+
         placing.EnterBattleStepPlacing();
     }
 
