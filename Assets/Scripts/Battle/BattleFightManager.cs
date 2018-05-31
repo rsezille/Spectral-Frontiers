@@ -18,8 +18,8 @@ public class BattleFightManager {
 
         battleManager.fightHUD.Refresh();
 
-        battleManager.battleCamera.SetPosition(battleManager.currentBoardChar.GetSquare(), true);
-        battleManager.currentBoardChar.outline.enabled = true;
+        battleManager.battleCamera.SetPosition(battleManager.GetSelectedBoardChar().GetSquare(), true);
+        //TODO: tocheck - battleManager.GetSelectedBoardChar().outline.enabled = true;
     }
 
     // Called by BattleManager
@@ -30,7 +30,7 @@ public class BattleFightManager {
         if (battleManager.currentTurnStep == BattleManager.TurnStep.Move) {
             battleManager.EnterTurnStepNone();
         } else {
-            if (battleManager.currentBoardChar.movable.CanMove()) {
+            if (battleManager.GetSelectedBoardChar().movable.CanMove()) {
                 EnterTurnStepMove();
             }
         }
@@ -45,19 +45,29 @@ public class BattleFightManager {
             battleManager.currentBattleStep = BattleManager.BattleStep.Fight;
             battleManager.placingHUD.SetActiveWithAnimation(false);
             battleManager.fightHUD.SetActiveWithAnimation(true);
-            battleManager.NewPlayerTurn();
+            NewPlayerTurn();
         }
+    }
+
+    private void NewPlayerTurn() {
+        battleManager.SetSelectedBoardChar(battleManager.playerBoardChars[0]);
+
+        foreach (BoardChar bc in battleManager.playerBoardChars) {
+            bc.NewTurn();
+        }
+
+        battleManager.EnterTurnStepNone();
     }
 
     private void EnterTurnStepMove() {
         battleManager.currentTurnStep = BattleManager.TurnStep.Move;
 
         List<Square> ts = new List<Square>();
-        ts.Add(battleManager.currentBoardChar.GetSquare());
+        ts.Add(battleManager.GetSelectedBoardChar().GetSquare());
 
         List<Square> ts2 = new List<Square>();
 
-        for (int i = 0; i < battleManager.currentBoardChar.movable.movementPoints; i++) {
+        for (int i = 0; i < battleManager.GetSelectedBoardChar().movable.movementPoints; i++) {
             foreach (Square t in ts) {
                 Square north = battleManager.board.GetSquare(t.x, t.y - 1);
                 Square south = battleManager.board.GetSquare(t.x, t.y + 1);

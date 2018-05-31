@@ -24,9 +24,7 @@ public class FightHUD : MonoBehaviour {
 
     // Compute all checks on buttons availability
     public void Refresh() {
-        BoardChar boardChar = battleManager.currentBoardChar;
-
-        moveButton.GetComponent<Button>().interactable = boardChar.movable.movementTokens > 0;
+        moveButton.GetComponent<Button>().interactable = battleManager.GetSelectedBoardChar().movable.movementTokens > 0;
     }
 
     public void SetActiveWithAnimation(bool active) {
@@ -87,10 +85,10 @@ public class FightHUD : MonoBehaviour {
     public void UpdateCurrentSquare() {
         Text currentSquareText = currentSquare.GetComponentInChildren<Text>();
 
-        if (battleManager.currentBoardChar != null) {
+        if (battleManager.GetSelectedBoardChar() != null) {
             currentSquareText.text =
-                battleManager.currentBoardChar.character.name +
-                "\n" + battleManager.currentBoardChar.character.GetCurrentHP() + "/" + battleManager.currentBoardChar.character.GetMaxHP() + " HP";
+                battleManager.GetSelectedBoardChar().character.name +
+                "\n" + battleManager.GetSelectedBoardChar().character.GetCurrentHP() + "/" + battleManager.GetSelectedBoardChar().character.GetMaxHP() + " HP";
         } else {
             currentSquareText.text = "No currently selected character";
         }

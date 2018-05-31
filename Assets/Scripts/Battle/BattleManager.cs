@@ -30,7 +30,7 @@ public class BattleManager : MonoBehaviour {
     public int placingCharIndex;
     public List<BoardChar> playerBoardChars;
     public List<BoardChar> enemyBoardChars;
-    public BoardChar currentBoardChar;
+    private BoardChar selectedBoardChar;
 
     // HUD
     public PlacingHUD placingHUD;
@@ -169,13 +169,19 @@ public class BattleManager : MonoBehaviour {
         }
     }
 
-    public void NewPlayerTurn() {
-        currentBoardChar = playerBoardChars[0];
+    public BoardChar GetSelectedBoardChar() {
+        return selectedBoardChar;
+    }
 
-        foreach (BoardChar bc in playerBoardChars) {
-            bc.NewTurn();
+    public void SetSelectedBoardChar(BoardChar boardChar) {
+        if (selectedBoardChar != null) {
+            selectedBoardChar.outline.enabled = false;
         }
 
-        EnterTurnStepNone();
+        selectedBoardChar = boardChar;
+
+        if (selectedBoardChar != null) {
+            selectedBoardChar.outline.enabled = true;
+        }
     }
 }
