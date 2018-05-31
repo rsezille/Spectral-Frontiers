@@ -123,16 +123,13 @@ public class BoardChar : MonoBehaviour {
         isMoving = true;
         float duration = 0.5f;
 
-        Tween cameraAnimation = battleManager.battleCamera.transform.DOMove(new Vector3(transform.position.x, transform.position.y, battleManager.battleCamera.transform.position.z), 0.5f);
+        Tween cameraAnimation = battleManager.battleCamera.SetPosition(this, true, duration);
         yield return cameraAnimation.WaitForCompletion();
 
         // Check at 25% and 75% of each square the sorting order of the BoardChar to set the correct one
         for (int i = 0; i < path.steps.Count; i++) {
             Tween characterAnimation = this.transform.DOMove(path.steps[i].transform.position, duration).SetEase(Ease.Linear);
-            cameraAnimation = battleManager.battleCamera.transform.DOMove(new Vector3(
-                path.steps[i].transform.position.x,
-                path.steps[i].transform.position.y,
-                battleManager.battleCamera.transform.position.z), duration).SetEase(Ease.Linear);
+            cameraAnimation = battleManager.battleCamera.SetPosition(path.steps[i], true, duration, Ease.Linear);
 
             yield return characterAnimation.WaitForPosition(duration / 4);
 

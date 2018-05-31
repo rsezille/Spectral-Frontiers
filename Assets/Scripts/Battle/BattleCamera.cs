@@ -8,6 +8,8 @@ public class BattleCamera : MonoBehaviour {
     // Camera speed
     public float speed = 7f;
 
+    private float positionYOffset = 0.7f;
+
     private void Awake() {
         battleCamera = GetComponent<Camera>();
     }
@@ -35,17 +37,23 @@ public class BattleCamera : MonoBehaviour {
         battleCamera.orthographicSize = Screen.height / (Globals.TileHeight * 2f);
     }
 
-    public void SetPosition(Square square, bool smooth = false, float duration = 1f) {
+    public Tween SetPosition(BoardChar boardChar, bool smooth = false, float duration = 1f, Ease ease = Ease.OutCubic) {
+        return SetPosition(boardChar.GetSquare(), smooth, duration, ease);
+    }
+
+    public Tween SetPosition(Square square, bool smooth = false, float duration = 1f, Ease ease = Ease.OutCubic) {
         Vector3 target = new Vector3(
             square.x - square.y,
-            -(square.y + square.x) / 2f + square.vOffset / (square.sprite.bounds.size.y * Globals.TileHeight / 2) + 0.7f,
+            -(square.y + square.x) / 2f + square.vOffset / (square.sprite.bounds.size.y * Globals.TileHeight / 2) + positionYOffset,
             transform.position.z
         );
 
         if (!smooth) {
             transform.position = target;
+
+            return null;
         } else {
-            transform.DOMove(target, duration).SetEase(Ease.OutCubic);
+            return transform.DOMove(target, duration).SetEase(ease);
         }
     }
 }

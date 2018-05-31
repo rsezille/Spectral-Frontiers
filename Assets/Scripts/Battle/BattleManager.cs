@@ -183,7 +183,7 @@ public class BattleManager : MonoBehaviour {
 
         if (selectedBoardChar != null) {
             selectedBoardChar.outline.enabled = true;
-            battleCamera.SetPosition(selectedBoardChar.GetSquare(), true);
+            battleCamera.SetPosition(selectedBoardChar, true);
             fightHUD.Refresh();
         }
     }

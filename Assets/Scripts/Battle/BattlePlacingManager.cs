@@ -92,7 +92,7 @@ public class BattlePlacingManager {
 
             if (battleManager.playerPlacingChars[battleManager.placingCharIndex].boardChar != null) {
                 battleManager.playerPlacingChars[battleManager.placingCharIndex].boardChar.outline.enabled = true;
-                battleManager.battleCamera.SetPosition(battleManager.playerPlacingChars[battleManager.placingCharIndex].boardChar.GetSquare(), true);
+                battleManager.battleCamera.SetPosition(battleManager.playerPlacingChars[battleManager.placingCharIndex].boardChar, true);
             }
         } else {
             Debug.LogWarning("Trying to set an out of bound index");
@@ -199,7 +199,7 @@ public class BattlePlacingManager {
                     RefreshStartBattleText();
                 }
 
-                battleManager.battleCamera.SetPosition(battleManager.playerPlacingChars[battleManager.placingCharIndex].boardChar.GetSquare(), true);
+                battleManager.battleCamera.SetPosition(battleManager.playerPlacingChars[battleManager.placingCharIndex].boardChar, true);
             }
         }
     }

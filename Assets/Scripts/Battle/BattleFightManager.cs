@@ -46,8 +46,7 @@ public class BattleFightManager {
 
         battleManager.fightHUD.Refresh();
 
-        battleManager.battleCamera.SetPosition(battleManager.GetSelectedBoardChar().GetSquare(), true);
-        //TODO: tocheck - battleManager.GetSelectedBoardChar().outline.enabled = true;
+        battleManager.battleCamera.SetPosition(battleManager.GetSelectedBoardChar(), true);
     }
 
     // Called by BattleManager
@@ -111,6 +110,7 @@ public class BattleFightManager {
         battleManager.SetSelectedBoardChar(battleManager.playerBoardChars[0]);
     }
 
+    // Mark all squares where the character can move
     private void EnterTurnStepMove() {
         battleManager.currentTurnStep = BattleManager.TurnStep.Move;
 
