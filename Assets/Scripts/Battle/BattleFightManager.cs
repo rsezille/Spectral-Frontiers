@@ -10,14 +10,20 @@ public class BattleFightManager {
 
     // Called by BattleManager
     public void Update() {
-        if (battleManager.currentTurnStep == BattleManager.TurnStep.Status) {
-            if (Input.GetButtonDown(InputBinds.Previous)) {
+        if (Input.GetButtonDown(InputBinds.Previous)) {
+            SelectPreviousPlayerBoardChar();
+
+            if (battleManager.currentTurnStep == BattleManager.TurnStep.Status) {
                 battleManager.statusHUD.Show(
                     battleManager.playerBoardChars.IndexOf(battleManager.statusHUD.boardChar) <= 0 ?
                     battleManager.playerBoardChars[battleManager.playerBoardChars.Count - 1] :
                     battleManager.playerBoardChars[battleManager.playerBoardChars.IndexOf(battleManager.statusHUD.boardChar) - 1]
                 );
-            } else if (Input.GetButtonDown(InputBinds.Next)) {
+            }
+        } else if (Input.GetButtonDown(InputBinds.Next)) {
+            SelectNextPlayerBoardChar();
+
+            if (battleManager.currentTurnStep == BattleManager.TurnStep.Status) {
                 battleManager.statusHUD.Show(
                     battleManager.playerBoardChars.IndexOf(battleManager.statusHUD.boardChar) >= battleManager.playerBoardChars.Count - 1 ?
                     battleManager.playerBoardChars[0] :
@@ -142,6 +148,20 @@ public class BattleFightManager {
 
             ts2.Clear();
         }
+    }
+
+    private void SelectPreviousPlayerBoardChar() {
+        BoardChar boardChar = battleManager.GetSelectedBoardChar();
+
+        do {
+            if (battleManager.playerBoardChars.IndexOf(boardChar) == 0) {
+                boardChar = battleManager.playerBoardChars[battleManager.playerBoardChars.Count - 1];
+            } else {
+                boardChar = battleManager.playerBoardChars[battleManager.playerBoardChars.IndexOf(boardChar) - 1];
+            }
+        } while (boardChar.IsDead());
+
+        battleManager.SetSelectedBoardChar(boardChar);
     }
 
     private void SelectNextPlayerBoardChar() {
