@@ -69,7 +69,14 @@ public class BattleFightManager {
     }
 
     // Called by FightHUD
-    public void Wait() {
+    public void Previous() {
+        battleManager.EnterTurnStepNone();
+
+        SelectPreviousPlayerBoardChar();
+    }
+
+    // Called by FightHUD
+    public void Next() {
         battleManager.EnterTurnStepNone();
 
         SelectNextPlayerBoardChar();

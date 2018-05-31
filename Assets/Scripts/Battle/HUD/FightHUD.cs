@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class FightHUD : MonoBehaviour {
     public GameObject moveButton;
-    public GameObject waitButton;
+    public GameObject previousButton;
+    public GameObject nextButton;
     public GameObject statusButton;
 
     public RectTransform fightMenu;
@@ -22,7 +23,8 @@ public class FightHUD : MonoBehaviour {
 
     private void Start() {
         moveButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Move);
-        waitButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Wait);
+        previousButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Previous);
+        nextButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Next);
         statusButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Status);
     }
 
@@ -31,7 +33,8 @@ public class FightHUD : MonoBehaviour {
         if (battleManager.GetSelectedBoardChar() == null) return;
         
         moveButton.GetComponent<Button>().interactable = battleManager.GetSelectedBoardChar().movable.movementTokens > 0;
-        waitButton.GetComponent<Button>().interactable = true;
+        previousButton.GetComponent<Button>().interactable = true; //TODO: if no other character available, disable it
+        nextButton.GetComponent<Button>().interactable = true; //TODO: if no other character available, disable it
         statusButton.GetComponent<Button>().interactable = true;
     }
 
