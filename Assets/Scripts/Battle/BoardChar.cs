@@ -71,6 +71,8 @@ public class BoardChar : MonoBehaviour {
             if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing) {
                 // Focus the clicked character as the current one to place
                 battleManager.placing.SetCurrentPlacingChar(this.character);
+            } else if (battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleManager.currentTurnStep == BattleManager.TurnStep.None) {
+                battleManager.SetSelectedBoardChar(this);
             }
         }
     }

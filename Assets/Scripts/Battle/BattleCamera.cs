@@ -38,7 +38,7 @@ public class BattleCamera : MonoBehaviour {
     public void SetPosition(Square square, bool smooth = false, float duration = 1f) {
         Vector3 target = new Vector3(
             square.x - square.y,
-            -(square.y + square.x) / 2f + square.vOffset / (square.sprite.bounds.size.y * Globals.TileHeight / 2),
+            -(square.y + square.x) / 2f + square.vOffset / (square.sprite.bounds.size.y * Globals.TileHeight / 2) + 0.7f,
             transform.position.z
         );
 
