@@ -36,6 +36,13 @@ public class BattleFightManager {
         }
     }
 
+    // Called by FightHUD
+    public void Wait() {
+        battleManager.EnterTurnStepNone();
+
+        SelectNextPlayerBoardChar();
+    }
+
     public void EnterBattleStepFight() {
         if (battleManager.playerBoardChars.Count > 0) {
             // Disable outlines from the PlacingStep
@@ -104,5 +111,19 @@ public class BattleFightManager {
 
             ts2.Clear();
         }
+    }
+
+    private void SelectNextPlayerBoardChar() {
+        BoardChar boardChar = battleManager.GetSelectedBoardChar();
+
+        do {
+            if (battleManager.playerBoardChars.IndexOf(boardChar) >= battleManager.playerBoardChars.Count - 1) {
+                boardChar = battleManager.playerBoardChars[0];
+            } else {
+                boardChar = battleManager.playerBoardChars[battleManager.playerBoardChars.IndexOf(boardChar) + 1];
+            }
+        } while (boardChar.IsDead());
+
+        battleManager.SetSelectedBoardChar(boardChar);
     }
 }

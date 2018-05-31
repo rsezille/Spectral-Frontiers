@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class FightHUD : MonoBehaviour {
     public GameObject moveButton;
+    public GameObject waitButton;
 
     public RectTransform fightMenu;
     public RectTransform currentSquare;
@@ -20,6 +21,7 @@ public class FightHUD : MonoBehaviour {
 
     private void Start() {
         moveButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Move);
+        waitButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Wait);
     }
 
     // Compute all checks on buttons availability
@@ -27,6 +29,7 @@ public class FightHUD : MonoBehaviour {
         if (battleManager.GetSelectedBoardChar() == null) return;
         
         moveButton.GetComponent<Button>().interactable = battleManager.GetSelectedBoardChar().movable.movementTokens > 0;
+        waitButton.GetComponent<Button>().interactable = true;
     }
 
     public void SetActiveWithAnimation(bool active) {

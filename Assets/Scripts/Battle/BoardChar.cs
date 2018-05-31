@@ -159,4 +159,8 @@ public class BoardChar : MonoBehaviour {
             battleManager.EnterTurnStepNone();
         }
     }
+
+    public bool IsDead() {
+        return character.GetCurrentHP() <= 0;
+    }
 }
