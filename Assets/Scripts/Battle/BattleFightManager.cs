@@ -38,6 +38,7 @@ public class BattleFightManager {
 
     public void EnterBattleStepFight() {
         if (battleManager.playerBoardChars.Count > 0) {
+            // Disable outlines from the PlacingStep
             if (battleManager.playerPlacingChars[battleManager.placingCharIndex].boardChar != null) {
                 battleManager.playerPlacingChars[battleManager.placingCharIndex].boardChar.outline.enabled = false;
             }
@@ -50,13 +51,13 @@ public class BattleFightManager {
     }
 
     private void NewPlayerTurn() {
-        battleManager.SetSelectedBoardChar(battleManager.playerBoardChars[0]);
-
         foreach (BoardChar bc in battleManager.playerBoardChars) {
             bc.NewTurn();
         }
 
         battleManager.EnterTurnStepNone();
+
+        battleManager.SetSelectedBoardChar(battleManager.playerBoardChars[0]);
     }
 
     private void EnterTurnStepMove() {

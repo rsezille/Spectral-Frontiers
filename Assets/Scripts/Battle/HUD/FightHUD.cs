@@ -24,6 +24,8 @@ public class FightHUD : MonoBehaviour {
 
     // Compute all checks on buttons availability
     public void Refresh() {
+        if (battleManager.GetSelectedBoardChar() == null) return;
+        
         moveButton.GetComponent<Button>().interactable = battleManager.GetSelectedBoardChar().movable.movementTokens > 0;
     }
 
@@ -82,7 +84,7 @@ public class FightHUD : MonoBehaviour {
         }
     }
 
-    public void UpdateCurrentSquare() {
+    public void UpdateSelectedSquare() {
         Text currentSquareText = currentSquare.GetComponentInChildren<Text>();
 
         if (battleManager.GetSelectedBoardChar() != null) {

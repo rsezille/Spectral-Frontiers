@@ -179,9 +179,12 @@ public class BattleManager : MonoBehaviour {
         }
 
         selectedBoardChar = boardChar;
+        fightHUD.UpdateSelectedSquare();
 
         if (selectedBoardChar != null) {
             selectedBoardChar.outline.enabled = true;
+            battleCamera.SetPosition(selectedBoardChar.GetSquare(), true);
+            fightHUD.Refresh();
         }
     }
 }

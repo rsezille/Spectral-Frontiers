@@ -58,7 +58,8 @@ public class BoardChar : MonoBehaviour {
     public void MouseLeave() {
         battleManager.fightHUD.SquareHovered(null);
 
-        if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing && battleManager.placing.GetCurrentPlacingChar().boardChar != this) {
+        if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing && battleManager.placing.GetCurrentPlacingChar().boardChar != this
+                || battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleManager.GetSelectedBoardChar() != this) {
             outline.enabled = false;
         }
     }
