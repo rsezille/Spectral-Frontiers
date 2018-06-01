@@ -2,11 +2,13 @@
 using SpriteGlow;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 /**
  * Represent a board character on the board
  */
 [RequireComponent(typeof(BoardEntity), typeof(SpriteRenderer), typeof(Side))]
+[RequireComponent(typeof(MouseReactive))]
 public class BoardCharacter : MonoBehaviour {
     private BattleManager battleManager;
 
@@ -15,6 +17,7 @@ public class BoardCharacter : MonoBehaviour {
     // Components
     private BoardEntity boardEntity;
     private SpriteRenderer sprite;
+    private MouseReactive mouseReactive;
     public Side side;
     // Components which can be null
     public SpriteGlowEffect outline;
@@ -28,14 +31,23 @@ public class BoardCharacter : MonoBehaviour {
 
         boardEntity = GetComponent<BoardEntity>();
         sprite = GetComponent<SpriteRenderer>();
+        mouseReactive = GetComponent<MouseReactive>();
         side = GetComponent<Side>();
         outline = GetComponent<SpriteGlowEffect>();
         movable = GetComponent<Movable>();
         actionable = GetComponent<Actionable>();
 
+
         if (outline) {
             outline.enabled = false;
         }
+
+        mouseReactive.MouseEnter = new UnityEvent();
+        mouseReactive.MouseEnter.AddListener(MouseEnter);
+        mouseReactive.MouseLeave = new UnityEvent();
+        mouseReactive.MouseLeave.AddListener(MouseLeave);
+        mouseReactive.Click = new UnityEvent();
+        mouseReactive.Click.AddListener(Click);
     }
 
     public Square GetSquare() {
@@ -63,6 +75,47 @@ public class BoardCharacter : MonoBehaviour {
 
         foreach (Canvas canvas in HUDs) {
             canvas.sortingOrder = sortingOrder;
+        }
+    }
+
+    private void Start() {
+        gameObject.name = character.name; // To find it inside the editor
+    }
+
+    /**
+     * Triggered by Board
+     */
+    public void MouseEnter() {
+        battleManager.fightHUD.SquareHovered(GetSquare());
+
+        if (outline != null) {
+            outline.enabled = true;
+        }
+    }
+
+    /**
+     * Triggered by Board
+     */
+    public void MouseLeave() {
+        battleManager.fightHUD.SquareHovered(null);
+
+        if ((battleManager.currentBattleStep == BattleManager.BattleStep.Placing && battleManager.placing.GetCurrentPlacingChar().boardCharacter != this
+                || battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleManager.GetSelectedPlayerBoardCharacter() != this) && outline != null) {
+            outline.enabled = false;
+        }
+    }
+
+    /**
+     * Triggered by Board
+     */
+    public void Click() {
+        if (side.value == Side.Type.Player) {
+            if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing) {
+                // Focus the clicked character as the current one to place
+                battleManager.placing.SetCurrentPlacingChar(character);
+            } else if (battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleManager.currentTurnStep == BattleManager.TurnStep.None) {
+                battleManager.SetSelectedPlayerBoardCharacter(this);
+            }
         }
     }
 

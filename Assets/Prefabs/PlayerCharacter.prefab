@@ -107,6 +107,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a93e00a7dade39346bacc1bd7ed95bc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  side: {fileID: 0}
+  outline: {fileID: 0}
+  movable: {fileID: 0}
+  actionable: {fileID: 0}
 --- !u!114 &114098185219839834
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -118,14 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15cac011ae7257b4bae07bd83f8104cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprite: {fileID: 0}
-  battleManager: {fileID: 0}
-  side: {fileID: 0}
-  outline: {fileID: 0}
-  movable: {fileID: 0}
-  actionable: {fileID: 0}
   boardCharacter: {fileID: 0}
-  isMoving: 0
 --- !u!114 &114114744037974550
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -215,50 +212,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MouseEnter:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 114098185219839834}
-        m_MethodName: MouseEnter
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   MouseLeave:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 114098185219839834}
-        m_MethodName: MouseLeave
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Click:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 114098185219839834}
-        m_MethodName: Click
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114628054442890148
