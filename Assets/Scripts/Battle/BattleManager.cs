@@ -88,14 +88,14 @@ public class BattleManager : MonoBehaviour {
         foreach (RawMission.RawEnemy enemy in mission.enemies) {
             Character enemyChar = new Character(enemy.key);
 
-            GameObject enemyGO = Resources.Load("Monsters/" + enemy.key) as GameObject;
+            BoardCharacter enemyTemplate = Resources.Load("Monsters/" + enemy.key, typeof(BoardCharacter)) as BoardCharacter;
 
-            GameObject go = Instantiate(enemyGO, board.GetSquare(enemy.posX, enemy.posY).transform.position, Quaternion.identity) as GameObject;
-            go.GetComponent<BoardCharacter>().character = enemyChar;
-            go.GetComponent<Side>().value = Side.Type.Neutral;
-            go.GetComponent<BoardEntity>().square = (board.GetSquare(enemy.posX, enemy.posY));
-            enemyCharacters.Add(go.GetComponent<BoardCharacter>());
-            go.transform.SetParent(this.transform);
+            BoardCharacter enemyBC = Instantiate(enemyTemplate, board.GetSquare(enemy.posX, enemy.posY).transform.position, Quaternion.identity);
+            enemyBC.character = enemyChar;
+            enemyBC.side.value = Side.Type.Neutral;
+            enemyBC.SetSquare(board.GetSquare(enemy.posX, enemy.posY));
+            enemyCharacters.Add(enemyBC);
+            enemyBC.transform.SetParent(this.transform);
         }
 
         placing.EnterBattleStepPlacing();
