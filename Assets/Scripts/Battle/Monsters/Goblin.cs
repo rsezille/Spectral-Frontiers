@@ -5,28 +5,16 @@ using SpriteGlow;
 [RequireComponent(typeof(Side), typeof(MouseReactive), typeof(SpriteGlowEffect))]
 [RequireComponent(typeof(BoardCharacter))]
 public class Goblin : MonoBehaviour {
-    public SpriteRenderer sprite;
-
     public BattleManager battleManager; // Shortcut for BattleManager.instance
 
     // Components
-    private BoardEntity boardEntity;
     public Side side;
-    public SpriteGlowEffect outline;
-    public Movable movable;
-    public Actionable actionable;
+    public BoardCharacter boardCharacter;
 
     private void Awake() {
-        boardEntity = GetComponent<BoardEntity>();
         side = GetComponent<Side>();
-        outline = GetComponent<SpriteGlowEffect>();
-        movable = GetComponent<Movable>();
-        actionable = GetComponent<Actionable>();
+        boardCharacter = GetComponent<BoardCharacter>();
 
         battleManager = BattleManager.instance;
-
-        sprite = GetComponent<SpriteRenderer>();
-        
-        outline.enabled = false;
     }
 }

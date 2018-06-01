@@ -39,7 +39,7 @@ public class Character {
 
     public int movementPoints = 3; // Number of squares the character can travel with one movement token
 
-    public PlayerCharacter playerCharacter; //TODO: its ugly but I don't care
+    public BoardCharacter boardCharacter; //TODO: its ugly but I don't care
 
     public Character(string name) {
         this.name = name;

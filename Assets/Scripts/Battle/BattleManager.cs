@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using SpriteGlow;
+using System.Collections.Generic;
 using UnityEngine;
 
 /**
@@ -30,9 +31,9 @@ public class BattleManager : MonoBehaviour {
     // Characters
     public List<Character> playerPlacingChars;
     public int placingCharIndex;
-    public List<PlayerCharacter> playerCharacters;
+    public List<BoardCharacter> playerCharacters;
     public List<BoardCharacter> enemyCharacters;
-    private PlayerCharacter selectedPlayerCharacter;
+    private BoardCharacter selectedPlayerBoardCharacter;
 
     // HUD
     public PlacingHUD placingHUD;
@@ -185,21 +186,24 @@ public class BattleManager : MonoBehaviour {
         }
     }
 
-    public PlayerCharacter GetSelectedPlayerCharacter() {
-        return selectedPlayerCharacter;
+    public BoardCharacter GetSelectedPlayerBoardCharacter() {
+        return selectedPlayerBoardCharacter;
     }
 
-    public void SetSelectedPlayerCharacter(PlayerCharacter playerCharacter) {
-        if (selectedPlayerCharacter != null) {
-            selectedPlayerCharacter.outline.enabled = false;
+    public void SetSelectedPlayerBoardCharacter(BoardCharacter boardCharacter) {
+        if (selectedPlayerBoardCharacter != null && selectedPlayerBoardCharacter.outline != null) {
+            selectedPlayerBoardCharacter.outline.enabled = false;
         }
 
-        selectedPlayerCharacter = playerCharacter;
+        selectedPlayerBoardCharacter = boardCharacter;
         fightHUD.UpdateSelectedSquare();
 
-        if (selectedPlayerCharacter != null) {
-            selectedPlayerCharacter.outline.enabled = true;
-            battleCamera.SetPosition(selectedPlayerCharacter, true);
+        if (selectedPlayerBoardCharacter != null) {
+            if (selectedPlayerBoardCharacter.outline != null) {
+                selectedPlayerBoardCharacter.outline.enabled = true;
+            }
+
+            battleCamera.SetPosition(selectedPlayerBoardCharacter, true);
             fightHUD.Refresh();
         }
     }

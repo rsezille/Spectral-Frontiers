@@ -11,23 +11,23 @@ public class BattleFightManager {
     // Called by BattleManager
     public void Update() {
         if (Input.GetButtonDown(InputBinds.Previous)) {
-            SelectPreviousPlayerCharacter();
+            SelectPreviousPlayerBoardCharacter();
 
             if (battleManager.currentTurnStep == BattleManager.TurnStep.Status) {
                 battleManager.statusHUD.Show(
-                    battleManager.playerCharacters.IndexOf(battleManager.statusHUD.playerCharacter) <= 0 ?
+                    battleManager.playerCharacters.IndexOf(battleManager.statusHUD.boardCharacter) <= 0 ?
                     battleManager.playerCharacters[battleManager.playerCharacters.Count - 1] :
-                    battleManager.playerCharacters[battleManager.playerCharacters.IndexOf(battleManager.statusHUD.playerCharacter) - 1]
+                    battleManager.playerCharacters[battleManager.playerCharacters.IndexOf(battleManager.statusHUD.boardCharacter) - 1]
                 );
             }
         } else if (Input.GetButtonDown(InputBinds.Next)) {
-            SelectNextPlayerCharacter();
+            SelectNextPlayerBoardCharacter();
 
             if (battleManager.currentTurnStep == BattleManager.TurnStep.Status) {
                 battleManager.statusHUD.Show(
-                    battleManager.playerCharacters.IndexOf(battleManager.statusHUD.playerCharacter) >= battleManager.playerCharacters.Count - 1 ?
+                    battleManager.playerCharacters.IndexOf(battleManager.statusHUD.boardCharacter) >= battleManager.playerCharacters.Count - 1 ?
                     battleManager.playerCharacters[0] :
-                    battleManager.playerCharacters[battleManager.playerCharacters.IndexOf(battleManager.statusHUD.playerCharacter) + 1]
+                    battleManager.playerCharacters[battleManager.playerCharacters.IndexOf(battleManager.statusHUD.boardCharacter) + 1]
                 );
             }
         }
@@ -46,14 +46,14 @@ public class BattleFightManager {
 
         battleManager.fightHUD.Refresh();
 
-        battleManager.battleCamera.SetPosition(battleManager.GetSelectedPlayerCharacter(), true);
+        battleManager.battleCamera.SetPosition(battleManager.GetSelectedPlayerBoardCharacter(), true);
     }
 
     // Called by BattleManager
     public void EnterTurnStepStatus(BattleManager.TurnStep previousTurnStep) {
         battleManager.fightHUD.SetActiveWithAnimation(false);
 
-        battleManager.statusHUD.Show(battleManager.GetSelectedPlayerCharacter());
+        battleManager.statusHUD.Show(battleManager.GetSelectedPlayerBoardCharacter());
     }
 
     // Called by FightHUD
@@ -61,7 +61,7 @@ public class BattleFightManager {
         if (battleManager.currentTurnStep == BattleManager.TurnStep.Move) {
             battleManager.EnterTurnStepNone();
         } else {
-            if (battleManager.GetSelectedPlayerCharacter().movable.CanMove()) {
+            if (battleManager.GetSelectedPlayerBoardCharacter().GetComponent<Movable>().CanMove()) {
                 EnterTurnStepMove();
             }
         }
@@ -71,14 +71,14 @@ public class BattleFightManager {
     public void Previous() {
         battleManager.EnterTurnStepNone();
 
-        SelectPreviousPlayerCharacter();
+        SelectPreviousPlayerBoardCharacter();
     }
 
     // Called by FightHUD
     public void Next() {
         battleManager.EnterTurnStepNone();
 
-        SelectNextPlayerCharacter();
+        SelectNextPlayerBoardCharacter();
     }
 
     // Called by FightHUD
@@ -89,8 +89,8 @@ public class BattleFightManager {
     public void EnterBattleStepFight() {
         if (battleManager.playerCharacters.Count > 0) {
             // Disable outlines from the PlacingStep
-            if (battleManager.playerPlacingChars[battleManager.placingCharIndex].playerCharacter != null) {
-                battleManager.playerPlacingChars[battleManager.placingCharIndex].playerCharacter.outline.enabled = false;
+            if (battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter != null) {
+                battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter.outline.enabled = false;
             }
 
             battleManager.currentBattleStep = BattleManager.BattleStep.Fight;
@@ -101,13 +101,13 @@ public class BattleFightManager {
     }
 
     private void NewPlayerTurn() {
-        foreach (PlayerCharacter pc in battleManager.playerCharacters) {
-            pc.NewTurn();
+        foreach (BoardCharacter bc in battleManager.playerCharacters) {
+            bc.NewTurn();
         }
 
         battleManager.EnterTurnStepNone();
 
-        battleManager.SetSelectedPlayerCharacter(battleManager.playerCharacters[0]);
+        battleManager.SetSelectedPlayerBoardCharacter(battleManager.playerCharacters[0]);
     }
 
     // Mark all squares where the character can move
@@ -115,11 +115,13 @@ public class BattleFightManager {
         battleManager.currentTurnStep = BattleManager.TurnStep.Move;
 
         List<Square> ts = new List<Square>();
-        ts.Add(battleManager.GetSelectedPlayerCharacter().GetSquare());
+        ts.Add(battleManager.GetSelectedPlayerBoardCharacter().GetSquare());
 
         List<Square> ts2 = new List<Square>();
 
-        for (int i = 0; i < battleManager.GetSelectedPlayerCharacter().movable.movementPoints; i++) {
+        Movable movable = battleManager.GetSelectedPlayerBoardCharacter().GetComponent<Movable>();
+
+        for (int i = 0; i < movable.movementPoints; i++) {
             foreach (Square t in ts) {
                 Square north = battleManager.board.GetSquare(t.x, t.y - 1);
                 Square south = battleManager.board.GetSquare(t.x, t.y + 1);
@@ -157,31 +159,31 @@ public class BattleFightManager {
         }
     }
 
-    private void SelectPreviousPlayerCharacter() {
-        PlayerCharacter playerCharacter = battleManager.GetSelectedPlayerCharacter();
+    private void SelectPreviousPlayerBoardCharacter() {
+        BoardCharacter boardCharacter = battleManager.GetSelectedPlayerBoardCharacter();
 
         do {
-            if (battleManager.playerCharacters.IndexOf(playerCharacter) == 0) {
-                playerCharacter = battleManager.playerCharacters[battleManager.playerCharacters.Count - 1];
+            if (battleManager.playerCharacters.IndexOf(boardCharacter) == 0) {
+                boardCharacter = battleManager.playerCharacters[battleManager.playerCharacters.Count - 1];
             } else {
-                playerCharacter = battleManager.playerCharacters[battleManager.playerCharacters.IndexOf(playerCharacter) - 1];
+                boardCharacter = battleManager.playerCharacters[battleManager.playerCharacters.IndexOf(boardCharacter) - 1];
             }
-        } while (playerCharacter.IsDead());
+        } while (boardCharacter.IsDead());
 
-        battleManager.SetSelectedPlayerCharacter(playerCharacter);
+        battleManager.SetSelectedPlayerBoardCharacter(boardCharacter);
     }
 
-    private void SelectNextPlayerCharacter() {
-        PlayerCharacter playerCharacter = battleManager.GetSelectedPlayerCharacter();
+    private void SelectNextPlayerBoardCharacter() {
+        BoardCharacter boardCharacter = battleManager.GetSelectedPlayerBoardCharacter();
 
         do {
-            if (battleManager.playerCharacters.IndexOf(playerCharacter) >= battleManager.playerCharacters.Count - 1) {
-                playerCharacter = battleManager.playerCharacters[0];
+            if (battleManager.playerCharacters.IndexOf(boardCharacter) >= battleManager.playerCharacters.Count - 1) {
+                boardCharacter = battleManager.playerCharacters[0];
             } else {
-                playerCharacter = battleManager.playerCharacters[battleManager.playerCharacters.IndexOf(playerCharacter) + 1];
+                boardCharacter = battleManager.playerCharacters[battleManager.playerCharacters.IndexOf(boardCharacter) + 1];
             }
-        } while (playerCharacter.IsDead());
+        } while (boardCharacter.IsDead());
 
-        battleManager.SetSelectedPlayerCharacter(playerCharacter);
+        battleManager.SetSelectedPlayerBoardCharacter(boardCharacter);
     }
 }

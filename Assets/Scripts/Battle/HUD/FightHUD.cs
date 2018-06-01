@@ -30,9 +30,11 @@ public class FightHUD : MonoBehaviour {
 
     // Compute all checks on buttons availability
     public void Refresh() {
-        if (battleManager.GetSelectedPlayerCharacter() == null) return;
-        
-        moveButton.GetComponent<Button>().interactable = battleManager.GetSelectedPlayerCharacter().movable.movementTokens > 0;
+        if (battleManager.GetSelectedPlayerBoardCharacter() == null) return;
+
+        Movable movable = battleManager.GetSelectedPlayerBoardCharacter().GetComponent<Movable>();
+        moveButton.GetComponent<Button>().interactable = movable != null && movable.movementTokens > 0;
+
         previousButton.GetComponent<Button>().interactable = true; //TODO: if no other character available, disable it
         nextButton.GetComponent<Button>().interactable = true; //TODO: if no other character available, disable it
         statusButton.GetComponent<Button>().interactable = true;
@@ -96,10 +98,10 @@ public class FightHUD : MonoBehaviour {
     public void UpdateSelectedSquare() {
         Text currentSquareText = currentSquare.GetComponentInChildren<Text>();
 
-        if (battleManager.GetSelectedPlayerCharacter() != null) {
+        if (battleManager.GetSelectedPlayerBoardCharacter() != null) {
             currentSquareText.text =
-                battleManager.GetSelectedPlayerCharacter().boardCharacter.character.name +
-                "\n" + battleManager.GetSelectedPlayerCharacter().boardCharacter.character.GetCurrentHP() + "/" + battleManager.GetSelectedPlayerCharacter().boardCharacter.character.GetMaxHP() + " HP";
+                battleManager.GetSelectedPlayerBoardCharacter().character.name +
+                "\n" + battleManager.GetSelectedPlayerBoardCharacter().character.GetCurrentHP() + "/" + battleManager.GetSelectedPlayerBoardCharacter().character.GetMaxHP() + " HP";
         } else {
             currentSquareText.text = "No currently selected character";
         }

@@ -11,33 +11,20 @@ using DG.Tweening;
 [RequireComponent(typeof(Side), typeof(MouseReactive), typeof(SpriteGlowEffect))]
 [RequireComponent(typeof(BoardCharacter))]
 public class PlayerCharacter : MonoBehaviour {
-    public SpriteRenderer sprite;
-
     public BattleManager battleManager; // Shortcut for BattleManager.instance
 
     // Components
-    private BoardEntity boardEntity;
+    
     public Side side;
-    public SpriteGlowEffect outline;
-    public Movable movable;
-    public Actionable actionable;
     public BoardCharacter boardCharacter;
 
     public bool isMoving = false;
 
     private void Awake() {
-        boardEntity = GetComponent<BoardEntity>();
         side = GetComponent<Side>();
-        outline = GetComponent<SpriteGlowEffect>();
-        movable = GetComponent<Movable>();
-        actionable = GetComponent<Actionable>();
         boardCharacter = GetComponent<BoardCharacter>();
 
         battleManager = BattleManager.instance;
-
-        sprite = GetComponent<SpriteRenderer>();
-        
-        outline.enabled = false;
     }
 
     private void Start() {
@@ -48,8 +35,11 @@ public class PlayerCharacter : MonoBehaviour {
      * Triggered by Board
      */
     public void MouseEnter() {
-        battleManager.fightHUD.SquareHovered(this.boardEntity.square);
-        outline.enabled = true;
+        battleManager.fightHUD.SquareHovered(boardCharacter.GetSquare());
+
+        if (boardCharacter.outline != null) {
+            boardCharacter.outline.enabled = true;
+        }
     }
 
     /**
@@ -58,9 +48,9 @@ public class PlayerCharacter : MonoBehaviour {
     public void MouseLeave() {
         battleManager.fightHUD.SquareHovered(null);
 
-        if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing && battleManager.placing.GetCurrentPlacingChar().playerCharacter != this
-                || battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleManager.GetSelectedPlayerCharacter() != this) {
-            outline.enabled = false;
+        if ((battleManager.currentBattleStep == BattleManager.BattleStep.Placing && battleManager.placing.GetCurrentPlacingChar().boardCharacter != this
+                || battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleManager.GetSelectedPlayerBoardCharacter() != this) && boardCharacter.outline != null) {
+            boardCharacter.outline.enabled = false;
         }
     }
 
@@ -73,49 +63,15 @@ public class PlayerCharacter : MonoBehaviour {
                 // Focus the clicked character as the current one to place
                 battleManager.placing.SetCurrentPlacingChar(boardCharacter.character);
             } else if (battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleManager.currentTurnStep == BattleManager.TurnStep.None) {
-                battleManager.SetSelectedPlayerCharacter(this);
+                battleManager.SetSelectedPlayerBoardCharacter(boardCharacter);
             }
         }
     }
 
-    public Square GetSquare() {
-        return boardEntity.square;
-    }
-
-    public void SetSquare(Square targetedSquare) {
-        if (boardEntity.square != null) {
-            boardEntity.square.boardEntity = null;
-        }
-
-        boardEntity.square = targetedSquare;
-
-        if (targetedSquare != null) {
-            targetedSquare.boardEntity = boardEntity;
-            transform.position = targetedSquare.transform.position;
-            SetSortingOrder(targetedSquare.sprite.sortingOrder + 1);
-        }
-    }
-
-    private void SetSortingOrder(int sortingOrder) {
-        sprite.sortingOrder = sortingOrder;
-
-        Component[] HUDs = transform.GetComponentsInChildren<Canvas>();
-
-        foreach (Canvas canvas in HUDs) {
-            canvas.sortingOrder = sortingOrder;
-        }
-    }
-
-    public void NewTurn() {
-        actionable.actionTokens = boardCharacter.character.actionTokens;
-        movable.movementTokens = boardCharacter.character.movementTokens;
-        movable.movementPoints = boardCharacter.character.movementPoints;
-    }
-
     public void Move(Path p, bool cameraFollow = false) {
-        if (movable.CanMove()) {
+        if (boardCharacter.movable != null && boardCharacter.movable.CanMove()) {
             StartCoroutine(MoveThroughPath(p));
-            movable.movementTokens--;
+            boardCharacter.movable.movementTokens--;
         }
     }
 
@@ -123,7 +79,7 @@ public class PlayerCharacter : MonoBehaviour {
         isMoving = true;
         float duration = 0.5f;
 
-        Tween cameraAnimation = battleManager.battleCamera.SetPosition(this, true, duration);
+        Tween cameraAnimation = battleManager.battleCamera.SetPosition(boardCharacter, true, duration);
         yield return cameraAnimation.WaitForCompletion();
 
         // Check at 25% and 75% of each square the sorting order of the BoardChar to set the correct one
@@ -133,20 +89,20 @@ public class PlayerCharacter : MonoBehaviour {
 
             yield return characterAnimation.WaitForPosition(duration / 4);
 
-            if (path.steps[i].x - boardEntity.square.x > 0 || path.steps[i].y - boardEntity.square.y > 0) {
-                SetSortingOrder(path.steps[i].sprite.sortingOrder + 1);
+            if (path.steps[i].x - boardCharacter.GetSquare().x > 0 || path.steps[i].y - boardCharacter.GetSquare().y > 0) {
+                boardCharacter.SetSortingOrder(path.steps[i].sprite.sortingOrder + 1);
             }
 
             yield return characterAnimation.WaitForPosition(duration * 3 / 4);
 
-            if (path.steps[i].x - boardEntity.square.x < 0 || path.steps[i].y - boardEntity.square.y < 0) {
-                SetSortingOrder(path.steps[i].sprite.sortingOrder + 1);
+            if (path.steps[i].x - boardCharacter.GetSquare().x < 0 || path.steps[i].y - boardCharacter.GetSquare().y < 0) {
+                boardCharacter.SetSortingOrder(path.steps[i].sprite.sortingOrder + 1);
             }
 
             yield return characterAnimation.WaitForCompletion();
         }
 
-        SetSquare(path.steps[path.steps.Count - 1]);
+        boardCharacter.SetSquare(path.steps[path.steps.Count - 1]);
 
         isMoving = false;
 
@@ -155,9 +111,5 @@ public class PlayerCharacter : MonoBehaviour {
 
             battleManager.EnterTurnStepNone();
         }
-    }
-
-    public bool IsDead() {
-        return boardCharacter.character.GetCurrentHP() <= 0;
     }
 }

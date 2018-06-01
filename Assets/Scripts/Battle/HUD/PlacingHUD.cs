@@ -32,14 +32,14 @@ public class PlacingHUD : MonoBehaviour {
         if (battleManager.currentBattleStep != BattleManager.BattleStep.Placing) return;
 
         // Remove button
-        if (battleManager.placing.GetCurrentPlacingChar().playerCharacter != null && !removeButton.activeSelf) {
+        if (battleManager.placing.GetCurrentPlacingChar().boardCharacter != null && !removeButton.activeSelf) {
             removeButton.SetActive(true);
-        } else if (battleManager.placing.GetCurrentPlacingChar().playerCharacter == null && removeButton.activeSelf) {
+        } else if (battleManager.placing.GetCurrentPlacingChar().boardCharacter == null && removeButton.activeSelf) {
             removeButton.SetActive(false);
         }
 
         // Current character text
-        if (battleManager.placing.GetCurrentPlacingChar().playerCharacter != null) {
+        if (battleManager.placing.GetCurrentPlacingChar().boardCharacter != null) {
             currentCharText.color = Color.gray;
         } else {
             currentCharText.color = Color.white;
@@ -50,7 +50,7 @@ public class PlacingHUD : MonoBehaviour {
         // Previous character text
         Character previousCharacter = battleManager.placing.GetPreviousPlacingChar();
 
-        if (previousCharacter.playerCharacter != null) {
+        if (previousCharacter.boardCharacter != null) {
             previousCharText.color = Color.gray;
         } else {
             previousCharText.color = Color.white;
@@ -61,7 +61,7 @@ public class PlacingHUD : MonoBehaviour {
         // Next character text
         Character nextCharacter = battleManager.placing.GetNextPlacingChar();
 
-        if (nextCharacter.playerCharacter != null) {
+        if (nextCharacter.boardCharacter != null) {
             nextCharText.color = Color.gray;
         } else {
             nextCharText.color = Color.white;
