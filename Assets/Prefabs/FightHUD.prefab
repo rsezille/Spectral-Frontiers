@@ -922,7 +922,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: <
+  m_Text: < (A)
 --- !u!114 &114323987359349960
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -966,7 +966,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: '>'
+  m_Text: (E) >
 --- !u!114 &114371200797447978
 MonoBehaviour:
   m_ObjectHideFlags: 1
