@@ -61,7 +61,7 @@ public class BattleFightManager {
         if (battleManager.currentTurnStep == BattleManager.TurnStep.Move) {
             battleManager.EnterTurnStepNone();
         } else {
-            if (battleManager.GetSelectedPlayerBoardCharacter().GetComponent<Movable>().CanMove()) {
+            if (battleManager.GetSelectedPlayerBoardCharacter().movable != null && battleManager.GetSelectedPlayerBoardCharacter().movable.CanMove()) {
                 EnterTurnStepMove();
             }
         }
@@ -119,9 +119,7 @@ public class BattleFightManager {
 
         List<Square> ts2 = new List<Square>();
 
-        Movable movable = battleManager.GetSelectedPlayerBoardCharacter().GetComponent<Movable>();
-
-        for (int i = 0; i < movable.movementPoints; i++) {
+        for (int i = 0; i < battleManager.GetSelectedPlayerBoardCharacter().movable.movementPoints; i++) {
             foreach (Square t in ts) {
                 Square north = battleManager.board.GetSquare(t.x, t.y - 1);
                 Square south = battleManager.board.GetSquare(t.x, t.y + 1);

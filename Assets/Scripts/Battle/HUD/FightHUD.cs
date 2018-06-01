@@ -33,7 +33,7 @@ public class FightHUD : MonoBehaviour {
         if (battleManager.GetSelectedPlayerBoardCharacter() == null) return;
 
         Movable movable = battleManager.GetSelectedPlayerBoardCharacter().GetComponent<Movable>();
-        moveButton.GetComponent<Button>().interactable = movable != null && movable.movementTokens > 0;
+        moveButton.GetComponent<Button>().interactable = movable != null && movable.CanMove();
 
         previousButton.GetComponent<Button>().interactable = true; //TODO: if no other character available, disable it
         nextButton.GetComponent<Button>().interactable = true; //TODO: if no other character available, disable it
