@@ -4,13 +4,15 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class StatusHUD : MonoBehaviour {
+    private BattleManager battleManager;
+
     public RectTransform blockMiddle;
     public RectTransform blockTop;
     public RectTransform blockBottom;
     public Text statusText;
 
     private Character character;
-    public BoardChar boardChar;
+    public BoardCharacter boardCharacter;
 
     public GameObject backButton;
     public GameObject quitButton;
@@ -19,8 +21,6 @@ public class StatusHUD : MonoBehaviour {
     private float animationSpeed = 0.6f;
     private bool isGoingDisabled = false; // True during the disabling animation
     private bool isGoingEnabled = false;
-
-    public BattleManager battleManager;
 
     private void Awake() {
         battleManager = BattleManager.instance;
@@ -31,9 +31,9 @@ public class StatusHUD : MonoBehaviour {
         quitButton.AddListener(EventTriggerType.PointerClick, Quit);
     }
 
-    public void Show(BoardChar bc) {
-        boardChar = bc;
-        Show(bc.character);
+    public void Show(BoardCharacter bc) {
+        boardCharacter = bc;
+        Show(boardCharacter.character);
     }
 
     public void Show(Character c) {
@@ -65,7 +65,7 @@ public class StatusHUD : MonoBehaviour {
     }
 
     public void Hide() {
-        boardChar = null;
+        boardCharacter = null;
         character = null;
         
         isGoingEnabled = false;

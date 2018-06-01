@@ -22,13 +22,13 @@
   "is_storyline": true,
   "enemies": [
     {
-      "key": "goblin",
+      "key": "Goblin",
       "level": 1,
       "posX": 0,
       "posY": 3
     },
     {
-      "key": "orc",
+      "key": "Orc",
       "level": 1,
       "posX": 0,
       "posY": 4

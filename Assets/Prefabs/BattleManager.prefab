@@ -56,10 +56,19 @@ MonoBehaviour:
   turn: 0
   board: {fileID: 0}
   battleCamera: {fileID: 0}
-  testBoardChar: {fileID: 114098185219839834, guid: 5b54b037a1a820242bdf8e21d98b6fad,
+  testPlayerCharacter: {fileID: 114098185219839834, guid: 5b54b037a1a820242bdf8e21d98b6fad,
     type: 2}
+  mission:
+    id: 
+    map: 
+    max_chars: 1
+    is_storyline: 0
+    parents: []
+    children: []
+    enemies: []
   placingCharIndex: 0
-  alliedBoardChars: []
+  playerCharacters: []
+  enemyCharacters: []
   placingHUD: {fileID: 0}
   statusHUD: {fileID: 0}
   fightHUD: {fileID: 0}

@@ -91,7 +91,7 @@ public class Board : MonoBehaviour {
                 float y = -(rawSquare.x_map + rawSquare.y_map) / 2f;
 
                 if (!String.IsNullOrEmpty(rawSquare.tile)) {
-                    GameObject tile = Resources.Load("Tiles/" + rawSquare.tile) as GameObject;
+                    GameObject tile = Resources.Load("Tiles/" + rawSquare.tile) as GameObject; //TODO: Maybe preload all resources when launching the game rather than at runtime?
 
                     if (tile == null)
                         Debug.LogError("Tile GameObject not found");

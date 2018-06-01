@@ -12,8 +12,6 @@ public class Character {
 
     public string name;
 
-    public string sprite; //TODO: move this to job + type ?
-
     // Global
     public int level = 1;
     public int experience = 0;
@@ -39,11 +37,10 @@ public class Character {
 
     public int movementPoints = 3; // Number of squares the character can travel with one movement token
 
-    public BoardChar boardChar; //TODO: its ugly but I don't care
+    public BoardCharacter boardCharacter; //TODO: its ugly but I don't care
 
     public Character(string name) {
         this.name = name;
-        sprite = "ss_south"; //TODO
 
         currentHP = ComputeMaxHP();
     }

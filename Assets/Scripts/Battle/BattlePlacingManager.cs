@@ -84,15 +84,19 @@ public class BattlePlacingManager {
 
     public void SetCurrentPlacingChar(int index) {
         if (index >= 0 && index <= battleManager.playerPlacingChars.Count - 1) {
-            if (battleManager.playerPlacingChars[battleManager.placingCharIndex].boardChar != null) {
-                battleManager.playerPlacingChars[battleManager.placingCharIndex].boardChar.outline.enabled = false;
+            if (battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter != null
+                    && battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter.outline != null) {
+                battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter.outline.enabled = false;
             }
 
             battleManager.placingCharIndex = index;
 
-            if (battleManager.playerPlacingChars[battleManager.placingCharIndex].boardChar != null) {
-                battleManager.playerPlacingChars[battleManager.placingCharIndex].boardChar.outline.enabled = true;
-                battleManager.battleCamera.SetPosition(battleManager.playerPlacingChars[battleManager.placingCharIndex].boardChar, true);
+            if (battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter != null) {
+                if (battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter.outline != null) {
+                    battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter.outline.enabled = true;
+                }
+
+                battleManager.battleCamera.SetPosition(battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter, true);
             }
         } else {
             Debug.LogWarning("Trying to set an out of bound index");
@@ -123,24 +127,24 @@ public class BattlePlacingManager {
 
     public void RemoveCurrentMapChar() {
         if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing) {
-            if (battleManager.playerPlacingChars[battleManager.placingCharIndex].boardChar != null) {
-                Object.Destroy(battleManager.playerPlacingChars[battleManager.placingCharIndex].boardChar.gameObject);
+            if (battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter != null) {
+                Object.Destroy(battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter.gameObject);
 
-                battleManager.playerBoardChars.Remove(battleManager.playerPlacingChars[battleManager.placingCharIndex].boardChar);
-                battleManager.playerPlacingChars[battleManager.placingCharIndex].boardChar.SetSquare(null);
-                battleManager.playerPlacingChars[battleManager.placingCharIndex].boardChar.character.boardChar = null;
+                battleManager.playerCharacters.Remove(battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter);
+                battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter.SetSquare(null);
+                battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter.character.boardCharacter = null;
 
-                if (battleManager.playerBoardChars.Count <= 0) {
+                if (battleManager.playerCharacters.Count <= 0) {
                     battleManager.placingHUD.startBattleText.gameObject.SetActive(false);
                 }
             } else {
-                Debug.LogWarning("Trying to remove a BoardChar which does not exist");
+                Debug.LogWarning("Trying to remove a PlayerCharacter which does not exist");
             }
         }
     }
 
     public void RefreshStartBattleText() {
-        if (battleManager.playerBoardChars.Count <= 0) {
+        if (battleManager.playerCharacters.Count <= 0) {
             battleManager.placingHUD.startBattleText.gameObject.SetActive(false);
         } else {
             battleManager.placingHUD.startBattleText.gameObject.SetActive(true);
@@ -181,25 +185,28 @@ public class BattlePlacingManager {
     public void PlaceMapChar(Square square) {
         if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing) {
             if (square.IsNotBlocking()) {
-                if (battleManager.playerPlacingChars[battleManager.placingCharIndex].boardChar != null) {
-                    battleManager.playerPlacingChars[battleManager.placingCharIndex].boardChar.SetSquare(square);
-                    battleManager.playerPlacingChars[battleManager.placingCharIndex].boardChar.outline.enabled = true;
+                if (battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter != null) {
+                    battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter.SetSquare(square);
+                    battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter.outline.enabled = true;
                 } else {
-                    BoardChar bc = BattleManager.Instantiate(battleManager.testBoardChar, square.transform.position, Quaternion.identity) as BoardChar;
-                    bc.character = battleManager.playerPlacingChars[battleManager.placingCharIndex];
-                    bc.GetComponent<Side>().value = Side.Type.Player;
-                    bc.SetSquare(square);
+                    PlayerCharacter pc = BattleManager.Instantiate(battleManager.testPlayerCharacter, square.transform.position, Quaternion.identity) as PlayerCharacter;
+                    pc.boardCharacter.character = battleManager.playerPlacingChars[battleManager.placingCharIndex];
+                    pc.GetComponent<Side>().value = Side.Type.Player;
+                    pc.boardCharacter.SetSquare(square);
 
-                    bc.character.boardChar = bc;
-                    battleManager.playerBoardChars.Add(bc);
+                    pc.boardCharacter.character.boardCharacter = pc.boardCharacter;
+                    battleManager.playerCharacters.Add(pc.boardCharacter);
 
-                    bc.transform.SetParent(battleManager.transform);
-                    bc.outline.enabled = true;
+                    pc.transform.SetParent(battleManager.transform);
+
+                    if (pc.boardCharacter.outline != null) {
+                        pc.boardCharacter.outline.enabled = true;
+                    }
 
                     RefreshStartBattleText();
                 }
 
-                battleManager.battleCamera.SetPosition(battleManager.playerPlacingChars[battleManager.placingCharIndex].boardChar, true);
+                battleManager.battleCamera.SetPosition(battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter, true);
             }
         }
     }

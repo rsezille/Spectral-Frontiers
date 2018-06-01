@@ -4,6 +4,8 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class PlacingHUD : MonoBehaviour {
+    private BattleManager battleManager;
+
     public Text previousCharText;
     public Text nextCharText;
     public Text currentCharText;
@@ -16,8 +18,6 @@ public class PlacingHUD : MonoBehaviour {
     public RectTransform placingHUDRect;
 
     private bool isGoingEnabled = false;
-
-    public BattleManager battleManager;
 
     private void Awake() {
         battleManager = BattleManager.instance;
@@ -32,14 +32,14 @@ public class PlacingHUD : MonoBehaviour {
         if (battleManager.currentBattleStep != BattleManager.BattleStep.Placing) return;
 
         // Remove button
-        if (battleManager.placing.GetCurrentPlacingChar().boardChar != null && !removeButton.activeSelf) {
+        if (battleManager.placing.GetCurrentPlacingChar().boardCharacter != null && !removeButton.activeSelf) {
             removeButton.SetActive(true);
-        } else if (battleManager.placing.GetCurrentPlacingChar().boardChar == null && removeButton.activeSelf) {
+        } else if (battleManager.placing.GetCurrentPlacingChar().boardCharacter == null && removeButton.activeSelf) {
             removeButton.SetActive(false);
         }
 
         // Current character text
-        if (battleManager.placing.GetCurrentPlacingChar().boardChar != null) {
+        if (battleManager.placing.GetCurrentPlacingChar().boardCharacter != null) {
             currentCharText.color = Color.gray;
         } else {
             currentCharText.color = Color.white;
@@ -50,7 +50,7 @@ public class PlacingHUD : MonoBehaviour {
         // Previous character text
         Character previousCharacter = battleManager.placing.GetPreviousPlacingChar();
 
-        if (previousCharacter.boardChar != null) {
+        if (previousCharacter.boardCharacter != null) {
             previousCharText.color = Color.gray;
         } else {
             previousCharText.color = Color.white;
@@ -61,7 +61,7 @@ public class PlacingHUD : MonoBehaviour {
         // Next character text
         Character nextCharacter = battleManager.placing.GetNextPlacingChar();
 
-        if (nextCharacter.boardChar != null) {
+        if (nextCharacter.boardCharacter != null) {
             nextCharText.color = Color.gray;
         } else {
             nextCharText.color = Color.white;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using SpriteGlow;
+using System.Collections.Generic;
 using UnityEngine;
 
 /**
@@ -23,14 +24,16 @@ public class BattleManager : MonoBehaviour {
     public Board board;
     public BattleCamera battleCamera;
 
-    public BoardChar testBoardChar; //TODO
+    public PlayerCharacter testPlayerCharacter; //TODO: Find the correct character giving the name & job
+
+    public RawMission mission;
 
     // Characters
     public List<Character> playerPlacingChars;
     public int placingCharIndex;
-    public List<BoardChar> playerBoardChars;
-    public List<BoardChar> enemyBoardChars;
-    private BoardChar selectedBoardChar;
+    public List<BoardCharacter> playerCharacters;
+    public List<BoardCharacter> enemyCharacters;
+    private BoardCharacter selectedPlayerBoardCharacter;
 
     // HUD
     public PlacingHUD placingHUD;
@@ -76,10 +79,24 @@ public class BattleManager : MonoBehaviour {
     }
 
     private void Start() {
-        board.loadMap("001");
+        mission = GameManager.instance.GetMissionToLoad();
+        board.loadMap(mission.map);
 
         battleCamera.ResetCameraSize();
         battleCamera.SetPosition(board.squares[0, 0]);
+
+        foreach (RawMission.RawEnemy enemy in mission.enemies) {
+            Character enemyChar = new Character(enemy.key);
+
+            BoardCharacter enemyTemplate = Resources.Load("Monsters/" + enemy.key, typeof(BoardCharacter)) as BoardCharacter;
+
+            BoardCharacter enemyBC = Instantiate(enemyTemplate, board.GetSquare(enemy.posX, enemy.posY).transform.position, Quaternion.identity);
+            enemyBC.character = enemyChar;
+            enemyBC.side.value = Side.Type.Neutral;
+            enemyBC.SetSquare(board.GetSquare(enemy.posX, enemy.posY));
+            enemyCharacters.Add(enemyBC);
+            enemyBC.transform.SetParent(this.transform);
+        }
 
         placing.EnterBattleStepPlacing();
     }
@@ -169,21 +186,24 @@ public class BattleManager : MonoBehaviour {
         }
     }
 
-    public BoardChar GetSelectedBoardChar() {
-        return selectedBoardChar;
+    public BoardCharacter GetSelectedPlayerBoardCharacter() {
+        return selectedPlayerBoardCharacter;
     }
 
-    public void SetSelectedBoardChar(BoardChar boardChar) {
-        if (selectedBoardChar != null) {
-            selectedBoardChar.outline.enabled = false;
+    public void SetSelectedPlayerBoardCharacter(BoardCharacter boardCharacter) {
+        if (selectedPlayerBoardCharacter != null && selectedPlayerBoardCharacter.outline != null) {
+            selectedPlayerBoardCharacter.outline.enabled = false;
         }
 
-        selectedBoardChar = boardChar;
+        selectedPlayerBoardCharacter = boardCharacter;
         fightHUD.UpdateSelectedSquare();
 
-        if (selectedBoardChar != null) {
-            selectedBoardChar.outline.enabled = true;
-            battleCamera.SetPosition(selectedBoardChar, true);
+        if (selectedPlayerBoardCharacter != null) {
+            if (selectedPlayerBoardCharacter.outline != null) {
+                selectedPlayerBoardCharacter.outline.enabled = true;
+            }
+
+            battleCamera.SetPosition(selectedPlayerBoardCharacter, true);
             fightHUD.Refresh();
         }
     }

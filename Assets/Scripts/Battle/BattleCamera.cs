@@ -37,8 +37,8 @@ public class BattleCamera : MonoBehaviour {
         battleCamera.orthographicSize = Screen.height / (Globals.TileHeight * 2f);
     }
 
-    public Tween SetPosition(BoardChar boardChar, bool smooth = false, float duration = 1f, Ease ease = Ease.OutCubic) {
-        return SetPosition(boardChar.GetSquare(), smooth, duration, ease);
+    public Tween SetPosition(BoardCharacter boardCharacter, bool smooth = false, float duration = 1f, Ease ease = Ease.OutCubic) {
+        return SetPosition(boardCharacter.GetSquare(), smooth, duration, ease);
     }
 
     public Tween SetPosition(Square square, bool smooth = false, float duration = 1f, Ease ease = Ease.OutCubic) {

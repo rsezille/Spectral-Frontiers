@@ -10,16 +10,16 @@ public class Player {
         playerName = Globals.DefaultPlayerName;
         gold = 0;
 
-        //TODO
+        //TODO: Use scenario to load default characters
         Character ritz = new Character("Ritz");
         Character mew = new Character("Mew");
         Character kupo = new Character("Kupo");
 
-        characters.Add(ritz);//TODO
+        characters.Add(ritz);
         ritz.SetCurrentHP(10);
-        characters.Add(mew);//TODO
+        characters.Add(mew);
         mew.SetCurrentHP(20);
-        characters.Add(kupo);//TODO
+        characters.Add(kupo);
         kupo.SetCurrentHP(30);
     }
 }

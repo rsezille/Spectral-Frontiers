@@ -3,6 +3,7 @@
 /**
  * Version 2018/05/24 (master)
  * By https://github.com/Elringus
+ * Modified by Remi Sezille
  */
 namespace SpriteGlow {
     /// <summary>
@@ -10,7 +11,7 @@ namespace SpriteGlow {
     /// Can be used in conjuction with bloom post-processing to create a glow effect.
     /// </summary>
     [AddComponentMenu("Effects/Sprite Glow")]
-    [RequireComponent(typeof(SpriteRenderer)), DisallowMultipleComponent, ExecuteInEditMode]
+    [RequireComponent(typeof(SpriteRenderer)), DisallowMultipleComponent]
     public class SpriteGlowEffect : MonoBehaviour {
         public SpriteRenderer Renderer { get; private set; }
         public Color GlowColor {
