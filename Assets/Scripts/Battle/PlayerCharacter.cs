@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
 using SpriteGlow;
-using DG.Tweening;
 
 /**
  * Represent a placed player character on the battlefield
@@ -11,7 +9,7 @@ using DG.Tweening;
 [RequireComponent(typeof(Side), typeof(MouseReactive), typeof(SpriteGlowEffect))]
 [RequireComponent(typeof(BoardCharacter))]
 public class PlayerCharacter : MonoBehaviour {
-    public BattleManager battleManager;
+    private BattleManager battleManager;
 
     // Components
     public BoardCharacter boardCharacter;

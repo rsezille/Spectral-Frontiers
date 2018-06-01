@@ -4,6 +4,8 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class FightHUD : MonoBehaviour {
+    private BattleManager battleManager;
+
     public GameObject moveButton;
     public GameObject previousButton;
     public GameObject nextButton;
@@ -14,8 +16,6 @@ public class FightHUD : MonoBehaviour {
     public RectTransform selectedSquare;
 
     private bool isGoingEnabled = false;
-
-    public BattleManager battleManager;
 
     private void Awake() {
         battleManager = BattleManager.instance;

@@ -4,6 +4,8 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class PlacingHUD : MonoBehaviour {
+    private BattleManager battleManager;
+
     public Text previousCharText;
     public Text nextCharText;
     public Text currentCharText;
@@ -16,8 +18,6 @@ public class PlacingHUD : MonoBehaviour {
     public RectTransform placingHUDRect;
 
     private bool isGoingEnabled = false;
-
-    public BattleManager battleManager;
 
     private void Awake() {
         battleManager = BattleManager.instance;

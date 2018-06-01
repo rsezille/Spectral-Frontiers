@@ -4,9 +4,9 @@ using System.Collections;
 using UnityEngine;
 
 /**
- * Represent a board character on the board.
+ * Represent a board character on the board
  */
-[RequireComponent(typeof(BoardEntity), typeof(SpriteRenderer))]
+[RequireComponent(typeof(BoardEntity), typeof(SpriteRenderer), typeof(Side))]
 public class BoardCharacter : MonoBehaviour {
     private BattleManager battleManager;
 

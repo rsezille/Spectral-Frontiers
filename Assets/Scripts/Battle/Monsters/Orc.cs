@@ -5,7 +5,7 @@ using SpriteGlow;
 [RequireComponent(typeof(Side), typeof(MouseReactive), typeof(SpriteGlowEffect))]
 [RequireComponent(typeof(BoardCharacter))]
 public class Orc : MonoBehaviour {
-    public BattleManager battleManager; // Shortcut for BattleManager.instance
+    private BattleManager battleManager; // Shortcut for BattleManager.instance
 
     // Components
     public Side side;
