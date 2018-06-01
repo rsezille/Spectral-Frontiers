@@ -4,6 +4,7 @@ using UnityEngine;
 /**
  * Version 2018/05/24 (master)
  * By https://github.com/Elringus
+ * Modified by Remi Sezille
  */
 namespace SpriteGlow {
     public class SpriteGlowMaterial : Material {
