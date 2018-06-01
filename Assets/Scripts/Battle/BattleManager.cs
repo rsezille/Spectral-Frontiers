@@ -31,7 +31,7 @@ public class BattleManager : MonoBehaviour {
     public List<Character> playerPlacingChars;
     public int placingCharIndex;
     public List<PlayerCharacter> playerCharacters;
-    public List<PlayerCharacter> enemyCharacters;
+    public List<BoardCharacter> enemyCharacters;
     private PlayerCharacter selectedPlayerCharacter;
 
     // HUD
@@ -86,12 +86,15 @@ public class BattleManager : MonoBehaviour {
 
         foreach (RawMission.RawEnemy enemy in mission.enemies) {
             Character enemyChar = new Character(enemy.key);
-            PlayerCharacter pc = Instantiate(testPlayerCharacter, board.GetSquare(enemy.posX, enemy.posY).transform.position, Quaternion.identity) as PlayerCharacter;
-            pc.boardCharacter.character = enemyChar;
-            pc.side.value = Side.Type.Neutral;
-            pc.SetSquare(board.GetSquare(enemy.posX, enemy.posY));
-            enemyCharacters.Add(pc);
-            pc.transform.SetParent(this.transform);
+
+            GameObject enemyGO = Resources.Load("Monsters/" + enemy.key) as GameObject;
+
+            GameObject go = Instantiate(enemyGO, board.GetSquare(enemy.posX, enemy.posY).transform.position, Quaternion.identity) as GameObject;
+            go.GetComponent<BoardCharacter>().character = enemyChar;
+            go.GetComponent<Side>().value = Side.Type.Neutral;
+            go.GetComponent<BoardEntity>().square = (board.GetSquare(enemy.posX, enemy.posY));
+            enemyCharacters.Add(go.GetComponent<BoardCharacter>());
+            go.transform.SetParent(this.transform);
         }
 
         placing.EnterBattleStepPlacing();
