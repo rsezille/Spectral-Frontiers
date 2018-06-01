@@ -26,9 +26,12 @@ GameObject:
   - component: {fileID: 114341271125765804}
   - component: {fileID: 114887946721164940}
   - component: {fileID: 114201813394804552}
+  - component: {fileID: 114919508981332366}
+  - component: {fileID: 114309017045315722}
   - component: {fileID: 114159639493158292}
   - component: {fileID: 114057917893410610}
   - component: {fileID: 114518340140785300}
+  - component: {fileID: 114201721760699376}
   m_Layer: 0
   m_Name: Goblin
   m_TagString: Untagged
@@ -43,7 +46,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1058835575242448}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.4167068, y: -1.6837178, z: 20}
+  m_LocalPosition: {x: 0, y: 0, z: 20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -123,6 +126,18 @@ MonoBehaviour:
   _alphaThreshold: 0
   _drawOutside: 1
   _enableInstancing: 0
+--- !u!114 &114201721760699376
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1058835575242448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15cac011ae7257b4bae07bd83f8104cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boardCharacter: {fileID: 0}
 --- !u!114 &114201813394804552
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -162,6 +177,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   side: {fileID: 0}
   boardCharacter: {fileID: 0}
+--- !u!114 &114309017045315722
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1058835575242448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63cb712a591d04f40923857ba80945c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBarHUD: {fileID: 224636935849708732, guid: 6af272c7861df5c48844a40946d7e766,
+    type: 2}
 --- !u!114 &114341271125765804
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -214,6 +242,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   value: 1
+--- !u!114 &114919508981332366
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1058835575242448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4b29ea337830646b5cbc24fb4c157c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterNameHUD: {fileID: 224154610032487936, guid: 3faef16fbdf674744adc42e465718ed9,
+    type: 2}
 --- !u!212 &212111852004768548
 SpriteRenderer:
   m_ObjectHideFlags: 1

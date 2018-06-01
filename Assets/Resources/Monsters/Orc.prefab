@@ -26,9 +26,12 @@ GameObject:
   - component: {fileID: 114128924390819572}
   - component: {fileID: 114391502788162832}
   - component: {fileID: 114572666134400180}
+  - component: {fileID: 114776541048825198}
+  - component: {fileID: 114567466784140196}
   - component: {fileID: 114386551943583030}
   - component: {fileID: 114317561960547616}
   - component: {fileID: 114325806751374666}
+  - component: {fileID: 114771477520874938}
   m_Layer: 0
   m_Name: Orc
   m_TagString: Untagged
@@ -43,7 +46,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1909064949638068}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.8746135, y: -2.0669599, z: 20}
+  m_LocalPosition: {x: 0, y: 0, z: 20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -173,6 +176,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   value: 1
+--- !u!114 &114567466784140196
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1909064949638068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4b29ea337830646b5cbc24fb4c157c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterNameHUD: {fileID: 224154610032487936, guid: 3faef16fbdf674744adc42e465718ed9,
+    type: 2}
 --- !u!114 &114572666134400180
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -214,6 +230,31 @@ MonoBehaviour:
   outline: {fileID: 0}
   movable: {fileID: 0}
   actionable: {fileID: 0}
+--- !u!114 &114771477520874938
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1909064949638068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15cac011ae7257b4bae07bd83f8104cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boardCharacter: {fileID: 0}
+--- !u!114 &114776541048825198
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1909064949638068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63cb712a591d04f40923857ba80945c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBarHUD: {fileID: 224636935849708732, guid: 6af272c7861df5c48844a40946d7e766,
+    type: 2}
 --- !u!212 &212781475115499978
 SpriteRenderer:
   m_ObjectHideFlags: 1
