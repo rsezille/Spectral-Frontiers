@@ -137,7 +137,7 @@ public class Square : MonoBehaviour {
                     );
 
                     if (p != null) {
-                        battleManager.GetSelectedPlayerBoardCharacter().GetComponent<PlayerCharacter>().Move(p, true); //TODO! move Move() to BoardCharacter ?
+                        battleManager.GetSelectedPlayerBoardCharacter().Move(p, true);
                     }
                 }
 
