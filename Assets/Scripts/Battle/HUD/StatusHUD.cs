@@ -10,7 +10,7 @@ public class StatusHUD : MonoBehaviour {
     public Text statusText;
 
     private Character character;
-    public BoardChar boardChar;
+    public PlayerCharacter playerCharacter;
 
     public GameObject backButton;
     public GameObject quitButton;
@@ -31,9 +31,9 @@ public class StatusHUD : MonoBehaviour {
         quitButton.AddListener(EventTriggerType.PointerClick, Quit);
     }
 
-    public void Show(BoardChar bc) {
-        boardChar = bc;
-        Show(bc.character);
+    public void Show(PlayerCharacter pc) {
+        playerCharacter = pc;
+        Show(pc.boardCharacter.character);
     }
 
     public void Show(Character c) {
@@ -65,7 +65,7 @@ public class StatusHUD : MonoBehaviour {
     }
 
     public void Hide() {
-        boardChar = null;
+        playerCharacter = null;
         character = null;
         
         isGoingEnabled = false;

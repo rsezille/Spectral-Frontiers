@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(BoardEntity), typeof(BoardChar)), DisallowMultipleComponent]
+[RequireComponent(typeof(BoardEntity), typeof(PlayerCharacter)), DisallowMultipleComponent]
 public class CharacterNameHUD : MonoBehaviour {
     private Text characterName;
     private Transform instance;
@@ -25,6 +25,6 @@ public class CharacterNameHUD : MonoBehaviour {
 
         characterName = instance.Find("CharacterName").GetComponent<Text>();
 
-        characterName.text = GetComponent<BoardChar>().character.name;
+        characterName.text = GetComponent<BoardCharacter>().character.name;
     }
 }

@@ -58,8 +58,8 @@ public class PlayerCharacter : MonoBehaviour {
     public void MouseLeave() {
         battleManager.fightHUD.SquareHovered(null);
 
-        if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing && battleManager.placing.GetCurrentPlacingChar().boardChar != this
-                || battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleManager.GetSelectedBoardChar() != this) {
+        if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing && battleManager.placing.GetCurrentPlacingChar().playerCharacter != this
+                || battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleManager.GetSelectedPlayerCharacter() != this) {
             outline.enabled = false;
         }
     }
@@ -73,7 +73,7 @@ public class PlayerCharacter : MonoBehaviour {
                 // Focus the clicked character as the current one to place
                 battleManager.placing.SetCurrentPlacingChar(boardCharacter.character);
             } else if (battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleManager.currentTurnStep == BattleManager.TurnStep.None) {
-                battleManager.SetSelectedBoardChar(this);
+                battleManager.SetSelectedPlayerCharacter(this);
             }
         }
     }

@@ -1,18 +1,18 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(BoardEntity), typeof(BoardChar)), DisallowMultipleComponent]
+[RequireComponent(typeof(BoardEntity), typeof(PlayerCharacter)), DisallowMultipleComponent]
 public class HealthBarHUD : MonoBehaviour {
     public static float BaseOffset = 0.3f;
 
-    private BoardChar boardChar;
+    private BoardCharacter boardCharacter;
     private Image healthBarImage;
     private Transform instance;
 
     public Transform healthBarHUD;
 
     private void Awake() {
-        boardChar = GetComponent<BoardChar>();
+        boardCharacter = GetComponent<BoardCharacter>();
 
         instance = Instantiate(healthBarHUD, GetComponent<BoardEntity>().transform);
     }
@@ -26,7 +26,7 @@ public class HealthBarHUD : MonoBehaviour {
         healthBarImage = instance.Find("HealthBar").GetComponent<Image>();
 
         healthBarImage.transform.localScale = new Vector3(
-            (float)boardChar.character.GetCurrentHP() / (float)boardChar.character.GetMaxHP(),
+            (float)boardCharacter.character.GetCurrentHP() / (float)boardCharacter.character.GetMaxHP(),
             healthBarImage.transform.localScale.y,
             healthBarImage.transform.localScale.z
         );
@@ -34,7 +34,7 @@ public class HealthBarHUD : MonoBehaviour {
 
     private void Update() {
         healthBarImage.transform.localScale = new Vector3(
-            (float)boardChar.character.GetCurrentHP() / (float)boardChar.character.GetMaxHP(),
+            (float)boardCharacter.character.GetCurrentHP() / (float)boardCharacter.character.GetMaxHP(),
             healthBarImage.transform.localScale.y,
             healthBarImage.transform.localScale.z
         );
