@@ -24,7 +24,7 @@ public class BattleManager : MonoBehaviour {
     public Board board;
     public BattleCamera battleCamera;
 
-    public PlayerCharacter testPlayerCharacter; //TODO
+    public PlayerCharacter testPlayerCharacter; //TODO: Find the correct character giving the name & job
 
     public RawMission mission;
 

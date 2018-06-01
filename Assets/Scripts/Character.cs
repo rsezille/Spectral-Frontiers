@@ -12,8 +12,6 @@ public class Character {
 
     public string name;
 
-    public string sprite; //TODO: move this to job + type ?
-
     // Global
     public int level = 1;
     public int experience = 0;
@@ -43,7 +41,6 @@ public class Character {
 
     public Character(string name) {
         this.name = name;
-        sprite = "ss_south"; //TODO
 
         currentHP = ComputeMaxHP();
     }
