@@ -35,8 +35,7 @@ public class BoardChar : MonoBehaviour {
         battleManager = BattleManager.instance;
 
         sprite = GetComponent<SpriteRenderer>();
-
-        // Disable the glow outline
+        
         outline.enabled = false;
     }
 
