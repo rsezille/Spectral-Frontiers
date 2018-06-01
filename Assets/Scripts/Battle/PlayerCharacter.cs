@@ -4,14 +4,13 @@ using SpriteGlow;
 using DG.Tweening;
 
 /**
- * Represent a placed character (ally or enemy) on the battlefield
- * Manage graphics, movements, the Character data, etc.
+ * Represent a placed player character on the battlefield
+ * Manage graphics, movements, attached components, etc.
  */
 [RequireComponent(typeof(BoardEntity), typeof(Movable), typeof(Actionable))]
 [RequireComponent(typeof(Side), typeof(MouseReactive), typeof(SpriteGlowEffect))]
-public class BoardChar : MonoBehaviour {
-    public Character character;
-
+[RequireComponent(typeof(BoardCharacter))]
+public class PlayerCharacter : MonoBehaviour {
     public SpriteRenderer sprite;
 
     public BattleManager battleManager; // Shortcut for BattleManager.instance
@@ -22,6 +21,7 @@ public class BoardChar : MonoBehaviour {
     public SpriteGlowEffect outline;
     public Movable movable;
     public Actionable actionable;
+    public BoardCharacter boardCharacter;
 
     public bool isMoving = false;
 
@@ -31,6 +31,7 @@ public class BoardChar : MonoBehaviour {
         outline = GetComponent<SpriteGlowEffect>();
         movable = GetComponent<Movable>();
         actionable = GetComponent<Actionable>();
+        boardCharacter = GetComponent<BoardCharacter>();
 
         battleManager = BattleManager.instance;
 
@@ -40,7 +41,7 @@ public class BoardChar : MonoBehaviour {
     }
 
     private void Start() {
-        gameObject.name = character.name; // To find it inside the editor
+        gameObject.name = boardCharacter.character.name; // To find it inside the editor
     }
 
     /**
@@ -70,7 +71,7 @@ public class BoardChar : MonoBehaviour {
         if (side.value == Side.Type.Player) {
             if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing) {
                 // Focus the clicked character as the current one to place
-                battleManager.placing.SetCurrentPlacingChar(this.character);
+                battleManager.placing.SetCurrentPlacingChar(boardCharacter.character);
             } else if (battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleManager.currentTurnStep == BattleManager.TurnStep.None) {
                 battleManager.SetSelectedBoardChar(this);
             }
@@ -106,9 +107,9 @@ public class BoardChar : MonoBehaviour {
     }
 
     public void NewTurn() {
-        actionable.actionTokens = character.actionTokens;
-        movable.movementTokens = character.movementTokens;
-        movable.movementPoints = character.movementPoints;
+        actionable.actionTokens = boardCharacter.character.actionTokens;
+        movable.movementTokens = boardCharacter.character.movementTokens;
+        movable.movementPoints = boardCharacter.character.movementPoints;
     }
 
     public void Move(Path p, bool cameraFollow = false) {
@@ -157,6 +158,6 @@ public class BoardChar : MonoBehaviour {
     }
 
     public bool IsDead() {
-        return character.GetCurrentHP() <= 0;
+        return boardCharacter.character.GetCurrentHP() <= 0;
     }
 }
