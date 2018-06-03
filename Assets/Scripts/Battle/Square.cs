@@ -186,4 +186,8 @@ public class Square : MonoBehaviour {
     public bool IsNotBlocking() {
         return boardEntity == null;
     }
+
+    public int GetManhattanDistance(Square square) {
+        return Mathf.Abs(square.x - this.x) + Mathf.Abs(square.y - this.y);
+    }
 }
