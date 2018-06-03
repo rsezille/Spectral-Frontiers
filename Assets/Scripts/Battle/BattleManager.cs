@@ -1,5 +1,4 @@
-﻿using SpriteGlow;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 /**
@@ -67,7 +66,7 @@ public class BattleManager : MonoBehaviour {
 
         currentBattleStep = BattleStep.Placing;
         currentTurnStep = TurnStep.None;
-        turn = 1;
+        turn = 0;
 
         placingCharIndex = 0;
         playerPlacingChars = new List<Character>();
