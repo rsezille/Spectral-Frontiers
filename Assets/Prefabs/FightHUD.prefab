@@ -744,10 +744,10 @@ MonoBehaviour:
   previousButton: {fileID: 1481788281385398}
   nextButton: {fileID: 1229474046433124}
   statusButton: {fileID: 1705415096737308}
+  endTurnButton: {fileID: 1554370939180222}
   fightMenu: {fileID: 224502134963922086}
   currentSquare: {fileID: 224905887740427524}
   selectedSquare: {fileID: 224822547830529886}
-  battleManager: {fileID: 0}
 --- !u!114 &114180460340090102
 MonoBehaviour:
   m_ObjectHideFlags: 1

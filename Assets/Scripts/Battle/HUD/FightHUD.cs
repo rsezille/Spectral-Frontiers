@@ -10,6 +10,7 @@ public class FightHUD : MonoBehaviour {
     public GameObject previousButton;
     public GameObject nextButton;
     public GameObject statusButton;
+    public GameObject endTurnButton;
 
     public RectTransform fightMenu;
     public RectTransform currentSquare;
@@ -26,6 +27,7 @@ public class FightHUD : MonoBehaviour {
         previousButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Previous);
         nextButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Next);
         statusButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Status);
+        endTurnButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.EndTurn);
     }
 
     // Compute all checks on buttons availability
@@ -38,6 +40,7 @@ public class FightHUD : MonoBehaviour {
         previousButton.GetComponent<Button>().interactable = true; //TODO: if no other character available, disable it
         nextButton.GetComponent<Button>().interactable = true; //TODO: if no other character available, disable it
         statusButton.GetComponent<Button>().interactable = true;
+        endTurnButton.GetComponent<Button>().interactable = true;
     }
 
     public void SetActiveWithAnimation(bool active) {
