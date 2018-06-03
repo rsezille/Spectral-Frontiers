@@ -153,7 +153,7 @@ public class BoardCharacter : MonoBehaviour {
         // Check at 25% and 75% of each square the sorting order of the BoardChar to set the correct one
         for (int i = 0; i < path.steps.Count; i++) {
             if (movable.movementPoints <= 0) break;
-            if (!path.steps[i].IsNotBlocking()) break;
+            //if (!path.steps[i].IsNotBlocking()) break;
 
             movable.movementPoints--;
 
