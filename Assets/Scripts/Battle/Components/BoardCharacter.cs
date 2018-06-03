@@ -136,6 +136,17 @@ public class BoardCharacter : MonoBehaviour {
         return character.GetCurrentHP() <= 0;
     }
 
+    public void BasicAttack(BoardCharacter target) {
+        if (actionable.CanDoAction()) {
+            int dmgDone = character.BasicAttack(target.character);
+
+            FloatingText floatingText = Instantiate(battleManager.floatingText, target.transform.position, Quaternion.identity);
+            floatingText.text = "-" + dmgDone;
+            
+            actionable.actionTokens--;
+        }
+    }
+
     public void Move(Path p, bool cameraFollow = false) {
         if (movable != null && movable.CanMove()) {
             StartCoroutine(MoveThroughPath(p));

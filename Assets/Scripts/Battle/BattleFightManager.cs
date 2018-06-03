@@ -258,7 +258,7 @@ public class BattleFightManager {
     private void EnterTurnStepAttack() {
         battleManager.currentTurnStep = BattleManager.TurnStep.Attack;
 
-        MarkSquares(1, Square.MarkType.Attack); // TODO [RANGED] weapon range
+        MarkSquares(1, Square.MarkType.Attack, true); // TODO [RANGED] weapon range
     }
 
     private void SelectPreviousPlayerBoardCharacter() {

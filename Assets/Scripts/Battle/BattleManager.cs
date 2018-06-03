@@ -24,6 +24,7 @@ public class BattleManager : MonoBehaviour {
     public BattleCamera battleCamera;
 
     public PlayerCharacter testPlayerCharacter; //TODO: Find the correct character giving the name & job
+    public FloatingText floatingText;
 
     public RawMission mission;
 
