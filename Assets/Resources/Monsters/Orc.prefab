@@ -28,6 +28,7 @@ GameObject:
   - component: {fileID: 114572666134400180}
   - component: {fileID: 114776541048825198}
   - component: {fileID: 114567466784140196}
+  - component: {fileID: 114810708681366988}
   - component: {fileID: 114386551943583030}
   - component: {fileID: 114817873542450284}
   - component: {fileID: 114317561960547616}
@@ -108,8 +109,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cef63d73141cf504386c65ec508a6818, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  side: {fileID: 0}
-  boardCharacter: {fileID: 0}
 --- !u!114 &114128924390819572
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -231,6 +230,8 @@ MonoBehaviour:
   outline: {fileID: 0}
   movable: {fileID: 0}
   actionable: {fileID: 0}
+  AI: {fileID: 0}
+  isMoving: 0
 --- !u!114 &114771477520874938
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -256,6 +257,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthBarHUD: {fileID: 224636935849708732, guid: 6af272c7861df5c48844a40946d7e766,
     type: 2}
+--- !u!114 &114810708681366988
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1909064949638068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89c9badc573a289438f70ce37456b315, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114817873542450284
 MonoBehaviour:
   m_ObjectHideFlags: 1
