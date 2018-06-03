@@ -117,7 +117,15 @@ public class BattleFightManager {
 
     // Called by ActionMenu
     public void Attack() {
+        if (battleManager.currentTurnStep == BattleManager.TurnStep.Attack) {
+            battleManager.EnterTurnStepNone();
+        } else {
+            battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
 
+            if (battleManager.GetSelectedPlayerBoardCharacter().actionable != null && battleManager.GetSelectedPlayerBoardCharacter().actionable.CanDoAction()) {
+                EnterTurnStepAttack();
+            }
+        }
     }
 
     public void EnterBattleStepFight() {
@@ -220,6 +228,12 @@ public class BattleFightManager {
 
             ts2.Clear();
         }
+    }
+
+    // Mark all squares the character can attack
+    private void EnterTurnStepAttack() {
+        battleManager.currentTurnStep = BattleManager.TurnStep.Attack;
+        
     }
 
     private void SelectPreviousPlayerBoardCharacter() {
