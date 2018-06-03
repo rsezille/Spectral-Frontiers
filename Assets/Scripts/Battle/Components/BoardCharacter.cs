@@ -146,9 +146,12 @@ public class BoardCharacter : MonoBehaviour {
     IEnumerator MoveThroughPath(Path path) {
         isMoving = true;
         float duration = 0.5f;
+        Tween cameraAnimation;
 
-        Tween cameraAnimation = battleManager.battleCamera.SetPosition(this, true, duration);
-        yield return cameraAnimation.WaitForCompletion();
+        if (!battleManager.battleCamera.IsOnSquare(GetSquare())) {
+            cameraAnimation = battleManager.battleCamera.SetPosition(this, true, duration);
+            yield return cameraAnimation.WaitForCompletion();
+        }
 
         // Check at 25% and 75% of each square the sorting order of the BoardChar to set the correct one
         for (int i = 0; i < path.steps.Count; i++) {
