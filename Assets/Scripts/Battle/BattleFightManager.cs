@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BattleFightManager {
@@ -86,6 +87,18 @@ public class BattleFightManager {
         battleManager.EnterTurnStepStatus();
     }
 
+    // Called by FightHUD
+    public void EndTurn() {
+        //TODO: FlashMessage
+        //TODO: Disable inputs
+
+        if (battleManager.GetSelectedPlayerBoardCharacter().outline != null) {
+            battleManager.GetSelectedPlayerBoardCharacter().outline.enabled = false;
+        }
+
+        EnterTurnStepEnemy();
+    }
+
     public void EnterBattleStepFight() {
         if (battleManager.playerCharacters.Count > 0) {
             // Disable outlines from the PlacingStep
@@ -101,6 +114,8 @@ public class BattleFightManager {
     }
 
     private void NewPlayerTurn() {
+        battleManager.turn++;
+
         foreach (BoardCharacter bc in battleManager.playerCharacters) {
             bc.NewTurn();
         }
@@ -108,6 +123,33 @@ public class BattleFightManager {
         battleManager.EnterTurnStepNone();
 
         battleManager.SetSelectedPlayerBoardCharacter(battleManager.playerCharacters[0]);
+    }
+
+    private void EnterTurnStepEnemy() {
+        battleManager.currentTurnStep = BattleManager.TurnStep.Enemy;
+
+        foreach (BoardCharacter enemy in battleManager.enemyCharacters) {
+            enemy.NewTurn();
+        }
+
+        battleManager.StartCoroutine(StartAI());
+    }
+
+    private IEnumerator StartAI() {
+        battleManager.fightHUD.SetActiveWithAnimation(false);
+
+        foreach (BoardCharacter enemy in battleManager.enemyCharacters) {
+            if (enemy.AI != null) {
+                yield return enemy.AI.Process();
+            }
+
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        battleManager.fightHUD.SetActiveWithAnimation(true);
+        NewPlayerTurn();
+
+        yield return null;
     }
 
     // Mark all squares where the character can move

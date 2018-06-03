@@ -56,4 +56,14 @@ public class BattleCamera : MonoBehaviour {
             return transform.DOMove(target, duration).SetEase(ease);
         }
     }
+
+    public bool IsOnSquare(Square square) {
+        Vector3 squarePosition = new Vector3(
+            square.x - square.y,
+            -(square.y + square.x) / 2f + square.vOffset / (square.sprite.bounds.size.y * Globals.TileHeight / 2) + positionYOffset,
+            transform.position.z
+        );
+
+        return transform.position == squarePosition;
+    }
 }

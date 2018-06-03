@@ -23,8 +23,9 @@ public class BoardCharacter : MonoBehaviour {
     public SpriteGlowEffect outline;
     public Movable movable;
     public Actionable actionable;
+    public AI AI;
 
-    private bool isMoving = false;
+    public bool isMoving = false;
 
     private void Awake() {
         battleManager = BattleManager.instance;
@@ -36,6 +37,7 @@ public class BoardCharacter : MonoBehaviour {
         outline = GetComponent<SpriteGlowEffect>();
         movable = GetComponent<Movable>();
         actionable = GetComponent<Actionable>();
+        AI = GetComponent<AI>();
 
 
         if (outline) {
@@ -144,12 +146,20 @@ public class BoardCharacter : MonoBehaviour {
     IEnumerator MoveThroughPath(Path path) {
         isMoving = true;
         float duration = 0.5f;
+        Tween cameraAnimation;
 
-        Tween cameraAnimation = battleManager.battleCamera.SetPosition(this, true, duration);
-        yield return cameraAnimation.WaitForCompletion();
+        if (!battleManager.battleCamera.IsOnSquare(GetSquare())) {
+            cameraAnimation = battleManager.battleCamera.SetPosition(this, true, duration);
+            yield return cameraAnimation.WaitForCompletion();
+        }
 
         // Check at 25% and 75% of each square the sorting order of the BoardChar to set the correct one
         for (int i = 0; i < path.steps.Count; i++) {
+            if (movable.movementPoints <= 0) break;
+            //if (!path.steps[i].IsNotBlocking()) break;
+
+            movable.movementPoints--;
+
             Tween characterAnimation = this.transform.DOMove(path.steps[i].transform.position, duration).SetEase(Ease.Linear);
             cameraAnimation = battleManager.battleCamera.SetPosition(path.steps[i], true, duration, Ease.Linear);
 
@@ -166,9 +176,9 @@ public class BoardCharacter : MonoBehaviour {
             }
 
             yield return characterAnimation.WaitForCompletion();
-        }
 
-        SetSquare(path.steps[path.steps.Count - 1]);
+            SetSquare(path.steps[i]);
+        }
 
         isMoving = false;
 

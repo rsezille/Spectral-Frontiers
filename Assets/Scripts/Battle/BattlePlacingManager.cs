@@ -189,7 +189,7 @@ public class BattlePlacingManager {
                     battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter.SetSquare(square);
                     battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter.outline.enabled = true;
                 } else {
-                    PlayerCharacter pc = BattleManager.Instantiate(battleManager.testPlayerCharacter, square.transform.position, Quaternion.identity) as PlayerCharacter;
+                    PlayerCharacter pc = Object.Instantiate(battleManager.testPlayerCharacter, square.transform.position, Quaternion.identity) as PlayerCharacter;
                     pc.boardCharacter.character = battleManager.playerPlacingChars[battleManager.placingCharIndex];
                     pc.GetComponent<Side>().value = Side.Type.Player;
                     pc.boardCharacter.SetSquare(square);

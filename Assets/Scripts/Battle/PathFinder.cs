@@ -101,9 +101,14 @@ public class PathFinder {
         Node target = nodes[tx, ty];
 
         while (target != nodes[sx, sy]) {
-            path.PrependStep(board.GetSquare(target.x, target.y));
+            // Don't add the targeted square if it is blocking
+            if (target != nodes[tx, ty] || (target == nodes[tx, ty] && board.GetSquare(tx, ty).IsNotBlocking())) {
+                path.PrependStep(board.GetSquare(target.x, target.y));
+            }
+
             target = target.parent;
         }
+
         //path.PrependStep(board.GetSquare(sx, sy));
 
         return path;
