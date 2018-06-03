@@ -120,7 +120,9 @@ public class BattleFightManager {
     public void Action() {
         battleManager.EnterTurnStepNone();
 
-        battleManager.fightHUD.actionMenu.Toggle();
+        if (battleManager.GetSelectedPlayerBoardCharacter().actionable.CanDoAction()) {
+            battleManager.fightHUD.actionMenu.Toggle();
+        }
     }
 
     // Called by ActionMenu
