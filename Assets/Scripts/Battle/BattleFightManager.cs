@@ -12,24 +12,28 @@ public class BattleFightManager {
     // Called by BattleManager
     public void Update() {
         if (Input.GetButtonDown(InputBinds.Previous)) {
-            SelectPreviousPlayerBoardCharacter();
-
             if (battleManager.currentTurnStep == BattleManager.TurnStep.Status) {
+                SelectPreviousPlayerBoardCharacter();
+
                 battleManager.statusHUD.Show(
                     battleManager.playerCharacters.IndexOf(battleManager.statusHUD.boardCharacter) <= 0 ?
                     battleManager.playerCharacters[battleManager.playerCharacters.Count - 1] :
                     battleManager.playerCharacters[battleManager.playerCharacters.IndexOf(battleManager.statusHUD.boardCharacter) - 1]
                 );
+            } else {
+                Previous();
             }
         } else if (Input.GetButtonDown(InputBinds.Next)) {
-            SelectNextPlayerBoardCharacter();
-
             if (battleManager.currentTurnStep == BattleManager.TurnStep.Status) {
+                SelectNextPlayerBoardCharacter();
+
                 battleManager.statusHUD.Show(
                     battleManager.playerCharacters.IndexOf(battleManager.statusHUD.boardCharacter) >= battleManager.playerCharacters.Count - 1 ?
                     battleManager.playerCharacters[0] :
                     battleManager.playerCharacters[battleManager.playerCharacters.IndexOf(battleManager.statusHUD.boardCharacter) + 1]
                 );
+            } else {
+                Next();
             }
         }
     }
@@ -62,6 +66,8 @@ public class BattleFightManager {
         if (battleManager.currentTurnStep == BattleManager.TurnStep.Move) {
             battleManager.EnterTurnStepNone();
         } else {
+            battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
+
             if (battleManager.GetSelectedPlayerBoardCharacter().movable != null && battleManager.GetSelectedPlayerBoardCharacter().movable.CanMove()) {
                 EnterTurnStepMove();
             }
@@ -71,6 +77,7 @@ public class BattleFightManager {
     // Called by FightHUD
     public void Previous() {
         battleManager.EnterTurnStepNone();
+        battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
 
         SelectPreviousPlayerBoardCharacter();
     }
@@ -78,6 +85,7 @@ public class BattleFightManager {
     // Called by FightHUD
     public void Next() {
         battleManager.EnterTurnStepNone();
+        battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
 
         SelectNextPlayerBoardCharacter();
     }
@@ -89,6 +97,7 @@ public class BattleFightManager {
 
     // Called by FightHUD
     public void EndTurn() {
+        battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
         //TODO: FlashMessage
         //TODO: Disable inputs
 
@@ -97,6 +106,18 @@ public class BattleFightManager {
         }
 
         EnterTurnStepEnemy();
+    }
+
+    // Called by FightHUD
+    public void Action() {
+        battleManager.EnterTurnStepNone();
+
+        battleManager.fightHUD.actionMenu.Toggle();
+    }
+
+    // Called by ActionMenu
+    public void Attack() {
+
     }
 
     public void EnterBattleStepFight() {
@@ -155,6 +176,8 @@ public class BattleFightManager {
     // Mark all squares where the character can move
     private void EnterTurnStepMove() {
         battleManager.currentTurnStep = BattleManager.TurnStep.Move;
+
+        battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
 
         List<Square> ts = new List<Square>();
         ts.Add(battleManager.GetSelectedPlayerBoardCharacter().GetSquare());

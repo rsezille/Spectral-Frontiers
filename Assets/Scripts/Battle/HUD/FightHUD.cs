@@ -7,10 +7,13 @@ public class FightHUD : MonoBehaviour {
     private BattleManager battleManager;
 
     public GameObject moveButton;
+    public GameObject actionButton;
     public GameObject previousButton;
     public GameObject nextButton;
     public GameObject statusButton;
     public GameObject endTurnButton;
+
+    public ActionMenu actionMenu;
 
     public RectTransform fightMenu;
     public RectTransform currentSquare;
@@ -24,6 +27,7 @@ public class FightHUD : MonoBehaviour {
 
     private void Start() {
         moveButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Move);
+        actionButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Action);
         previousButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Previous);
         nextButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Next);
         statusButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Status);
@@ -37,6 +41,10 @@ public class FightHUD : MonoBehaviour {
         Movable movable = battleManager.GetSelectedPlayerBoardCharacter().GetComponent<Movable>();
         moveButton.GetComponent<Button>().interactable = movable != null && movable.CanMove();
 
+        Actionable actionable = battleManager.GetSelectedPlayerBoardCharacter().GetComponent<Actionable>();
+        actionButton.GetComponent<Button>().interactable = actionable != null && actionable.CanDoAction();
+        actionMenu.Refresh();
+
         previousButton.GetComponent<Button>().interactable = true; //TODO: if no other character available, disable it
         nextButton.GetComponent<Button>().interactable = true; //TODO: if no other character available, disable it
         statusButton.GetComponent<Button>().interactable = true;
@@ -48,7 +56,7 @@ public class FightHUD : MonoBehaviour {
 
         if (active) {
             isGoingEnabled = true;
-            this.gameObject.SetActive(true);
+            gameObject.SetActive(true);
 
             fightMenu.anchoredPosition3D = new Vector3(fightMenu.anchoredPosition3D.x, -120f, fightMenu.anchoredPosition3D.z);
             fightMenu.DOAnchorPos3D(new Vector3(fightMenu.anchoredPosition3D.x, fightMenu.sizeDelta.y / 2f, fightMenu.anchoredPosition3D.z), speed).SetEase(Ease.OutCubic);
@@ -59,6 +67,8 @@ public class FightHUD : MonoBehaviour {
             selectedSquare.anchoredPosition3D = new Vector3(selectedSquare.anchoredPosition3D.x, -120f, selectedSquare.anchoredPosition3D.z);
             selectedSquare.DOAnchorPos3D(new Vector3(selectedSquare.anchoredPosition3D.x, selectedSquare.sizeDelta.y / 2f, selectedSquare.anchoredPosition3D.z), speed).SetEase(Ease.OutCubic);
         } else {
+            actionMenu.SetActiveWithAnimation(false);
+
             isGoingEnabled = false;
 
             fightMenu.DOAnchorPos3D(new Vector3(fightMenu.anchoredPosition3D.x, -120f, fightMenu.anchoredPosition3D.z), speed).SetEase(Ease.OutCubic);
