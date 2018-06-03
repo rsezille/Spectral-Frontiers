@@ -98,4 +98,17 @@ public class Character {
         //TODO: Equipment impact
         return baseMagicalResistance;
     }
+
+    /**
+     * Do a basic attack against the defender
+     * @param defender The defender
+     * @return Return the number of damages done
+     */
+    public int BasicAttack(Character defender) {
+        int damagesDone = GetPhysicalAttack() - defender.GetPhysicalDefense();
+
+        defender.SetCurrentHP(defender.currentHP - damagesDone);
+
+        return damagesDone;
+    }
 }

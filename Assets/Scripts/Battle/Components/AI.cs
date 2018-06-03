@@ -26,10 +26,47 @@ public class AI : MonoBehaviour {
                 yield return null;
             }
 
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(0.3f);
+
+            bool attacked = Action();
+
+            if (attacked) {
+                yield return new WaitForSeconds(0.5f);
+            }
         }
 
         yield return null;
+    }
+
+    /**
+     * TODO: Add skills, etc.
+     */
+    private bool Action() {
+        bool attacked = false;
+
+        while (boardCharacter.actionable.CanDoAction()) {
+            BoardCharacter target = null;
+
+            foreach (BoardCharacter playerCharacter in battleManager.playerCharacters) {
+                if (!playerCharacter.IsDead()) {
+                    if (playerCharacter.GetSquare().GetManhattanDistance(boardCharacter.GetSquare()) == 1) {
+                        if (target == null || target.character.GetCurrentHP() > playerCharacter.character.GetCurrentHP()) {
+                            target = playerCharacter;
+                        }
+                    }
+                }
+            }
+
+            if (target != null) {
+                boardCharacter.BasicAttack(target);
+                attacked = true;
+            } else {
+                // If no target found, stop attacking
+                break;
+            }
+        }
+
+        return attacked;
     }
 
     /**

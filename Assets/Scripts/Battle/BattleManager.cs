@@ -12,8 +12,8 @@ public class BattleManager : MonoBehaviour {
     public enum BattleStep {
         Placing, Fight, Victory
     };
-    public enum TurnStep { // Placing: None or Status - Fight: None, Move, Attack, Skill, Enemy, Status - Victory: None
-        None, Move, Attack, Skill, Enemy, Status
+    public enum TurnStep { // Placing: None or Status - Fight: None, Move, Attack, Skill, Item, Enemy, Status - Victory: None
+        None, Move, Attack, Skill, Item, Enemy, Status
     };
 
     public BattleStep currentBattleStep;
@@ -24,6 +24,7 @@ public class BattleManager : MonoBehaviour {
     public BattleCamera battleCamera;
 
     public PlayerCharacter testPlayerCharacter; //TODO: Find the correct character giving the name & job
+    public FloatingText floatingText;
 
     public RawMission mission;
 
@@ -42,7 +43,7 @@ public class BattleManager : MonoBehaviour {
     // Events
     public delegate void EnterStepEvent();
     public event EnterStepEvent OnEnterPlacing;
-    public event EnterStepEvent OnLeavingMove;
+    public event EnterStepEvent OnLeavingMarkStep;
 
     // Dedicated managers for each BattleStep
     public BattlePlacingManager placing;
@@ -136,9 +137,9 @@ public class BattleManager : MonoBehaviour {
         }
     }
 
-    public void EventOnLeavingMove() {
-        if (OnLeavingMove != null) {
-            OnLeavingMove();
+    public void EventOnLeavingMarkStep() {
+        if (OnLeavingMarkStep != null) {
+            OnLeavingMarkStep();
         }
     }
 

@@ -216,6 +216,7 @@ GameObject:
   - component: {fileID: 224301408559183914}
   - component: {fileID: 222729484064412724}
   - component: {fileID: 114727571505560270}
+  - component: {fileID: 114876254298230116}
   m_Layer: 0
   m_Name: ActionMenu
   m_TagString: Untagged
@@ -529,7 +530,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 114224124244742388}
   m_OnClick:
     m_PersistentCalls:
@@ -741,10 +742,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveButton: {fileID: 1613841934877412}
+  actionButton: {fileID: 1746458637269728}
   previousButton: {fileID: 1481788281385398}
   nextButton: {fileID: 1229474046433124}
   statusButton: {fileID: 1705415096737308}
   endTurnButton: {fileID: 1554370939180222}
+  actionMenu: {fileID: 114876254298230116}
   fightMenu: {fileID: 224502134963922086}
   currentSquare: {fileID: 224905887740427524}
   selectedSquare: {fileID: 224822547830529886}
@@ -1085,7 +1088,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 114471614599939864}
   m_OnClick:
     m_PersistentCalls:
@@ -1227,7 +1230,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 114098542980102484}
   m_OnClick:
     m_PersistentCalls:
@@ -1671,6 +1674,20 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114876254298230116
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1337844143717012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 208e7ddd9eacba842a3098bed202fe4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackButton: {fileID: 1158727103934356}
+  skillButton: {fileID: 1974181161813456}
+  itemButton: {fileID: 1550181711399624}
 --- !u!114 &114879176543020528
 MonoBehaviour:
   m_ObjectHideFlags: 1

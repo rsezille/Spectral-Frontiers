@@ -12,24 +12,28 @@ public class BattleFightManager {
     // Called by BattleManager
     public void Update() {
         if (Input.GetButtonDown(InputBinds.Previous)) {
-            SelectPreviousPlayerBoardCharacter();
-
             if (battleManager.currentTurnStep == BattleManager.TurnStep.Status) {
+                SelectPreviousPlayerBoardCharacter();
+
                 battleManager.statusHUD.Show(
                     battleManager.playerCharacters.IndexOf(battleManager.statusHUD.boardCharacter) <= 0 ?
                     battleManager.playerCharacters[battleManager.playerCharacters.Count - 1] :
                     battleManager.playerCharacters[battleManager.playerCharacters.IndexOf(battleManager.statusHUD.boardCharacter) - 1]
                 );
+            } else {
+                Previous();
             }
         } else if (Input.GetButtonDown(InputBinds.Next)) {
-            SelectNextPlayerBoardCharacter();
-
             if (battleManager.currentTurnStep == BattleManager.TurnStep.Status) {
+                SelectNextPlayerBoardCharacter();
+
                 battleManager.statusHUD.Show(
                     battleManager.playerCharacters.IndexOf(battleManager.statusHUD.boardCharacter) >= battleManager.playerCharacters.Count - 1 ?
                     battleManager.playerCharacters[0] :
                     battleManager.playerCharacters[battleManager.playerCharacters.IndexOf(battleManager.statusHUD.boardCharacter) + 1]
                 );
+            } else {
+                Next();
             }
         }
     }
@@ -38,7 +42,8 @@ public class BattleFightManager {
     public void EnterTurnStepNone(BattleManager.TurnStep previousTurnStep) {
         switch (previousTurnStep) {
             case BattleManager.TurnStep.Move:
-                battleManager.EventOnLeavingMove();
+            case BattleManager.TurnStep.Attack:
+                battleManager.EventOnLeavingMarkStep();
                 break;
             case BattleManager.TurnStep.Status:
                 battleManager.fightHUD.SetActiveWithAnimation(true);
@@ -52,6 +57,13 @@ public class BattleFightManager {
 
     // Called by BattleManager
     public void EnterTurnStepStatus(BattleManager.TurnStep previousTurnStep) {
+        switch (previousTurnStep) {
+            case BattleManager.TurnStep.Move:
+            case BattleManager.TurnStep.Attack:
+                battleManager.EventOnLeavingMarkStep();
+                break;
+        }
+
         battleManager.fightHUD.SetActiveWithAnimation(false);
 
         battleManager.statusHUD.Show(battleManager.GetSelectedPlayerBoardCharacter());
@@ -62,6 +74,8 @@ public class BattleFightManager {
         if (battleManager.currentTurnStep == BattleManager.TurnStep.Move) {
             battleManager.EnterTurnStepNone();
         } else {
+            battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
+
             if (battleManager.GetSelectedPlayerBoardCharacter().movable != null && battleManager.GetSelectedPlayerBoardCharacter().movable.CanMove()) {
                 EnterTurnStepMove();
             }
@@ -71,6 +85,7 @@ public class BattleFightManager {
     // Called by FightHUD
     public void Previous() {
         battleManager.EnterTurnStepNone();
+        battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
 
         SelectPreviousPlayerBoardCharacter();
     }
@@ -78,6 +93,7 @@ public class BattleFightManager {
     // Called by FightHUD
     public void Next() {
         battleManager.EnterTurnStepNone();
+        battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
 
         SelectNextPlayerBoardCharacter();
     }
@@ -89,6 +105,7 @@ public class BattleFightManager {
 
     // Called by FightHUD
     public void EndTurn() {
+        battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
         //TODO: FlashMessage
         //TODO: Disable inputs
 
@@ -97,6 +114,28 @@ public class BattleFightManager {
         }
 
         EnterTurnStepEnemy();
+    }
+
+    // Called by FightHUD
+    public void Action() {
+        battleManager.EnterTurnStepNone();
+
+        if (battleManager.GetSelectedPlayerBoardCharacter().actionable.CanDoAction()) {
+            battleManager.fightHUD.actionMenu.Toggle();
+        }
+    }
+
+    // Called by ActionMenu
+    public void Attack() {
+        if (battleManager.currentTurnStep == BattleManager.TurnStep.Attack) {
+            battleManager.EnterTurnStepNone();
+        } else {
+            battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
+
+            if (battleManager.GetSelectedPlayerBoardCharacter().actionable != null && battleManager.GetSelectedPlayerBoardCharacter().actionable.CanDoAction()) {
+                EnterTurnStepAttack();
+            }
+        }
     }
 
     public void EnterBattleStepFight() {
@@ -126,6 +165,13 @@ public class BattleFightManager {
     }
 
     private void EnterTurnStepEnemy() {
+        switch (battleManager.currentTurnStep) {
+            case BattleManager.TurnStep.Move:
+            case BattleManager.TurnStep.Attack:
+                battleManager.EventOnLeavingMarkStep();
+                break;
+        }
+
         battleManager.currentTurnStep = BattleManager.TurnStep.Enemy;
 
         foreach (BoardCharacter enemy in battleManager.enemyCharacters) {
@@ -152,39 +198,41 @@ public class BattleFightManager {
         yield return null;
     }
 
-    // Mark all squares where the character can move
-    private void EnterTurnStepMove() {
-        battleManager.currentTurnStep = BattleManager.TurnStep.Move;
+    /**
+     * TODO: return squares without marking them? and do a more generic function in board, like PropagateLinear
+     */
+    private void MarkSquares(int distance, Square.MarkType markType, bool ignoreBlocking = false) {
+        battleManager.EventOnLeavingMarkStep();
 
         List<Square> ts = new List<Square>();
         ts.Add(battleManager.GetSelectedPlayerBoardCharacter().GetSquare());
 
         List<Square> ts2 = new List<Square>();
 
-        for (int i = 0; i < battleManager.GetSelectedPlayerBoardCharacter().movable.movementPoints; i++) {
+        for (int i = 0; i < distance; i++) {
             foreach (Square t in ts) {
                 Square north = battleManager.board.GetSquare(t.x, t.y - 1);
                 Square south = battleManager.board.GetSquare(t.x, t.y + 1);
                 Square west = battleManager.board.GetSquare(t.x - 1, t.y);
                 Square east = battleManager.board.GetSquare(t.x + 1, t.y);
 
-                if (north != null && !north.isMovementMarked && north.IsNotBlocking()) {
-                    north.MarkForMovement();
+                if (north != null && !north.isMarked && ((north.IsNotBlocking() && !ignoreBlocking) || ignoreBlocking)) {
+                    north.Mark(markType);
                     ts2.Add(north);
                 }
 
-                if (south != null && !south.isMovementMarked && south.IsNotBlocking()) {
-                    south.MarkForMovement();
+                if (south != null && !south.isMarked && ((south.IsNotBlocking() && !ignoreBlocking) || ignoreBlocking)) {
+                    south.Mark(markType);
                     ts2.Add(south);
                 }
 
-                if (west != null && !west.isMovementMarked && west.IsNotBlocking()) {
-                    west.MarkForMovement();
+                if (west != null && !west.isMarked && ((west.IsNotBlocking() && !ignoreBlocking) || ignoreBlocking)) {
+                    west.Mark(markType);
                     ts2.Add(west);
                 }
 
-                if (east != null && !east.isMovementMarked && east.IsNotBlocking()) {
-                    east.MarkForMovement();
+                if (east != null && !east.isMarked && ((east.IsNotBlocking() && !ignoreBlocking) || ignoreBlocking)) {
+                    east.Mark(markType);
                     ts2.Add(east);
                 }
             }
@@ -197,6 +245,22 @@ public class BattleFightManager {
 
             ts2.Clear();
         }
+    }
+
+    // Mark all squares where the character can move
+    private void EnterTurnStepMove() {
+        battleManager.currentTurnStep = BattleManager.TurnStep.Move;
+
+        battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
+
+        MarkSquares(battleManager.GetSelectedPlayerBoardCharacter().movable.movementPoints, Square.MarkType.Movement);
+    }
+
+    // Mark all squares the character can attack
+    private void EnterTurnStepAttack() {
+        battleManager.currentTurnStep = BattleManager.TurnStep.Attack;
+
+        MarkSquares(1, Square.MarkType.Attack, true); // TODO [RANGED] weapon range
     }
 
     private void SelectPreviousPlayerBoardCharacter() {
