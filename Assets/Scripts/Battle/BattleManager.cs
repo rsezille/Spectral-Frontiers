@@ -42,7 +42,7 @@ public class BattleManager : MonoBehaviour {
     // Events
     public delegate void EnterStepEvent();
     public event EnterStepEvent OnEnterPlacing;
-    public event EnterStepEvent OnLeavingMove;
+    public event EnterStepEvent OnLeavingMarkStep;
 
     // Dedicated managers for each BattleStep
     public BattlePlacingManager placing;
@@ -136,9 +136,9 @@ public class BattleManager : MonoBehaviour {
         }
     }
 
-    public void EventOnLeavingMove() {
-        if (OnLeavingMove != null) {
-            OnLeavingMove();
+    public void EventOnLeavingMarkStep() {
+        if (OnLeavingMarkStep != null) {
+            OnLeavingMarkStep();
         }
     }
 

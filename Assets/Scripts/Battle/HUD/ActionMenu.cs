@@ -23,7 +23,7 @@ public class ActionMenu : MonoBehaviour {
     // Compute all checks on buttons availability
     public void Refresh() {
         attackButton.GetComponent<Button>().interactable = true;
-        skillButton.GetComponent<Button>().interactable = false; // TODO [STATUS]: if !Silenced etc.
+        skillButton.GetComponent<Button>().interactable = false; // TODO [STATUS] if !Silenced etc.
         itemButton.GetComponent<Button>().interactable = false;
     }
 
