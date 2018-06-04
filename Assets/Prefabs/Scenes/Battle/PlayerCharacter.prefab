@@ -111,6 +111,8 @@ MonoBehaviour:
   outline: {fileID: 0}
   movable: {fileID: 0}
   actionable: {fileID: 0}
+  AI: {fileID: 0}
+  isMoving: 0
 --- !u!114 &114098185219839834
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -565,7 +565,7 @@ MonoBehaviour:
   blockTop: {fileID: 224912461181694154}
   blockBottom: {fileID: 224154319897807700}
   statusText: {fileID: 114205290660485112}
-  boardChar: {fileID: 0}
+  boardCharacter: {fileID: 0}
   backButton: {fileID: 1274439581075234}
   quitButton: {fileID: 1032750730619314}
 --- !u!114 &114525654578412948

@@ -120,9 +120,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 7
-  isAutoMoving: 0
-  smooth: 0
-  target: {x: 0, y: 0, z: 0}
 --- !u!114 &114742812827374008
 MonoBehaviour:
   m_ObjectHideFlags: 1
