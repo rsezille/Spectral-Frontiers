@@ -14,6 +14,10 @@ public class AI : MonoBehaviour {
         boardCharacter = GetComponent<BoardCharacter>();
     }
 
+    /**
+     * Use a custom AI if it exists, otherwise use the standard one
+     * TODO [AI] Create presets such as normal, aggressive, and so on
+     */
     public IEnumerator Process() {
         CustomAI customAI = GetComponent<CustomAI>();
 
