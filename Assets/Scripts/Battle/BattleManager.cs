@@ -40,6 +40,7 @@ public class BattleManager : MonoBehaviour {
     public PlacingHUD placingHUD;
     public StatusHUD statusHUD;
     public FightHUD fightHUD;
+    public VictoryHUD victoryHUD;
 
     // Events
     public delegate void EnterStepEvent();
@@ -77,6 +78,7 @@ public class BattleManager : MonoBehaviour {
         placingHUD.gameObject.SetActive(false);
         statusHUD.gameObject.SetActive(false);
         fightHUD.gameObject.SetActive(false);
+        victoryHUD.gameObject.SetActive(false);
     }
 
     private void Start() {
@@ -232,7 +234,7 @@ public class BattleManager : MonoBehaviour {
         }
 
         if (playerAlive && !enemyAlive) { // The player wins
-            // TODO
+            victory.EnterBattleStepVictory();
         } else if (!playerAlive && enemyAlive) { // The enemy wins
             StartCoroutine(WaitGameOver());
         } else if (!playerAlive) { // No allied and enemy chars alive, enemy wins

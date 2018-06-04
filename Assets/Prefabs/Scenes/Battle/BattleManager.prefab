@@ -74,3 +74,4 @@ MonoBehaviour:
   placingHUD: {fileID: 0}
   statusHUD: {fileID: 0}
   fightHUD: {fileID: 0}
+  victoryHUD: {fileID: 0}

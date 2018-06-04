@@ -13,5 +13,8 @@
 
     public void EnterBattleStepVictory() {
         battleManager.currentBattleStep = BattleManager.BattleStep.Victory;
+        
+        battleManager.fightHUD.SetActiveWithAnimation(false);
+        battleManager.victoryHUD.SetActiveWithAnimation(true);
     }
 }
