@@ -144,6 +144,8 @@ public class BoardCharacter : MonoBehaviour {
             floatingText.text = "-" + dmgDone;
             
             actionable.actionTokens--;
+
+            battleManager.CheckEndBattle();
         }
     }
 

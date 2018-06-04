@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 /**
@@ -210,5 +211,38 @@ public class BattleManager : MonoBehaviour {
             battleCamera.SetPosition(selectedPlayerBoardCharacter, true);
             fightHUD.Refresh();
         }
+    }
+
+    public void CheckEndBattle() {
+        bool playerAlive = false;
+        bool enemyAlive = false;
+
+        foreach (BoardCharacter playerCharacter in playerCharacters) {
+            if (!playerCharacter.IsDead()) {
+                playerAlive = true;
+                break;
+            }
+        }
+
+        foreach (BoardCharacter enemyCharacter in enemyCharacters) {
+            if (!enemyCharacter.IsDead()) {
+                enemyAlive = true;
+                break;
+            }
+        }
+
+        if (playerAlive && !enemyAlive) { // The player wins
+            // TODO
+        } else if (!playerAlive && enemyAlive) { // The enemy wins
+            StartCoroutine(WaitGameOver());
+        } else if (!playerAlive) { // No allied and enemy chars alive, enemy wins
+            StartCoroutine(WaitGameOver());
+        }
+    }
+
+    private IEnumerator WaitGameOver() {
+        yield return new WaitForSeconds(1f);
+
+        GameManager.instance.LoadSceneAsync(Scenes.GameOver);
     }
 }
