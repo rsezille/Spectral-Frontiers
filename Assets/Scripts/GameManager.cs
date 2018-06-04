@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /**
  * GameManager is the same accross all scenes and is instantiated by the loader.
@@ -67,5 +69,20 @@ public class GameManager : MonoBehaviour {
 
             return null;
         }
+    }
+
+    public void LoadScene(string scene) {
+        StartCoroutine(LoadSceneAsync(scene));
+    }
+
+    private IEnumerator LoadSceneAsync(string scene) {
+        AsyncOperation AO = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Single);
+        AO.allowSceneActivation = false;
+
+        while (AO.progress < 0.9f) {
+            yield return null;
+        }
+
+        AO.allowSceneActivation = true;
     }
 }
