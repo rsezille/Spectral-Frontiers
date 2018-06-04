@@ -119,10 +119,6 @@ public class BattleManager : MonoBehaviour {
         if (Input.GetAxis(InputBinds.Zoom) != 0) {
             battleCamera.Zoom(Input.GetAxis(InputBinds.Zoom));
         }
-
-        if (Input.GetKeyDown(KeyCode.F)) {
-            GameManager.instance.LoadSceneAsync("GameOver", true);
-        }
 #endif
 
         switch (currentBattleStep) {
