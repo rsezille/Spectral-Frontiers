@@ -118,7 +118,7 @@ public class BattleManager : MonoBehaviour {
         }
 
         if (Input.GetKeyDown(KeyCode.F)) {
-            GameManager.instance.LoadScene("GameOver");
+            GameManager.instance.LoadSceneAsync("GameOver", true);
         }
 #endif
 

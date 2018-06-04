@@ -1,11 +1,15 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 /**
- * GameManager is the same accross all scenes and is instantiated by the loader.
+ * GameManager is the same accross all scenes (DontDestroyOnLoad) and is instantiated by the loader
  * Initialize missions, translations, monsters, etc.
+ * Keep a reference to the player (which is the same across all scenes)
+ * Used to make transitions & load scenes
  */
 public class GameManager : MonoBehaviour {
     public static GameManager instance = null;
@@ -16,6 +20,9 @@ public class GameManager : MonoBehaviour {
     private Dictionary<string, RawMonster> monsters;
 
     public string missionToLoad;
+
+    private GameObject transition;
+    private Image transitionImage;
 
     // Game initialization
     private void Awake() {
@@ -71,18 +78,53 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public void LoadScene(string scene) {
-        StartCoroutine(LoadSceneAsync(scene));
+    /**
+     * immediate is used to not wait the fade in to be completed before loading the scene - can speed up scene loading
+     * /!\ be aware that when using immediate = true, the speed must be less than the loading time (otherwise the fade in will not be finished when swaping scenes)
+     * TODO [SCENE] Add a loading screen between scenes (or on purpose, for example when loading a mission (BattleScene)
+     */
+    public void LoadSceneAsync(string scene, bool immediate = false, float speed = 1f, Color? inColorN = null, Color? outColorN = null) {
+        Color inColor = inColorN ?? Color.black;
+        Color outColor = outColorN ?? Color.black;
+
+        transition = new GameObject("Transition");
+        transition.transform.SetParent(transform);
+
+        Canvas myCanvas = transition.AddComponent<Canvas>();
+        myCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
+
+        transitionImage = transition.AddComponent<Image>();
+        transitionImage.color = new Color(inColor.r, inColor.g, inColor.b, 0f);
+
+        if (immediate) {
+            StartCoroutine(LoadSceneAsync(scene, immediate, inColor, outColor, speed));
+        } else {
+            transitionImage.DOColor(inColor, speed).OnComplete(() => {
+                StartCoroutine(LoadSceneAsync(scene, immediate, inColor, outColor, speed));
+            });
+        }
     }
 
-    private IEnumerator LoadSceneAsync(string scene) {
+    private IEnumerator LoadSceneAsync(string scene, bool immediate, Color inColor, Color outColor, float speed) {
+        bool animationCompleted = !immediate;
+
         AsyncOperation AO = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Single);
         AO.allowSceneActivation = false;
 
-        while (AO.progress < 0.9f) {
+        if (immediate) {
+            transitionImage.DOColor(inColor, speed).OnComplete(() => {
+                animationCompleted = true;
+            });
+        }
+
+        while (AO.progress < 0.9f || !animationCompleted) {
             yield return null;
         }
 
         AO.allowSceneActivation = true;
+
+        transitionImage.DOColor(new Color(outColor.r, outColor.g, outColor.b, 0f), speed).OnComplete(() => {
+            Destroy(transition);
+        });
     }
 }
