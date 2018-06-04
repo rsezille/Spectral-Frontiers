@@ -181,6 +181,9 @@ public class BattleFightManager {
         battleManager.StartCoroutine(StartAI());
     }
 
+    /**
+     * Process each enemy AI then start a new player turn
+     */
     private IEnumerator StartAI() {
         battleManager.fightHUD.SetActiveWithAnimation(false);
 

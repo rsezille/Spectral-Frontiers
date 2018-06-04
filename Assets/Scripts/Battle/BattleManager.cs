@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 /**
@@ -39,6 +40,7 @@ public class BattleManager : MonoBehaviour {
     public PlacingHUD placingHUD;
     public StatusHUD statusHUD;
     public FightHUD fightHUD;
+    public VictoryHUD victoryHUD;
 
     // Events
     public delegate void EnterStepEvent();
@@ -76,6 +78,7 @@ public class BattleManager : MonoBehaviour {
         placingHUD.gameObject.SetActive(false);
         statusHUD.gameObject.SetActive(false);
         fightHUD.gameObject.SetActive(false);
+        victoryHUD.gameObject.SetActive(false);
     }
 
     private void Start() {
@@ -206,5 +209,38 @@ public class BattleManager : MonoBehaviour {
             battleCamera.SetPosition(selectedPlayerBoardCharacter, true);
             fightHUD.Refresh();
         }
+    }
+
+    public void CheckEndBattle() {
+        bool playerAlive = false;
+        bool enemyAlive = false;
+
+        foreach (BoardCharacter playerCharacter in playerCharacters) {
+            if (!playerCharacter.IsDead()) {
+                playerAlive = true;
+                break;
+            }
+        }
+
+        foreach (BoardCharacter enemyCharacter in enemyCharacters) {
+            if (!enemyCharacter.IsDead()) {
+                enemyAlive = true;
+                break;
+            }
+        }
+
+        if (playerAlive && !enemyAlive) { // The player wins
+            victory.EnterBattleStepVictory();
+        } else if (!playerAlive && enemyAlive) { // The enemy wins
+            StartCoroutine(WaitGameOver());
+        } else if (!playerAlive) { // No allied and enemy chars alive, enemy wins
+            StartCoroutine(WaitGameOver());
+        }
+    }
+
+    private IEnumerator WaitGameOver() {
+        yield return new WaitForSeconds(1f);
+
+        GameManager.instance.LoadSceneAsync(Scenes.GameOver);
     }
 }
