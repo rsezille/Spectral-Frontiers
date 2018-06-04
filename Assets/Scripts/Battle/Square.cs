@@ -72,7 +72,7 @@ public class Square : MonoBehaviour {
         RefreshColor();
     }
 
-    IEnumerator IsStartingSquare(Color targetColor) {
+    private IEnumerator IsStartingSquare(Color targetColor) {
         float initialFade = 0.30f;
         float maxFade = 0.78f;
         float smoothness = 0.02f;

@@ -154,7 +154,7 @@ public class BoardCharacter : MonoBehaviour {
         }
     }
 
-    IEnumerator MoveThroughPath(Path path) {
+    private IEnumerator MoveThroughPath(Path path) {
         isMoving = true;
         float duration = 0.5f;
         Tween cameraAnimation;
