@@ -1,15 +1,18 @@
 ﻿using TMPro;
 using UnityEngine;
 
-[RequireComponent(typeof(BoardEntity), typeof(PlayerCharacter)), DisallowMultipleComponent]
+[RequireComponent(typeof(BoardEntity), typeof(BoardCharacter)), DisallowMultipleComponent]
 public class CharacterNameHUD : MonoBehaviour {
     private TextMeshProUGUI characterName;
     private Transform instance;
+
+    private BoardCharacter boardCharacter;
 
     public Transform characterNameHUD;
 
     private void Awake() {
         instance = Instantiate(characterNameHUD, GetComponent<BoardEntity>().transform);
+        boardCharacter = GetComponent<BoardCharacter>();
     }
 
     private void Start() {
@@ -25,6 +28,14 @@ public class CharacterNameHUD : MonoBehaviour {
 
         characterName = instance.Find("CharacterName").GetComponent<TextMeshProUGUI>();
 
-        characterName.text = GetComponent<BoardCharacter>().character.name;
+        characterName.text = boardCharacter.character.name;
+    }
+
+    private void Update() {
+        if (boardCharacter.IsDead()) {
+            characterName.text = "(Dead) " + boardCharacter.character.name;
+        } else {
+            characterName.text = boardCharacter.character.name;
+        }
     }
 }
