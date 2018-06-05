@@ -13,7 +13,7 @@ public class BattleFightManager {
     public void Update() {
         if (Input.GetButtonDown(InputBinds.Previous)) {
             if (battleManager.currentTurnStep == BattleManager.TurnStep.Status) {
-                SelectPreviousPlayerBoardCharacter();
+                SelectPreviousPlayerBoardCharacter(false);
 
                 battleManager.statusHUD.Show(
                     battleManager.playerCharacters.IndexOf(battleManager.statusHUD.boardCharacter) <= 0 ?
@@ -25,7 +25,7 @@ public class BattleFightManager {
             }
         } else if (Input.GetButtonDown(InputBinds.Next)) {
             if (battleManager.currentTurnStep == BattleManager.TurnStep.Status) {
-                SelectNextPlayerBoardCharacter();
+                SelectNextPlayerBoardCharacter(false);
 
                 battleManager.statusHUD.Show(
                     battleManager.playerCharacters.IndexOf(battleManager.statusHUD.boardCharacter) >= battleManager.playerCharacters.Count - 1 ?
@@ -52,7 +52,7 @@ public class BattleFightManager {
 
         battleManager.fightHUD.Refresh();
 
-        battleManager.battleCamera.SetPosition(battleManager.GetSelectedPlayerBoardCharacter(), true);
+        //battleManager.battleCamera.SetPosition(battleManager.GetSelectedPlayerBoardCharacter(), true);
     }
 
     // Called by BattleManager
@@ -160,8 +160,19 @@ public class BattleFightManager {
         }
 
         battleManager.EnterTurnStepNone();
+        battleManager.CheckEndBattle();
 
-        battleManager.SetSelectedPlayerBoardCharacter(battleManager.playerCharacters[0]);
+        BoardCharacter aliveCharacter = battleManager.playerCharacters[0];
+
+        while (aliveCharacter.IsDead()) {
+            if (battleManager.playerCharacters.IndexOf(aliveCharacter) >= battleManager.playerCharacters.Count - 1) {
+                aliveCharacter = battleManager.playerCharacters[0];
+            } else {
+                aliveCharacter = battleManager.playerCharacters[battleManager.playerCharacters.IndexOf(aliveCharacter) + 1];
+            }
+        }
+
+        battleManager.SetSelectedPlayerBoardCharacter(aliveCharacter);
     }
 
     private void EnterTurnStepEnemy() {
@@ -188,6 +199,8 @@ public class BattleFightManager {
         battleManager.fightHUD.SetActiveWithAnimation(false);
 
         foreach (BoardCharacter enemy in battleManager.enemyCharacters) {
+            if (enemy.IsDead()) continue;
+
             if (enemy.AI != null) {
                 yield return enemy.AI.Process();
             }
@@ -266,7 +279,7 @@ public class BattleFightManager {
         MarkSquares(1, Square.MarkType.Attack, true); // TODO [RANGED] weapon range
     }
 
-    private void SelectPreviousPlayerBoardCharacter() {
+    private void SelectPreviousPlayerBoardCharacter(bool checkForDead = true) {
         BoardCharacter boardCharacter = battleManager.GetSelectedPlayerBoardCharacter();
 
         do {
@@ -275,12 +288,12 @@ public class BattleFightManager {
             } else {
                 boardCharacter = battleManager.playerCharacters[battleManager.playerCharacters.IndexOf(boardCharacter) - 1];
             }
-        } while (boardCharacter.IsDead());
+        } while (boardCharacter.IsDead() && checkForDead);
 
         battleManager.SetSelectedPlayerBoardCharacter(boardCharacter);
     }
 
-    private void SelectNextPlayerBoardCharacter() {
+    private void SelectNextPlayerBoardCharacter(bool checkForDead = true) {
         BoardCharacter boardCharacter = battleManager.GetSelectedPlayerBoardCharacter();
 
         do {
@@ -289,7 +302,7 @@ public class BattleFightManager {
             } else {
                 boardCharacter = battleManager.playerCharacters[battleManager.playerCharacters.IndexOf(boardCharacter) + 1];
             }
-        } while (boardCharacter.IsDead());
+        } while (boardCharacter.IsDead() && checkForDead);
 
         battleManager.SetSelectedPlayerBoardCharacter(boardCharacter);
     }

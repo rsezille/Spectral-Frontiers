@@ -56,6 +56,16 @@ public class Character {
         return maximumHP;
     }
 
+    /**
+     * For testing purpose
+     * TODO [ENEMY] Initialize method
+     */
+    public void SetMaxHP(int maxHP) {
+        baseHP = maxHP;
+        ComputeMaxHP();
+        SetCurrentHP(currentHP);
+    }
+
     public int GetCurrentHP() {
         return currentHP;
     }

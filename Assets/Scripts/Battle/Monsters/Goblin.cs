@@ -13,6 +13,13 @@ public class Goblin : MonoBehaviour, ICustomAI {
         //customAI.Use(this);
     }
 
+    /**
+    * BoardCharacter.character is not available in Awake(), but is in Start()
+    */
+    private void Start() {
+        GetComponent<BoardCharacter>().character.SetMaxHP(10);
+    }
+
     public IEnumerator ProcessAI() {
         yield return null;
     }
