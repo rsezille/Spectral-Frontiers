@@ -1,9 +1,9 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using TMPro;
+using UnityEngine;
 
 [RequireComponent(typeof(BoardEntity), typeof(PlayerCharacter)), DisallowMultipleComponent]
 public class CharacterNameHUD : MonoBehaviour {
-    private Text characterName;
+    private TextMeshProUGUI characterName;
     private Transform instance;
 
     public Transform characterNameHUD;
@@ -23,7 +23,7 @@ public class CharacterNameHUD : MonoBehaviour {
 
         instance.transform.position += new Vector3(0f, spriteSizeY + offset);
 
-        characterName = instance.Find("CharacterName").GetComponent<Text>();
+        characterName = instance.Find("CharacterName").GetComponent<TextMeshProUGUI>();
 
         characterName.text = GetComponent<BoardCharacter>().character.name;
     }
