@@ -5,6 +5,7 @@ public class World : MonoBehaviour {
 
     public bool showGrid = true;
     public bool drawMode = true;
+    public Color gridColor = Color.grey;
 
     public GameObject tile;
 
@@ -12,7 +13,7 @@ public class World : MonoBehaviour {
         size.Clamp(new Vector2Int(1, 1), new Vector2Int(1000, 1000));
 
         if (showGrid) {
-            Gizmos.color = Color.grey;
+            Gizmos.color = gridColor;
 
             for (int x = 0; x <= size.x; x++) {
                 Gizmos.DrawLine(new Vector3(x, x / 2f), new Vector3(-size.y + x, (size.y + x) / 2f));
