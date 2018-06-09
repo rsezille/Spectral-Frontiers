@@ -4,6 +4,12 @@ using UnityEngine.Rendering;
 
 [CustomEditor(typeof(SFMapEditor))]
 public class SFMapCustomEditor : Editor {
+    private enum Mode {
+        Draw, Selection, Delete
+    };
+
+    private Mode currentMode = Mode.Draw;
+
     private SFMapEditor world;
 
     private bool clickToUp = false;
@@ -11,24 +17,30 @@ public class SFMapCustomEditor : Editor {
 
     private Vector2 scrollPos;
 
+    private Sprite selectedSprite;
+    private Rect selectedRect;
+    private int selectedIndex;
+
     private void OnEnable() {
         world = (SFMapEditor)target;
     }
 
     private void EditorToolbox(int windowID) {
-        drawMode = GUI.Toggle(new Rect(10, 20, 110, 20), drawMode, "Draw mode (D)");
-        world.showGrid = GUI.Toggle(new Rect(10, 40, 110, 20), world.showGrid, "Toggle grid (G)");
+        GUI.Label(new Rect(5, 20, 60, 20), "Mode (D): ");
+        GUI.Label(new Rect(65, 20, 70, 20), currentMode.ToString(), EditorStyles.boldLabel);
 
-        GUI.DragWindow(new Rect(0, 0, 10000, 20));
+        if (GUI.Button(new Rect(5, 40, 40, 20), "Draw")) {
+            currentMode = Mode.Draw;
+        } else if (GUI.Button(new Rect(45, 40, 50, 20), "Selec")) {
+            currentMode = Mode.Selection;
+        } else if (GUI.Button(new Rect(95, 40, 30, 20), "Del")) {
+            currentMode = Mode.Delete;
+        }
+        
+        world.showGrid = GUI.Toggle(new Rect(5, 65, 110, 20), world.showGrid, "Toggle grid (G)");
     }
 
-    Sprite selectedSprite;
-    Rect selectedRect;
-    int selectedIndex;
-
     public override void OnInspectorGUI() {
-        float startTime = Time.realtimeSinceStartup;
-
         Event e = Event.current;
 
         serializedObject.Update();
@@ -56,11 +68,9 @@ public class SFMapCustomEditor : Editor {
             Rect spriteRect = new Rect(currentWidth, currentHeight, atlasSprites[i].bounds.size.x * Globals.PixelsPerUnit / 2, atlasSprites[i].bounds.size.y * Globals.PixelsPerUnit / 2);
 
             if (e.type == EventType.MouseDown && e.button == 0 && spriteRect.Contains(e.mousePosition)) {
-                Debug.Log("pouet" + i);
                 selectedSprite = atlasSprites[i];
                 selectedRect = spriteRect;
                 selectedIndex = i;
-                
             }
 
             if (selectedIndex == i) {
@@ -87,22 +97,21 @@ public class SFMapCustomEditor : Editor {
         }
 
         EditorGUILayout.EndScrollView();
-
-        Debug.Log("time: " + (Time.realtimeSinceStartup - startTime));
     }
 
     private void OnSceneGUI() {
         Event e = Event.current;
-        
 
         Handles.BeginGUI();
-        GUI.Window(0, new Rect(20, 20, 130, 80), EditorToolbox, "SFMapEditor");
+        GUI.Window(0, new Rect(20, 20, 150, 90), EditorToolbox, "SFMapEditor");
         Handles.EndGUI();
 
         if (e.type == EventType.KeyDown) {
             switch (e.keyCode) {
                 case KeyCode.D:
-                    drawMode = !drawMode;
+                    if (currentMode == Mode.Draw) currentMode = Mode.Selection;
+                    else if (currentMode == Mode.Selection) currentMode = Mode.Delete;
+                    else if (currentMode == Mode.Delete) currentMode = Mode.Draw;
                     break;
                 case KeyCode.G:
                     world.showGrid = !world.showGrid;
@@ -112,7 +121,7 @@ public class SFMapCustomEditor : Editor {
             e.Use();
         }
 
-        if (drawMode) {
+        if (currentMode == Mode.Draw) {
             if (e.isMouse && e.type == EventType.MouseDown && e.button == 0 && selectedSprite) {
                 e.Use();
 
