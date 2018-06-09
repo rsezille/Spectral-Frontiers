@@ -51,11 +51,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0e1ce9b844b4574d8b26673b8825c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: {x: 8, y: 12}
+  size: {x: 8, y: 10}
   showGrid: 1
-  drawMode: 1
-  gridColor: {r: 0.036716342, g: 1, b: 0, a: 1}
-  tile: {fileID: 1232240339989540, guid: bf070ec4e7c0e8d4098d7162ac4eb529, type: 2}
-  tileTwo: {fileID: 1940268808627664, guid: 73de082ad3c912b4d85d1365bf216c87, type: 2}
+  gridColor: {r: 0.11779833, g: 1, b: 0, a: 1}
+  currentAtlas: {fileID: 4343727234628468602, guid: 390ff7d642b89464d8af4eb7e4f6a2d9,
+    type: 2}
   map: {fileID: 0}
   useTileOne: 1

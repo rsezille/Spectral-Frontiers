@@ -3,6 +3,8 @@
     public const int TileWidth = 128;
     public const int TileHeight = 64;
 
+    public const int PixelsPerUnit = 64;
+
     // Language
     public const string DefaultLanguage = "en";
 
