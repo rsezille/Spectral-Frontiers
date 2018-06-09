@@ -52,15 +52,6 @@ public class SFMapCustomEditor : Editor {
         float currentHeight = 0f;
         float maxCurrentHeight = 0f;
 
-
-        /*if (selectedSprite && selectedRect != null) {
-            Texture2D selectedBackground = new Texture2D(1, 1);
-            selectedBackground.SetPixel(0, 0, Color.yellow);
-            selectedBackground.wrapMode = TextureWrapMode.Repeat;
-            selectedBackground.Apply();
-            GUI.DrawTexture(selectedRect, selectedBackground);
-        }*/
-
         for (int i = 0; i < atlasSprites.Length; i++) {
             Rect spriteRect = new Rect(currentWidth, currentHeight, atlasSprites[i].bounds.size.x * Globals.PixelsPerUnit / 2, atlasSprites[i].bounds.size.y * Globals.PixelsPerUnit / 2);
 
@@ -165,6 +156,10 @@ public class SFMapCustomEditor : Editor {
 
                 if (!square) {
                     square = new GameObject("Square(" + Sx + "," + Sy + ")");
+                    SFSquare sfSquare = square.AddComponent<SFSquare>();
+                    sfSquare.x = Sx;
+                    sfSquare.y = Sy;
+                    sfSquare.altitude = 0;
                     SortingGroup sortingGroup = square.AddComponent<SortingGroup>();
                     sortingGroup.sortingOrder = -(world.size.x * Sy + Sx);
                     square.transform.SetParent(world.map.transform);
