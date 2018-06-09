@@ -42,7 +42,7 @@ public class SFMapCustomEditor : Editor {
         world.showGrid = GUI.Toggle(new Rect(5, 65, 110, 20), world.showGrid, "Toggle grid (G)");
 
         if (currentMode == Mode.Draw) {
-            useWater = GUI.Toggle(new Rect(5, 85, 110, 20), useWater, "Use water");
+            useWater = GUI.Toggle(new Rect(5, 85, 110, 20), useWater, "Use water (W)");
         }
     }
 
@@ -107,17 +107,14 @@ public class SFMapCustomEditor : Editor {
 
         GUILayout.Label("Water", EditorStyles.boldLabel);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("waterSprite"), new GUIContent("Sprite"));
-
-        if (GUILayout.Button("Use water")) {
-            useWater = true;
-        }
-
         EditorGUILayout.PropertyField(serializedObject.FindProperty("waterColor"), new GUIContent("Color"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("underwaterColor"), new GUIContent("Underwater color"));
 
         if (GUILayout.Button("Reset color")) {
             world.ResetWaterColor();
         }
+
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("waterOffset"), new GUIContent("Offset (32)"));
 
         serializedObject.ApplyModifiedProperties();
     }
@@ -134,16 +131,22 @@ public class SFMapCustomEditor : Editor {
         if (e.type == EventType.KeyDown) {
             switch (e.keyCode) {
                 case KeyCode.D:
+                    e.Use();
+
                     if (currentMode == Mode.Draw) currentMode = Mode.Selection;
                     else if (currentMode == Mode.Selection) currentMode = Mode.Height;
                     else if (currentMode == Mode.Height) currentMode = Mode.Draw;
                     break;
                 case KeyCode.G:
+                    e.Use();
                     world.showGrid = !world.showGrid;
                     break;
-            }
+                case KeyCode.W:
+                    e.Use();
 
-            e.Use();
+                    if (currentMode == Mode.Draw) useWater = !useWater;
+                    break;
+            }
         }
 
         // Update height of the last sprite of a square
@@ -259,7 +262,13 @@ public class SFMapCustomEditor : Editor {
                 }
                 
                 spriteRenderer.sortingOrder = highestSortingOrder;
-                go.transform.localPosition = Vector3.zero;
+
+                if (useWater) {
+                    go.transform.localPosition = new Vector3(0f, (float)world.waterOffset / Globals.PixelsPerUnit);
+                } else {
+                    go.transform.localPosition = Vector3.zero;
+                }
+                
                 PolygonCollider2D poly = go.AddComponent<PolygonCollider2D>();
 
                 GameObject collider = new GameObject("Collider");
