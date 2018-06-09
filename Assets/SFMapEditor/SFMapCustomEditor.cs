@@ -33,7 +33,7 @@ public class SFMapCustomEditor : Editor {
 
         if (GUI.Button(new Rect(5, 40, 40, 20), "Draw")) {
             currentMode = Mode.Draw;
-        } else if (GUI.Button(new Rect(45, 40, 50, 20), "Selec")) {
+        } else if (GUI.Button(new Rect(45, 40, 50, 20), "Select")) {
             currentMode = Mode.Selection;
         } else if (GUI.Button(new Rect(95, 40, 50, 20), "Height")) {
             currentMode = Mode.Height;
