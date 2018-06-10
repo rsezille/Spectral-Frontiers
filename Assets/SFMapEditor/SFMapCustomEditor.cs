@@ -101,53 +101,53 @@ public class SFMapCustomEditor : Editor {
         EditorGUILayout.PropertyField(serializedObject.FindProperty("scrollStep"), new GUIContent("Scroll Step"));
         GUILayout.Label("Sprite picker", EditorStyles.boldLabel);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("currentAtlas"), new GUIContent("Atlas"));
-       
+
         // Sprite picker
-        if (!world.currentAtlas) return;
+        if (world.currentAtlas) {
+            float layoutWidth = Screen.width - 15; // 15 is for the scrollbar
+            scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Width(layoutWidth), GUILayout.Height(200));
 
-        float layoutWidth = Screen.width - 15; // 15 is for the scrollbar
-        scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Width(layoutWidth), GUILayout.Height(200));
+            Sprite[] atlasSprites = new Sprite[world.currentAtlas.spriteCount];
+            world.currentAtlas.GetSprites(atlasSprites);
 
-        Sprite[] atlasSprites = new Sprite[world.currentAtlas.spriteCount];
-        world.currentAtlas.GetSprites(atlasSprites);
+            float currentWidth = 0f;
+            float currentHeight = 0f;
+            float maxCurrentHeight = 0f;
 
-        float currentWidth = 0f;
-        float currentHeight = 0f;
-        float maxCurrentHeight = 0f;
+            for (int i = 0; i < atlasSprites.Length; i++) {
+                Rect spriteRect = new Rect(currentWidth, currentHeight, atlasSprites[i].bounds.size.x * Globals.PixelsPerUnit / 2, atlasSprites[i].bounds.size.y * Globals.PixelsPerUnit / 2);
 
-        for (int i = 0; i < atlasSprites.Length; i++) {
-            Rect spriteRect = new Rect(currentWidth, currentHeight, atlasSprites[i].bounds.size.x * Globals.PixelsPerUnit / 2, atlasSprites[i].bounds.size.y * Globals.PixelsPerUnit / 2);
+                if (e.type == EventType.MouseDown && e.button == 0 && spriteRect.Contains(e.mousePosition)) {
+                    selectedSprite = atlasSprites[i];
+                    selectedIndex = i;
+                    useWater = false;
+                }
 
-            if (e.type == EventType.MouseDown && e.button == 0 && spriteRect.Contains(e.mousePosition)) {
-                selectedSprite = atlasSprites[i];
-                selectedIndex = i;
-                useWater = false;
+                if (selectedIndex == i && selectedSprite) {
+                    Texture2D selectedBackground = new Texture2D(1, 1);
+                    selectedBackground.SetPixel(0, 0, new Color(1f, 1f, 0.35f, 0.5f));
+                    selectedBackground.wrapMode = TextureWrapMode.Repeat;
+                    selectedBackground.Apply();
+                    GUI.DrawTexture(spriteRect, selectedBackground);
+                }
+
+                GUI.DrawTexture(spriteRect, atlasSprites[i].texture);
+
+                currentWidth += atlasSprites[i].bounds.size.x * Globals.PixelsPerUnit / 2;
+
+                if (atlasSprites[i].bounds.size.y * Globals.PixelsPerUnit / 2 > maxCurrentHeight) {
+                    maxCurrentHeight = atlasSprites[i].bounds.size.y * Globals.PixelsPerUnit / 2;
+                }
+
+                if (i < atlasSprites.Length - 1 && currentWidth + atlasSprites[i + 1].bounds.size.x * Globals.PixelsPerUnit / 2 >= layoutWidth) {
+                    currentWidth = 0f;
+                    currentHeight += maxCurrentHeight;
+                    maxCurrentHeight = 0f;
+                }
             }
 
-            if (selectedIndex == i && selectedSprite) {
-                Texture2D selectedBackground = new Texture2D(1, 1);
-                selectedBackground.SetPixel(0, 0, new Color(1f, 1f, 0.35f, 0.5f));
-                selectedBackground.wrapMode = TextureWrapMode.Repeat;
-                selectedBackground.Apply();
-                GUI.DrawTexture(spriteRect, selectedBackground);
-            }
-
-            GUI.DrawTexture(spriteRect, atlasSprites[i].texture);
-
-            currentWidth += atlasSprites[i].bounds.size.x * Globals.PixelsPerUnit / 2;
-
-            if (atlasSprites[i].bounds.size.y * Globals.PixelsPerUnit / 2 > maxCurrentHeight) {
-                maxCurrentHeight = atlasSprites[i].bounds.size.y * Globals.PixelsPerUnit / 2;
-            }
-
-            if (i < atlasSprites.Length - 1 && currentWidth + atlasSprites[i + 1].bounds.size.x * Globals.PixelsPerUnit / 2 >= layoutWidth) {
-                currentWidth = 0f;
-                currentHeight += maxCurrentHeight;
-                maxCurrentHeight = 0f;
-            }
+            EditorGUILayout.EndScrollView();
         }
-
-        EditorGUILayout.EndScrollView();
 
         GUILayout.Label("Water", EditorStyles.boldLabel);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("waterSprite"), new GUIContent("Sprite"));
