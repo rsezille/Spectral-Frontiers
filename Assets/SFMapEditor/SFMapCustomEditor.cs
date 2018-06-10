@@ -92,6 +92,8 @@ public class SFMapCustomEditor : Editor {
     public override void OnInspectorGUI() {
         Event e = Event.current;
 
+        GUILayout.Label("/!\\ Do NOT touch the Map GameObject and its children", EditorStyles.boldLabel);
+
         serializedObject.Update();
         GUILayout.Label("Grid", EditorStyles.boldLabel);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("size"), new GUIContent("Size"));
