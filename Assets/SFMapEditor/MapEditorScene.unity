@@ -188,20 +188,20 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 285941957}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalPosition: {x: -1.85, y: 6.49, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &864177551
+--- !u!1 &545241101
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 864177552}
+  - component: {fileID: 545241102}
   m_Layer: 0
   m_Name: Map
   m_TagString: Untagged
@@ -209,12 +209,12 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &864177552
+--- !u!4 &545241102
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 864177551}
+  m_GameObject: {fileID: 545241101}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -269,7 +269,7 @@ Prefab:
     - target: {fileID: 114866135100429180, guid: 91d8ff2df07fd4945a48228f3cf9c2fc,
         type: 2}
       propertyPath: showGrid
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114866135100429180, guid: 91d8ff2df07fd4945a48228f3cf9c2fc,
         type: 2}
@@ -286,6 +286,12 @@ Prefab:
       propertyPath: size.y
       value: 13
       objectReference: {fileID: 0}
+    - target: {fileID: 114866135100429180, guid: 91d8ff2df07fd4945a48228f3cf9c2fc,
+        type: 2}
+      propertyPath: currentAtlas
+      value: 
+      objectReference: {fileID: 4343727234628468602, guid: 390ff7d642b89464d8af4eb7e4f6a2d9,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 91d8ff2df07fd4945a48228f3cf9c2fc, type: 2}
   m_IsPrefabParent: 0

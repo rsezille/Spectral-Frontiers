@@ -239,6 +239,7 @@ public class SFMapCustomEditor : Editor {
             }
         }
 
+        // Draw
         if (currentMode == Mode.Draw) {
             if (e.isMouse && e.type == EventType.MouseDown && e.button == 0 && (selectedSprite || useWater)) {
                 e.Use();
@@ -257,8 +258,6 @@ public class SFMapCustomEditor : Editor {
                 int Sy = Mathf.FloorToInt(localMousePos.y - (localMousePos.x / 2));
 
                 if (Sx < 0 || Sx >= world.size.x || Sy < 0 || Sy >= world.size.y) return;
-
-                
 
                 int highestSortingOrder = 0;
 
@@ -284,7 +283,7 @@ public class SFMapCustomEditor : Editor {
 
                     highestSortingOrder++;
 
-                    GameObject tile = CreateTile(square, highestSortingOrder);
+                    GameObject tile = CreateTile(square, highestSortingOrder, (float)square.GetComponent<SFSquare>().altitude / Globals.PixelsPerUnit);
 
                     undoStack.Push(() => {
                         DestroyImmediate(tile);
@@ -316,7 +315,7 @@ public class SFMapCustomEditor : Editor {
         return square;
     }
 
-    private GameObject CreateTile(GameObject square, int sortingOrder = 0) {
+    private GameObject CreateTile(GameObject square, int sortingOrder = 0, float altitude = 0f) {
         GameObject tile = new GameObject("Tile");
         tile.transform.SetParent(square.transform);
 
@@ -342,7 +341,7 @@ public class SFMapCustomEditor : Editor {
         if (useWater) {
             tile.transform.localPosition = new Vector3(0f, (float)world.waterOffset / Globals.PixelsPerUnit);
         } else {
-            tile.transform.localPosition = Vector3.zero;
+            tile.transform.localPosition = new Vector3(0f, altitude);
         }
 
         PolygonCollider2D poly = tile.AddComponent<PolygonCollider2D>();
