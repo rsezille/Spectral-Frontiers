@@ -152,7 +152,7 @@ public class SFMapCustomEditor : Editor {
         EditorGUILayout.PropertyField(serializedObject.FindProperty("waterColor"), new GUIContent("Color"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("underwaterColor"), new GUIContent("Underwater color"));
 
-        if (GUILayout.Button("Reset color")) {
+        if (GUILayout.Button("Reset colors")) {
             world.ResetWaterColor();
         }
 
