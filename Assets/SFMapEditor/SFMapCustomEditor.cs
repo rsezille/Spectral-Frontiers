@@ -11,14 +11,10 @@ public class SFMapCustomEditor : Editor {
     private Mode currentMode = Mode.Draw;
 
     private SFMapEditor world;
-
-    private bool clickToUp = false;
-    private bool drawMode = true;
-
+    
     private Vector2 scrollPos;
 
     private Sprite selectedSprite;
-    private Rect selectedRect;
     private int selectedIndex;
 
     private bool useWater = false;
@@ -43,6 +39,30 @@ public class SFMapCustomEditor : Editor {
 
         if (currentMode == Mode.Draw) {
             useWater = GUI.Toggle(new Rect(5, 85, 110, 20), useWater, "Use water (W)");
+
+            if (GUI.Button(new Rect(5, 105, 70, 20), "Fill empty")) {
+                if (selectedSprite && !useWater) {
+                    int filledSquares = 0;
+
+                    for (int i = 0; i < world.size.x; i++) {
+                        for (int j = 0; j < world.size.y; j++) {
+                            GameObject square = GameObject.Find("Square(" + i + "," + j + ")");
+
+                            // Create the square if it doesn't exist
+                            if (!square) {
+                                filledSquares++;
+                                square = CreateSquare(i, j);
+
+                                CreateTile(square);
+                            }
+                        }
+                    }
+
+                    Debug.Log("Filled empty squares: " + filledSquares);
+                } else {
+                    Debug.LogWarning("Can't fill squares when using water or no sprite selected");
+                }
+            }
         }
     }
 
@@ -75,12 +95,11 @@ public class SFMapCustomEditor : Editor {
 
             if (e.type == EventType.MouseDown && e.button == 0 && spriteRect.Contains(e.mousePosition)) {
                 selectedSprite = atlasSprites[i];
-                selectedRect = spriteRect;
                 selectedIndex = i;
                 useWater = false;
             }
 
-            if (selectedIndex == i && selectedSprite && selectedRect != null) {
+            if (selectedIndex == i && selectedSprite) {
                 Texture2D selectedBackground = new Texture2D(1, 1);
                 selectedBackground.SetPixel(0, 0, new Color(1f, 1f, 0.35f, 0.5f));
                 selectedBackground.wrapMode = TextureWrapMode.Repeat;
@@ -122,12 +141,13 @@ public class SFMapCustomEditor : Editor {
     private void OnSceneGUI() {
         Event e = Event.current;
 
-        int windowHeight = currentMode == Mode.Draw ? 110 : 90;
+        int windowHeight = currentMode == Mode.Draw ? 90 + 20 + 20: 90; // Base + UseWaterToggle + FillEmptyBtn
 
         Handles.BeginGUI();
         GUI.Window(0, new Rect(20, 20, 150, windowHeight), EditorToolbox, "SFMapEditor");
         Handles.EndGUI();
 
+        // Shortcuts
         if (e.type == EventType.KeyDown) {
             switch (e.keyCode) {
                 case KeyCode.D:
@@ -136,6 +156,7 @@ public class SFMapCustomEditor : Editor {
                     if (currentMode == Mode.Draw) currentMode = Mode.Selection;
                     else if (currentMode == Mode.Selection) currentMode = Mode.Height;
                     else if (currentMode == Mode.Height) currentMode = Mode.Draw;
+
                     break;
                 case KeyCode.G:
                     e.Use();
@@ -144,7 +165,10 @@ public class SFMapCustomEditor : Editor {
                 case KeyCode.W:
                     e.Use();
 
-                    if (currentMode == Mode.Draw) useWater = !useWater;
+                    if (currentMode == Mode.Draw) {
+                        useWater = !useWater;
+                    }
+
                     break;
             }
         }
@@ -209,25 +233,15 @@ public class SFMapCustomEditor : Editor {
 
                 if (Sx < 0 || Sx >= world.size.x || Sy < 0 || Sy >= world.size.y) return;
 
-                GameObject square = GameObject.Find("Square(" + Sx + "," + Sy + ")");
-
-                // Center of the square
-                float Cx = Sx - Sy;
-                float Cy = (Sx + Sy + 1f) / 2f;
+                
 
                 int highestSortingOrder = 0;
 
+                GameObject square = GameObject.Find("Square(" + Sx + "," + Sy + ")");
+
                 // Create the square if it doesn't exist
                 if (!square) {
-                    square = new GameObject("Square(" + Sx + "," + Sy + ")");
-                    square.transform.position = new Vector3(Cx, Cy, 0f);
-                    SFSquare sfSquare = square.AddComponent<SFSquare>();
-                    sfSquare.x = Sx;
-                    sfSquare.y = Sy;
-                    sfSquare.altitude = 0;
-                    SortingGroup sortingGroup = square.AddComponent<SortingGroup>();
-                    sortingGroup.sortingOrder = -(world.size.x * Sy + Sx);
-                    square.transform.SetParent(world.map.transform);
+                    square = CreateSquare(Sx, Sy);
                 } else {
                     SpriteRenderer[] sprites = square.GetComponentsInChildren<SpriteRenderer>();
                     
@@ -240,48 +254,70 @@ public class SFMapCustomEditor : Editor {
                     highestSortingOrder++;
                 }
 
-                // Add the sprite to the selected square
-                GameObject go = new GameObject("Tile");
-                go.transform.SetParent(square.transform);
-                
-                SpriteRenderer spriteRenderer = go.AddComponent<SpriteRenderer>();
-
-                // Using the right sprite if we're drawing water or not
-                if (useWater) {
-                    SpriteRenderer[] sprites = square.GetComponentsInChildren<SpriteRenderer>();
-
-                    // Make underwater sprites look better
-                    foreach (SpriteRenderer sprite in sprites) {
-                        sprite.color = world.underwaterColor;
-                    }
-
-                    spriteRenderer.sprite = world.waterSprite;
-                    spriteRenderer.color = world.waterColor;
-                } else {
-                    spriteRenderer.sprite = selectedSprite;
-                }
-                
-                spriteRenderer.sortingOrder = highestSortingOrder;
-
-                if (useWater) {
-                    go.transform.localPosition = new Vector3(0f, (float)world.waterOffset / Globals.PixelsPerUnit);
-                } else {
-                    go.transform.localPosition = Vector3.zero;
-                }
-                
-                PolygonCollider2D poly = go.AddComponent<PolygonCollider2D>();
-
-                GameObject collider = new GameObject("Collider");
-                collider.transform.SetParent(go.transform);
-                PolygonCollider2D pouet = collider.AddComponent<PolygonCollider2D>();
-                pouet.SetPath(0, poly.GetPath(0));
-                poly.enabled = false;
-                collider.transform.localPosition = Vector3.zero;
-                collider.transform.localScale = new Vector3(0.95f, 0.95f);
+                CreateTile(square, highestSortingOrder);
             }
         }
 
-        if (currentMode == Mode.Draw || currentMode == Mode.Height)
+        if (currentMode == Mode.Draw || currentMode == Mode.Height) {
             Selection.activeGameObject = world.gameObject;
+        }
+    }
+
+    private GameObject CreateSquare(int x, int y) {
+        // Center of the square
+        float Cx = x - y;
+        float Cy = (x + y + 1f) / 2f;
+
+        GameObject square = new GameObject("Square(" + x + "," + y + ")");
+        square.transform.position = new Vector3(Cx, Cy, 0f);
+        SFSquare sfSquare = square.AddComponent<SFSquare>();
+        sfSquare.x = x;
+        sfSquare.y = y;
+        sfSquare.altitude = 0;
+        SortingGroup sortingGroup = square.AddComponent<SortingGroup>();
+        sortingGroup.sortingOrder = -(world.size.x * y + x);
+        square.transform.SetParent(world.map.transform);
+
+        return square;
+    }
+
+    private void CreateTile(GameObject square, int sortingOrder = 0) {
+        GameObject go = new GameObject("Tile");
+        go.transform.SetParent(square.transform);
+
+        SpriteRenderer spriteRenderer = go.AddComponent<SpriteRenderer>();
+
+        // Using the right sprite if we're drawing water or not
+        if (useWater) {
+            SpriteRenderer[] sprites = square.GetComponentsInChildren<SpriteRenderer>();
+
+            // Make underwater sprites look better
+            foreach (SpriteRenderer sprite in sprites) {
+                sprite.color = world.underwaterColor;
+            }
+
+            spriteRenderer.sprite = world.waterSprite;
+            spriteRenderer.color = world.waterColor;
+        } else {
+            spriteRenderer.sprite = selectedSprite;
+        }
+
+        spriteRenderer.sortingOrder = sortingOrder;
+
+        if (useWater) {
+            go.transform.localPosition = new Vector3(0f, (float)world.waterOffset / Globals.PixelsPerUnit);
+        } else {
+            go.transform.localPosition = Vector3.zero;
+        }
+
+        PolygonCollider2D poly = go.AddComponent<PolygonCollider2D>();
+
+        GameObject collider = new GameObject("Collider");
+        collider.transform.SetParent(go.transform);
+        PolygonCollider2D pouet = collider.AddComponent<PolygonCollider2D>();
+        pouet.SetPath(0, poly.GetPath(0));
+        poly.enabled = false;
+        collider.transform.localPosition = Vector3.zero;
+        collider.transform.localScale = new Vector3(0.95f, 0.95f);
     }
 }
