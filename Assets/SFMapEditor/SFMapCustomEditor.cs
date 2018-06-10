@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿using System;
+using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -18,6 +20,8 @@ public class SFMapCustomEditor : Editor {
     private int selectedIndex;
 
     private bool useWater = false;
+
+    private Stack<Action> undoStack = new Stack<Action>();
 
     private void OnEnable() {
         world = (SFMapEditor)target;
@@ -42,7 +46,7 @@ public class SFMapCustomEditor : Editor {
 
             if (GUI.Button(new Rect(5, 105, 70, 20), "Fill empty")) {
                 if (selectedSprite && !useWater) {
-                    int filledSquares = 0;
+                    List<GameObject> createdSquares = new List<GameObject>();
 
                     for (int i = 0; i < world.size.x; i++) {
                         for (int j = 0; j < world.size.y; j++) {
@@ -50,19 +54,38 @@ public class SFMapCustomEditor : Editor {
 
                             // Create the square if it doesn't exist
                             if (!square) {
-                                filledSquares++;
                                 square = CreateSquare(i, j);
 
                                 CreateTile(square);
+
+                                createdSquares.Add(square);
                             }
                         }
                     }
 
-                    Debug.Log("Filled empty squares: " + filledSquares);
+                    Debug.Log("Filled empty squares: " + createdSquares.Count);
+
+                    if (createdSquares.Count > 0) {
+                        undoStack.Push(() => {
+                            foreach (GameObject createdSquare in createdSquares) {
+                                DestroyImmediate(createdSquare);
+                            }
+                        });
+                    }
                 } else {
                     Debug.LogWarning("Can't fill squares when using water or no sprite selected");
                 }
             }
+
+            GUI.Label(new Rect(5, 125, 150, 20), "---------------------------");
+
+            if (GUI.Button(new Rect(50, 140, 50, 20), "Undo")) {
+                if (undoStack.Count > 0) {
+                    (undoStack.Pop())();
+                }
+            }
+
+            GUI.Label(new Rect(5, 165, 100, 20), "Undo stack: " + undoStack.Count);
         }
     }
 
@@ -141,7 +164,7 @@ public class SFMapCustomEditor : Editor {
     private void OnSceneGUI() {
         Event e = Event.current;
 
-        int windowHeight = currentMode == Mode.Draw ? 90 + 20 + 20: 90; // Base + UseWaterToggle + FillEmptyBtn
+        int windowHeight = currentMode == Mode.Draw ? 90 + 20 + 20 + 20 + 20 + 20: 90; // Base + UseWaterToggle + FillEmptyBtn + Separator + UndoBtn + UndoStackCount
 
         Handles.BeginGUI();
         GUI.Window(0, new Rect(20, 20, 150, windowHeight), EditorToolbox, "SFMapEditor");
@@ -242,6 +265,12 @@ public class SFMapCustomEditor : Editor {
                 // Create the square if it doesn't exist
                 if (!square) {
                     square = CreateSquare(Sx, Sy);
+
+                    CreateTile(square, highestSortingOrder);
+
+                    undoStack.Push(() => {
+                        DestroyImmediate(square);
+                    });
                 } else {
                     SpriteRenderer[] sprites = square.GetComponentsInChildren<SpriteRenderer>();
                     
@@ -252,9 +281,13 @@ public class SFMapCustomEditor : Editor {
                     }
 
                     highestSortingOrder++;
-                }
 
-                CreateTile(square, highestSortingOrder);
+                    GameObject tile = CreateTile(square, highestSortingOrder);
+
+                    undoStack.Push(() => {
+                        DestroyImmediate(tile);
+                    });
+                }
             }
         }
 
@@ -281,11 +314,11 @@ public class SFMapCustomEditor : Editor {
         return square;
     }
 
-    private void CreateTile(GameObject square, int sortingOrder = 0) {
-        GameObject go = new GameObject("Tile");
-        go.transform.SetParent(square.transform);
+    private GameObject CreateTile(GameObject square, int sortingOrder = 0) {
+        GameObject tile = new GameObject("Tile");
+        tile.transform.SetParent(square.transform);
 
-        SpriteRenderer spriteRenderer = go.AddComponent<SpriteRenderer>();
+        SpriteRenderer spriteRenderer = tile.AddComponent<SpriteRenderer>();
 
         // Using the right sprite if we're drawing water or not
         if (useWater) {
@@ -305,19 +338,21 @@ public class SFMapCustomEditor : Editor {
         spriteRenderer.sortingOrder = sortingOrder;
 
         if (useWater) {
-            go.transform.localPosition = new Vector3(0f, (float)world.waterOffset / Globals.PixelsPerUnit);
+            tile.transform.localPosition = new Vector3(0f, (float)world.waterOffset / Globals.PixelsPerUnit);
         } else {
-            go.transform.localPosition = Vector3.zero;
+            tile.transform.localPosition = Vector3.zero;
         }
 
-        PolygonCollider2D poly = go.AddComponent<PolygonCollider2D>();
+        PolygonCollider2D poly = tile.AddComponent<PolygonCollider2D>();
 
         GameObject collider = new GameObject("Collider");
-        collider.transform.SetParent(go.transform);
+        collider.transform.SetParent(tile.transform);
         PolygonCollider2D pouet = collider.AddComponent<PolygonCollider2D>();
         pouet.SetPath(0, poly.GetPath(0));
         poly.enabled = false;
         collider.transform.localPosition = Vector3.zero;
         collider.transform.localScale = new Vector3(0.95f, 0.95f);
+
+        return tile;
     }
 }
