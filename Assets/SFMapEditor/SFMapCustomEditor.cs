@@ -16,36 +16,43 @@ public class SFMapCustomEditor : Editor {
     
     private Vector2 scrollPos;
 
-    private Sprite selectedSprite;
-    private int selectedIndex;
+    private int selectedIndex= -1;
 
     private bool useWater = false;
+    private bool deleteMode = false;
 
     private Stack<Action> undoStack = new Stack<Action>();
+
+    private GameObject[] tileset;
+
+    private static GUIStyle normalButton;
+    private static GUIStyle activeButton;
 
     private void OnEnable() {
         world = (SFMapEditor)target;
     }
 
     private void EditorToolbox(int windowID) {
-        GUI.Label(new Rect(5, 20, 60, 20), "Mode (D): ");
+        GUI.Label(new Rect(5, 20, 60, 20), "Mode (R): ");
         GUI.Label(new Rect(65, 20, 70, 20), currentMode.ToString(), EditorStyles.boldLabel);
 
-        if (GUI.Button(new Rect(5, 40, 40, 20), "Draw")) {
+        if (GUI.Button(new Rect(5, 40, 40, 20), "Draw", currentMode == Mode.Draw ? activeButton : normalButton)) {
             currentMode = Mode.Draw;
-        } else if (GUI.Button(new Rect(45, 40, 50, 20), "Select")) {
+        } else if (GUI.Button(new Rect(45, 40, 50, 20), "Select", currentMode == Mode.Selection ? activeButton : normalButton)) {
             currentMode = Mode.Selection;
-        } else if (GUI.Button(new Rect(95, 40, 50, 20), "Height")) {
+        } else if (GUI.Button(new Rect(95, 40, 50, 20), "Height", currentMode == Mode.Height ? activeButton : normalButton)) {
             currentMode = Mode.Height;
         }
         
-        world.showGrid = GUI.Toggle(new Rect(5, 65, 110, 20), world.showGrid, "Toggle grid (G)");
+        world.showGrid = GUI.Toggle(new Rect(5, 65, 110, 20), world.showGrid, "Show grid (G)");
 
         if (currentMode == Mode.Draw) {
             useWater = GUI.Toggle(new Rect(5, 85, 110, 20), useWater, "Use water (W)");
 
-            if (GUI.Button(new Rect(5, 105, 70, 20), "Fill empty")) {
-                if (selectedSprite && !useWater) {
+            deleteMode = GUI.Toggle(new Rect(5, 105, 120, 20), deleteMode, "Delete Mode (D)");
+
+            if (GUI.Button(new Rect(5, 125, 70, 20), "Fill empty")) {
+                if (selectedIndex >= 0 && !useWater) {
                     List<GameObject> createdSquares = new List<GameObject>();
 
                     for (int i = 0; i < world.size.x; i++) {
@@ -77,20 +84,27 @@ public class SFMapCustomEditor : Editor {
                 }
             }
 
-            GUI.Label(new Rect(5, 125, 150, 20), "---------------------------");
+            GUI.Label(new Rect(5, 145, 150, 20), "---------------------------");
 
-            if (GUI.Button(new Rect(50, 140, 50, 20), "Undo")) {
+            if (GUI.Button(new Rect(50, 160, 50, 20), "Undo")) {
                 if (undoStack.Count > 0) {
                     (undoStack.Pop())();
                 }
             }
 
-            GUI.Label(new Rect(5, 165, 100, 20), "Undo stack: " + undoStack.Count);
+            GUI.Label(new Rect(5, 185, 100, 20), "Undo stack: " + undoStack.Count);
         }
     }
 
     public override void OnInspectorGUI() {
         Event e = Event.current;
+
+        // Initialize button styles
+        if (normalButton == null) {
+            normalButton = new GUIStyle(GUI.skin.button);
+            activeButton = new GUIStyle(normalButton);
+            activeButton.normal.background = activeButton.active.background;
+        }
 
         GUILayout.Label("/!\\ Do NOT touch the Map GameObject and its children", EditorStyles.boldLabel);
 
@@ -100,30 +114,30 @@ public class SFMapCustomEditor : Editor {
         EditorGUILayout.PropertyField(serializedObject.FindProperty("gridColor"), new GUIContent("Color"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("scrollStep"), new GUIContent("Scroll Step"));
         GUILayout.Label("Sprite picker", EditorStyles.boldLabel);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("currentAtlas"), new GUIContent("Atlas"));
 
-        // Sprite picker
-        if (world.currentAtlas) {
+        if (tileset != null && tileset.Length > 0) {
             float layoutWidth = Screen.width - 15; // 15 is for the scrollbar
             scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Width(layoutWidth), GUILayout.Height(200));
-
-            Sprite[] atlasSprites = new Sprite[world.currentAtlas.spriteCount];
-            world.currentAtlas.GetSprites(atlasSprites);
 
             float currentWidth = 0f;
             float currentHeight = 0f;
             float maxCurrentHeight = 0f;
 
-            for (int i = 0; i < atlasSprites.Length; i++) {
-                Rect spriteRect = new Rect(currentWidth, currentHeight, atlasSprites[i].bounds.size.x * Globals.PixelsPerUnit / 2, atlasSprites[i].bounds.size.y * Globals.PixelsPerUnit / 2);
+            for (int i = 0; i < tileset.Length; i++) {
+                Sprite currentTile = tileset[i].GetComponent<SpriteRenderer>().sprite;
+
+                Debug.Log("currentTile   " + currentTile);
+
+                if (currentTile == null) continue;
+
+                Rect spriteRect = new Rect(currentWidth, currentHeight, currentTile.bounds.size.x * Globals.PixelsPerUnit / 2, currentTile.bounds.size.y * Globals.PixelsPerUnit / 2);
 
                 if (e.type == EventType.MouseDown && e.button == 0 && spriteRect.Contains(e.mousePosition)) {
-                    selectedSprite = atlasSprites[i];
                     selectedIndex = i;
                     useWater = false;
                 }
 
-                if (selectedIndex == i && selectedSprite) {
+                if (selectedIndex == i) {
                     Texture2D selectedBackground = new Texture2D(1, 1);
                     selectedBackground.SetPixel(0, 0, new Color(1f, 1f, 0.35f, 0.5f));
                     selectedBackground.wrapMode = TextureWrapMode.Repeat;
@@ -131,15 +145,15 @@ public class SFMapCustomEditor : Editor {
                     GUI.DrawTexture(spriteRect, selectedBackground);
                 }
 
-                GUI.DrawTexture(spriteRect, atlasSprites[i].texture);
+                GUI.DrawTexture(spriteRect, currentTile.texture);
 
-                currentWidth += atlasSprites[i].bounds.size.x * Globals.PixelsPerUnit / 2;
+                currentWidth += currentTile.bounds.size.x * Globals.PixelsPerUnit / 2;
 
-                if (atlasSprites[i].bounds.size.y * Globals.PixelsPerUnit / 2 > maxCurrentHeight) {
-                    maxCurrentHeight = atlasSprites[i].bounds.size.y * Globals.PixelsPerUnit / 2;
+                if (currentTile.bounds.size.y * Globals.PixelsPerUnit / 2 > maxCurrentHeight) {
+                    maxCurrentHeight = currentTile.bounds.size.y * Globals.PixelsPerUnit / 2;
                 }
 
-                if (i < atlasSprites.Length - 1 && currentWidth + atlasSprites[i + 1].bounds.size.x * Globals.PixelsPerUnit / 2 >= layoutWidth) {
+                if (i < tileset.Length - 1 && currentWidth + tileset[i + 1].GetComponent<Sprite>().bounds.size.x * Globals.PixelsPerUnit / 2 >= layoutWidth) {
                     currentWidth = 0f;
                     currentHeight += maxCurrentHeight;
                     maxCurrentHeight = 0f;
@@ -149,8 +163,12 @@ public class SFMapCustomEditor : Editor {
             EditorGUILayout.EndScrollView();
         }
 
+        if (GUILayout.Button("Refresh tileset")) {
+            RefreshTileset();
+        }
+
         GUILayout.Label("Water", EditorStyles.boldLabel);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("waterSprite"), new GUIContent("Sprite"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("water"), new GUIContent("GameObject"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("waterColor"), new GUIContent("Color"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("underwaterColor"), new GUIContent("Underwater color"));
 
@@ -166,7 +184,16 @@ public class SFMapCustomEditor : Editor {
     private void OnSceneGUI() {
         Event e = Event.current;
 
-        int windowHeight = currentMode == Mode.Draw ? 90 + 20 + 20 + 20 + 20 + 20: 90; // Base + UseWaterToggle + FillEmptyBtn + Separator + UndoBtn + UndoStackCount
+        if (e.isMouse && e.type == EventType.MouseDown && e.button == 0) {
+            RaycastHit2D hit = Physics2D.Raycast(HandleUtility.GUIPointToWorldRay(Event.current.mousePosition).origin, new Vector2(0, 0));
+
+            if (hit.collider != null) {
+                Debug.Log("yolo   " + hit.collider.transform.parent.parent.name);
+            }
+        }
+
+            // Base + UseWaterToggle + DeleteToggle + FillEmptyBtn + Separator + UndoBtn + UndoStackCount
+            int windowHeight = currentMode == Mode.Draw ? 90 + 20 + 20 + 20 + 20 + 20 + 20: 90;
 
         Handles.BeginGUI();
         GUI.Window(0, new Rect(20, 20, 150, windowHeight), EditorToolbox, "SFMapEditor");
@@ -175,7 +202,7 @@ public class SFMapCustomEditor : Editor {
         // Shortcuts
         if (e.type == EventType.KeyDown) {
             switch (e.keyCode) {
-                case KeyCode.D:
+                case KeyCode.R:
                     e.Use();
 
                     if (currentMode == Mode.Draw) currentMode = Mode.Selection;
@@ -192,6 +219,14 @@ public class SFMapCustomEditor : Editor {
 
                     if (currentMode == Mode.Draw) {
                         useWater = !useWater;
+                    }
+
+                    break;
+                case KeyCode.D:
+                    e.Use();
+
+                    if (currentMode == Mode.Draw) {
+                        deleteMode = !deleteMode;
                     }
 
                     break;
@@ -241,10 +276,10 @@ public class SFMapCustomEditor : Editor {
 
         // Draw
         if (currentMode == Mode.Draw) {
-            if (e.isMouse && e.type == EventType.MouseDown && e.button == 0 && (selectedSprite || useWater)) {
+            if (e.isMouse && e.type == EventType.MouseDown && e.button == 0 && (selectedIndex >= 0 || useWater)) {
                 e.Use();
 
-                if (useWater && !world.waterSprite) {
+                if (useWater && !world.water) {
                     Debug.LogWarning("Trying to draw water but the sprite is null");
 
                     return;
@@ -316,12 +351,11 @@ public class SFMapCustomEditor : Editor {
     }
 
     private GameObject CreateTile(GameObject square, int sortingOrder = 0, float altitude = 0f) {
-        GameObject tile = new GameObject("Tile");
+        GameObject tile = PrefabUtility.InstantiatePrefab(useWater ? world.water : tileset[selectedIndex]) as GameObject;
         tile.transform.SetParent(square.transform);
 
-        SpriteRenderer spriteRenderer = tile.AddComponent<SpriteRenderer>();
+        SpriteRenderer spriteRenderer = tile.GetComponent<SpriteRenderer>();
 
-        // Using the right sprite if we're drawing water or not
         if (useWater) {
             SpriteRenderer[] sprites = square.GetComponentsInChildren<SpriteRenderer>();
 
@@ -330,30 +364,18 @@ public class SFMapCustomEditor : Editor {
                 sprite.color = world.underwaterColor;
             }
 
-            spriteRenderer.sprite = world.waterSprite;
             spriteRenderer.color = world.waterColor;
-        } else {
-            spriteRenderer.sprite = selectedSprite;
-        }
-
-        spriteRenderer.sortingOrder = sortingOrder;
-
-        if (useWater) {
             tile.transform.localPosition = new Vector3(0f, (float)world.waterOffset / Globals.PixelsPerUnit);
         } else {
             tile.transform.localPosition = new Vector3(0f, altitude);
         }
 
-        PolygonCollider2D poly = tile.AddComponent<PolygonCollider2D>();
-
-        GameObject collider = new GameObject("Collider");
-        collider.transform.SetParent(tile.transform);
-        PolygonCollider2D pouet = collider.AddComponent<PolygonCollider2D>();
-        pouet.SetPath(0, poly.GetPath(0));
-        poly.enabled = false;
-        collider.transform.localPosition = Vector3.zero;
-        collider.transform.localScale = new Vector3(0.95f, 0.95f);
+        spriteRenderer.sortingOrder = sortingOrder;
 
         return tile;
+    }
+
+    private void RefreshTileset() {
+        tileset = Resources.LoadAll<GameObject>("SFMapEditor/Tiles");
     }
 }

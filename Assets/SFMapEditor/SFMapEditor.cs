@@ -6,12 +6,11 @@ public class SFMapEditor : MonoBehaviour {
 
     public bool showGrid = true;
     public Color gridColor = Color.grey;
-
-    public SpriteAtlas currentAtlas;
+    
     [Range(1, 64)]
     public int scrollStep = 1;
 
-    public Sprite waterSprite;
+    public GameObject water;
     public Color waterColor = new Color(0.52f, 0.82f, 1f, 0.56f);
     public Color underwaterColor = new Color(0.7f, 0.78f, 1f, 1f);
     public int waterOffset = 32;
