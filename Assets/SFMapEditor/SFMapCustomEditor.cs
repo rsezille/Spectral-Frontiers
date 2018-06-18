@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -99,6 +100,10 @@ public class SFMapCustomEditor : Editor {
     public override void OnInspectorGUI() {
         Event e = Event.current;
 
+        if (tileset == null) {
+            tileset = Resources.LoadAll<GameObject>("SFMapEditor/Tiles");
+        }
+
         // Initialize button styles
         if (normalButton == null) {
             normalButton = new GUIStyle(GUI.skin.button);
@@ -114,6 +119,24 @@ public class SFMapCustomEditor : Editor {
         EditorGUILayout.PropertyField(serializedObject.FindProperty("gridColor"), new GUIContent("Color"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("scrollStep"), new GUIContent("Scroll Step"));
         GUILayout.Label("Sprite picker", EditorStyles.boldLabel);
+
+        //Debug.Log(Application.dataPath);
+        string[] subdirectoryEntries = Directory.GetDirectories(Application.dataPath + "/Resources/SFMapEditor");
+
+        foreach (string uo in subdirectoryEntries)
+            Debug.Log(System.IO.Path.GetFileName(uo));
+
+        EditorGUILayout.BeginHorizontal();
+
+        GUILayout.Label("Tileset to use");
+
+        int pouet = 0;
+
+        pouet = EditorGUILayout.Popup(pouet, new[]{"yo", "pouet"});
+
+        EditorGUILayout.EndHorizontal();
+
+        GUILayout.Label("(Subfolders in Resources/SFMapEditor)");
 
         if (tileset != null && tileset.Length > 0) {
             float layoutWidth = Screen.width - 15; // 15 is for the scrollbar
@@ -164,7 +187,7 @@ public class SFMapCustomEditor : Editor {
         }
 
         if (GUILayout.Button("Refresh tileset")) {
-            RefreshTileset();
+            //RefreshTileset();
         }
 
         GUILayout.Label("Water", EditorStyles.boldLabel);
@@ -192,8 +215,8 @@ public class SFMapCustomEditor : Editor {
             }
         }
 
-            // Base + UseWaterToggle + DeleteToggle + FillEmptyBtn + Separator + UndoBtn + UndoStackCount
-            int windowHeight = currentMode == Mode.Draw ? 90 + 20 + 20 + 20 + 20 + 20 + 20: 90;
+        // Base + UseWaterToggle + DeleteToggle + FillEmptyBtn + Separator + UndoBtn + UndoStackCount
+        int windowHeight = currentMode == Mode.Draw ? 90 + 20 + 20 + 20 + 20 + 20 + 20: 90;
 
         Handles.BeginGUI();
         GUI.Window(0, new Rect(20, 20, 150, windowHeight), EditorToolbox, "SFMapEditor");
@@ -373,9 +396,5 @@ public class SFMapCustomEditor : Editor {
         spriteRenderer.sortingOrder = sortingOrder;
 
         return tile;
-    }
-
-    private void RefreshTileset() {
-        tileset = Resources.LoadAll<GameObject>("SFMapEditor/Tiles");
     }
 }
