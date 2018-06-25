@@ -17,6 +17,8 @@ public class SFMapEditor : MonoBehaviour {
 
     public GameObject map;
 
+    public SFSquare hoveredSquare;
+
     private void OnDrawGizmos() {
         if (!map) map = GameObject.Find("Map") ?? CreateNewMap();
 
@@ -32,6 +34,26 @@ public class SFMapEditor : MonoBehaviour {
             for (int y = 0; y <= size.y; y++) {
                 Gizmos.DrawLine(new Vector3(-y, y / 2f), new Vector3(size.x - y, (size.x + y) / 2f));
             }
+        }
+
+        if (hoveredSquare != null) {
+            Gizmos.color = Color.green;
+
+            Vector3 bottom = new Vector3(hoveredSquare.x - hoveredSquare.y, (hoveredSquare.x + hoveredSquare.y) / 2f);
+            Vector3 right = new Vector3(hoveredSquare.x - hoveredSquare.y + 1f, (hoveredSquare.x + hoveredSquare.y + 1f) / 2f);
+            Vector3 left = new Vector3(hoveredSquare.x - hoveredSquare.y - 1f, (hoveredSquare.x + hoveredSquare.y + 1f) / 2f);
+            Vector3 top = new Vector3(hoveredSquare.x - hoveredSquare.y, (hoveredSquare.x + hoveredSquare.y) / 2f + 1f);
+            
+            Gizmos.DrawLine(bottom, right);
+            Gizmos.DrawLine(left, top);
+            Gizmos.DrawLine(bottom, left);
+            Gizmos.DrawLine(right, top);
+
+            // Simulate thicker lines by drawing inner lines
+            Gizmos.DrawLine(bottom + new Vector3(0f, 0.025f), right + new Vector3(-0.05f, 0f));
+            Gizmos.DrawLine(left + new Vector3(0.05f, 0f), top + new Vector3(0f, -0.025f));
+            Gizmos.DrawLine(bottom + new Vector3(0f, 0.025f), left + new Vector3(0.05f, 0f));
+            Gizmos.DrawLine(right + new Vector3(-0.05f, 0f), top + new Vector3(0f, -0.025f));
         }
     }
 

@@ -51,13 +51,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0e1ce9b844b4574d8b26673b8825c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: {x: 8, y: 10}
-  showGrid: 0
+  size: {x: 11, y: 13}
+  showGrid: 1
   gridColor: {r: 1, g: 0.09286982, b: 0, a: 1}
-  currentAtlas: {fileID: 4343727234628468602, guid: 390ff7d642b89464d8af4eb7e4f6a2d9,
-    type: 2}
   scrollStep: 8
-  waterSprite: {fileID: 21300000, guid: 1b47b6b23ffccf147806e6f20763bbce, type: 3}
+  water: {fileID: 1431631843932532, guid: 04ab14e0d3670b74592c0fb6bdab04c3, type: 2}
   waterColor: {r: 0.52, g: 0.82, b: 1, a: 0.56}
   underwaterColor: {r: 0.7, g: 0.78, b: 1, a: 1}
+  waterOffset: 32
   map: {fileID: 0}
+  hoveredSquare: {fileID: 0}

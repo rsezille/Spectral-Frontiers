@@ -16,9 +16,9 @@ public class SFMapEditorCustom : Editor {
     };
 
     private Mode currentMode = Mode.Draw;
-    private SelectionMode currentDrawMode = SelectionMode.Tile;
+    private SelectionMode currentSelectionMode = SelectionMode.Tile;
 
-    private SFMapEditor world;
+    private SFMapEditor sfMapEditor;
     
     private Vector2 scrollPos;
 
@@ -36,7 +36,7 @@ public class SFMapEditorCustom : Editor {
     private static GUIStyle activeButton;
 
     private void OnEnable() {
-        world = (SFMapEditor)target;
+        sfMapEditor = (SFMapEditor)target;
     }
 
     private void EditorToolbox(int windowID) {
@@ -51,15 +51,15 @@ public class SFMapEditorCustom : Editor {
             currentMode = Mode.Height;
         }
 
-        world.showGrid = GUI.Toggle(new Rect(5, 65, 110, 20), world.showGrid, "Show grid (G)");
+        sfMapEditor.showGrid = GUI.Toggle(new Rect(5, 65, 110, 20), sfMapEditor.showGrid, "Show grid (G)");
 
         GUI.Label(new Rect(5, 85, 60, 20), "Selection: ");
-        GUI.Label(new Rect(65, 85, 40, 20), currentDrawMode.ToString(), EditorStyles.boldLabel);
+        GUI.Label(new Rect(65, 85, 40, 20), currentSelectionMode.ToString(), EditorStyles.boldLabel);
 
-        if (GUI.Button(new Rect(5, 105, 40, 20), "Grid", currentDrawMode == SelectionMode.Grid ? activeButton : normalButton)) {
-            currentDrawMode = SelectionMode.Grid;
-        } else if (GUI.Button(new Rect(45, 105, 40, 20), "Tile", currentDrawMode == SelectionMode.Tile ? activeButton : normalButton)) {
-            currentDrawMode = SelectionMode.Tile;
+        if (GUI.Button(new Rect(5, 105, 40, 20), "Grid", currentSelectionMode == SelectionMode.Grid ? activeButton : normalButton)) {
+            currentSelectionMode = SelectionMode.Grid;
+        } else if (GUI.Button(new Rect(45, 105, 40, 20), "Tile", currentSelectionMode == SelectionMode.Tile ? activeButton : normalButton)) {
+            currentSelectionMode = SelectionMode.Tile;
         }
 
         if (currentMode == Mode.Draw) {
@@ -71,8 +71,8 @@ public class SFMapEditorCustom : Editor {
                 if (selectedIndex >= 0 && !useWater) {
                     List<GameObject> createdSquares = new List<GameObject>();
 
-                    for (int i = 0; i < world.size.x; i++) {
-                        for (int j = 0; j < world.size.y; j++) {
+                    for (int i = 0; i < sfMapEditor.size.x; i++) {
+                        for (int j = 0; j < sfMapEditor.size.y; j++) {
                             GameObject square = GameObject.Find("Square(" + i + "," + j + ")");
 
                             // Create the square if it doesn't exist
@@ -198,7 +198,7 @@ public class SFMapEditorCustom : Editor {
         EditorGUILayout.PropertyField(serializedObject.FindProperty("underwaterColor"), new GUIContent("Underwater color"));
 
         if (GUILayout.Button("Reset colors")) {
-            world.ResetWaterColor();
+            sfMapEditor.ResetWaterColor();
         }
 
         EditorGUILayout.PropertyField(serializedObject.FindProperty("waterOffset"), new GUIContent("Offset (32)"));
@@ -236,7 +236,7 @@ public class SFMapEditorCustom : Editor {
                     break;
                 case KeyCode.G:
                     e.Use();
-                    world.showGrid = !world.showGrid;
+                    sfMapEditor.showGrid = !sfMapEditor.showGrid;
                     break;
                 case KeyCode.W:
                     e.Use();
@@ -257,6 +257,19 @@ public class SFMapEditorCustom : Editor {
             }
         }
 
+        sfMapEditor.hoveredSquare = null;
+
+        // Selection
+        if (currentSelectionMode == SelectionMode.Tile) {
+            SFSquare visibleSquare = GetSquareHit();
+
+            if (visibleSquare != null) {
+                sfMapEditor.hoveredSquare = visibleSquare;
+            }
+
+            HandleUtility.Repaint();
+        }
+
         // Update height of the last sprite of a square
         if (currentMode == Mode.Height) {
             if (e.isScrollWheel && e.type == EventType.ScrollWheel) {
@@ -269,7 +282,16 @@ public class SFMapEditorCustom : Editor {
                 int Sx = Mathf.FloorToInt((localMousePos.x / 2) + localMousePos.y);
                 int Sy = Mathf.FloorToInt(localMousePos.y - (localMousePos.x / 2));
 
-                if (Sx < 0 || Sx >= world.size.x || Sy < 0 || Sy >= world.size.y) return;
+                if (Sx < 0 || Sx >= sfMapEditor.size.x || Sy < 0 || Sy >= sfMapEditor.size.y) return;
+
+                if (currentSelectionMode == SelectionMode.Tile) {
+                    SFSquare squareHit = GetSquareHit();
+
+                    if (squareHit != null) {
+                        Sx = squareHit.x;
+                        Sy = squareHit.y;
+                    }
+                }
 
                 GameObject square = GameObject.Find("Square(" + Sx + "," + Sy + ")");
 
@@ -289,10 +311,10 @@ public class SFMapEditorCustom : Editor {
 
                         if (e.delta.y < 0) delta = 1f;
 
-                        highestTile.transform.Translate(new Vector3(0f, (delta * world.scrollStep) / Globals.TileHeight));
+                        highestTile.transform.Translate(new Vector3(0f, (delta * sfMapEditor.scrollStep) / Globals.TileHeight));
 
                         SFSquare sfSquare = highestTile.GetComponentInParent<SFSquare>();
-                        sfSquare.altitude += (int)delta * world.scrollStep;
+                        sfSquare.altitude += (int)delta * sfMapEditor.scrollStep;
                     }
                 }
             }
@@ -303,7 +325,7 @@ public class SFMapEditorCustom : Editor {
             if (e.isMouse && e.type == EventType.MouseDown && e.button == 0 && (selectedIndex >= 0 || useWater)) {
                 e.Use();
 
-                if (useWater && !world.water) {
+                if (useWater && !sfMapEditor.water) {
                     Debug.LogWarning("Trying to draw water but the sprite is null");
 
                     return;
@@ -316,14 +338,14 @@ public class SFMapEditorCustom : Editor {
                 int Sx = Mathf.FloorToInt((localMousePos.x / 2) + localMousePos.y);
                 int Sy = Mathf.FloorToInt(localMousePos.y - (localMousePos.x / 2));
 
-                if (Sx < 0 || Sx >= world.size.x || Sy < 0 || Sy >= world.size.y) return;
+                if (Sx < 0 || Sx >= sfMapEditor.size.x || Sy < 0 || Sy >= sfMapEditor.size.y) return;
 
-                if (currentDrawMode == SelectionMode.Tile) {
-                    RaycastHit2D hit = Physics2D.Raycast(HandleUtility.GUIPointToWorldRay(Event.current.mousePosition).origin, new Vector2(0, 0));
+                if (currentSelectionMode == SelectionMode.Tile) {
+                    SFSquare squareHit = GetSquareHit();
 
-                    if (hit.collider != null) {
-                        Sx = hit.collider.transform.parent.GetComponent<SFSquare>().x;
-                        Sy = hit.collider.transform.parent.GetComponent<SFSquare>().y;
+                    if (squareHit != null) {
+                        Sx = squareHit.x;
+                        Sy = squareHit.y;
                     }
                 }
 
@@ -369,7 +391,7 @@ public class SFMapEditorCustom : Editor {
         }
 
         if (currentMode == Mode.Draw || currentMode == Mode.Height) {
-            Selection.activeGameObject = world.gameObject;
+            Selection.activeGameObject = sfMapEditor.gameObject;
         }
     }
 
@@ -385,14 +407,14 @@ public class SFMapEditorCustom : Editor {
         sfSquare.y = y;
         sfSquare.altitude = 0;
         SortingGroup sortingGroup = square.AddComponent<SortingGroup>();
-        sortingGroup.sortingOrder = -(world.size.x * y + x);
-        square.transform.SetParent(world.map.transform);
+        sortingGroup.sortingOrder = -(sfMapEditor.size.x * y + x);
+        square.transform.SetParent(sfMapEditor.map.transform);
 
         return square;
     }
 
     private GameObject CreateTile(GameObject square, int sortingOrder = 0, float altitude = 0f) {
-        GameObject tile = PrefabUtility.InstantiatePrefab(useWater ? world.water : tileset[selectedIndex]) as GameObject;
+        GameObject tile = PrefabUtility.InstantiatePrefab(useWater ? sfMapEditor.water : tileset[selectedIndex]) as GameObject;
         tile.transform.SetParent(square.transform);
 
         SpriteRenderer spriteRenderer = tile.GetComponent<SpriteRenderer>();
@@ -402,11 +424,11 @@ public class SFMapEditorCustom : Editor {
 
             // Make underwater sprites look better
             foreach (SpriteRenderer sprite in sprites) {
-                sprite.color = world.underwaterColor;
+                sprite.color = sfMapEditor.underwaterColor;
             }
 
-            spriteRenderer.color = world.waterColor;
-            tile.transform.localPosition = new Vector3(0f, (float)world.waterOffset / Globals.PixelsPerUnit);
+            spriteRenderer.color = sfMapEditor.waterColor;
+            tile.transform.localPosition = new Vector3(0f, (float)sfMapEditor.waterOffset / Globals.PixelsPerUnit);
         } else {
             tile.transform.localPosition = new Vector3(0f, altitude);
         }
@@ -414,5 +436,22 @@ public class SFMapEditorCustom : Editor {
         spriteRenderer.sortingOrder = sortingOrder;
 
         return tile;
+    }
+
+    private SFSquare GetSquareHit() {
+        SFSquare visibleSquare = null;
+
+        foreach (RaycastHit2D hit in Physics2D.RaycastAll(HandleUtility.GUIPointToWorldRay(Event.current.mousePosition).origin, Vector2.zero)) {
+            SFSquare squareHit = hit.collider.transform.parent.GetComponent<SFSquare>();
+
+            int hitSortingOrder = hit.collider.transform.parent.GetComponent<SortingGroup>().sortingOrder;
+
+            // Retrieve the closiest map object, the one we are seeing
+            if (visibleSquare == null || hitSortingOrder > visibleSquare.GetComponent<SortingGroup>().sortingOrder) {
+                visibleSquare = squareHit;
+            }
+        }
+
+        return visibleSquare;
     }
 }
