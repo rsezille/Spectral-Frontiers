@@ -100,10 +100,6 @@ public class SFMapEditorCustom : Editor {
     public override void OnInspectorGUI() {
         Event e = Event.current;
 
-        if (tileset == null) {
-            tileset = Resources.LoadAll<GameObject>("SFMapEditor/Tiles");
-        }
-
         // Initialize button styles
         if (normalButton == null) {
             normalButton = new GUIStyle(GUI.skin.button);
@@ -120,22 +116,27 @@ public class SFMapEditorCustom : Editor {
         EditorGUILayout.PropertyField(serializedObject.FindProperty("scrollStep"), new GUIContent("Scroll Step"));
         GUILayout.Label("Sprite picker", EditorStyles.boldLabel);
 
-        string[] subdirectoryEntries = Directory.GetDirectories(Application.dataPath + "/Resources/SFMapEditor");
+        string[] subdirectories = Directory.GetDirectories(Application.dataPath + "/Resources/SFMapEditor/Tiles");
 
-        foreach (string uo in subdirectoryEntries)
-            Debug.Log(System.IO.Path.GetFileName(uo));
+        for (int i = 0; i < subdirectories.Length; i++) {
+            subdirectories[i] = System.IO.Path.GetFileName(subdirectories[i]);
+        }
 
         EditorGUILayout.BeginHorizontal();
 
         GUILayout.Label("Tileset to use");
 
-        int pouet = 0;
+        int selectedTileset = 0;
 
-        pouet = EditorGUILayout.Popup(pouet, new[]{"yo", "pouet"});
+        selectedTileset = EditorGUILayout.Popup(selectedTileset, subdirectories);
+
+        if (tileset == null || tileset.Length == 0) {
+            tileset = Resources.LoadAll<GameObject>("SFMapEditor/Tiles/" + subdirectories[selectedTileset]);
+        }
 
         EditorGUILayout.EndHorizontal();
 
-        GUILayout.Label("(Subfolders in Resources/SFMapEditor)");
+        GUILayout.Label("(Subfolders in Resources/SFMapEditor/Tiles)");
 
         if (tileset != null && tileset.Length > 0) {
             float layoutWidth = Screen.width - 15; // 15 is for the scrollbar
@@ -147,8 +148,6 @@ public class SFMapEditorCustom : Editor {
 
             for (int i = 0; i < tileset.Length; i++) {
                 Sprite currentTile = tileset[i].GetComponent<SpriteRenderer>().sprite;
-
-                Debug.Log("currentTile   " + currentTile);
 
                 if (currentTile == null) continue;
 
@@ -183,10 +182,6 @@ public class SFMapEditorCustom : Editor {
             }
 
             EditorGUILayout.EndScrollView();
-        }
-
-        if (GUILayout.Button("Refresh tileset")) {
-            //RefreshTileset();
         }
 
         GUILayout.Label("Water", EditorStyles.boldLabel);
