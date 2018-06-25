@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4110602326988050}
   - component: {fileID: 212017211179840568}
   m_Layer: 0
-  m_Name: ISO_Overlay_Water_01
+  m_Name: Tile_Over_Water_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

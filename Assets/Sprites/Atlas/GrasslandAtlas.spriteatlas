@@ -5,7 +5,7 @@ SpriteAtlas:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: TestAtlas
+  m_Name: GrasslandAtlas
   m_EditorData:
     textureSettings:
       serializedVersion: 2
@@ -28,24 +28,23 @@ SpriteAtlas:
       enableTightPacking: 1
     variantMultiplier: 1
     packables:
-    - {fileID: 21300000, guid: 04872be0707c7524fb85eafb500e30f2, type: 3}
-    - {fileID: 21300000, guid: e7bafbea7fdf608498fcd804d19d5348, type: 3}
-    - {fileID: 21300000, guid: 583f38a3951384445afe6f09dd528588, type: 3}
-    - {fileID: 21300000, guid: 4743e24ae86de3a498b6c3677e3e75de, type: 3}
+    - {fileID: 102900000, guid: 2ec0d07dcfe11e34e973c453927ee7cc, type: 3}
     - {fileID: 21300000, guid: 1b47b6b23ffccf147806e6f20763bbce, type: 3}
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
-  - {fileID: 21300000, guid: 583f38a3951384445afe6f09dd528588, type: 3}
+  - {fileID: 21300000, guid: 1ae7abf73caffc64ea95bdfff0d34849, type: 3}
+  - {fileID: 21300000, guid: 35b01abb4d9b81b4f847870c8e8d4716, type: 3}
+  - {fileID: 21300000, guid: 0c4f8ded0f7526c4388fbefd1ad7c0c7, type: 3}
   - {fileID: 21300000, guid: 1b47b6b23ffccf147806e6f20763bbce, type: 3}
-  - {fileID: 21300000, guid: e7bafbea7fdf608498fcd804d19d5348, type: 3}
-  - {fileID: 21300000, guid: 04872be0707c7524fb85eafb500e30f2, type: 3}
   - {fileID: 21300000, guid: 4743e24ae86de3a498b6c3677e3e75de, type: 3}
+  - {fileID: 21300000, guid: 4260e16cb4c762b43bd1a4d16e8ea9d4, type: 3}
   m_PackedSpriteNamesToIndex:
-  - ISO_Tile_Sand_01
-  - ISO_Overlay_Water_01
-  - ISO_Tile_Template_01
-  - ISO_Tile_Dirt_01_Grass_01
-  - ISO_Overlay_StonePieces_01
-  m_Tag: TestAtlas
+  - Tile_Over_Grass_01
+  - Tile_Dirt_01
+  - Tile_Dirt_02
+  - Tile_Over_Water_01
+  - Tile_Over_StonePieces_01
+  - Tile_Stone_01
+  m_Tag: GrasslandAtlas
   m_IsVariant: 0
