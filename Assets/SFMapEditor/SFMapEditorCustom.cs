@@ -11,12 +11,12 @@ public class SFMapEditorCustom : Editor {
         Draw, Selection, Height
     };
 
-    private enum DrawMode {
+    private enum SelectionMode {
         Grid, Tile
     };
 
     private Mode currentMode = Mode.Draw;
-    private DrawMode currentDrawMode = DrawMode.Grid;
+    private SelectionMode currentDrawMode = SelectionMode.Tile;
 
     private SFMapEditor world;
     
@@ -51,16 +51,16 @@ public class SFMapEditorCustom : Editor {
             currentMode = Mode.Height;
         }
 
-        GUI.Label(new Rect(5, 65, 80, 20), "Draw mode: ");
-        GUI.Label(new Rect(85, 65, 40, 20), currentDrawMode.ToString(), EditorStyles.boldLabel);
+        world.showGrid = GUI.Toggle(new Rect(5, 65, 110, 20), world.showGrid, "Show grid (G)");
 
-        if (GUI.Button(new Rect(5, 85, 40, 20), "Grid", currentDrawMode == DrawMode.Grid ? activeButton : normalButton)) {
-            currentDrawMode = DrawMode.Grid;
-        } else if (GUI.Button(new Rect(45, 85, 40, 20), "Tile", currentDrawMode == DrawMode.Tile ? activeButton : normalButton)) {
-            currentDrawMode = DrawMode.Tile;
+        GUI.Label(new Rect(5, 85, 60, 20), "Selection: ");
+        GUI.Label(new Rect(65, 85, 40, 20), currentDrawMode.ToString(), EditorStyles.boldLabel);
+
+        if (GUI.Button(new Rect(5, 105, 40, 20), "Grid", currentDrawMode == SelectionMode.Grid ? activeButton : normalButton)) {
+            currentDrawMode = SelectionMode.Grid;
+        } else if (GUI.Button(new Rect(45, 105, 40, 20), "Tile", currentDrawMode == SelectionMode.Tile ? activeButton : normalButton)) {
+            currentDrawMode = SelectionMode.Tile;
         }
-
-        world.showGrid = GUI.Toggle(new Rect(5, 110, 110, 20), world.showGrid, "Show grid (G)");
 
         if (currentMode == Mode.Draw) {
             useWater = GUI.Toggle(new Rect(5, 130, 110, 20), useWater, "Use water (W)");
@@ -114,13 +114,6 @@ public class SFMapEditorCustom : Editor {
 
     public override void OnInspectorGUI() {
         Event e = Event.current;
-
-        // Initialize button styles
-        if (normalButton == null) {
-            normalButton = new GUIStyle(GUI.skin.button);
-            activeButton = new GUIStyle(normalButton);
-            activeButton.normal.background = activeButton.active.background;
-        }
 
         GUILayout.Label("/!\\ Do NOT touch the Map GameObject and its children", EditorStyles.boldLabel);
 
@@ -216,16 +209,15 @@ public class SFMapEditorCustom : Editor {
     private void OnSceneGUI() {
         Event e = Event.current;
 
-        if (e.isMouse && e.type == EventType.MouseDown && e.button == 0) {
-            RaycastHit2D hit = Physics2D.Raycast(HandleUtility.GUIPointToWorldRay(Event.current.mousePosition).origin, new Vector2(0, 0));
-
-            if (hit.collider != null) {
-                Debug.Log("yolo   " + hit.collider.transform.parent.parent.name);
-            }
+        // Initialize button styles
+        if (normalButton == null) {
+            normalButton = new GUIStyle(GUI.skin.button);
+            activeButton = new GUIStyle(normalButton);
+            activeButton.normal.background = activeButton.active.background;
         }
 
         // Base + UseWaterToggle + DeleteToggle + FillEmptyBtn + Separator + UndoBtn + UndoStackCount
-        int windowHeight = currentMode == Mode.Draw ? 90 + 20 + 20 + 20 + 20 + 20 + 20 + 45 : 90;
+        int windowHeight = currentMode == Mode.Draw ? 135 + 20 + 20 + 20 + 20 + 20 + 20 : 135;
 
         Handles.BeginGUI();
         GUI.Window(0, new Rect(20, 20, 150, windowHeight), EditorToolbox, "SFMapEditor");
@@ -325,6 +317,15 @@ public class SFMapEditorCustom : Editor {
                 int Sy = Mathf.FloorToInt(localMousePos.y - (localMousePos.x / 2));
 
                 if (Sx < 0 || Sx >= world.size.x || Sy < 0 || Sy >= world.size.y) return;
+
+                if (currentDrawMode == SelectionMode.Tile) {
+                    RaycastHit2D hit = Physics2D.Raycast(HandleUtility.GUIPointToWorldRay(Event.current.mousePosition).origin, new Vector2(0, 0));
+
+                    if (hit.collider != null) {
+                        Sx = hit.collider.transform.parent.GetComponent<SFSquare>().x;
+                        Sy = hit.collider.transform.parent.GetComponent<SFSquare>().y;
+                    }
+                }
 
                 int highestSortingOrder = 0;
 
