@@ -273,14 +273,15 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 91d8ff2df07fd4945a48228f3cf9c2fc, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &1745059821
+--- !u!1 &1908825825
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 1745059822}
+  - component: {fileID: 1908825827}
+  - component: {fileID: 1908825826}
   m_Layer: 0
   m_Name: Map
   m_TagString: Untagged
@@ -288,12 +289,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1745059822
+--- !u!114 &1908825826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1908825825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80d6fbcff983fc440b127b5ce7e1c832, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1908825827
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1745059821}
+  m_GameObject: {fileID: 1908825825}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
