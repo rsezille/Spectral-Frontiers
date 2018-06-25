@@ -11,7 +11,12 @@ public class SFMapEditorCustom : Editor {
         Draw, Selection, Height
     };
 
+    private enum DrawMode {
+        Grid, Tile
+    };
+
     private Mode currentMode = Mode.Draw;
+    private DrawMode currentDrawMode = DrawMode.Grid;
 
     private SFMapEditor world;
     
@@ -45,15 +50,24 @@ public class SFMapEditorCustom : Editor {
         } else if (GUI.Button(new Rect(95, 40, 50, 20), "Height", currentMode == Mode.Height ? activeButton : normalButton)) {
             currentMode = Mode.Height;
         }
-        
-        world.showGrid = GUI.Toggle(new Rect(5, 65, 110, 20), world.showGrid, "Show grid (G)");
+
+        GUI.Label(new Rect(5, 65, 80, 20), "Draw mode: ");
+        GUI.Label(new Rect(85, 65, 40, 20), currentDrawMode.ToString(), EditorStyles.boldLabel);
+
+        if (GUI.Button(new Rect(5, 85, 40, 20), "Grid", currentDrawMode == DrawMode.Grid ? activeButton : normalButton)) {
+            currentDrawMode = DrawMode.Grid;
+        } else if (GUI.Button(new Rect(45, 85, 40, 20), "Tile", currentDrawMode == DrawMode.Tile ? activeButton : normalButton)) {
+            currentDrawMode = DrawMode.Tile;
+        }
+
+        world.showGrid = GUI.Toggle(new Rect(5, 110, 110, 20), world.showGrid, "Show grid (G)");
 
         if (currentMode == Mode.Draw) {
-            useWater = GUI.Toggle(new Rect(5, 85, 110, 20), useWater, "Use water (W)");
+            useWater = GUI.Toggle(new Rect(5, 130, 110, 20), useWater, "Use water (W)");
 
-            deleteMode = GUI.Toggle(new Rect(5, 105, 120, 20), deleteMode, "Delete Mode (D)");
+            deleteMode = GUI.Toggle(new Rect(5, 150, 120, 20), deleteMode, "Delete Mode (D)");
 
-            if (GUI.Button(new Rect(5, 125, 70, 20), "Fill empty")) {
+            if (GUI.Button(new Rect(5, 170, 70, 20), "Fill empty")) {
                 if (selectedIndex >= 0 && !useWater) {
                     List<GameObject> createdSquares = new List<GameObject>();
 
@@ -86,15 +100,15 @@ public class SFMapEditorCustom : Editor {
                 }
             }
 
-            GUI.Label(new Rect(5, 145, 150, 20), "---------------------------");
+            GUI.Label(new Rect(5, 190, 150, 20), "---------------------------");
 
-            if (GUI.Button(new Rect(50, 160, 50, 20), "Undo")) {
+            if (GUI.Button(new Rect(50, 205, 50, 20), "Undo")) {
                 if (undoStack.Count > 0) {
                     (undoStack.Pop())();
                 }
             }
 
-            GUI.Label(new Rect(5, 185, 100, 20), "Undo stack: " + undoStack.Count);
+            GUI.Label(new Rect(5, 230, 100, 20), "Undo stack: " + undoStack.Count);
         }
     }
 
@@ -211,7 +225,7 @@ public class SFMapEditorCustom : Editor {
         }
 
         // Base + UseWaterToggle + DeleteToggle + FillEmptyBtn + Separator + UndoBtn + UndoStackCount
-        int windowHeight = currentMode == Mode.Draw ? 90 + 20 + 20 + 20 + 20 + 20 + 20: 90;
+        int windowHeight = currentMode == Mode.Draw ? 90 + 20 + 20 + 20 + 20 + 20 + 20 + 45 : 90;
 
         Handles.BeginGUI();
         GUI.Window(0, new Rect(20, 20, 150, windowHeight), EditorToolbox, "SFMapEditor");
