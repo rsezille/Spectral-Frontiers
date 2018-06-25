@@ -18,6 +18,7 @@ public class SFMapEditorCustom : Editor {
     private Vector2 scrollPos;
 
     private int selectedIndex= -1;
+    private int selectedTileset = 0;
 
     private bool useWater = false;
     private bool deleteMode = false;
@@ -126,11 +127,11 @@ public class SFMapEditorCustom : Editor {
 
         GUILayout.Label("Tileset to use");
 
-        int selectedTileset = 0;
+        int newTileset = EditorGUILayout.Popup(selectedTileset, subdirectories);
 
-        selectedTileset = EditorGUILayout.Popup(selectedTileset, subdirectories);
-
-        if (tileset == null || tileset.Length == 0) {
+        if (tileset == null || tileset.Length == 0 || newTileset != selectedTileset) {
+            selectedTileset = newTileset;
+            selectedIndex = -1;
             tileset = Resources.LoadAll<GameObject>("SFMapEditor/Tiles/" + subdirectories[selectedTileset]);
         }
 
