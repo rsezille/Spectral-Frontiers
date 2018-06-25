@@ -340,6 +340,14 @@ public class SFMapEditorCustom : Editor {
 
                     undoStack.Push(() => {
                         DestroyImmediate(tile);
+
+                        if (useWater) {
+                            SpriteRenderer[] underwaterSprites = square.GetComponentsInChildren<SpriteRenderer>();
+                            
+                            foreach (SpriteRenderer underwaterSprite in underwaterSprites) {
+                                underwaterSprite.color = Color.white;
+                            }
+                        }
                     });
                 }
             }
