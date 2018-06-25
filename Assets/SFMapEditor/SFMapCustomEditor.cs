@@ -176,7 +176,7 @@ public class SFMapCustomEditor : Editor {
                     maxCurrentHeight = currentTile.bounds.size.y * Globals.PixelsPerUnit / 2;
                 }
 
-                if (i < tileset.Length - 1 && currentWidth + tileset[i + 1].GetComponent<Sprite>().bounds.size.x * Globals.PixelsPerUnit / 2 >= layoutWidth) {
+                if (i < tileset.Length - 1 && currentWidth + tileset[i + 1].GetComponent<SpriteRenderer>().sprite.bounds.size.x * Globals.PixelsPerUnit / 2 >= layoutWidth) {
                     currentWidth = 0f;
                     currentHeight += maxCurrentHeight;
                     maxCurrentHeight = 0f;
