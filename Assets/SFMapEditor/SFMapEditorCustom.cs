@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 
 [CustomEditor(typeof(SFMapEditor))]
-public class SFMapCustomEditor : Editor {
+public class SFMapEditorCustom : Editor {
     private enum Mode {
         Draw, Selection, Height
     };
