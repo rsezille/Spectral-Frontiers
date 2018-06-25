@@ -120,7 +120,6 @@ public class SFMapEditorCustom : Editor {
         EditorGUILayout.PropertyField(serializedObject.FindProperty("scrollStep"), new GUIContent("Scroll Step"));
         GUILayout.Label("Sprite picker", EditorStyles.boldLabel);
 
-        //Debug.Log(Application.dataPath);
         string[] subdirectoryEntries = Directory.GetDirectories(Application.dataPath + "/Resources/SFMapEditor");
 
         foreach (string uo in subdirectoryEntries)

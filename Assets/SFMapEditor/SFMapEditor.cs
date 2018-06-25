@@ -18,9 +18,7 @@ public class SFMapEditor : MonoBehaviour {
     public GameObject map;
 
     private void OnDrawGizmos() {
-        if (!map) map = GameObject.Find("Map") ?? new GameObject("Map");
-
-        //map.transform.SetParent(transform);
+        if (!map) map = GameObject.Find("Map") ?? CreateNewMap();
 
         size.Clamp(new Vector2Int(1, 1), new Vector2Int(1000, 1000));
 
@@ -40,5 +38,13 @@ public class SFMapEditor : MonoBehaviour {
     public void ResetWaterColor() {
         waterColor = new Color(0.52f, 0.82f, 1f, 0.56f);
         underwaterColor = new Color(0.7f, 0.78f, 1f, 1f);
+    }
+
+    private GameObject CreateNewMap() {
+        GameObject map = new GameObject("Map");
+
+        map.AddComponent<SFMap>();
+
+        return map;
     }
 }
