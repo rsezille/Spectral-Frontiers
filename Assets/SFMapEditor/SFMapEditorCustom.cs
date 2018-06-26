@@ -8,7 +8,7 @@ using UnityEngine.Rendering;
 [CustomEditor(typeof(SFMapEditor))]
 public class SFMapEditorCustom : Editor {
     private enum Mode {
-        Draw, Selection, Height
+        Draw, Selection, Height, Delete
     };
 
     private enum SelectionMode {
@@ -26,7 +26,6 @@ public class SFMapEditorCustom : Editor {
     private int selectedTileset = 0;
 
     private bool useWater = false;
-    private bool deleteMode = false;
 
     private Stack<Action> undoStack = new Stack<Action>();
 
@@ -49,23 +48,23 @@ public class SFMapEditorCustom : Editor {
             currentMode = Mode.Selection;
         } else if (GUI.Button(new Rect(95, 40, 50, 20), "Height", currentMode == Mode.Height ? activeButton : normalButton)) {
             currentMode = Mode.Height;
+        } else if (GUI.Button(new Rect(45, 60, 50, 20), "Delete", currentMode == Mode.Delete ? activeButton : normalButton)) {
+            currentMode = Mode.Delete;
         }
 
-        sfMapEditor.showGrid = GUI.Toggle(new Rect(5, 65, 110, 20), sfMapEditor.showGrid, "Show grid (G)");
+        sfMapEditor.showGrid = GUI.Toggle(new Rect(5, 85, 110, 20), sfMapEditor.showGrid, "Show grid (G)");
 
-        GUI.Label(new Rect(5, 85, 60, 20), "Selection: ");
-        GUI.Label(new Rect(65, 85, 40, 20), currentSelectionMode.ToString(), EditorStyles.boldLabel);
+        GUI.Label(new Rect(5, 105, 60, 20), "Selection: ");
+        GUI.Label(new Rect(65, 105, 40, 20), currentSelectionMode.ToString(), EditorStyles.boldLabel);
 
-        if (GUI.Button(new Rect(5, 105, 40, 20), "Grid", currentSelectionMode == SelectionMode.Grid ? activeButton : normalButton)) {
+        if (GUI.Button(new Rect(5, 125, 40, 20), "Grid", currentSelectionMode == SelectionMode.Grid ? activeButton : normalButton)) {
             currentSelectionMode = SelectionMode.Grid;
-        } else if (GUI.Button(new Rect(45, 105, 40, 20), "Tile", currentSelectionMode == SelectionMode.Tile ? activeButton : normalButton)) {
+        } else if (GUI.Button(new Rect(45, 125, 40, 20), "Tile", currentSelectionMode == SelectionMode.Tile ? activeButton : normalButton)) {
             currentSelectionMode = SelectionMode.Tile;
         }
 
         if (currentMode == Mode.Draw) {
-            useWater = GUI.Toggle(new Rect(5, 130, 110, 20), useWater, "Use water (W)");
-
-            deleteMode = GUI.Toggle(new Rect(5, 150, 120, 20), deleteMode, "Delete Mode (D)");
+            useWater = GUI.Toggle(new Rect(5, 150, 110, 20), useWater, "Use water (W)");
 
             if (GUI.Button(new Rect(5, 170, 70, 20), "Fill empty")) {
                 if (selectedIndex >= 0 && !useWater) {
@@ -217,7 +216,7 @@ public class SFMapEditorCustom : Editor {
         }
 
         // Base + UseWaterToggle + DeleteToggle + FillEmptyBtn + Separator + UndoBtn + UndoStackCount
-        int windowHeight = currentMode == Mode.Draw ? 135 + 20 + 20 + 20 + 20 + 20 + 20 : 135;
+        int windowHeight = currentMode == Mode.Draw ? 155 + 20 + 20 + 20 + 20 + 20 : 155;
 
         Handles.BeginGUI();
         GUI.Window(0, new Rect(20, 20, 150, windowHeight), EditorToolbox, "SFMapEditor");
@@ -231,7 +230,8 @@ public class SFMapEditorCustom : Editor {
 
                     if (currentMode == Mode.Draw) currentMode = Mode.Selection;
                     else if (currentMode == Mode.Selection) currentMode = Mode.Height;
-                    else if (currentMode == Mode.Height) currentMode = Mode.Draw;
+                    else if (currentMode == Mode.Height) currentMode = Mode.Delete;
+                    else if (currentMode == Mode.Delete) currentMode = Mode.Draw;
 
                     break;
                 case KeyCode.G:
@@ -243,14 +243,6 @@ public class SFMapEditorCustom : Editor {
 
                     if (currentMode == Mode.Draw) {
                         useWater = !useWater;
-                    }
-
-                    break;
-                case KeyCode.D:
-                    e.Use();
-
-                    if (currentMode == Mode.Draw) {
-                        deleteMode = !deleteMode;
                     }
 
                     break;
