@@ -298,10 +298,10 @@ public class SFMapEditorCustom : Editor {
 
                         tileHit.transform.Translate(new Vector3(0f, (delta * sfMapEditor.scrollStep) / Globals.TileHeight));
 
-                        // If the tile hit is the highest of the square, we need to update the square altitude
+                        // If the tile hit is the highest of the square, we need to update the square height
                         if (highestTile != null && highestTile.gameObject == tileHit) {
                             SFSquare sfSquare = highestTile.GetComponentInParent<SFSquare>();
-                            sfSquare.altitude += (int)delta * sfMapEditor.scrollStep;
+                            sfSquare.height += (int)delta * sfMapEditor.scrollStep;
                         }
                     }
                 } else {
@@ -344,7 +344,7 @@ public class SFMapEditorCustom : Editor {
                             highestTile.transform.Translate(new Vector3(0f, (delta * sfMapEditor.scrollStep) / Globals.TileHeight));
 
                             SFSquare sfSquare = highestTile.GetComponentInParent<SFSquare>();
-                            sfSquare.altitude += (int)delta * sfMapEditor.scrollStep;
+                            sfSquare.height += (int)delta * sfMapEditor.scrollStep;
                         }
                     }
                 }
@@ -404,7 +404,7 @@ public class SFMapEditorCustom : Editor {
 
                     highestSortingOrder++;
 
-                    GameObject tile = CreateTile(square, highestSortingOrder, (float)square.GetComponent<SFSquare>().altitude / Globals.PixelsPerUnit);
+                    GameObject tile = CreateTile(square, highestSortingOrder, (float)square.GetComponent<SFSquare>().height / Globals.PixelsPerUnit);
 
                     undoStack.Push(() => {
                         DestroyImmediate(tile);
@@ -436,7 +436,7 @@ public class SFMapEditorCustom : Editor {
         SFSquare sfSquare = square.AddComponent<SFSquare>();
         sfSquare.x = x;
         sfSquare.y = y;
-        sfSquare.altitude = 0;
+        sfSquare.height = 0;
         SortingGroup sortingGroup = square.AddComponent<SortingGroup>();
         sortingGroup.sortingOrder = -(sfMapEditor.size.x * y + x);
         square.transform.SetParent(sfMapEditor.map.transform);
@@ -444,7 +444,7 @@ public class SFMapEditorCustom : Editor {
         return square;
     }
 
-    private GameObject CreateTile(GameObject square, int sortingOrder = 0, float altitude = 0f) {
+    private GameObject CreateTile(GameObject square, int sortingOrder = 0, float height = 0f) {
         GameObject tile = PrefabUtility.InstantiatePrefab(useWater ? sfMapEditor.water : tileset[selectedIndex]) as GameObject;
         tile.transform.SetParent(square.transform);
 
@@ -461,7 +461,7 @@ public class SFMapEditorCustom : Editor {
             spriteRenderer.color = sfMapEditor.waterColor;
             tile.transform.localPosition = new Vector3(0f, (float)sfMapEditor.waterOffset / Globals.PixelsPerUnit);
         } else {
-            tile.transform.localPosition = new Vector3(0f, altitude);
+            tile.transform.localPosition = new Vector3(0f, height);
         }
 
         spriteRenderer.sortingOrder = sortingOrder;

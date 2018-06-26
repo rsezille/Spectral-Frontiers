@@ -17,6 +17,6 @@ public class SFSquareCustom : Editor {
 
         Vector3 position = square.transform.position;
 
-        Handles.Label(position, "MapPos(" + square.x + "," + square.y + ")\nAltitude(" + square.altitude + ")", style);
+        Handles.Label(position, "MapPos(" + square.x + "," + square.y + ")\nHeight(" + square.height + ")", style);
     }
 }

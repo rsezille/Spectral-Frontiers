@@ -3,5 +3,5 @@
 public class SFSquare : MonoBehaviour {
     public int x;
     public int y;
-    public int altitude = 0;
+    public int height = 0;
 }
