@@ -34,6 +34,8 @@ public class SFMapEditorCustom : Editor {
     private static GUIStyle normalButton;
     private static GUIStyle activeButton;
 
+    private bool mouseHold = false;
+
     private void OnEnable() {
         sfMapEditor = (SFMapEditor)target;
     }
@@ -206,10 +208,16 @@ public class SFMapEditorCustom : Editor {
     }
 
     private void OnSceneGUI() {
+        HandleUtility.AddDefaultControl(GUIUtility.GetControlID(FocusType.Passive)); // Disable selection when holding the left mouse click
+
         Event e = Event.current;
+        
+        if (e.type == EventType.MouseDrag) {
+            Debug.Log("mousedrag    " + e.delta);
+        }
 
         // Initialize button styles
-        if (normalButton == null) {
+            if (normalButton == null) {
             normalButton = new GUIStyle(GUI.skin.button);
             activeButton = new GUIStyle(normalButton);
             activeButton.normal.background = activeButton.active.background;
@@ -352,7 +360,33 @@ public class SFMapEditorCustom : Editor {
 
         // Draw
         if (currentMode == Mode.Draw) {
-            if (e.isMouse && e.type == EventType.MouseDown && e.button == 0 && (selectedIndex >= 0 || useWater)) {
+            if (e.isMouse && e.type == EventType.MouseDrag && e.button == 0 && selectedIndex >= 0 && currentSelectionMode == SelectionMode.Grid) {
+                e.Use();
+
+                Vector3 mousePosition = new Vector3(e.mousePosition.x, -e.mousePosition.y + Camera.current.pixelHeight);
+                Vector3 localMousePos = Camera.current.ScreenToWorldPoint(mousePosition);
+
+                // Square coords
+                int Sx = Mathf.FloorToInt((localMousePos.x / 2) + localMousePos.y);
+                int Sy = Mathf.FloorToInt(localMousePos.y - (localMousePos.x / 2));
+
+                if (Sx < 0 || Sx >= sfMapEditor.size.x || Sy < 0 || Sy >= sfMapEditor.size.y) return;
+
+                int highestSortingOrder = 0;
+
+                GameObject square = GameObject.Find("Square(" + Sx + "," + Sy + ")");
+
+                // Create the square if it doesn't exist
+                if (!square) {
+                    square = CreateSquare(Sx, Sy);
+
+                    CreateTile(square, highestSortingOrder);
+
+                    undoStack.Push(() => {
+                        DestroyImmediate(square);
+                    });
+                }
+            } else if (e.isMouse && e.type == EventType.MouseDown && e.button == 0 && (selectedIndex >= 0 || useWater)) {
                 e.Use();
 
                 if (useWater && !sfMapEditor.water) {
