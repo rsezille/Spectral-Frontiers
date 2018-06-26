@@ -413,7 +413,21 @@ public class SFMapEditorCustom : Editor {
             }
         }
 
-        if (currentMode == Mode.Draw || currentMode == Mode.Height) {
+        if (currentMode == Mode.Delete) {
+            if (e.isMouse && e.type == EventType.MouseDown && e.button == 0) {
+                e.Use();
+
+                GameObject tileHit = GetTileHit();
+
+                if (tileHit.GetComponentInParent<SFSquare>().transform.childCount == 1) {
+                    DestroyImmediate(tileHit.GetComponentInParent<SFSquare>().gameObject);
+                } else {
+                    DestroyImmediate(tileHit);
+                }
+            }
+        }
+
+        if (currentMode == Mode.Draw || currentMode == Mode.Height || currentMode == Mode.Delete) {
             Selection.activeGameObject = sfMapEditor.gameObject;
         }
     }
