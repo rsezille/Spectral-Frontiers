@@ -439,19 +439,23 @@ public class SFMapEditorCustom : Editor {
     }
 
     private SFSquare GetSquareHit() {
-        SFSquare visibleSquare = null;
+        GameObject tileHit = GetTileHit();
+
+        return tileHit ? tileHit.GetComponentInParent<SFSquare>() : null;
+    }
+
+    private GameObject GetTileHit() {
+        GameObject visibleTileHit = null;
 
         foreach (RaycastHit2D hit in Physics2D.RaycastAll(HandleUtility.GUIPointToWorldRay(Event.current.mousePosition).origin, Vector2.zero)) {
-            SFSquare squareHit = hit.collider.transform.parent.GetComponent<SFSquare>();
-
-            int hitSortingOrder = hit.collider.transform.parent.GetComponent<SortingGroup>().sortingOrder;
+            int hitSortingOrder = hit.collider.GetComponentInParent<SortingGroup>().sortingOrder;
 
             // Retrieve the closiest map object, the one we are seeing
-            if (visibleSquare == null || hitSortingOrder > visibleSquare.GetComponent<SortingGroup>().sortingOrder) {
-                visibleSquare = squareHit;
+            if (visibleTileHit == null || hitSortingOrder > visibleTileHit.GetComponentInParent<SortingGroup>().sortingOrder) {
+                visibleTileHit = hit.collider.gameObject;
             }
         }
 
-        return visibleSquare;
+        return visibleTileHit;
     }
 }
