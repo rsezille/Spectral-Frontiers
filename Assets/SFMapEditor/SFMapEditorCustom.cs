@@ -275,46 +275,77 @@ public class SFMapEditorCustom : Editor {
             if (e.isScrollWheel && e.type == EventType.ScrollWheel) {
                 e.Use();
 
-                Vector3 mousePosition = new Vector3(e.mousePosition.x, -e.mousePosition.y + Camera.current.pixelHeight);
-                Vector3 localMousePos = Camera.current.ScreenToWorldPoint(mousePosition);
-
-                // Square coords
-                int Sx = Mathf.FloorToInt((localMousePos.x / 2) + localMousePos.y);
-                int Sy = Mathf.FloorToInt(localMousePos.y - (localMousePos.x / 2));
-
-                if (Sx < 0 || Sx >= sfMapEditor.size.x || Sy < 0 || Sy >= sfMapEditor.size.y) return;
 
                 if (currentSelectionMode == SelectionMode.Tile) {
-                    SFSquare squareHit = GetSquareHit();
+                    GameObject tileHit = GetTileHit();
 
-                    if (squareHit != null) {
-                        Sx = squareHit.x;
-                        Sy = squareHit.y;
-                    }
-                }
-
-                GameObject square = GameObject.Find("Square(" + Sx + "," + Sy + ")");
-
-                if (square) {
-                    SpriteRenderer highestTile = null;
-
-                    SpriteRenderer[] sprites = square.GetComponentsInChildren<SpriteRenderer>();
-
-                    foreach (SpriteRenderer sprite in sprites) {
-                        if (highestTile == null || sprite.sortingOrder > highestTile.sortingOrder) {
-                            highestTile = sprite;
-                        }
-                    }
-
-                    if (highestTile != null) {
+                    if (tileHit != null) {
                         float delta = -1f;
 
                         if (e.delta.y < 0) delta = 1f;
 
-                        highestTile.transform.Translate(new Vector3(0f, (delta * sfMapEditor.scrollStep) / Globals.TileHeight));
+                        SFSquare squareHit = tileHit.GetComponentInParent<SFSquare>();
 
-                        SFSquare sfSquare = highestTile.GetComponentInParent<SFSquare>();
-                        sfSquare.altitude += (int)delta * sfMapEditor.scrollStep;
+                        SpriteRenderer highestTile = null;
+
+                        SpriteRenderer[] sprites = squareHit.GetComponentsInChildren<SpriteRenderer>();
+
+                        foreach (SpriteRenderer sprite in sprites) {
+                            if (highestTile == null || sprite.sortingOrder > highestTile.sortingOrder) {
+                                highestTile = sprite;
+                            }
+                        }
+
+                        tileHit.transform.Translate(new Vector3(0f, (delta * sfMapEditor.scrollStep) / Globals.TileHeight));
+
+                        // If the tile hit is the highest of the square, we need to update the square altitude
+                        if (highestTile != null && highestTile.gameObject == tileHit) {
+                            SFSquare sfSquare = highestTile.GetComponentInParent<SFSquare>();
+                            sfSquare.altitude += (int)delta * sfMapEditor.scrollStep;
+                        }
+                    }
+                } else {
+                    Vector3 mousePosition = new Vector3(e.mousePosition.x, -e.mousePosition.y + Camera.current.pixelHeight);
+                    Vector3 localMousePos = Camera.current.ScreenToWorldPoint(mousePosition);
+
+                    // Square coords
+                    int Sx = Mathf.FloorToInt((localMousePos.x / 2) + localMousePos.y);
+                    int Sy = Mathf.FloorToInt(localMousePos.y - (localMousePos.x / 2));
+
+                    if (Sx < 0 || Sx >= sfMapEditor.size.x || Sy < 0 || Sy >= sfMapEditor.size.y) return;
+
+                    if (currentSelectionMode == SelectionMode.Tile) {
+                        SFSquare squareHit = GetSquareHit();
+
+                        if (squareHit != null) {
+                            Sx = squareHit.x;
+                            Sy = squareHit.y;
+                        }
+                    }
+
+                    GameObject square = GameObject.Find("Square(" + Sx + "," + Sy + ")");
+
+                    if (square) {
+                        SpriteRenderer highestTile = null;
+
+                        SpriteRenderer[] sprites = square.GetComponentsInChildren<SpriteRenderer>();
+
+                        foreach (SpriteRenderer sprite in sprites) {
+                            if (highestTile == null || sprite.sortingOrder > highestTile.sortingOrder) {
+                                highestTile = sprite;
+                            }
+                        }
+
+                        if (highestTile != null) {
+                            float delta = -1f;
+
+                            if (e.delta.y < 0) delta = 1f;
+
+                            highestTile.transform.Translate(new Vector3(0f, (delta * sfMapEditor.scrollStep) / Globals.TileHeight));
+
+                            SFSquare sfSquare = highestTile.GetComponentInParent<SFSquare>();
+                            sfSquare.altitude += (int)delta * sfMapEditor.scrollStep;
+                        }
                     }
                 }
             }
