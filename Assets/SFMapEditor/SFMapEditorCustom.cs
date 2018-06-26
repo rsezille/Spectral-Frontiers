@@ -246,6 +246,13 @@ public class SFMapEditorCustom : Editor {
                     }
 
                     break;
+                case KeyCode.T:
+                    e.Use();
+
+                    if (currentSelectionMode == SelectionMode.Grid) currentSelectionMode = SelectionMode.Tile;
+                    else if (currentSelectionMode == SelectionMode.Tile) currentSelectionMode = SelectionMode.Grid;
+
+                    break;
             }
         }
 
