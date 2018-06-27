@@ -69,6 +69,13 @@ public class SFMapEditor : MonoBehaviour {
                 Gizmos.DrawLine(left + new Vector3(0.05f, 0f), top + new Vector3(0f, -0.025f));
                 Gizmos.DrawLine(bottom + new Vector3(0f, 0.025f), left + new Vector3(0.05f, 0f));
                 Gizmos.DrawLine(right + new Vector3(-0.05f, 0f), top + new Vector3(0f, -0.025f));
+
+                if (square.solid || !square.IsNotBlocking()) {
+                    Gizmos.DrawLine(bottom + new Vector3(0f, 0.2f), top + new Vector3(0f, -0.2f));
+                    Gizmos.DrawLine(left + new Vector3(0.4f, 0f), right + new Vector3(-0.4f, 0f));
+                } else {
+                    Gizmos.DrawWireSphere(new Vector3(square.x - square.y, (square.x + square.y + 1f) / 2f), 0.2f);
+                }
             }
         }
 
