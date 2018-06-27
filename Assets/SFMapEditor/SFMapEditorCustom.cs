@@ -458,6 +458,10 @@ public class SFMapEditorCustom : Editor {
                         }
                     });
                 }
+
+                if (useWater) {
+                    square.GetComponent<SFSquare>().solid = true;
+                }
             }
         }
 
