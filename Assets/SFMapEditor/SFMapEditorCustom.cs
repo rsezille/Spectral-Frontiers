@@ -249,6 +249,25 @@ public class SFMapEditorCustom : Editor {
                     else if (currentSelectMode == SFMapEditor.SelectMode.Tile) currentSelectMode = SFMapEditor.SelectMode.Grid;
 
                     break;
+                case KeyCode.LeftControl:
+                    e.Use();
+
+                    if (sfMapEditor.currentMode == SFMapEditor.Mode.Block) {
+                        if (sfMapEditor.map.activeSelf) {
+                            sfMapEditor.map.SetActive(false);
+                        }
+                    }
+
+                    break;
+            }
+        } else if (e.type == EventType.KeyUp) {
+            switch (e.keyCode) {
+                case KeyCode.LeftControl:
+                    e.Use();
+
+                    sfMapEditor.map.SetActive(true);
+
+                    break;
             }
         }
 
