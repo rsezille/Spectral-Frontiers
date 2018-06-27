@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4279885027302924}
   - component: {fileID: 114866135100429180}
   - component: {fileID: 114517495542600846}
+  - component: {fileID: 114321221161570466}
   m_Layer: 0
   m_Name: MapEditor
   m_TagString: Untagged
@@ -41,6 +42,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114321221161570466
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1547151299616552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6212f0c13f8bff241af221f59e6ca6a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sfMapEditor: {fileID: 114866135100429180}
+  sfSpritePicker: {fileID: 114517495542600846}
 --- !u!114 &114517495542600846
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -52,6 +66,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cfc4d75a92df1d46899abe23de3ccb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sfMapEditor: {fileID: 0}
+  sfEditorWindow: {fileID: 0}
+  selectedIndex: -1
+  selectedTileset: 0
+  tileset:
+  - {fileID: 1843015529889800, guid: 7ce2e201d77781a4f9ca4e5f0259180e, type: 2}
+  - {fileID: 1134162609689692, guid: 538f53c8c1d570047a9e9dd0968619ad, type: 2}
+  - {fileID: 1641314326816854, guid: a04651a3ff590614380f52c64f38ba99, type: 2}
+  - {fileID: 1101605466687940, guid: 252b002ee219c7a4592d51bd839b1520, type: 2}
+  waterPrefab: {fileID: 1431631843932532, guid: 04ab14e0d3670b74592c0fb6bdab04c3,
+    type: 2}
+  waterColor: {r: 0.52, g: 0.82, b: 1, a: 0.56}
+  underwaterColor: {r: 0.7, g: 0.78, b: 1, a: 1}
+  waterOffset: 32
 --- !u!114 &114866135100429180
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -63,14 +91,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0e1ce9b844b4574d8b26673b8825c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sfSpritePicker: {fileID: 0}
+  sfEditorWindow: {fileID: 0}
   map: {fileID: 0}
   size: {x: 11, y: 13}
   showGrid: 1
   gridColor: {r: 1, g: 0, b: 0, a: 1}
   scrollStep: 8
-  water: {fileID: 1431631843932532, guid: 04ab14e0d3670b74592c0fb6bdab04c3, type: 2}
-  waterColor: {r: 0.52, g: 0.82, b: 1, a: 0.56}
-  underwaterColor: {r: 0.7, g: 0.78, b: 1, a: 1}
-  waterOffset: 32
   hoveredSquare: {fileID: 0}
   currentMode: 0
+  currentSelectMode: 1
+  useWater: 0
