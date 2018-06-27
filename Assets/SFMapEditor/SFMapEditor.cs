@@ -111,13 +111,6 @@ public class SFMapEditor : MonoBehaviour {
         }
     }
 
-    public void ResetWaterColor() {
-        SFSpritePicker sfSpritePicker = GetComponent<SFSpritePicker>();
-
-        sfSpritePicker.waterColor = new Color(0.52f, 0.82f, 1f, 0.56f);
-        sfSpritePicker.underwaterColor = new Color(0.7f, 0.78f, 1f, 1f);
-    }
-
     private GameObject CreateNewMap() {
         GameObject map = new GameObject("Map");
 

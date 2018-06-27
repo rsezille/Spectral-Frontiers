@@ -95,7 +95,7 @@ public class SFSpritePickerCustom : Editor {
         EditorGUILayout.PropertyField(serializedObject.FindProperty("underwaterColor"), new GUIContent("Underwater color"));
 
         if (GUILayout.Button("Reset colors")) {
-            sfMapEditor.ResetWaterColor();
+            sfSpritePicker.ResetWaterColor();
         }
 
         EditorGUILayout.PropertyField(serializedObject.FindProperty("waterOffset"), new GUIContent("Offset (32)"));
