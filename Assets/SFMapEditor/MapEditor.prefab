@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4279885027302924}
   - component: {fileID: 114866135100429180}
+  - component: {fileID: 114517495542600846}
   m_Layer: 0
   m_Name: MapEditor
   m_TagString: Untagged
@@ -40,6 +41,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114517495542600846
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1547151299616552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cfc4d75a92df1d46899abe23de3ccb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114866135100429180
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -51,13 +63,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0e1ce9b844b4574d8b26673b8825c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  map: {fileID: 0}
   size: {x: 11, y: 13}
   showGrid: 1
-  gridColor: {r: 1, g: 0.09286982, b: 0, a: 1}
+  gridColor: {r: 1, g: 0, b: 0, a: 1}
   scrollStep: 8
   water: {fileID: 1431631843932532, guid: 04ab14e0d3670b74592c0fb6bdab04c3, type: 2}
   waterColor: {r: 0.52, g: 0.82, b: 1, a: 0.56}
   underwaterColor: {r: 0.7, g: 0.78, b: 1, a: 1}
   waterOffset: 32
-  map: {fileID: 0}
   hoveredSquare: {fileID: 0}
+  currentMode: 0
