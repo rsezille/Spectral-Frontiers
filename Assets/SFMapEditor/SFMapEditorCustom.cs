@@ -7,16 +7,7 @@ using UnityEngine.Rendering;
 
 [CustomEditor(typeof(SFMapEditor))]
 public class SFMapEditorCustom : Editor {
-    private enum Mode {
-        Draw, Selection, Height, Delete
-    };
-
-    private enum SelectionMode {
-        Grid, Tile
-    };
-
-    private Mode currentMode = Mode.Draw;
-    private SelectionMode currentSelectionMode = SelectionMode.Tile;
+    private SFMapEditor.SelectMode currentSelectMode = SFMapEditor.SelectMode.Tile;
 
     private SFMapEditor sfMapEditor;
     
@@ -34,38 +25,38 @@ public class SFMapEditorCustom : Editor {
     private static GUIStyle normalButton;
     private static GUIStyle activeButton;
 
-    private bool mouseHold = false;
-
     private void OnEnable() {
         sfMapEditor = (SFMapEditor)target;
     }
 
     private void EditorToolbox(int windowID) {
         GUI.Label(new Rect(5, 20, 60, 20), "Mode (R): ");
-        GUI.Label(new Rect(65, 20, 70, 20), currentMode.ToString(), EditorStyles.boldLabel);
+        GUI.Label(new Rect(65, 20, 70, 20), sfMapEditor.currentMode.ToString(), EditorStyles.boldLabel);
 
-        if (GUI.Button(new Rect(5, 40, 40, 20), "Draw", currentMode == Mode.Draw ? activeButton : normalButton)) {
-            currentMode = Mode.Draw;
-        } else if (GUI.Button(new Rect(45, 40, 50, 20), "Select", currentMode == Mode.Selection ? activeButton : normalButton)) {
-            currentMode = Mode.Selection;
-        } else if (GUI.Button(new Rect(95, 40, 50, 20), "Height", currentMode == Mode.Height ? activeButton : normalButton)) {
-            currentMode = Mode.Height;
-        } else if (GUI.Button(new Rect(45, 60, 50, 20), "Delete", currentMode == Mode.Delete ? activeButton : normalButton)) {
-            currentMode = Mode.Delete;
+        if (GUI.Button(new Rect(5, 40, 40, 20), "Draw", sfMapEditor.currentMode == SFMapEditor.Mode.Draw ? activeButton : normalButton)) {
+            sfMapEditor.currentMode = SFMapEditor.Mode.Draw;
+        } else if (GUI.Button(new Rect(45, 40, 50, 20), "Select", sfMapEditor.currentMode == SFMapEditor.Mode.Selection ? activeButton : normalButton)) {
+            sfMapEditor.currentMode = SFMapEditor.Mode.Selection;
+        } else if (GUI.Button(new Rect(95, 40, 50, 20), "Height", sfMapEditor.currentMode == SFMapEditor.Mode.Height ? activeButton : normalButton)) {
+            sfMapEditor.currentMode = SFMapEditor.Mode.Height;
+        } else if (GUI.Button(new Rect(45, 60, 50, 20), "Delete", sfMapEditor.currentMode == SFMapEditor.Mode.Delete ? activeButton : normalButton)) {
+            sfMapEditor.currentMode = SFMapEditor.Mode.Delete;
+        } else if (GUI.Button(new Rect(95, 60, 50, 20), "Block", sfMapEditor.currentMode == SFMapEditor.Mode.Block ? activeButton : normalButton)) {
+            sfMapEditor.currentMode = SFMapEditor.Mode.Block;
         }
 
         sfMapEditor.showGrid = GUI.Toggle(new Rect(5, 85, 110, 20), sfMapEditor.showGrid, "Show grid (G)");
 
         GUI.Label(new Rect(5, 105, 60, 20), "Selection: ");
-        GUI.Label(new Rect(65, 105, 40, 20), currentSelectionMode.ToString(), EditorStyles.boldLabel);
+        GUI.Label(new Rect(65, 105, 40, 20), currentSelectMode.ToString(), EditorStyles.boldLabel);
 
-        if (GUI.Button(new Rect(5, 125, 40, 20), "Grid", currentSelectionMode == SelectionMode.Grid ? activeButton : normalButton)) {
-            currentSelectionMode = SelectionMode.Grid;
-        } else if (GUI.Button(new Rect(45, 125, 40, 20), "Tile", currentSelectionMode == SelectionMode.Tile ? activeButton : normalButton)) {
-            currentSelectionMode = SelectionMode.Tile;
+        if (GUI.Button(new Rect(5, 125, 40, 20), "Grid", currentSelectMode == SFMapEditor.SelectMode.Grid ? activeButton : normalButton)) {
+            currentSelectMode = SFMapEditor.SelectMode.Grid;
+        } else if (GUI.Button(new Rect(45, 125, 40, 20), "Tile", currentSelectMode == SFMapEditor.SelectMode.Tile ? activeButton : normalButton)) {
+            currentSelectMode = SFMapEditor.SelectMode.Tile;
         }
 
-        if (currentMode == Mode.Draw) {
+        if (sfMapEditor.currentMode == SFMapEditor.Mode.Draw) {
             useWater = GUI.Toggle(new Rect(5, 150, 110, 20), useWater, "Use water (W)");
 
             if (GUI.Button(new Rect(5, 170, 70, 20), "Fill empty")) {
@@ -211,20 +202,16 @@ public class SFMapEditorCustom : Editor {
         HandleUtility.AddDefaultControl(GUIUtility.GetControlID(FocusType.Passive)); // Disable selection when holding the left mouse click
 
         Event e = Event.current;
-        
-        if (e.type == EventType.MouseDrag) {
-            Debug.Log("mousedrag    " + e.delta);
-        }
 
         // Initialize button styles
-            if (normalButton == null) {
+        if (normalButton == null) {
             normalButton = new GUIStyle(GUI.skin.button);
             activeButton = new GUIStyle(normalButton);
             activeButton.normal.background = activeButton.active.background;
         }
 
         // Base + UseWaterToggle + DeleteToggle + FillEmptyBtn + Separator + UndoBtn + UndoStackCount
-        int windowHeight = currentMode == Mode.Draw ? 155 + 20 + 20 + 20 + 20 + 20 : 155;
+        int windowHeight = sfMapEditor.currentMode == SFMapEditor.Mode.Draw ? 155 + 20 + 20 + 20 + 20 + 20 : 155;
 
         Handles.BeginGUI();
         GUI.Window(0, new Rect(20, 20, 150, windowHeight), EditorToolbox, "SFMapEditor");
@@ -236,10 +223,11 @@ public class SFMapEditorCustom : Editor {
                 case KeyCode.R:
                     e.Use();
 
-                    if (currentMode == Mode.Draw) currentMode = Mode.Selection;
-                    else if (currentMode == Mode.Selection) currentMode = Mode.Height;
-                    else if (currentMode == Mode.Height) currentMode = Mode.Delete;
-                    else if (currentMode == Mode.Delete) currentMode = Mode.Draw;
+                    if (sfMapEditor.currentMode == SFMapEditor.Mode.Draw) sfMapEditor.currentMode = SFMapEditor.Mode.Selection;
+                    else if (sfMapEditor.currentMode == SFMapEditor.Mode.Selection) sfMapEditor.currentMode = SFMapEditor.Mode.Height;
+                    else if (sfMapEditor.currentMode == SFMapEditor.Mode.Height) sfMapEditor.currentMode = SFMapEditor.Mode.Delete;
+                    else if (sfMapEditor.currentMode == SFMapEditor.Mode.Delete) sfMapEditor.currentMode = SFMapEditor.Mode.Block;
+                    else if (sfMapEditor.currentMode == SFMapEditor.Mode.Block) sfMapEditor.currentMode = SFMapEditor.Mode.Draw;
 
                     break;
                 case KeyCode.G:
@@ -249,7 +237,7 @@ public class SFMapEditorCustom : Editor {
                 case KeyCode.W:
                     e.Use();
 
-                    if (currentMode == Mode.Draw) {
+                    if (sfMapEditor.currentMode == SFMapEditor.Mode.Draw) {
                         useWater = !useWater;
                     }
 
@@ -257,8 +245,8 @@ public class SFMapEditorCustom : Editor {
                 case KeyCode.T:
                     e.Use();
 
-                    if (currentSelectionMode == SelectionMode.Grid) currentSelectionMode = SelectionMode.Tile;
-                    else if (currentSelectionMode == SelectionMode.Tile) currentSelectionMode = SelectionMode.Grid;
+                    if (currentSelectMode == SFMapEditor.SelectMode.Grid) currentSelectMode = SFMapEditor.SelectMode.Tile;
+                    else if (currentSelectMode == SFMapEditor.SelectMode.Tile) currentSelectMode = SFMapEditor.SelectMode.Grid;
 
                     break;
             }
@@ -267,7 +255,7 @@ public class SFMapEditorCustom : Editor {
         sfMapEditor.hoveredSquare = null;
 
         // Selection
-        if (currentSelectionMode == SelectionMode.Tile) {
+        if (currentSelectMode == SFMapEditor.SelectMode.Tile) {
             SFSquare visibleSquare = GetSquareHit();
 
             if (visibleSquare != null) {
@@ -278,12 +266,12 @@ public class SFMapEditorCustom : Editor {
         }
 
         // Update height of the last sprite of a square
-        if (currentMode == Mode.Height) {
+        if (sfMapEditor.currentMode == SFMapEditor.Mode.Height) {
             if (e.isScrollWheel && e.type == EventType.ScrollWheel) {
                 e.Use();
 
 
-                if (currentSelectionMode == SelectionMode.Tile) {
+                if (currentSelectMode == SFMapEditor.SelectMode.Tile) {
                     GameObject tileHit = GetTileHit();
 
                     if (tileHit != null) {
@@ -321,7 +309,7 @@ public class SFMapEditorCustom : Editor {
 
                     if (Sx < 0 || Sx >= sfMapEditor.size.x || Sy < 0 || Sy >= sfMapEditor.size.y) return;
 
-                    if (currentSelectionMode == SelectionMode.Tile) {
+                    if (currentSelectMode == SFMapEditor.SelectMode.Tile) {
                         SFSquare squareHit = GetSquareHit();
 
                         if (squareHit != null) {
@@ -359,8 +347,8 @@ public class SFMapEditorCustom : Editor {
         }
 
         // Draw
-        if (currentMode == Mode.Draw) {
-            if (e.isMouse && e.type == EventType.MouseDrag && e.button == 0 && selectedIndex >= 0 && currentSelectionMode == SelectionMode.Grid) {
+        if (sfMapEditor.currentMode == SFMapEditor.Mode.Draw) {
+            if (e.isMouse && e.type == EventType.MouseDrag && e.button == 0 && selectedIndex >= 0 && currentSelectMode == SFMapEditor.SelectMode.Grid) {
                 e.Use();
 
                 Vector3 mousePosition = new Vector3(e.mousePosition.x, -e.mousePosition.y + Camera.current.pixelHeight);
@@ -404,7 +392,7 @@ public class SFMapEditorCustom : Editor {
 
                 if (Sx < 0 || Sx >= sfMapEditor.size.x || Sy < 0 || Sy >= sfMapEditor.size.y) return;
 
-                if (currentSelectionMode == SelectionMode.Tile) {
+                if (currentSelectMode == SFMapEditor.SelectMode.Tile) {
                     SFSquare squareHit = GetSquareHit();
 
                     if (squareHit != null) {
@@ -454,7 +442,8 @@ public class SFMapEditorCustom : Editor {
             }
         }
 
-        if (currentMode == Mode.Delete) {
+        // Delete
+        if (sfMapEditor.currentMode == SFMapEditor.Mode.Delete) {
             if (e.isMouse && e.type == EventType.MouseDown && e.button == 0) {
                 e.Use();
 
@@ -468,7 +457,38 @@ public class SFMapEditorCustom : Editor {
             }
         }
 
-        if (currentMode == Mode.Draw || currentMode == Mode.Height || currentMode == Mode.Delete) {
+        // Block
+        if (sfMapEditor.currentMode == SFMapEditor.Mode.Block) {
+            if (e.isMouse && e.type == EventType.MouseDown && e.button == 0) {
+                e.Use();
+
+                if (currentSelectMode == SFMapEditor.SelectMode.Tile) {
+                    SFSquare squareHit = GetSquareHit();
+
+                    if (squareHit != null) {
+                        squareHit.solid = !squareHit.solid;
+                    }
+                } else if (currentSelectMode == SFMapEditor.SelectMode.Grid) {
+                    Vector3 mousePosition = new Vector3(e.mousePosition.x, -e.mousePosition.y + Camera.current.pixelHeight);
+                    Vector3 localMousePos = Camera.current.ScreenToWorldPoint(mousePosition);
+
+                    // Square coords
+                    int Sx = Mathf.FloorToInt((localMousePos.x / 2) + localMousePos.y);
+                    int Sy = Mathf.FloorToInt(localMousePos.y - (localMousePos.x / 2));
+
+                    if (Sx < 0 || Sx >= sfMapEditor.size.x || Sy < 0 || Sy >= sfMapEditor.size.y) return;
+
+                    SFSquare squareHit = GameObject.Find("Square(" + Sx + "," + Sy + ")").GetComponent<SFSquare>();
+                    
+                    if (squareHit) {
+                        squareHit.solid = !squareHit.solid;
+                    }
+                }
+            }
+        }
+
+        if (sfMapEditor.currentMode == SFMapEditor.Mode.Draw || sfMapEditor.currentMode == SFMapEditor.Mode.Height || sfMapEditor.currentMode == SFMapEditor.Mode.Delete
+                || sfMapEditor.currentMode == SFMapEditor.Mode.Block) {
             Selection.activeGameObject = sfMapEditor.gameObject;
         }
     }
