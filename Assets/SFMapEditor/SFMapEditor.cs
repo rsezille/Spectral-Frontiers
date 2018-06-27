@@ -1,5 +1,8 @@
-﻿using UnityEditor;
+﻿using System;
+using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class SFMapEditor : MonoBehaviour {
     public enum Mode {
@@ -20,14 +23,14 @@ public class SFMapEditor : MonoBehaviour {
     [Range(1, 64)]
     public int scrollStep = 1;
 
-    public GameObject water;
-    public Color waterColor = new Color(0.52f, 0.82f, 1f, 0.56f);
-    public Color underwaterColor = new Color(0.7f, 0.78f, 1f, 1f);
-    public int waterOffset = 32;
-
     public SFSquare hoveredSquare;
 
     public Mode currentMode = Mode.Draw;
+    public SelectMode currentSelectMode = SelectMode.Tile;
+
+    public Stack<Action> undoStack = new Stack<Action>();
+
+    public bool useWater = false;
 
     private Color orange = new Color(1f, 0.5f, 0f);
 
@@ -108,16 +111,56 @@ public class SFMapEditor : MonoBehaviour {
         }
     }
 
-    public void ResetWaterColor() {
-        waterColor = new Color(0.52f, 0.82f, 1f, 0.56f);
-        underwaterColor = new Color(0.7f, 0.78f, 1f, 1f);
-    }
-
     private GameObject CreateNewMap() {
         GameObject map = new GameObject("Map");
 
         map.AddComponent<SFMap>();
 
         return map;
+    }
+
+    public GameObject CreateSquare(int x, int y) {
+        // Center of the square
+        float Cx = x - y;
+        float Cy = (x + y + 1f) / 2f;
+
+        GameObject square = new GameObject("Square(" + x + "," + y + ")");
+        square.transform.position = new Vector3(Cx, Cy, 0f);
+        SFSquare sfSquare = square.AddComponent<SFSquare>();
+        sfSquare.x = x;
+        sfSquare.y = y;
+        sfSquare.height = 0;
+        SortingGroup sortingGroup = square.AddComponent<SortingGroup>();
+        sortingGroup.sortingOrder = -(size.x * y + x);
+        square.transform.SetParent(map.transform);
+
+        return square;
+    }
+
+    public GameObject CreateTile(GameObject square, int sortingOrder = 0, float height = 0f) {
+        SFSpritePicker sfSpritePicker = GetComponent<SFSpritePicker>();
+
+        GameObject tile = PrefabUtility.InstantiatePrefab(useWater ? sfSpritePicker.waterPrefab : sfSpritePicker.tileset[sfSpritePicker.selectedIndex]) as GameObject;
+        tile.transform.SetParent(square.transform);
+
+        SpriteRenderer spriteRenderer = tile.GetComponent<SpriteRenderer>();
+
+        if (useWater) {
+            SpriteRenderer[] sprites = square.GetComponentsInChildren<SpriteRenderer>();
+
+            // Make underwater sprites look better
+            foreach (SpriteRenderer sprite in sprites) {
+                sprite.color = sfSpritePicker.underwaterColor;
+            }
+
+            spriteRenderer.color = sfSpritePicker.waterColor;
+            tile.transform.localPosition = new Vector3(0f, (float)sfSpritePicker.waterOffset / Globals.PixelsPerUnit);
+        } else {
+            tile.transform.localPosition = new Vector3(0f, height);
+        }
+
+        spriteRenderer.sortingOrder = sortingOrder;
+
+        return tile;
     }
 }
