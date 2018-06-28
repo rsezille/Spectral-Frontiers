@@ -98,7 +98,7 @@ public class SFMapEditor : MonoBehaviour {
             }
 
             spriteRenderer.color = sfSpritePicker.waterColor;
-            tile.transform.localPosition = new Vector3(0f, (float)sfSpritePicker.waterOffset / Globals.PixelsPerUnit);
+            tile.transform.localPosition = new Vector3(0f, ((float)sfSpritePicker.waterOffset / Globals.PixelsPerUnit) + height);
         } else {
             tile.transform.localPosition = new Vector3(0f, height);
         }
