@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 60286648041685896}
   m_Layer: 0
   m_Name: Item_Bush_01
-  m_TagString: Untagged
+  m_TagString: Entity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
