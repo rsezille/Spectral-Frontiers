@@ -141,7 +141,23 @@ public class SFMapEditorCustom : Editor {
 
         // Draw
         if (sfMapEditor.currentMode == SFMapEditor.Mode.Draw) {
-            if (e.isMouse && e.type == EventType.MouseDown && e.button == 0 && (sfSpritePicker.selectedIndex >= 0 || sfMapEditor.useWater)) {
+            if (e.isMouse && e.type == EventType.MouseDrag && e.button == 0 && sfSpritePicker.selectedIndex >= 0 && sfMapEditor.currentSelectMode == SFMapEditor.SelectMode.Grid) {
+                e.Use();
+
+                if (sfSpritePicker.isEntity) {
+                    Debug.LogWarning("Can't draw an entity on an empty square ; at least one tile is required");
+                } else {
+                    Vector2Int squarePosition = GetSquarePosition(e.mousePosition);
+
+                    if (squarePosition.x < 0 || squarePosition.x >= sfMapEditor.size.x || squarePosition.y < 0 || squarePosition.y >= sfMapEditor.size.y) return;
+
+                    GameObject square = GameObject.Find("Square(" + squarePosition.x + "," + squarePosition.y + ")");
+
+                    if (!square) {
+                        DrawSquareAndTile(squarePosition.x, squarePosition.y);
+                    }
+                }
+            } else if (e.isMouse && e.type == EventType.MouseDown && e.button == 0 && (sfSpritePicker.selectedIndex >= 0 || sfMapEditor.useWater)) {
                 e.Use();
 
                 if (sfMapEditor.useWater && !sfSpritePicker.waterPrefab) {

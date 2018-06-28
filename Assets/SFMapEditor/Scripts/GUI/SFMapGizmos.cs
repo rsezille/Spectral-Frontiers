@@ -51,7 +51,7 @@ public class SFMapGizmos : MonoBehaviour {
         }
 
         if (sfMapEditor.hoveredSquare != null) {
-            Color hoveredColor = new Color(0f, 0.7f, 1f);
+            Color hoveredColor = Color.black; //new Color(0f, 0.7f, 1f);
             Gizmos.color = hoveredColor;
 
             Vector3 bottom = new Vector3(sfMapEditor.hoveredSquare.x - sfMapEditor.hoveredSquare.y, (sfMapEditor.hoveredSquare.x + sfMapEditor.hoveredSquare.y) / 2f);
