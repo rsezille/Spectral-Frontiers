@@ -42,7 +42,7 @@ public class SFSquare : MonoBehaviour {
 
         set {
             height = value;
-            entityContainer.transform.position = new Vector3(0f, Height / Globals.TileHeight);
+            entityContainer.transform.localPosition = new Vector3(0f, (float)Height / Globals.TileHeight);
         }
     }
 }

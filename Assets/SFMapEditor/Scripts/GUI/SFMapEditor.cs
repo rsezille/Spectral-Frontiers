@@ -114,6 +114,7 @@ public class SFMapEditor : MonoBehaviour {
 
         GameObject entity = PrefabUtility.InstantiatePrefab(sfSpritePicker.tileset[sfSpritePicker.selectedIndex]) as GameObject;
         entity.transform.SetParent(square.entityContainer.transform);
+        entity.transform.localPosition = Vector3.zero;
 
         return entity;
     }
