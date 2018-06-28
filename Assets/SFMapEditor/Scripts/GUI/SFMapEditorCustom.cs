@@ -90,13 +90,9 @@ public class SFMapEditorCustom : Editor {
 
         // Selection
         if (sfMapEditor.currentSelectMode == SFMapEditor.SelectMode.Tile) {
-            SFSquare visibleSquare = GetSquareHit();
+            sfMapEditor.hoveredSquare = GetSquareHit();
 
-            if (visibleSquare != null) {
-                sfMapEditor.hoveredSquare = visibleSquare;
-            }
-
-            HandleUtility.Repaint();
+            HandleUtility.Repaint(); // Faster OnSceneGUI calls
         }
 
         // Height
@@ -239,13 +235,17 @@ public class SFMapEditorCustom : Editor {
         GameObject visibleTileHit = null;
 
         foreach (RaycastHit2D hit in Physics2D.RaycastAll(HandleUtility.GUIPointToWorldRay(Event.current.mousePosition).origin, Vector2.zero)) {
-            if (hit.collider.GetComponentInParent<SFTileContainer>() == null) continue;
+            GameObject tileOrEntity = hit.collider.gameObject;
+            SFTileContainer tileContainer = tileOrEntity.GetComponentInParent<SFTileContainer>();
 
-            int hitSortingOrder = hit.collider.GetComponentInParent<SortingGroup>().sortingOrder;
+            // Ignore entities
+            if (tileContainer == null) continue;
+
+            int hitSortingOrder = tileContainer.GetComponentInParent<SFSquare>().GetComponent<SortingGroup>().sortingOrder;
 
             // Retrieve the closiest map object, the one we are seeing
-            if (visibleTileHit == null || hitSortingOrder > visibleTileHit.GetComponentInParent<SortingGroup>().sortingOrder) {
-                visibleTileHit = hit.collider.gameObject;
+            if (visibleTileHit == null || hitSortingOrder > visibleTileHit.GetComponentInParent<SFTileContainer>().GetComponentInParent<SFSquare>().GetComponent<SortingGroup>().sortingOrder) {
+                visibleTileHit = tileOrEntity;
             }
         }
 
