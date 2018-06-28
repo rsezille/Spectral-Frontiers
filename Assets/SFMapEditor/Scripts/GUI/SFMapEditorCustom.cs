@@ -121,16 +121,11 @@ public class SFMapEditorCustom : Editor {
                         }
                     }
                 } else if (sfMapEditor.currentSelectMode == SFMapEditor.SelectMode.Grid) { // Update height of the last tile of the square
-                    Vector3 mousePosition = new Vector3(e.mousePosition.x, -e.mousePosition.y + Camera.current.pixelHeight);
-                    Vector3 localMousePos = Camera.current.ScreenToWorldPoint(mousePosition);
+                    Vector2Int squarePosition = GetSquarePosition(e.mousePosition);
 
-                    // Square coords
-                    int Sx = Mathf.FloorToInt((localMousePos.x / 2) + localMousePos.y);
-                    int Sy = Mathf.FloorToInt(localMousePos.y - (localMousePos.x / 2));
+                    if (squarePosition.x < 0 || squarePosition.x >= sfMapEditor.size.x || squarePosition.y < 0 || squarePosition.y >= sfMapEditor.size.y) return;
 
-                    if (Sx < 0 || Sx >= sfMapEditor.size.x || Sy < 0 || Sy >= sfMapEditor.size.y) return;
-
-                    GameObject square = GameObject.Find("Square(" + Sx + "," + Sy + ")");
+                    GameObject square = GameObject.Find("Square(" + squarePosition.x + "," + squarePosition.y + ")");
 
                     if (square) {
                         SpriteRenderer highestTile = GetHighestTile(square.GetComponent<SFSquare>());
@@ -150,33 +145,7 @@ public class SFMapEditorCustom : Editor {
 
         // Draw
         if (sfMapEditor.currentMode == SFMapEditor.Mode.Draw) {
-            if (e.isMouse && e.type == EventType.MouseDrag && e.button == 0 && sfSpritePicker.selectedIndex >= 0 && sfMapEditor.currentSelectMode == SFMapEditor.SelectMode.Grid) {
-                e.Use();
-
-                Vector3 mousePosition = new Vector3(e.mousePosition.x, -e.mousePosition.y + Camera.current.pixelHeight);
-                Vector3 localMousePos = Camera.current.ScreenToWorldPoint(mousePosition);
-
-                // Square coords
-                int Sx = Mathf.FloorToInt((localMousePos.x / 2) + localMousePos.y);
-                int Sy = Mathf.FloorToInt(localMousePos.y - (localMousePos.x / 2));
-
-                if (Sx < 0 || Sx >= sfMapEditor.size.x || Sy < 0 || Sy >= sfMapEditor.size.y) return;
-
-                int highestSortingOrder = 0;
-
-                GameObject square = GameObject.Find("Square(" + Sx + "," + Sy + ")");
-
-                // Create the square if it doesn't exist
-                if (!square) {
-                    square = sfMapEditor.CreateSquare(Sx, Sy);
-
-                    sfMapEditor.CreateTile(square, highestSortingOrder);
-
-                    sfMapEditor.undoStack.Push(() => {
-                        DestroyImmediate(square);
-                    });
-                }
-            } else if (e.isMouse && e.type == EventType.MouseDown && e.button == 0 && (sfSpritePicker.selectedIndex >= 0 || sfMapEditor.useWater)) {
+            if (e.isMouse && e.type == EventType.MouseDown && e.button == 0 && (sfSpritePicker.selectedIndex >= 0 || sfMapEditor.useWater)) {
                 e.Use();
 
                 if (sfMapEditor.useWater && !sfSpritePicker.waterPrefab) {
@@ -185,71 +154,29 @@ public class SFMapEditorCustom : Editor {
                     return;
                 }
 
-                Vector3 mousePosition = new Vector3(e.mousePosition.x, -e.mousePosition.y + Camera.current.pixelHeight);
-                Vector3 localMousePos = Camera.current.ScreenToWorldPoint(mousePosition);
-
-                // Square coords
-                int Sx = Mathf.FloorToInt((localMousePos.x / 2) + localMousePos.y);
-                int Sy = Mathf.FloorToInt(localMousePos.y - (localMousePos.x / 2));
-
-                if (Sx < 0 || Sx >= sfMapEditor.size.x || Sy < 0 || Sy >= sfMapEditor.size.y) return;
+                SFSquare sfSquare = null;
 
                 if (sfMapEditor.currentSelectMode == SFMapEditor.SelectMode.Tile) {
-                    SFSquare squareHit = GetSquareHit();
+                    sfSquare = GetSquareHit();
 
-                    if (squareHit != null) {
-                        Sx = squareHit.x;
-                        Sy = squareHit.y;
+                    if (sfSquare != null) {
+                        DrawTileOnSquare(sfSquare.gameObject);
                     }
                 }
 
-                int highestSortingOrder = 0;
+                // Will be null if SelectMode.Grid or if the ray hit nothing (meaning targeting an empty square)
+                if (sfSquare == null) {
+                    Vector2Int squarePosition = GetSquarePosition(e.mousePosition);
 
-                GameObject square = GameObject.Find("Square(" + Sx + "," + Sy + ")");
+                    if (squarePosition.x < 0 || squarePosition.x >= sfMapEditor.size.x || squarePosition.y < 0 || squarePosition.y >= sfMapEditor.size.y) return;
 
-                // Create the square if it doesn't exist
-                if (!square) {
-                    square = sfMapEditor.CreateSquare(Sx, Sy);
+                    GameObject square = GameObject.Find("Square(" + squarePosition.x + "," + squarePosition.y + ")");
 
-                    sfMapEditor.CreateTile(square, highestSortingOrder);
-
-                    sfMapEditor.undoStack.Push(() => {
-                        DestroyImmediate(square);
-                    });
-                } else {
-                    SpriteRenderer[] sprites = square.GetComponentsInChildren<SpriteRenderer>();
-                    
-                    foreach (SpriteRenderer sprite in sprites) {
-                        if (sprite.sortingOrder > highestSortingOrder) {
-                            highestSortingOrder = sprite.sortingOrder;
-                        }
-                    }
-
-                    highestSortingOrder++;
-
-                    GameObject mapObject = null;
-
-                    if (sfSpritePicker.isEntity) {
-                        mapObject = sfMapEditor.CreateEntity();
+                    if (!square) {
+                        DrawSquareAndTile(squarePosition.x, squarePosition.y);
                     } else {
-                        mapObject = sfMapEditor.CreateTile(square, highestSortingOrder, (float)square.GetComponent<SFSquare>().height / Globals.PixelsPerUnit);
+                        DrawTileOnSquare(square);
                     }
-
-                    sfMapEditor.undoStack.Push(() => {
-                        DestroyImmediate(mapObject);
-
-                        if (sfMapEditor.useWater) {
-                            SpriteRenderer[] underwaterSprites = square.GetComponentsInChildren<SpriteRenderer>();
-                            
-                            foreach (SpriteRenderer underwaterSprite in underwaterSprites) {
-                                underwaterSprite.color = Color.white;
-                            }
-                        }
-                    });
-                }
-
-                if (sfMapEditor.useWater) {
-                    square.GetComponent<SFSquare>().solid = true;
                 }
             }
         }
@@ -281,16 +208,11 @@ public class SFMapEditorCustom : Editor {
                         squareHit.solid = !squareHit.solid;
                     }
                 } else if (sfMapEditor.currentSelectMode == SFMapEditor.SelectMode.Grid) {
-                    Vector3 mousePosition = new Vector3(e.mousePosition.x, -e.mousePosition.y + Camera.current.pixelHeight);
-                    Vector3 localMousePos = Camera.current.ScreenToWorldPoint(mousePosition);
+                    Vector2Int squarePosition = GetSquarePosition(e.mousePosition);
 
-                    // Square coords
-                    int Sx = Mathf.FloorToInt((localMousePos.x / 2) + localMousePos.y);
-                    int Sy = Mathf.FloorToInt(localMousePos.y - (localMousePos.x / 2));
+                    if (squarePosition.x < 0 || squarePosition.x >= sfMapEditor.size.x || squarePosition.y < 0 || squarePosition.y >= sfMapEditor.size.y) return;
 
-                    if (Sx < 0 || Sx >= sfMapEditor.size.x || Sy < 0 || Sy >= sfMapEditor.size.y) return;
-
-                    SFSquare squareHit = GameObject.Find("Square(" + Sx + "," + Sy + ")").GetComponent<SFSquare>();
+                    SFSquare squareHit = GameObject.Find("Square(" + squarePosition.x + "," + squarePosition.y + ")").GetComponent<SFSquare>();
                     
                     if (squareHit) {
                         squareHit.solid = !squareHit.solid;
@@ -315,6 +237,8 @@ public class SFMapEditorCustom : Editor {
         GameObject visibleTileHit = null;
 
         foreach (RaycastHit2D hit in Physics2D.RaycastAll(HandleUtility.GUIPointToWorldRay(Event.current.mousePosition).origin, Vector2.zero)) {
+            if (hit.collider.GetComponentInParent<SFTileContainer>() == null) continue;
+
             int hitSortingOrder = hit.collider.GetComponentInParent<SortingGroup>().sortingOrder;
 
             // Retrieve the closiest map object, the one we are seeing
@@ -338,5 +262,64 @@ public class SFMapEditorCustom : Editor {
         }
 
         return highestTile;
+    }
+
+    private void DrawTileOnSquare(GameObject square) {
+        int highestSortingOrder = 0;
+        SpriteRenderer[] sprites = square.GetComponentsInChildren<SpriteRenderer>();
+
+        foreach (SpriteRenderer sprite in sprites) {
+            if (sprite.sortingOrder > highestSortingOrder) {
+                highestSortingOrder = sprite.sortingOrder;
+            }
+        }
+
+        highestSortingOrder++;
+
+        GameObject mapObject = null;
+
+        if (sfSpritePicker.isEntity) {
+            mapObject = sfMapEditor.CreateEntity();
+        } else {
+            mapObject = sfMapEditor.CreateTile(square, highestSortingOrder, (float)square.GetComponent<SFSquare>().height / Globals.PixelsPerUnit);
+        }
+
+        if (sfMapEditor.useWater) {
+            square.GetComponent<SFSquare>().solid = true;
+        }
+
+        sfMapEditor.undoStack.Push(() => {
+            DestroyImmediate(mapObject);
+
+            if (sfMapEditor.useWater) {
+                SpriteRenderer[] underwaterSprites = square.GetComponentsInChildren<SpriteRenderer>();
+
+                foreach (SpriteRenderer underwaterSprite in underwaterSprites) {
+                    underwaterSprite.color = Color.white;
+                }
+            }
+        });
+    }
+
+    private void DrawSquareAndTile(int squareX, int squareY) {
+        if (sfMapEditor.useWater) return;
+
+        GameObject square = sfMapEditor.CreateSquare(squareX, squareY);
+
+        sfMapEditor.CreateTile(square, 0);
+
+        sfMapEditor.undoStack.Push(() => {
+            DestroyImmediate(square);
+        });
+    }
+
+    private Vector2Int GetSquarePosition(Vector2 mousePosition) {
+        Vector3 screenMousePos = new Vector3(mousePosition.x, -mousePosition.y + Camera.current.pixelHeight);
+        Vector3 localMousePos = Camera.current.ScreenToWorldPoint(screenMousePos);
+
+        return new Vector2Int(
+            Mathf.FloorToInt((localMousePos.x / 2) + localMousePos.y),
+            Mathf.FloorToInt(localMousePos.y - (localMousePos.x / 2))
+        );
     }
 }
