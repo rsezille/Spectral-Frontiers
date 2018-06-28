@@ -58,7 +58,6 @@ public class SFMapEditor : MonoBehaviour {
         SFSquare sfSquare = square.AddComponent<SFSquare>();
         sfSquare.x = x;
         sfSquare.y = y;
-        sfSquare.Height = 0;
         SortingGroup sortingGroup = square.AddComponent<SortingGroup>();
         sortingGroup.sortingOrder = -(size.x * y + x);
         square.transform.SetParent(map.transform);
