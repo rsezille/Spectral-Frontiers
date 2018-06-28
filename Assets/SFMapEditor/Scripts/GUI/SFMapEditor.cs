@@ -107,7 +107,7 @@ public class SFMapEditor : MonoBehaviour {
             style.fontStyle = FontStyle.Bold;
             style.fontSize = 11;
 
-            Handles.Label(hoveredSquare.transform.position - new Vector3(0.5f, -0.2f), "(" + hoveredSquare.x + "," + hoveredSquare.y + "," + hoveredSquare.height + ")", style);
+            Handles.Label(hoveredSquare.transform.position - new Vector3(0.5f, -0.2f), "(" + hoveredSquare.x + "," + hoveredSquare.y + "," + hoveredSquare.Height + ")", style);
         }
     }
 
@@ -129,24 +129,40 @@ public class SFMapEditor : MonoBehaviour {
         SFSquare sfSquare = square.AddComponent<SFSquare>();
         sfSquare.x = x;
         sfSquare.y = y;
-        sfSquare.height = 0;
+        sfSquare.Height = 0;
         SortingGroup sortingGroup = square.AddComponent<SortingGroup>();
         sortingGroup.sortingOrder = -(size.x * y + x);
         square.transform.SetParent(map.transform);
 
+        // Create the tile container
+        GameObject tileContainer = new GameObject("TileContainer");
+        tileContainer.AddComponent<SFTileContainer>();
+        SortingGroup sgTileContainer = tileContainer.AddComponent<SortingGroup>();
+        sgTileContainer.sortingOrder = 0;
+        tileContainer.transform.SetParent(square.transform);
+        tileContainer.transform.localPosition = Vector3.zero;
+
+        // Create the entity container
+        GameObject entityContainer = new GameObject("EntityContainer");
+        entityContainer.AddComponent<SFEntityContainer>();
+        SortingGroup sgEntityContainer = entityContainer.AddComponent<SortingGroup>();
+        sgEntityContainer.sortingOrder = 1;
+        entityContainer.transform.SetParent(square.transform);
+        entityContainer.transform.localPosition = Vector3.zero;
+
         return square;
     }
 
-    public GameObject CreateTile(GameObject square, int sortingOrder = 0, float height = 0f) {
+    public GameObject CreateTile(SFSquare square, int sortingOrder = 0, float height = 0f) {
         SFSpritePicker sfSpritePicker = GetComponent<SFSpritePicker>();
 
         GameObject tile = PrefabUtility.InstantiatePrefab(useWater ? sfSpritePicker.waterPrefab : sfSpritePicker.tileset[sfSpritePicker.selectedIndex]) as GameObject;
-        tile.transform.SetParent(square.transform);
+        tile.transform.SetParent(square.tileContainer.transform);
 
         SpriteRenderer spriteRenderer = tile.GetComponent<SpriteRenderer>();
 
         if (useWater) {
-            SpriteRenderer[] sprites = square.GetComponentsInChildren<SpriteRenderer>();
+            SpriteRenderer[] sprites = square.tileContainer.GetComponentsInChildren<SpriteRenderer>();
 
             // Make underwater sprites look better
             foreach (SpriteRenderer sprite in sprites) {
@@ -162,5 +178,47 @@ public class SFMapEditor : MonoBehaviour {
         spriteRenderer.sortingOrder = sortingOrder;
 
         return tile;
+    }
+
+    public GameObject CreateEntity(SFSquare square) {
+        SFSpritePicker sfSpritePicker = GetComponent<SFSpritePicker>();
+
+        GameObject entity = PrefabUtility.InstantiatePrefab(sfSpritePicker.tileset[sfSpritePicker.selectedIndex]) as GameObject;
+        entity.transform.SetParent(square.entityContainer.transform);
+
+        return entity;
+    }
+
+    public void FillEmpty() {
+        if (GetComponent<SFSpritePicker>().selectedIndex >= 0 && !useWater) {
+            List<GameObject> createdSquares = new List<GameObject>();
+
+            for (int i = 0; i < size.x; i++) {
+                for (int j = 0; j < size.y; j++) {
+                    GameObject square = GameObject.Find("Square(" + i + "," + j + ")");
+
+                    // Create the square if it doesn't exist
+                    if (!square) {
+                        square = CreateSquare(i, j);
+
+                        CreateTile(square.GetComponent<SFSquare>());
+
+                        createdSquares.Add(square);
+                    }
+                }
+            }
+
+            Debug.Log("Filled empty squares: " + createdSquares.Count);
+
+            if (createdSquares.Count > 0) {
+                undoStack.Push(() => {
+                    foreach (GameObject createdSquare in createdSquares) {
+                        DestroyImmediate(createdSquare);
+                    }
+                });
+            }
+        } else {
+            Debug.LogWarning("Can't fill squares when using water or no sprite selected");
+        }
     }
 }

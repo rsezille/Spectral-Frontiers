@@ -3,7 +3,7 @@
 public class SFSquare : MonoBehaviour {
     public int x;
     public int y;
-    public int height = 0;
+    private int height = 0;
     public bool solid = false;
 
     public BoardEntity boardEntity;
@@ -32,6 +32,17 @@ public class SFSquare : MonoBehaviour {
             }
 
             return sfEntityContainer;
+        }
+    }
+
+    public int Height {
+        get {
+            return height;
+        }
+
+        set {
+            height = value;
+            entityContainer.transform.position = new Vector3(0f, Height / Globals.TileHeight);
         }
     }
 }

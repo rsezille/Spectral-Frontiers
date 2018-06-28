@@ -35,6 +35,7 @@ public class SFSpritePickerCustom : Editor {
         if (sfSpritePicker.tileset == null || sfSpritePicker.tileset.Length == 0 || newTileset != sfSpritePicker.selectedTileset) {
             sfSpritePicker.selectedTileset = newTileset;
             sfSpritePicker.selectedIndex = -1;
+            sfSpritePicker.isEntity = subdirectories[sfSpritePicker.selectedTileset].Contains("Ent_");
             sfSpritePicker.tileset = Resources.LoadAll<GameObject>("SFMapEditor/Tiles/" + subdirectories[sfSpritePicker.selectedTileset]);
         }
 

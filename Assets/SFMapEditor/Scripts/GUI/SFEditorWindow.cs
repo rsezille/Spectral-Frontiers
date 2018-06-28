@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 [RequireComponent(typeof(SFMapEditor), typeof(SFSpritePicker))]
@@ -10,7 +9,6 @@ public class SFEditorWindowCustom : Editor {
     private SFEditorWindow sfEditorWindow;
 
     private SFMapEditor sfMapEditor; // Shortcut
-    private SFSpritePicker sfSpritePicker; // Shortcut
 
     private static GUIStyle normalButton;
     private static GUIStyle activeButton;
@@ -18,7 +16,6 @@ public class SFEditorWindowCustom : Editor {
     private void OnEnable() {
         sfEditorWindow = (SFEditorWindow)target;
         sfMapEditor = sfEditorWindow.GetComponent<SFMapEditor>();
-        sfSpritePicker = sfEditorWindow.GetComponent<SFSpritePicker>();
     }
 
     // Disable default inspector GUI
@@ -69,36 +66,7 @@ public class SFEditorWindowCustom : Editor {
             sfMapEditor.useWater = GUI.Toggle(new Rect(5, 150, 110, 20), sfMapEditor.useWater, "Use water (W)");
 
             if (GUI.Button(new Rect(5, 170, 70, 20), "Fill empty")) {
-                if (sfSpritePicker.selectedIndex >= 0 && !sfMapEditor.useWater) {
-                    List<GameObject> createdSquares = new List<GameObject>();
-
-                    for (int i = 0; i < sfMapEditor.size.x; i++) {
-                        for (int j = 0; j < sfMapEditor.size.y; j++) {
-                            GameObject square = GameObject.Find("Square(" + i + "," + j + ")");
-
-                            // Create the square if it doesn't exist
-                            if (!square) {
-                                square = sfMapEditor.CreateSquare(i, j);
-
-                                sfMapEditor.CreateTile(square);
-
-                                createdSquares.Add(square);
-                            }
-                        }
-                    }
-
-                    Debug.Log("Filled empty squares: " + createdSquares.Count);
-
-                    if (createdSquares.Count > 0) {
-                        sfMapEditor.undoStack.Push(() => {
-                            foreach (GameObject createdSquare in createdSquares) {
-                                DestroyImmediate(createdSquare);
-                            }
-                        });
-                    }
-                } else {
-                    Debug.LogWarning("Can't fill squares when using water or no sprite selected");
-                }
+                sfMapEditor.FillEmpty();
             }
 
             GUI.Label(new Rect(5, 190, 150, 20), "---------------------------");
