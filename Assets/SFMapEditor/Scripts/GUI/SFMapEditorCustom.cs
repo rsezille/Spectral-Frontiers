@@ -209,11 +209,11 @@ public class SFMapEditorCustom : Editor {
                     Vector2Int squarePosition = GetSquarePosition(e.mousePosition);
 
                     if (squarePosition.x < 0 || squarePosition.x >= sfMapEditor.size.x || squarePosition.y < 0 || squarePosition.y >= sfMapEditor.size.y) return;
-
-                    SFSquare squareHit = GameObject.Find("Square(" + squarePosition.x + "," + squarePosition.y + ")").GetComponent<SFSquare>();
+                    
+                    GameObject squareHit = GameObject.Find("Square(" + squarePosition.x + "," + squarePosition.y + ")");
                     
                     if (squareHit) {
-                        squareHit.solid = !squareHit.solid;
+                        squareHit.GetComponent<SFSquare>().solid = !squareHit.GetComponent<SFSquare>().solid;
                     }
                 }
             }
