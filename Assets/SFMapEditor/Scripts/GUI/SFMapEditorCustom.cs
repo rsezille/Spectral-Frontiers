@@ -108,15 +108,11 @@ public class SFMapEditorCustom : Editor {
                     GameObject tileHit = GetTileHit();
 
                     if (tileHit != null) {
-                        float delta = -1f;
-
-                        if (e.delta.y < 0) delta = 1f;
+                        float delta = e.delta.y < 0 ? 1f : -1f;
 
                         tileHit.transform.Translate(new Vector3(0f, (delta * sfMapEditor.scrollStep) / Globals.TileHeight));
 
-                        SFSquare squareHit = tileHit.GetComponentInParent<SFSquare>();
-
-                        SpriteRenderer highestTile = GetHighestTile(squareHit);
+                        SpriteRenderer highestTile = GetHighestTile(tileHit.GetComponentInParent<SFSquare>());
 
                         // If the tile hit is the highest of the square, we need to update the square height
                         if (highestTile != null && highestTile.gameObject == tileHit) {
@@ -140,9 +136,7 @@ public class SFMapEditorCustom : Editor {
                         SpriteRenderer highestTile = GetHighestTile(square.GetComponent<SFSquare>());
 
                         if (highestTile != null) {
-                            float delta = -1f;
-
-                            if (e.delta.y < 0) delta = 1f;
+                            float delta = e.delta.y < 0 ? 1f : -1f;
 
                             highestTile.transform.Translate(new Vector3(0f, (delta * sfMapEditor.scrollStep) / Globals.TileHeight));
 
