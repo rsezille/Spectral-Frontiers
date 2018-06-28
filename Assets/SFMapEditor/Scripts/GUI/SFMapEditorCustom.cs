@@ -99,12 +99,11 @@ public class SFMapEditorCustom : Editor {
             HandleUtility.Repaint();
         }
 
-        // Update height of the last sprite of a square
+        // Height
         if (sfMapEditor.currentMode == SFMapEditor.Mode.Height) {
             if (e.isScrollWheel && e.type == EventType.ScrollWheel) {
                 e.Use();
-
-
+                
                 if (sfMapEditor.currentSelectMode == SFMapEditor.SelectMode.Tile) {
                     GameObject tileHit = GetTileHit();
 
@@ -113,19 +112,11 @@ public class SFMapEditorCustom : Editor {
 
                         if (e.delta.y < 0) delta = 1f;
 
+                        tileHit.transform.Translate(new Vector3(0f, (delta * sfMapEditor.scrollStep) / Globals.TileHeight));
+
                         SFSquare squareHit = tileHit.GetComponentInParent<SFSquare>();
 
-                        SpriteRenderer highestTile = null;
-
-                        SpriteRenderer[] sprites = squareHit.GetComponentsInChildren<SpriteRenderer>();
-
-                        foreach (SpriteRenderer sprite in sprites) {
-                            if (highestTile == null || sprite.sortingOrder > highestTile.sortingOrder) {
-                                highestTile = sprite;
-                            }
-                        }
-
-                        tileHit.transform.Translate(new Vector3(0f, (delta * sfMapEditor.scrollStep) / Globals.TileHeight));
+                        SpriteRenderer highestTile = GetHighestTile(squareHit);
 
                         // If the tile hit is the highest of the square, we need to update the square height
                         if (highestTile != null && highestTile.gameObject == tileHit) {
@@ -133,7 +124,7 @@ public class SFMapEditorCustom : Editor {
                             sfSquare.height += (int)delta * sfMapEditor.scrollStep;
                         }
                     }
-                } else {
+                } else if (sfMapEditor.currentSelectMode == SFMapEditor.SelectMode.Grid) { // Update height of the last tile of the square
                     Vector3 mousePosition = new Vector3(e.mousePosition.x, -e.mousePosition.y + Camera.current.pixelHeight);
                     Vector3 localMousePos = Camera.current.ScreenToWorldPoint(mousePosition);
 
@@ -143,27 +134,10 @@ public class SFMapEditorCustom : Editor {
 
                     if (Sx < 0 || Sx >= sfMapEditor.size.x || Sy < 0 || Sy >= sfMapEditor.size.y) return;
 
-                    if (sfMapEditor.currentSelectMode == SFMapEditor.SelectMode.Tile) {
-                        SFSquare squareHit = GetSquareHit();
-
-                        if (squareHit != null) {
-                            Sx = squareHit.x;
-                            Sy = squareHit.y;
-                        }
-                    }
-
                     GameObject square = GameObject.Find("Square(" + Sx + "," + Sy + ")");
 
                     if (square) {
-                        SpriteRenderer highestTile = null;
-
-                        SpriteRenderer[] sprites = square.GetComponentsInChildren<SpriteRenderer>();
-
-                        foreach (SpriteRenderer sprite in sprites) {
-                            if (highestTile == null || sprite.sortingOrder > highestTile.sortingOrder) {
-                                highestTile = sprite;
-                            }
-                        }
+                        SpriteRenderer highestTile = GetHighestTile(square.GetComponent<SFSquare>());
 
                         if (highestTile != null) {
                             float delta = -1f;
@@ -259,10 +233,16 @@ public class SFMapEditorCustom : Editor {
 
                     highestSortingOrder++;
 
-                    GameObject tile = sfMapEditor.CreateTile(square, highestSortingOrder, (float)square.GetComponent<SFSquare>().height / Globals.PixelsPerUnit);
+                    GameObject mapObject = null;
+
+                    if (sfSpritePicker.isEntity) {
+                        mapObject = sfMapEditor.CreateEntity();
+                    } else {
+                        mapObject = sfMapEditor.CreateTile(square, highestSortingOrder, (float)square.GetComponent<SFSquare>().height / Globals.PixelsPerUnit);
+                    }
 
                     sfMapEditor.undoStack.Push(() => {
-                        DestroyImmediate(tile);
+                        DestroyImmediate(mapObject);
 
                         if (sfMapEditor.useWater) {
                             SpriteRenderer[] underwaterSprites = square.GetComponentsInChildren<SpriteRenderer>();
@@ -350,5 +330,19 @@ public class SFMapEditorCustom : Editor {
         }
 
         return visibleTileHit;
+    }
+
+    private SpriteRenderer GetHighestTile(SFSquare square) {
+        SpriteRenderer highestTile = null;
+
+        SpriteRenderer[] sprites = square.tileContainer.GetComponentsInChildren<SpriteRenderer>();
+
+        foreach (SpriteRenderer sprite in sprites) {
+            if (highestTile == null || sprite.sortingOrder > highestTile.sortingOrder) {
+                highestTile = sprite;
+            }
+        }
+
+        return highestTile;
     }
 }
