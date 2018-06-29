@@ -56,8 +56,8 @@ public class SFSpritePickerCustom : Editor {
                 Sprite currentTile = sfSpritePicker.tileset[i].GetComponent<SpriteRenderer>().sprite;
 
                 if (currentTile == null) continue;
-
-                Rect spriteRect = new Rect(currentWidth, currentHeight, currentTile.bounds.size.x * Globals.PixelsPerUnit / 2, currentTile.bounds.size.y * Globals.PixelsPerUnit / 2);
+                
+                Rect spriteRect = new Rect(currentWidth, currentHeight, 75, 75);
 
                 if (e.type == EventType.MouseDown && e.button == 0 && spriteRect.Contains(e.mousePosition)) {
                     sfSpritePicker.selectedIndex = i;
@@ -72,7 +72,7 @@ public class SFSpritePickerCustom : Editor {
                     GUI.DrawTexture(spriteRect, selectedBackground);
                 }
 
-                GUI.DrawTexture(spriteRect, currentTile.texture);
+                GUI.DrawTexture(spriteRect, currentTile.texture, ScaleMode.ScaleToFit);
 
                 currentWidth += currentTile.bounds.size.x * Globals.PixelsPerUnit / 2;
 
