@@ -16,6 +16,14 @@ The SFME only works when the SFMapEditor GameObject in the scene view is focused
 3. Put the tile prefabs in the newly created folder
 4. Select the new tileset in the SF Sprite Picker interface
 
+#### Change square/tile height
+
+1. Select the *Height* mode
+2. Scroll up and down to change tile height
+
+While in Grid selection mode, only the highest tile is moved.
+Use the Tile selection mode to change the height of the wanted tile.
+
 ### Features
 
 #### Drag and draw
@@ -27,6 +35,14 @@ If you hold the left mouse button while clicking an empty square, you can fill o
 Fill the empty squares with the selected tile
 - Doesn't work with water
 - Must be a tile (and not an entity)
+
+#### Refresh tiles from prefabs
+
+Unity doesn't have yet [nested perfabs, probably in late 2018](https://blogs.unity3d.com/2018/03/20/unity-unveils-2018-roadmap-at-gdc/).
+
+On the *Map* GameObject, `SFMap` provides a way to refresh tiles from their prefab, according to the sprite name.
+It only works when prefabs have the same name as their sprite.
+You should only press the button when the map is intantiated (in the scene), **never** in the map prefab.
 
 ### Shortcuts
 *Available when focusing the SFMapEditor GameObject in the scene view*
@@ -45,3 +61,4 @@ The editor logic is splitted between several files:
 - `SFEditorWindow.cs` - editor window
 - `SFSpritePickerCustom.cs` - tileset, sprite picker, water
 - `SFMapGizmos.cs` - draw grid gizmos as well as hovered square gizmos
+- `SFMap.cs` - without nested prefabs, SFMap provides a button to refresh all tiles from their prefabs (based on the sprite name)
