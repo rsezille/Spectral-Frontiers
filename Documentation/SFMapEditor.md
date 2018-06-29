@@ -2,7 +2,7 @@
 
 The SFME takes place in a special scene which can be found in the Assets/SFMapEditor folder.
 
-**WARNING**
+**WARNING**  
 **You should touch the Map GameObject only to move entities (position of transform component). Nothing else.**
 
 ## How to use
@@ -11,7 +11,7 @@ The SFME only works when the SFMapEditor GameObject in the scene view is focused
 
 #### Draw an entity which is bigger than one square
 
-The entity will still be attached to only one square, even if its size looks like the contrary.
+The entity will still be attached to only one square, even if its size looks like the contrary.  
 This entity must be attached to the lowest (by sortingOrder) square, so the top-leftest square.
 
 #### Add a new tileset
@@ -26,7 +26,7 @@ This entity must be attached to the lowest (by sortingOrder) square, so the top-
 1. Select the *Height* mode
 2. Scroll up and down to change tile height
 
-While in Grid selection mode, only the highest tile is moved.
+While in Grid selection mode, only the highest tile is moved.  
 Use the Tile selection mode to change the height of the wanted tile.
 
 ## Features
@@ -45,8 +45,8 @@ Fill the empty squares with the selected tile
 
 Unity doesn't have yet [nested perfabs, probably in late 2018](https://blogs.unity3d.com/2018/03/20/unity-unveils-2018-roadmap-at-gdc/).
 
-On the *Map* GameObject, `SFMap` provides a way to refresh tiles from their prefab, according to the sprite name.
-It only works when prefabs have the same name as their sprite.
+On the *Map* GameObject, `SFMap` provides a way to refresh tiles from their prefab, according to the sprite name.  
+It only works when prefabs have the same name as their sprite.  
 You should only press the button when the map is intantiated (in the scene), **never** in the map prefab.
 
 ## Shortcuts
