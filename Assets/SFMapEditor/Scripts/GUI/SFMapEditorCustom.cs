@@ -28,7 +28,9 @@ public class SFMapEditorCustom : Editor {
     }
 
     private void OnSceneGUI() {
-        HandleUtility.AddDefaultControl(GUIUtility.GetControlID(FocusType.Passive)); // Disable selection when holding the left mouse click
+        if (sfMapEditor.currentMode != SFMapEditor.Mode.Selection) {
+            HandleUtility.AddDefaultControl(GUIUtility.GetControlID(FocusType.Passive)); // Disable selection when holding the left mouse click
+        }
 
         Event e = Event.current;
 
