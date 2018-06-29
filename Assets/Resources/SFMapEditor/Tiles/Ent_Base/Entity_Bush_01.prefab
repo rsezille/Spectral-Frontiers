@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212804810770598236}
   - component: {fileID: 60286648041685896}
   m_Layer: 0
-  m_Name: Item_Bush_01
+  m_Name: Entity_Bush_01
   m_TagString: Entity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
