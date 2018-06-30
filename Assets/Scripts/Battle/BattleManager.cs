@@ -98,7 +98,6 @@ public class BattleManager : MonoBehaviour {
             enemyBC.side.value = Side.Type.Neutral;
             enemyBC.SetSquare(board.GetSquare(enemy.posX, enemy.posY));
             enemyCharacters.Add(enemyBC);
-            enemyBC.transform.SetParent(this.transform);
         }
 
         placing.EnterBattleStepPlacing();

@@ -44,7 +44,7 @@ public class BattleCamera : MonoBehaviour {
     public Tween SetPosition(Square square, bool smooth = false, float duration = 1f, Ease ease = Ease.OutCubic) {
         Vector3 target = new Vector3(
             square.x - square.y,
-            -(square.y + square.x) / 2f + square.vOffset / (square.sprite.bounds.size.y * Globals.TileHeight / 2) + positionYOffset,
+            -(square.y + square.x) / 2f + square.Height * 2f + positionYOffset,
             transform.position.z
         );
 
@@ -60,7 +60,7 @@ public class BattleCamera : MonoBehaviour {
     public bool IsOnSquare(Square square) {
         Vector3 squarePosition = new Vector3(
             square.x - square.y,
-            -(square.y + square.x) / 2f + square.vOffset / (square.sprite.bounds.size.y * Globals.TileHeight / 2) + positionYOffset,
+            -(square.y + square.x) / 2f + square.Height * 2f + positionYOffset,
             transform.position.z
         );
 
