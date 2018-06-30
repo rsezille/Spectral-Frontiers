@@ -8,11 +8,11 @@ using RawSquare = RawMap.RawSquare;
  */
 public class Board : MonoBehaviour {
     private RawMap rawMap;
+    private Square[,] squares;
 
     private MouseReactive previousMouseEntity = null; // Used to detect a mouse leave
 
     public Transform boardSquaresTransform;
-    public Square[,] squares;
     public PathFinder pathFinder;
 
     public string mapName;
@@ -72,11 +72,11 @@ public class Board : MonoBehaviour {
         return entity;
     }
 
-    public void loadMap(string map) {
+    public void loadMap(string mapName) {
         boardSquaresTransform = new GameObject("Squares").transform;
         boardSquaresTransform.SetParent(this.transform);
 
-        TextAsset jsonMap = Resources.Load("Maps/" + map) as TextAsset;
+        TextAsset jsonMap = Resources.Load("Maps/" + mapName) as TextAsset;
 
         if (jsonMap != null) {
             rawMap = JsonUtility.FromJson<RawMap>(jsonMap.text);
@@ -105,7 +105,7 @@ public class Board : MonoBehaviour {
 
             pathFinder = new PathFinder(this, this.width + this.height);
         } else {
-            Debug.LogError("Map not found! " + map);
+            Debug.LogError("Map not found! " + mapName);
         }
     }
 
