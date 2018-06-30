@@ -23,7 +23,7 @@ public class SFMapEditor : MonoBehaviour {
     [Range(1, 64)]
     public int scrollStep = 1;
 
-    public SFSquare hoveredSquare;
+    public Square hoveredSquare;
 
     public Mode currentMode = Mode.Draw;
     public SelectMode currentSelectMode = SelectMode.Tile;
@@ -55,7 +55,7 @@ public class SFMapEditor : MonoBehaviour {
 
         GameObject square = new GameObject("Square(" + x + "," + y + ")");
         square.transform.position = new Vector3(Cx, Cy, 0f);
-        SFSquare sfSquare = square.AddComponent<SFSquare>();
+        Square sfSquare = square.AddComponent<Square>();
         sfSquare.x = x;
         sfSquare.y = y;
         SortingGroup sortingGroup = square.AddComponent<SortingGroup>();
@@ -81,7 +81,7 @@ public class SFMapEditor : MonoBehaviour {
         return square;
     }
 
-    public GameObject CreateTile(SFSquare square, int sortingOrder = 0, float height = 0f) {
+    public GameObject CreateTile(Square square, int sortingOrder = 0, float height = 0f) {
         SFSpritePicker sfSpritePicker = GetComponent<SFSpritePicker>();
 
         GameObject tile = PrefabUtility.InstantiatePrefab(useWater ? sfSpritePicker.waterPrefab : sfSpritePicker.tileset[sfSpritePicker.selectedIndex]) as GameObject;
@@ -108,7 +108,7 @@ public class SFMapEditor : MonoBehaviour {
         return tile;
     }
 
-    public GameObject CreateEntity(SFSquare square) {
+    public GameObject CreateEntity(Square square) {
         SFSpritePicker sfSpritePicker = GetComponent<SFSpritePicker>();
 
         GameObject entity = PrefabUtility.InstantiatePrefab(sfSpritePicker.tileset[sfSpritePicker.selectedIndex]) as GameObject;
@@ -130,7 +130,7 @@ public class SFMapEditor : MonoBehaviour {
                     if (!square) {
                         square = CreateSquare(i, j);
 
-                        CreateTile(square.GetComponent<SFSquare>());
+                        CreateTile(square.GetComponent<Square>());
 
                         createdSquares.Add(square);
                     }
