@@ -86,7 +86,7 @@ public class BattleManager : MonoBehaviour {
         board.loadMap(mission.map);
 
         battleCamera.ResetCameraSize();
-        battleCamera.SetPosition(board.GetSquare(0, 0));
+        battleCamera.SetPosition(0, 0);
 
         foreach (RawMission.RawEnemy enemy in mission.enemies) {
             Character enemyChar = new Character(enemy.key);
@@ -112,7 +112,7 @@ public class BattleManager : MonoBehaviour {
         }
 
         if (Input.GetKeyDown(KeyCode.P)) {
-            battleCamera.SetPosition(board.GetSquare(0, 0), true);
+            battleCamera.SetPosition(0, 0, true);
         }
 
         if (Input.GetAxis(InputBinds.Zoom) != 0) {

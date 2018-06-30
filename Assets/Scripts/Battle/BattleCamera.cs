@@ -42,9 +42,16 @@ public class BattleCamera : MonoBehaviour {
     }
 
     public Tween SetPosition(Square square, bool smooth = false, float duration = 1f, Ease ease = Ease.OutCubic) {
+        return SetPosition(square.x, square.y, smooth, duration, ease);
+    }
+
+    public Tween SetPosition(int squareX, int squareY, bool smooth = false, float duration = 1f, Ease ease = Ease.OutCubic) {
+        Square targetedSquare = BattleManager.instance.board.GetSquare(squareX, squareY);
+        int height = targetedSquare != null ? targetedSquare.Height : 0;
+
         Vector3 target = new Vector3(
-            square.x - square.y,
-            -(square.y + square.x) / 2f + square.Height * 2f + positionYOffset,
+            squareX - squareY,
+            -(squareY + squareX) / 2f + height * 2f + positionYOffset,
             transform.position.z
         );
 
