@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -51,6 +52,8 @@ public class BattleManager : MonoBehaviour {
     public BattlePlacingManager placing;
     public BattleFightManager fight;
     public BattleVictoryManager victory;
+    
+    public List<Sequence> markedSquareAnimations = new List<Sequence>();
 
     public static BattleManager instance {
         get {
@@ -134,15 +137,11 @@ public class BattleManager : MonoBehaviour {
     }
 
     public void EventOnEnterPlacing() {
-        if (OnEnterPlacing != null) {
-            OnEnterPlacing();
-        }
+        OnEnterPlacing();
     }
 
     public void EventOnLeavingMarkStep() {
-        if (OnLeavingMarkStep != null) {
-            OnLeavingMarkStep();
-        }
+        OnLeavingMarkStep();
     }
 
     /**
