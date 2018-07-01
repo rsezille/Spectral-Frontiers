@@ -95,11 +95,16 @@ public class SFSpritePickerCustom : Editor {
         EditorGUILayout.PropertyField(serializedObject.FindProperty("waterColor"), new GUIContent("Color"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("underwaterColor"), new GUIContent("Underwater color"));
 
-        if (GUILayout.Button("Reset colors")) {
+        if (GUILayout.Button("Reset colors", GUILayout.Width(150))) {
             sfSpritePicker.ResetWaterColor();
         }
 
         EditorGUILayout.PropertyField(serializedObject.FindProperty("waterOffset"), new GUIContent("Offset (32)"));
+
+        var origFontStyle = EditorStyles.label.fontStyle;
+        EditorStyles.label.fontStyle = FontStyle.Bold;
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("tileSelectorPrefab"), new GUIContent("Tile Selector"));
+        EditorStyles.label.fontStyle = origFontStyle;
 
         serializedObject.ApplyModifiedProperties();
     }

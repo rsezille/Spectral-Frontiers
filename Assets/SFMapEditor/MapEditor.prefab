@@ -78,6 +78,8 @@ MonoBehaviour:
   waterColor: {r: 0.52, g: 0.82, b: 1, a: 0.56}
   underwaterColor: {r: 0.7, g: 0.78, b: 1, a: 1}
   waterOffset: 32
+  tileSelectorPrefab: {fileID: 1675001353663136, guid: 1264ce4324cc1b04197b855fc58c3125,
+    type: 2}
 --- !u!114 &114543608300693920
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -109,3 +111,4 @@ MonoBehaviour:
   currentMode: 0
   currentSelectMode: 1
   useWater: 0
+  orange: {r: 1, g: 0.5, b: 0, a: 1}

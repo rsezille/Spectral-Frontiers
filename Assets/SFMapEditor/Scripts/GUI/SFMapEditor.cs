@@ -78,6 +78,15 @@ public class SFMapEditor : MonoBehaviour {
         entityContainer.transform.SetParent(square.transform);
         entityContainer.transform.localPosition = Vector3.zero;
 
+        // Create the tile selector
+        GameObject tileSelector = PrefabUtility.InstantiatePrefab(GetComponent<SFSpritePicker>().tileSelectorPrefab) as GameObject;
+        tileSelector.transform.SetParent(entityContainer.transform);
+        tileSelector.transform.localPosition = Vector3.zero;
+        tileSelector.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
+        tileSelector.GetComponent<SFTileSelector>().square = sfSquare;
+
+        sfSquare.tileSelector = tileSelector.GetComponent<SpriteRenderer>();
+
         return square;
     }
 
