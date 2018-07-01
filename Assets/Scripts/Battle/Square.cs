@@ -35,6 +35,16 @@ public class Square : MonoBehaviour {
 
         set {
             _markType = value;
+
+            if (value != MarkType.None) {
+                // Don't use a tween with LoopType.Yoyo as we will lose elapsed time and Goto
+                colorAnimation = DOTween
+                    .Sequence()
+                    .Append(tileSelector.DOFade(0.3f, 0.8f).SetEase(Ease.Linear))
+                    .Append(tileSelector.DOFade(maxAlpha, 0.8f).SetEase(Ease.Linear))
+                    .SetLoops(-1);
+            }
+
             RefreshColor();
         }
     }
@@ -51,14 +61,6 @@ public class Square : MonoBehaviour {
 
         battleManager.OnEnterPlacing += OnEnterPlacing;
         battleManager.OnLeavingMarkStep += OnLeavingMarkStep;
-
-        // Don't use a tween with LoopType.Yoyo as we will lose elapsed time and Goto
-        colorAnimation = DOTween
-            .Sequence()
-            .Append(tileSelector.DOFade(0.3f, 0.8f).SetEase(Ease.Linear))
-            .Append(tileSelector.DOFade(maxAlpha, 0.8f).SetEase(Ease.Linear))
-            .SetLoops(-1)
-            .Pause();
     }
 
     private void OnEnterPlacing() {
@@ -68,8 +70,12 @@ public class Square : MonoBehaviour {
     }
 
     private void OnLeavingMarkStep() {
+        if (colorAnimation != null) {
+            colorAnimation.Kill();
+            colorAnimation = null;
+        }
+
         markType = MarkType.None;
-        colorAnimation.Pause();
         battleManager.markedSquareAnimations.Clear();
 
         RefreshColor();
@@ -79,8 +85,10 @@ public class Square : MonoBehaviour {
      * Triggered by Board (SFTileSelector)
      */
     public void MouseEnter() {
-        colorAnimation.Pause();
-        battleManager.markedSquareAnimations.Remove(colorAnimation);
+        if (colorAnimation != null) {
+            colorAnimation.Pause();
+            battleManager.markedSquareAnimations.Remove(colorAnimation);
+        }
 
         battleManager.fightHUD.SquareHovered(this);
         tileSelector.color = overingColor;
@@ -108,6 +116,8 @@ public class Square : MonoBehaviour {
     }
 
     public void PlayColorAnimation() {
+        if (colorAnimation == null) return;
+
         if (battleManager.markedSquareAnimations.Count > 0) {
             float elapsed = battleManager.markedSquareAnimations[0].Elapsed(false);
             
