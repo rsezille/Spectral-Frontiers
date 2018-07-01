@@ -86,7 +86,7 @@ public class BattleManager : MonoBehaviour {
         board.loadMap(mission.map);
 
         battleCamera.ResetCameraSize();
-        battleCamera.SetPosition(0, 0);
+        battleCamera.SetPosition(board.width / 2, board.height / 2);
 
         foreach (RawMission.RawEnemy enemy in mission.enemies) {
             Character enemyChar = new Character(enemy.key);
