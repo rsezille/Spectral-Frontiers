@@ -51,7 +51,7 @@ public class BattleCamera : MonoBehaviour {
 
         Vector3 target = new Vector3(
             squareX - squareY,
-            -(squareY + squareX) / 2f + height * 2f + positionYOffset,
+            (squareY + squareX) / 2f + (height / Globals.PixelsPerUnit) + positionYOffset,
             transform.position.z
         );
 
@@ -67,7 +67,7 @@ public class BattleCamera : MonoBehaviour {
     public bool IsOnSquare(Square square) {
         Vector3 squarePosition = new Vector3(
             square.x - square.y,
-            -(square.y + square.x) / 2f + square.Height * 2f + positionYOffset,
+            (square.y + square.x) / 2f + (square.Height / Globals.PixelsPerUnit) + positionYOffset,
             transform.position.z
         );
 
