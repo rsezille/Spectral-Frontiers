@@ -37,7 +37,6 @@ public class SFTileSelector : MonoBehaviour {
      * Triggered by Board
      */
     public void Click() {
-        Debug.Log("click on tileselector");
         square.Click();
     }
 }
