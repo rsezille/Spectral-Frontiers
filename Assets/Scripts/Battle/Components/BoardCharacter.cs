@@ -68,13 +68,13 @@ public class BoardCharacter : MonoBehaviour {
 
         if (targetedSquare != null) {
             targetedSquare.boardEntity = boardEntity;
-            transform.position = targetedSquare.transform.position;
             SetSortingOrder(targetedSquare);
         }
     }
 
     public void SetSortingOrder(Square square) {
         transform.SetParent(square.entityContainer.transform);
+        transform.localPosition = Vector3.zero;
     }
 
     private void Start() {
