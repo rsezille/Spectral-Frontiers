@@ -1,10 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(SpriteRenderer), typeof(Collider2D), typeof(MouseReactive))]
 public class Square : MonoBehaviour {
     private BattleManager battleManager;
-    public SpriteRenderer sprite;
 
     public enum MarkType {
         None, Movement, Attack, Skill, Item
@@ -13,7 +11,8 @@ public class Square : MonoBehaviour {
     // Positionning
     public int x; // X coordinate of the tile inside the board
     public int y; // Y coordinate of the tile inside the board
-    public int vOffset;
+    [SerializeField]
+    private int height;
     public bool start = false; // Starting tile
     public bool solid = false; // Collision detection
 
@@ -32,31 +31,18 @@ public class Square : MonoBehaviour {
     public bool isMarked = false;
     public MarkType markType = MarkType.None;
 
+    public SpriteRenderer tileSelector;
+
+    private SFTileContainer sfTileContainer;
+    private SFEntityContainer sfEntityContainer;
+
     private void Awake() {
         battleManager = BattleManager.instance;
 
-        sprite = GetComponent<SpriteRenderer>();
+        tileSelector.color = defaultColor;
 
         battleManager.OnEnterPlacing += OnEnterPlacing;
         battleManager.OnLeavingMarkStep += OnLeavingMarkStep;
-    }
-
-    // Must be called when the tiles GameObjects are created
-    public void Init(RawMap.RawSquare rawSquare, int mapWidth) {
-        x = rawSquare.x_map;
-        y = rawSquare.y_map;
-        vOffset = rawSquare.v_offset;
-        start = rawSquare.start;
-        solid = rawSquare.solid;
-
-        sprite.sortingOrder = (x + y * mapWidth) * 10;
-        sprite.color = defaultColor;
-
-        transform.position = new Vector3(
-            x - y,
-            (-(y + x) / 2f) + (vOffset / (sprite.bounds.size.y * Globals.TileHeight / 2)),
-            0f
-        );
     }
 
     private void OnEnterPlacing() {
@@ -82,9 +68,9 @@ public class Square : MonoBehaviour {
 
         while (BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Placing) {
             if (isMouseOver) {
-                sprite.color = placingStartColor;
+                tileSelector.color = placingStartColor;
             } else {
-                sprite.color = Color.Lerp(new Color(placingStartColor.r, placingStartColor.g, placingStartColor.b, 0f), targetColor, progress);
+                tileSelector.color = Color.Lerp(new Color(placingStartColor.r, placingStartColor.g, placingStartColor.b, 0f), targetColor, progress);
             }
 
             if (progress > maxFade || progress < initialFade) {
@@ -96,26 +82,26 @@ public class Square : MonoBehaviour {
             yield return new WaitForSeconds(smoothness);
         }
 
-        sprite.color = defaultColor;
+        tileSelector.color = defaultColor;
     }
 
     /**
-     * Triggered by Board
+     * Triggered by Board (SFTileSelector)
      */
     public void MouseEnter() {
         battleManager.fightHUD.SquareHovered(this);
         isMouseOver = true;
-        sprite.color = overingColor;
+        tileSelector.color = overingColor;
 
         if (battleManager.currentTurnStep == BattleManager.TurnStep.Move && isMarked) {
-            sprite.color = new Color(movementColor.r, movementColor.g + 0.2f, movementColor.b, movementColor.a);
+            tileSelector.color = new Color(movementColor.r, movementColor.g + 0.2f, movementColor.b, movementColor.a);
         } else if (battleManager.currentTurnStep == BattleManager.TurnStep.Attack && isMarked) {
-            sprite.color = new Color(attackColor.r, attackColor.g, attackColor.b, attackColor.a + 0.2f);
+            tileSelector.color = new Color(attackColor.r, attackColor.g, attackColor.b, attackColor.a + 0.2f);
         }
     }
 
     /**
-     * Triggered by Board
+     * Triggered by Board (SFTileSelector)
      */
     public void MouseLeave() {
         battleManager.fightHUD.SquareHovered(null);
@@ -125,7 +111,7 @@ public class Square : MonoBehaviour {
     }
 
     /**
-     * Triggered by Board
+     * Triggered by Board (SFTileSelector)
      */
     public void Click() {
         switch (battleManager.currentBattleStep) {
@@ -166,18 +152,18 @@ public class Square : MonoBehaviour {
     }
 
     public void RefreshColor() {
-        sprite.color = defaultColor;
+        tileSelector.color = defaultColor;
 
         if (isMarked) {
             switch (markType) {
                 case MarkType.Movement:
-                    sprite.color = movementColor;
+                    tileSelector.color = movementColor;
                     break;
                 case MarkType.Attack:
-                    sprite.color = attackColor;
+                    tileSelector.color = attackColor;
                     break;
                 case MarkType.Item:
-                    sprite.color = itemColor;
+                    tileSelector.color = itemColor;
                     break;
             }
         }
@@ -189,5 +175,36 @@ public class Square : MonoBehaviour {
 
     public int GetManhattanDistance(Square square) {
         return Mathf.Abs(square.x - this.x) + Mathf.Abs(square.y - this.y);
+    }
+
+    public SFTileContainer tileContainer {
+        get {
+            if (sfTileContainer == null) {
+                sfTileContainer = GetComponentInChildren<SFTileContainer>();
+            }
+
+            return sfTileContainer;
+        }
+    }
+
+    public SFEntityContainer entityContainer {
+        get {
+            if (sfEntityContainer == null) {
+                sfEntityContainer = GetComponentInChildren<SFEntityContainer>();
+            }
+
+            return sfEntityContainer;
+        }
+    }
+
+    public int Height {
+        get {
+            return height;
+        }
+
+        set {
+            height = value;
+            entityContainer.transform.localPosition = new Vector3(0f, (float)Height / Globals.TileHeight);
+        }
     }
 }
