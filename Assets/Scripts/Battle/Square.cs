@@ -1,11 +1,11 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
 using UnityEngine;
 
 public class Square : MonoBehaviour {
     private BattleManager battleManager;
 
     public enum MarkType {
-        None, Movement, Attack, Skill, Item
+        None, Movement, Attack, Skill, Item, Placing
     };
 
     // Positionning
@@ -13,28 +13,35 @@ public class Square : MonoBehaviour {
     public int y; // Y coordinate of the tile inside the board
     [SerializeField]
     private int height;
-    public bool start = false; // Starting tile
     public bool solid = false; // Collision detection
 
     // Colors
-    public static Color defaultColor = new Color(1f, 1f, 1f, 0f);
-    public static Color overingColor = new Color(0f, 0f, 0f, 0.2f);
-    public static Color placingStartColor = new Color(0.14f, 0.36f, 0.92f, 0.62f);
+    public static Color defaultColor = new Color(1f, 1f, 1f, 0f); // Default should be transparent
+    public static Color overingColor = new Color(0f, 0f, 0f, 0.6f); // When hovering a square without any special behavior
+    public static Color placingStartColor = new Color(0f, 0.37f, 1f, 0.65f);
     public static Color movementColor = new Color(0.12f, 0.57f, 0.2f, 0.63f);
     public static Color attackColor = new Color(0.6f, 0.15f, 0.9f, 0.5f);
     public static Color itemColor = new Color(1f, 1f, 0.4f, 0.5f);
-
-    public bool isMouseOver = false;
+    private Tween colorAnimation;
 
     public BoardEntity boardEntity;
 
-    public bool isMarked = false;
-    public MarkType markType = MarkType.None;
+    private MarkType _markType = MarkType.None;
+    public MarkType markType {
+        get {
+            return _markType;
+        }
+
+        set {
+            _markType = value;
+            RefreshColor();
+        }
+    }
 
     public SpriteRenderer tileSelector;
 
-    private SFTileContainer sfTileContainer;
-    private SFEntityContainer sfEntityContainer;
+    private SFTileContainer _tileContainer;
+    private SFEntityContainer _entityContainer;
 
     private void Awake() {
         battleManager = BattleManager.instance;
@@ -43,59 +50,36 @@ public class Square : MonoBehaviour {
 
         battleManager.OnEnterPlacing += OnEnterPlacing;
         battleManager.OnLeavingMarkStep += OnLeavingMarkStep;
+
+        colorAnimation = tileSelector.DOFade(0.3f, 0.8f).SetLoops(-1, LoopType.Yoyo);
+        colorAnimation.Pause();
     }
 
     private void OnEnterPlacing() {
-        if (start) {
-            StartCoroutine("IsStartingSquare", placingStartColor);
-        }
+        colorAnimation.Play();
     }
 
     private void OnLeavingMarkStep() {
-        isMarked = false;
         markType = MarkType.None;
+        colorAnimation.Pause();
 
         RefreshColor();
-    }
-
-    private IEnumerator IsStartingSquare(Color targetColor) {
-        float initialFade = 0.30f;
-        float maxFade = 0.78f;
-        float smoothness = 0.02f;
-        float duration = 1f;
-        float progress = initialFade;
-        float increment = smoothness / duration;
-
-        while (BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Placing) {
-            if (isMouseOver) {
-                tileSelector.color = placingStartColor;
-            } else {
-                tileSelector.color = Color.Lerp(new Color(placingStartColor.r, placingStartColor.g, placingStartColor.b, 0f), targetColor, progress);
-            }
-
-            if (progress > maxFade || progress < initialFade) {
-                increment = -increment;
-            }
-
-            progress += increment;
-
-            yield return new WaitForSeconds(smoothness);
-        }
-
-        tileSelector.color = defaultColor;
     }
 
     /**
      * Triggered by Board (SFTileSelector)
      */
     public void MouseEnter() {
+        if (colorAnimation != null) colorAnimation.Pause();
+
         battleManager.fightHUD.SquareHovered(this);
-        isMouseOver = true;
         tileSelector.color = overingColor;
 
-        if (battleManager.currentTurnStep == BattleManager.TurnStep.Move && isMarked) {
+        if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing && markType == MarkType.Placing) {
+            tileSelector.color = new Color(placingStartColor.r, placingStartColor.g, placingStartColor.b, placingStartColor.a + 0.2f);
+        } else if (battleManager.currentTurnStep == BattleManager.TurnStep.Move && markType == MarkType.Movement) {
             tileSelector.color = new Color(movementColor.r, movementColor.g + 0.2f, movementColor.b, movementColor.a);
-        } else if (battleManager.currentTurnStep == BattleManager.TurnStep.Attack && isMarked) {
+        } else if (battleManager.currentTurnStep == BattleManager.TurnStep.Attack && markType == MarkType.Attack) {
             tileSelector.color = new Color(attackColor.r, attackColor.g, attackColor.b, attackColor.a + 0.2f);
         }
     }
@@ -105,9 +89,10 @@ public class Square : MonoBehaviour {
      */
     public void MouseLeave() {
         battleManager.fightHUD.SquareHovered(null);
-        isMouseOver = false;
 
         RefreshColor();
+
+        if (colorAnimation != null) colorAnimation.Play();
     }
 
     /**
@@ -116,15 +101,13 @@ public class Square : MonoBehaviour {
     public void Click() {
         switch (battleManager.currentBattleStep) {
             case BattleManager.BattleStep.Placing:
-                if (start && IsNotBlocking()) {
+                if (markType == MarkType.Placing && IsNotBlocking()) {
                     BattleManager.instance.placing.PlaceMapChar(this);
                 }
 
                 break;
             case BattleManager.BattleStep.Fight:
-                if (!isMarked) return;
-
-                if (battleManager.currentTurnStep == BattleManager.TurnStep.Move) {
+                if (battleManager.currentTurnStep == BattleManager.TurnStep.Move && markType == MarkType.Movement) {
                     Path p = battleManager.board.pathFinder.FindPath(
                         battleManager.GetSelectedPlayerBoardCharacter().GetSquare().x,
                         battleManager.GetSelectedPlayerBoardCharacter().GetSquare().y,
@@ -135,7 +118,7 @@ public class Square : MonoBehaviour {
                     if (p != null) {
                         battleManager.GetSelectedPlayerBoardCharacter().Move(p, true);
                     }
-                } else if (battleManager.currentTurnStep == BattleManager.TurnStep.Attack) {
+                } else if (battleManager.currentTurnStep == BattleManager.TurnStep.Attack && markType == MarkType.Attack) {
                     battleManager.GetSelectedPlayerBoardCharacter().BasicAttack(boardEntity.GetComponent<BoardCharacter>());
                     battleManager.EnterTurnStepNone();
                 }
@@ -144,28 +127,22 @@ public class Square : MonoBehaviour {
         }
     }
 
-    public void Mark(MarkType markType) {
-        isMarked = true;
-        this.markType = markType;
-
-        RefreshColor();
-    }
-
     public void RefreshColor() {
         tileSelector.color = defaultColor;
-
-        if (isMarked) {
-            switch (markType) {
-                case MarkType.Movement:
-                    tileSelector.color = movementColor;
-                    break;
-                case MarkType.Attack:
-                    tileSelector.color = attackColor;
-                    break;
-                case MarkType.Item:
-                    tileSelector.color = itemColor;
-                    break;
-            }
+        
+        switch (markType) {
+            case MarkType.Placing:
+                tileSelector.color = placingStartColor;
+                break;
+            case MarkType.Movement:
+                tileSelector.color = movementColor;
+                break;
+            case MarkType.Attack:
+                tileSelector.color = attackColor;
+                break;
+            case MarkType.Item:
+                tileSelector.color = itemColor;
+                break;
         }
     }
 
@@ -179,21 +156,21 @@ public class Square : MonoBehaviour {
 
     public SFTileContainer tileContainer {
         get {
-            if (sfTileContainer == null) {
-                sfTileContainer = GetComponentInChildren<SFTileContainer>();
+            if (_tileContainer == null) {
+                _tileContainer = GetComponentInChildren<SFTileContainer>();
             }
 
-            return sfTileContainer;
+            return _tileContainer;
         }
     }
 
     public SFEntityContainer entityContainer {
         get {
-            if (sfEntityContainer == null) {
-                sfEntityContainer = GetComponentInChildren<SFEntityContainer>();
+            if (_entityContainer == null) {
+                _entityContainer = GetComponentInChildren<SFEntityContainer>();
             }
 
-            return sfEntityContainer;
+            return _entityContainer;
         }
     }
 

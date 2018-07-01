@@ -98,9 +98,9 @@ public class Board : MonoBehaviour {
                 squares[squareIndex] = mapSquare;
             }
 
-            squares[PositionToIndexSquare(1, 9)].start = true; // TODO
-            squares[PositionToIndexSquare(0, 9)].start = true; // TODO
-            squares[PositionToIndexSquare(0, 8)].start = true; // TODO
+            squares[PositionToIndexSquare(1, 9)].markType = Square.MarkType.Placing; // TODO
+            squares[PositionToIndexSquare(0, 9)].markType = Square.MarkType.Placing; // TODO
+            squares[PositionToIndexSquare(0, 8)].markType = Square.MarkType.Placing; // TODO
 
             pathFinder = new PathFinder(this, this.width + this.height);
         } else {
