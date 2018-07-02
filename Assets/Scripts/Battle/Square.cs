@@ -148,7 +148,8 @@ public class Square : MonoBehaviour {
                         battleManager.GetSelectedPlayerBoardCharacter().GetSquare().x,
                         battleManager.GetSelectedPlayerBoardCharacter().GetSquare().y,
                         this.x,
-                        this.y
+                        this.y,
+                        battleManager.GetSelectedPlayerBoardCharacter().side.value
                     );
 
                     if (p != null) {
@@ -184,6 +185,14 @@ public class Square : MonoBehaviour {
 
     public bool IsNotBlocking() {
         return boardEntity == null;
+    }
+
+    public bool IsNotBlocking(Side.Type side) {
+        Side entitySide = boardEntity?.GetComponent<Side>();
+
+        if (entitySide == null) return IsNotBlocking();
+
+        return boardEntity == null || entitySide.value == side;
     }
 
     public int GetManhattanDistance(Square square) {
