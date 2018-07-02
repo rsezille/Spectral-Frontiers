@@ -86,7 +86,7 @@ public class BattleManager : MonoBehaviour {
 
     private void Start() {
         mission = GameManager.instance.GetMissionToLoad();
-        board.loadMap(mission.map);
+        board.LoadMap(mission);
 
         battleCamera.ResetCameraSize();
         battleCamera.SetPosition(board.width / 2, board.height / 2);

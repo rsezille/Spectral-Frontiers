@@ -8,6 +8,12 @@ public class RawMission {
         public int posY;
     }
 
+    [System.Serializable]
+    public class RawStartingSquare {
+        public int posX;
+        public int posY;
+    }
+
     public string id;
     public string map;
     public int max_chars = 1;
@@ -18,4 +24,6 @@ public class RawMission {
     public string[] children;
 
     public RawEnemy[] enemies;
+
+    public RawStartingSquare[] starting_squares;
 }

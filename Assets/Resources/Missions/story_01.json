@@ -33,5 +33,19 @@
       "posX": 6,
       "posY": 9
     }
+  ],
+  "starting_squares": [
+	{
+		"posX": 5,
+		"posY": 7
+	},
+	{
+		"posX": 2,
+		"posY": 7
+	},
+	{
+		"posX": 2,
+		"posY": 8
+	}
   ]
 }
