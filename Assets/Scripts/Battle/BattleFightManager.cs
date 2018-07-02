@@ -218,52 +218,15 @@ public class BattleFightManager {
         yield return null;
     }
 
-    /**
-     * TODO: return squares without marking them? and do a more generic function in board, like PropagateLinear
-     */
     private void MarkSquares(int distance, Square.MarkType markType, bool ignoreBlocking = false) {
         battleManager.EventOnLeavingMarkStep();
 
-        List<Square> ts = new List<Square>();
-        ts.Add(battleManager.GetSelectedPlayerBoardCharacter().GetSquare());
+        List<Square> squaresHit = battleManager.board.PropagateLinear(battleManager.GetSelectedPlayerBoardCharacter().GetSquare(), distance, battleManager.GetSelectedPlayerBoardCharacter().side.value, ignoreBlocking);
 
-        List<Square> ts2 = new List<Square>();
-
-        for (int i = 0; i < distance; i++) {
-            foreach (Square t in ts) {
-                Square north = battleManager.board.GetSquare(t.x, t.y - 1);
-                Square south = battleManager.board.GetSquare(t.x, t.y + 1);
-                Square west = battleManager.board.GetSquare(t.x - 1, t.y);
-                Square east = battleManager.board.GetSquare(t.x + 1, t.y);
-
-                if (north != null && north.markType == Square.MarkType.None && ((north.IsNotBlocking() && !ignoreBlocking) || ignoreBlocking)) {
-                    north.markType = markType;
-                    ts2.Add(north);
-                }
-
-                if (south != null && south.markType == Square.MarkType.None && ((south.IsNotBlocking() && !ignoreBlocking) || ignoreBlocking)) {
-                    south.markType = markType;
-                    ts2.Add(south);
-                }
-
-                if (west != null && west.markType == Square.MarkType.None && ((west.IsNotBlocking() && !ignoreBlocking) || ignoreBlocking)) {
-                    west.markType = markType;
-                    ts2.Add(west);
-                }
-
-                if (east != null && east.markType == Square.MarkType.None && ((east.IsNotBlocking() && !ignoreBlocking) || ignoreBlocking)) {
-                    east.markType = markType;
-                    ts2.Add(east);
-                }
+        foreach (Square squareHit in squaresHit) {
+            if (squareHit.IsNotBlocking() || ignoreBlocking) {
+                squareHit.markType = markType;
             }
-
-            ts.Clear();
-
-            foreach (Square tt in ts2) {
-                ts.Add(tt);
-            }
-
-            ts2.Clear();
         }
     }
 

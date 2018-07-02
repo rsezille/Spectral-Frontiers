@@ -163,10 +163,14 @@ public class BoardCharacter : MonoBehaviour {
             yield return cameraAnimation.WaitForCompletion();
         }
 
+        Square targetedSquare = null;
+
         // Check at 25% and 75% of each square the sorting order of the BoardChar to set the correct one
         for (int i = 0; i < path.steps.Count; i++) {
             if (movable.movementPoints <= 0) break;
             //if (!path.steps[i].IsNotBlocking()) break;
+
+            int j = i == 0 ? 0 : i - 1;
 
             movable.movementPoints--;
 
@@ -175,20 +179,22 @@ public class BoardCharacter : MonoBehaviour {
 
             yield return characterAnimation.WaitForPosition(duration / 4);
 
-            if (path.steps[i].x - GetSquare().x > 0 || path.steps[i].y - GetSquare().y > 0) {
+            if (path.steps[i].x - path.steps[j].x > 0 || path.steps[i].y - path.steps[j].y > 0) {
                 SetSortingOrder(path.steps[i]);
             }
 
             yield return characterAnimation.WaitForPosition(duration * 3 / 4);
 
-            if (path.steps[i].x - GetSquare().x < 0 || path.steps[i].y - GetSquare().y < 0) {
+            if (path.steps[i].x - path.steps[j].x < 0 || path.steps[i].y - path.steps[j].y < 0) {
                 SetSortingOrder(path.steps[i]);
             }
 
             yield return characterAnimation.WaitForCompletion();
 
-            SetSquare(path.steps[i]);
+            targetedSquare = path.steps[i];
         }
+
+        SetSquare(targetedSquare);
 
         isMoving = false;
 

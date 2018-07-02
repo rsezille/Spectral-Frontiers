@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 /**
  * Load the map
  * Compute the mouse position and dispatch events to the first object hit
+ * Propagate marks for moving and attacking
  */
 public class Board : MonoBehaviour {
     private Square[] squares;
@@ -119,5 +121,52 @@ public class Board : MonoBehaviour {
 
     public int PositionToIndexSquare(int x, int y) {
         return x + (y * width);
+    }
+
+    /**
+     * Return all square hit by a linear propagation, epicenter excluded
+     */
+    public List<Square> PropagateLinear(Square epicenter, int distance, Side.Type side, bool ignoreBlocking) {
+        List<Square> squaresHit = new List<Square>();
+
+        List<Square> tmp1 = new List<Square>();
+        List<Square> tmp2 = new List<Square>();
+
+        squaresHit.Add(epicenter);
+        tmp1.Add(epicenter);
+
+        for (int i = 0; i < distance; i++) {
+            foreach (Square square in tmp1) {
+                Square north = GetSquare(square.x, square.y - 1);
+                Square south = GetSquare(square.x, square.y + 1);
+                Square west = GetSquare(square.x - 1, square.y);
+                Square east = GetSquare(square.x + 1, square.y);
+
+                if (north != null && !squaresHit.Contains(north) && ((north.IsNotBlocking(side) && !ignoreBlocking) || ignoreBlocking)) {
+                    tmp2.Add(north);
+                }
+
+                if (south != null && !squaresHit.Contains(south) && ((south.IsNotBlocking(side) && !ignoreBlocking) || ignoreBlocking)) {
+                    tmp2.Add(south);
+                }
+
+                if (west != null && !squaresHit.Contains(west) && ((west.IsNotBlocking(side) && !ignoreBlocking) || ignoreBlocking)) {
+                    tmp2.Add(west);
+                }
+
+                if (east != null && !squaresHit.Contains(east) && ((east.IsNotBlocking(side) && !ignoreBlocking) || ignoreBlocking)) {
+                    tmp2.Add(east);
+                }
+            }
+
+            tmp1.Clear();
+            tmp1.AddRange(tmp2);
+            squaresHit.AddRange(tmp2);
+            tmp2.Clear();
+        }
+
+        squaresHit.Remove(epicenter);
+
+        return squaresHit;
     }
 }
