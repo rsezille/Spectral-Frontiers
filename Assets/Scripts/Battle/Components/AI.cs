@@ -64,6 +64,7 @@ public class AI : MonoBehaviour {
             if (target != null) {
                 boardCharacter.BasicAttack(target);
                 attacked = true;
+                Debug.Log("YOLOLOL");
             } else {
                 // If no target found, stop attacking
                 break;

@@ -230,15 +230,22 @@ public class BattleManager : MonoBehaviour {
         if (playerAlive && !enemyAlive) { // The player wins
             victory.EnterBattleStepVictory();
         } else if (!playerAlive && enemyAlive) { // The enemy wins
-            StartCoroutine(WaitGameOver());
+            markedSquareAnimations.Clear();
+            //StartCoroutine(WaitGameOver());
+            Pouet();
         } else if (!playerAlive) { // No allied and enemy chars alive, enemy wins
-            StartCoroutine(WaitGameOver());
+            //StartCoroutine(WaitGameOver());
+            Pouet();
         }
     }
 
-    private IEnumerator WaitGameOver() {
-        yield return new WaitForSeconds(1f);
+    IEnumerator WaitGameOver() {
+        yield return new WaitForSeconds(1);
 
+        GameManager.instance.LoadSceneAsync(Scenes.GameOver, true);
+    }
+
+    void Pouet() {
         GameManager.instance.LoadSceneAsync(Scenes.GameOver);
     }
 }

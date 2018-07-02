@@ -98,7 +98,7 @@ public class Board : MonoBehaviour {
                 squares[squareIndex] = mapSquare;
             }
 
-            squares[PositionToIndexSquare(1, 9)].markType = Square.MarkType.Placing; // TODO
+            squares[PositionToIndexSquare(5, 7)].markType = Square.MarkType.Placing; // TODO
             squares[PositionToIndexSquare(0, 9)].markType = Square.MarkType.Placing; // TODO
             squares[PositionToIndexSquare(0, 8)].markType = Square.MarkType.Placing; // TODO
 

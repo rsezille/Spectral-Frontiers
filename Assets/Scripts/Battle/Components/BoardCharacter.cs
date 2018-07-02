@@ -142,6 +142,7 @@ public class BoardCharacter : MonoBehaviour {
             
             actionable.actionTokens--;
 
+            Debug.Log("BasicAttack");
             battleManager.CheckEndBattle();
         }
     }
