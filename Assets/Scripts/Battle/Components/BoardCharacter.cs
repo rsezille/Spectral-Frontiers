@@ -6,6 +6,7 @@ using UnityEngine.Events;
 
 /**
  * Represent a board character on the board
+ * The GameObject is placed in the attached Square inside the EntityContainer
  */
 [RequireComponent(typeof(BoardEntity), typeof(SpriteRenderer), typeof(Side))]
 [RequireComponent(typeof(MouseReactive))]
@@ -50,6 +51,8 @@ public class BoardCharacter : MonoBehaviour {
         mouseReactive.MouseLeave.AddListener(MouseLeave);
         mouseReactive.Click = new UnityEvent();
         mouseReactive.Click.AddListener(Click);
+
+        sprite.sortingOrder = 1;
     }
 
     public Square GetSquare() {
@@ -65,19 +68,13 @@ public class BoardCharacter : MonoBehaviour {
 
         if (targetedSquare != null) {
             targetedSquare.boardEntity = boardEntity;
-            transform.position = targetedSquare.transform.position;
-            SetSortingOrder(targetedSquare.sprite.sortingOrder + 1);
+            SetSortingOrder(targetedSquare);
         }
     }
 
-    public void SetSortingOrder(int sortingOrder) {
-        sprite.sortingOrder = sortingOrder;
-
-        Component[] HUDs = transform.GetComponentsInChildren<Canvas>();
-
-        foreach (Canvas canvas in HUDs) {
-            canvas.sortingOrder = sortingOrder;
-        }
+    public void SetSortingOrder(Square square) {
+        transform.SetParent(square.entityContainer.transform);
+        transform.localPosition = Vector3.zero;
     }
 
     private void Start() {
@@ -144,7 +141,7 @@ public class BoardCharacter : MonoBehaviour {
             floatingText.text = "-" + dmgDone;
             
             actionable.actionTokens--;
-
+            
             battleManager.CheckEndBattle();
         }
     }
@@ -179,13 +176,13 @@ public class BoardCharacter : MonoBehaviour {
             yield return characterAnimation.WaitForPosition(duration / 4);
 
             if (path.steps[i].x - GetSquare().x > 0 || path.steps[i].y - GetSquare().y > 0) {
-                SetSortingOrder(path.steps[i].sprite.sortingOrder + 1);
+                SetSortingOrder(path.steps[i]);
             }
 
             yield return characterAnimation.WaitForPosition(duration * 3 / 4);
 
             if (path.steps[i].x - GetSquare().x < 0 || path.steps[i].y - GetSquare().y < 0) {
-                SetSortingOrder(path.steps[i].sprite.sortingOrder + 1);
+                SetSortingOrder(path.steps[i]);
             }
 
             yield return characterAnimation.WaitForCompletion();

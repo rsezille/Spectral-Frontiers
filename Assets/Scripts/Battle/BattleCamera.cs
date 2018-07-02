@@ -42,9 +42,16 @@ public class BattleCamera : MonoBehaviour {
     }
 
     public Tween SetPosition(Square square, bool smooth = false, float duration = 1f, Ease ease = Ease.OutCubic) {
+        return SetPosition(square.x, square.y, smooth, duration, ease);
+    }
+
+    public Tween SetPosition(int squareX, int squareY, bool smooth = false, float duration = 1f, Ease ease = Ease.OutCubic) {
+        Square targetedSquare = BattleManager.instance.board.GetSquare(squareX, squareY);
+        int height = targetedSquare != null ? targetedSquare.Height : 0;
+
         Vector3 target = new Vector3(
-            square.x - square.y,
-            -(square.y + square.x) / 2f + square.vOffset / (square.sprite.bounds.size.y * Globals.TileHeight / 2) + positionYOffset,
+            squareX - squareY,
+            (squareY + squareX) / 2f + (height / Globals.PixelsPerUnit) + positionYOffset,
             transform.position.z
         );
 
@@ -60,7 +67,7 @@ public class BattleCamera : MonoBehaviour {
     public bool IsOnSquare(Square square) {
         Vector3 squarePosition = new Vector3(
             square.x - square.y,
-            -(square.y + square.x) / 2f + square.vOffset / (square.sprite.bounds.size.y * Globals.TileHeight / 2) + positionYOffset,
+            (square.y + square.x) / 2f + (square.Height / Globals.PixelsPerUnit) + positionYOffset,
             transform.position.z
         );
 

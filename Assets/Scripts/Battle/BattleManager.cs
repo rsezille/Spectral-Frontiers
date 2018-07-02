@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -51,6 +52,8 @@ public class BattleManager : MonoBehaviour {
     public BattlePlacingManager placing;
     public BattleFightManager fight;
     public BattleVictoryManager victory;
+    
+    public List<Sequence> markedSquareAnimations = new List<Sequence>();
 
     public static BattleManager instance {
         get {
@@ -86,7 +89,7 @@ public class BattleManager : MonoBehaviour {
         board.loadMap(mission.map);
 
         battleCamera.ResetCameraSize();
-        battleCamera.SetPosition(board.squares[0, 0]);
+        battleCamera.SetPosition(board.width / 2, board.height / 2);
 
         foreach (RawMission.RawEnemy enemy in mission.enemies) {
             Character enemyChar = new Character(enemy.key);
@@ -98,7 +101,6 @@ public class BattleManager : MonoBehaviour {
             enemyBC.side.value = Side.Type.Neutral;
             enemyBC.SetSquare(board.GetSquare(enemy.posX, enemy.posY));
             enemyCharacters.Add(enemyBC);
-            enemyBC.transform.SetParent(this.transform);
         }
 
         placing.EnterBattleStepPlacing();
@@ -113,7 +115,7 @@ public class BattleManager : MonoBehaviour {
         }
 
         if (Input.GetKeyDown(KeyCode.P)) {
-            battleCamera.SetPosition(board.squares[0, 0], true);
+            battleCamera.SetPosition(0, 0, true);
         }
 
         if (Input.GetAxis(InputBinds.Zoom) != 0) {
@@ -135,15 +137,11 @@ public class BattleManager : MonoBehaviour {
     }
 
     public void EventOnEnterPlacing() {
-        if (OnEnterPlacing != null) {
-            OnEnterPlacing();
-        }
+        OnEnterPlacing();
     }
 
     public void EventOnLeavingMarkStep() {
-        if (OnLeavingMarkStep != null) {
-            OnLeavingMarkStep();
-        }
+        OnLeavingMarkStep();
     }
 
     /**
@@ -211,7 +209,10 @@ public class BattleManager : MonoBehaviour {
         }
     }
 
-    public void CheckEndBattle() {
+    /**
+     * Return true if the battle has ended
+     */
+    public bool CheckEndBattle() {
         bool playerAlive = false;
         bool enemyAlive = false;
 
@@ -231,14 +232,24 @@ public class BattleManager : MonoBehaviour {
 
         if (playerAlive && !enemyAlive) { // The player wins
             victory.EnterBattleStepVictory();
+
+            return true;
         } else if (!playerAlive && enemyAlive) { // The enemy wins
             StartCoroutine(WaitGameOver());
+
+            return true;
         } else if (!playerAlive) { // No allied and enemy chars alive, enemy wins
             StartCoroutine(WaitGameOver());
+
+            return true;
         }
+
+        return false;
     }
 
     private IEnumerator WaitGameOver() {
+        markedSquareAnimations.Clear();
+
         yield return new WaitForSeconds(1f);
 
         GameManager.instance.LoadSceneAsync(Scenes.GameOver);

@@ -20,9 +20,9 @@ public class SFMapGizmos : MonoBehaviour {
         }
 
         if (sfMapEditor.currentMode == SFMapEditor.Mode.Block) {
-            SFSquare[] squares = sfMapEditor.map.GetComponentsInChildren<SFSquare>();
+            Square[] squares = sfMapEditor.map.GetComponentsInChildren<Square>();
 
-            foreach (SFSquare square in squares) {
+            foreach (Square square in squares) {
                 Gizmos.color = square.solid ? sfMapEditor.orange : square.IsNotBlocking() ? Color.green : Color.red;
 
                 Vector3 bottom = new Vector3(square.x - square.y, (square.x + square.y) / 2f);

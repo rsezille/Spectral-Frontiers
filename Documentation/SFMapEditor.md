@@ -29,6 +29,10 @@ This entity must be attached to the lowest (by sortingOrder) square, so the top-
 While in Grid selection mode, only the highest tile is moved.  
 Use the Tile selection mode to change the height of the wanted tile.
 
+#### Add entities ahead BoardCharacters
+
+BoardCharacters has a sorting order of 1, so you juste need to modify your entities with a sorting order higher than 1.
+
 ## Features
 
 #### Drag and draw

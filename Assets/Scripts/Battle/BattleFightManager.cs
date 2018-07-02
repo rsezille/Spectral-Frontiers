@@ -139,6 +139,8 @@ public class BattleFightManager {
     }
 
     public void EnterBattleStepFight() {
+        battleManager.EventOnLeavingMarkStep();
+
         if (battleManager.playerCharacters.Count > 0) {
             // Disable outlines from the PlacingStep
             if (battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter != null) {
@@ -153,6 +155,10 @@ public class BattleFightManager {
     }
 
     private void NewPlayerTurn() {
+        if (battleManager.CheckEndBattle()) {
+            return;
+        }
+
         battleManager.turn++;
 
         foreach (BoardCharacter bc in battleManager.playerCharacters) {
@@ -160,15 +166,13 @@ public class BattleFightManager {
         }
 
         battleManager.EnterTurnStepNone();
-        battleManager.CheckEndBattle();
 
         BoardCharacter aliveCharacter = battleManager.playerCharacters[0];
 
-        while (aliveCharacter.IsDead()) {
-            if (battleManager.playerCharacters.IndexOf(aliveCharacter) >= battleManager.playerCharacters.Count - 1) {
-                aliveCharacter = battleManager.playerCharacters[0];
-            } else {
-                aliveCharacter = battleManager.playerCharacters[battleManager.playerCharacters.IndexOf(aliveCharacter) + 1];
+        foreach (BoardCharacter character in battleManager.playerCharacters) {
+            if (!character.IsDead()) {
+                aliveCharacter = character;
+                break;
             }
         }
 
@@ -232,23 +236,23 @@ public class BattleFightManager {
                 Square west = battleManager.board.GetSquare(t.x - 1, t.y);
                 Square east = battleManager.board.GetSquare(t.x + 1, t.y);
 
-                if (north != null && !north.isMarked && ((north.IsNotBlocking() && !ignoreBlocking) || ignoreBlocking)) {
-                    north.Mark(markType);
+                if (north != null && north.markType == Square.MarkType.None && ((north.IsNotBlocking() && !ignoreBlocking) || ignoreBlocking)) {
+                    north.markType = markType;
                     ts2.Add(north);
                 }
 
-                if (south != null && !south.isMarked && ((south.IsNotBlocking() && !ignoreBlocking) || ignoreBlocking)) {
-                    south.Mark(markType);
+                if (south != null && south.markType == Square.MarkType.None && ((south.IsNotBlocking() && !ignoreBlocking) || ignoreBlocking)) {
+                    south.markType = markType;
                     ts2.Add(south);
                 }
 
-                if (west != null && !west.isMarked && ((west.IsNotBlocking() && !ignoreBlocking) || ignoreBlocking)) {
-                    west.Mark(markType);
+                if (west != null && west.markType == Square.MarkType.None && ((west.IsNotBlocking() && !ignoreBlocking) || ignoreBlocking)) {
+                    west.markType = markType;
                     ts2.Add(west);
                 }
 
-                if (east != null && !east.isMarked && ((east.IsNotBlocking() && !ignoreBlocking) || ignoreBlocking)) {
-                    east.Mark(markType);
+                if (east != null && east.markType == Square.MarkType.None && ((east.IsNotBlocking() && !ignoreBlocking) || ignoreBlocking)) {
+                    east.markType = markType;
                     ts2.Add(east);
                 }
             }

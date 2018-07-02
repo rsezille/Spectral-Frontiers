@@ -97,15 +97,15 @@ public class GameManager : MonoBehaviour {
         transitionImage.color = new Color(inColor.r, inColor.g, inColor.b, 0f);
 
         if (immediate) {
-            StartCoroutine(LoadSceneAsync(scene, immediate, inColor, outColor, speed));
+            StartCoroutine(LoadSceneAsyncCoroutine(scene, immediate, inColor, outColor, speed));
         } else {
             transitionImage.DOColor(inColor, speed).OnComplete(() => {
-                StartCoroutine(LoadSceneAsync(scene, immediate, inColor, outColor, speed));
+                StartCoroutine(LoadSceneAsyncCoroutine(scene, immediate, inColor, outColor, speed));
             });
         }
     }
 
-    private IEnumerator LoadSceneAsync(string scene, bool immediate, Color inColor, Color outColor, float speed) {
+    private IEnumerator LoadSceneAsyncCoroutine(string scene, bool immediate, Color inColor, Color outColor, float speed) {
         bool animationCompleted = !immediate;
 
         AsyncOperation AO = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Single);
