@@ -209,7 +209,10 @@ public class BattleManager : MonoBehaviour {
         }
     }
 
-    public void CheckEndBattle() {
+    /**
+     * Return true if the battle has ended
+     */
+    public bool CheckEndBattle() {
         bool playerAlive = false;
         bool enemyAlive = false;
 
@@ -229,23 +232,26 @@ public class BattleManager : MonoBehaviour {
 
         if (playerAlive && !enemyAlive) { // The player wins
             victory.EnterBattleStepVictory();
+
+            return true;
         } else if (!playerAlive && enemyAlive) { // The enemy wins
-            markedSquareAnimations.Clear();
-            //StartCoroutine(WaitGameOver());
-            Pouet();
+            StartCoroutine(WaitGameOver());
+
+            return true;
         } else if (!playerAlive) { // No allied and enemy chars alive, enemy wins
-            //StartCoroutine(WaitGameOver());
-            Pouet();
+            StartCoroutine(WaitGameOver());
+
+            return true;
         }
+
+        return false;
     }
 
     IEnumerator WaitGameOver() {
-        yield return new WaitForSeconds(1);
+        markedSquareAnimations.Clear();
 
-        GameManager.instance.LoadSceneAsync(Scenes.GameOver, true);
-    }
+        yield return new WaitForSeconds(1f);
 
-    void Pouet() {
         GameManager.instance.LoadSceneAsync(Scenes.GameOver);
     }
 }

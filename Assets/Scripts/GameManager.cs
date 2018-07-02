@@ -96,21 +96,16 @@ public class GameManager : MonoBehaviour {
         transitionImage = transition.AddComponent<Image>();
         transitionImage.color = new Color(inColor.r, inColor.g, inColor.b, 0f);
 
-        Debug.Log("before call");
-
         if (immediate) {
-            Debug.Log("call 1");
             StartCoroutine(LoadSceneAsyncCoroutine(scene, immediate, inColor, outColor, speed));
         } else {
             transitionImage.DOColor(inColor, speed).OnComplete(() => {
-                Debug.Log("call 2");
                 StartCoroutine(LoadSceneAsyncCoroutine(scene, immediate, inColor, outColor, speed));
             });
         }
     }
 
     private IEnumerator LoadSceneAsyncCoroutine(string scene, bool immediate, Color inColor, Color outColor, float speed) {
-        Debug.Log("LoadSceneAsync");
         bool animationCompleted = !immediate;
 
         AsyncOperation AO = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Single);
@@ -118,15 +113,14 @@ public class GameManager : MonoBehaviour {
 
         if (immediate) {
             transitionImage.DOColor(inColor, speed).OnComplete(() => {
-                Debug.Log("oeirjfiejzfiji");
                 animationCompleted = true;
             });
         }
-        Debug.Log("allo     " + AO.progress + "    " + animationCompleted);
+
         while (AO.progress < 0.9f || !animationCompleted) {
             yield return null;
         }
-        Debug.Log("alhuile     " + AO.progress + "    " + animationCompleted);
+
         AO.allowSceneActivation = true;
 
         transitionImage.DOColor(new Color(outColor.r, outColor.g, outColor.b, 0f), speed).OnComplete(() => {

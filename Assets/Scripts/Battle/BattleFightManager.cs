@@ -155,6 +155,10 @@ public class BattleFightManager {
     }
 
     private void NewPlayerTurn() {
+        if (battleManager.CheckEndBattle()) {
+            return;
+        }
+
         battleManager.turn++;
 
         foreach (BoardCharacter bc in battleManager.playerCharacters) {
@@ -162,15 +166,13 @@ public class BattleFightManager {
         }
 
         battleManager.EnterTurnStepNone();
-        battleManager.CheckEndBattle();
 
         BoardCharacter aliveCharacter = battleManager.playerCharacters[0];
 
-        while (aliveCharacter.IsDead()) {
-            if (battleManager.playerCharacters.IndexOf(aliveCharacter) >= battleManager.playerCharacters.Count - 1) {
-                aliveCharacter = battleManager.playerCharacters[0];
-            } else {
-                aliveCharacter = battleManager.playerCharacters[battleManager.playerCharacters.IndexOf(aliveCharacter) + 1];
+        foreach (BoardCharacter character in battleManager.playerCharacters) {
+            if (!character.IsDead()) {
+                aliveCharacter = character;
+                break;
             }
         }
 
