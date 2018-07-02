@@ -11,8 +11,7 @@ public class Board : MonoBehaviour {
 
     public Transform boardSquaresTransform;
     public PathFinder pathFinder;
-
-    public string mapName;
+    
     public int width { get; private set; }
     public int height { get; private set; }
 
@@ -70,8 +69,8 @@ public class Board : MonoBehaviour {
         return entity;
     }
 
-    public void loadMap(string mapName) {
-        GameObject mapGameObject = Resources.Load("Maps/" + mapName) as GameObject;
+    public void LoadMap(RawMission mission) {
+        GameObject mapGameObject = Resources.Load("Maps/" + mission.map) as GameObject;
 
         if (mapGameObject != null) {
             GameObject map = Instantiate(mapGameObject, Vector3.zero, Quaternion.identity) as GameObject;
@@ -97,13 +96,13 @@ public class Board : MonoBehaviour {
                 squares[squareIndex] = mapSquare;
             }
 
-            squares[PositionToIndexSquare(5, 7)].markType = Square.MarkType.Placing; // TODO
-            squares[PositionToIndexSquare(0, 9)].markType = Square.MarkType.Placing; // TODO
-            squares[PositionToIndexSquare(0, 8)].markType = Square.MarkType.Placing; // TODO
+            foreach (RawMission.RawStartingSquare startingSquare in mission.starting_squares) {
+                squares[PositionToIndexSquare(startingSquare.posX, startingSquare.posY)].markType = Square.MarkType.Placing;
+            }
 
             pathFinder = new PathFinder(this, this.width + this.height);
         } else {
-            Debug.LogError("Map not found! " + mapName);
+            Debug.LogError("Map not found! " + mission.map);
         }
     }
 
