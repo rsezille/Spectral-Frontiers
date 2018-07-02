@@ -5,7 +5,6 @@
  * Compute the mouse position and dispatch events to the first object hit
  */
 public class Board : MonoBehaviour {
-    private RawMap rawMap;
     private Square[] squares;
 
     private MouseReactive previousMouseEntity = null; // Used to detect a mouse leave
