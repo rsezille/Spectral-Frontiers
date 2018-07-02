@@ -247,7 +247,7 @@ public class BattleManager : MonoBehaviour {
         return false;
     }
 
-    IEnumerator WaitGameOver() {
+    private IEnumerator WaitGameOver() {
         markedSquareAnimations.Clear();
 
         yield return new WaitForSeconds(1f);
