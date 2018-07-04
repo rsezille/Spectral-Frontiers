@@ -1,9 +1,9 @@
 fileFormatVersion: 2
-guid: 8bc41bc41f5172a4492da76b7b6b0d5b
+guid: 57f2696cc0ba0a84a8bf89b3cf3ac71e
 TextureImporter:
   fileIDToRecycleName:
-    21300000: hero_stand_01_0
-    21300002: hero_stand_01_1
+    21300000: north_stand_01_draft_0
+    21300002: north_stand_01_draft_1
   externalObjects: {}
   serializedVersion: 5
   mipmaps:
@@ -84,13 +84,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: hero_stand_01_0
+      name: north_stand_01_draft_0
       rect:
         serializedVersion: 2
-        x: 8
-        y: 2
-        width: 44
-        height: 102
+        x: 4
+        y: 1
+        width: 22
+        height: 51
       alignment: 9
       pivot: {x: 0.5, y: 0.15}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -98,19 +98,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f698ddbc34eb60c4da0cf704ae2d409b
+      spriteID: 9b836dcc15a8c1e4cb427bb7f2dbe67b
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: hero_stand_01_1
+      name: north_stand_01_draft_1
       rect:
         serializedVersion: 2
-        x: 68
-        y: 4
-        width: 42
-        height: 100
+        x: 34
+        y: 2
+        width: 21
+        height: 50
       alignment: 9
       pivot: {x: 0.5, y: 0.15}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -118,7 +118,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0e9c40ad95f77d64a97ae07e10fbff5a
+      spriteID: 614ff5a68c218914fa5c8d6b286fcc59
       vertices: []
       indices: 
       edges: []
@@ -126,7 +126,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 3cf6962bec832e844b34a61f366c915c
+    spriteID: f2d9ba6c842d3c642a99a466b5d10aab
     vertices: []
     indices: 
     edges: []
