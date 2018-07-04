@@ -17,6 +17,8 @@ public class Board : MonoBehaviour {
     public int width { get; private set; }
     public int height { get; private set; }
 
+    public string mapName { get; private set; } = "";
+
     private void Awake() {
         width = 0;
         height = 0;
@@ -103,6 +105,8 @@ public class Board : MonoBehaviour {
             }
 
             pathFinder = new PathFinder(this, this.width + this.height);
+
+            mapName = LanguageManager.getInstance().getString("map." + mission.map + ".name");
         } else {
             Debug.LogError("Map not found! " + mission.map);
         }

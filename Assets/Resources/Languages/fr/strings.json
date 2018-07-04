@@ -177,6 +177,42 @@
       "text": "Quitter"
     },
     {
+      "id": "map.001.name",
+      "text": "Pâturages"
+    },
+    {
+      "id": "mission.story_01.name",
+      "text": "Première mission"
+    },
+    {
+      "id": "mission.story_01.description",
+      "text": "Test description de la première mission"
+    },
+    {
+      "id": "mission.story_02.name",
+      "text": "Seconde mission"
+    },
+    {
+      "id": "mission.story_02.description",
+      "text": "Ceci est votre deuxième mission !"
+    },
+    {
+      "id": "monster.goblin.name",
+      "text": "Goblin"
+    },
+    {
+      "id": "monster.goblin.description",
+      "text": "Un goblin moche"
+    },
+    {
+      "id": "monster.orc.name",
+      "text": "Orc"
+    },
+    {
+      "id": "monster.orc.description",
+      "text": "Un orc moche"
+    },
+    {
       "id": "newgame.name.enter",
       "text": "Entrez votre nom : "
     },
