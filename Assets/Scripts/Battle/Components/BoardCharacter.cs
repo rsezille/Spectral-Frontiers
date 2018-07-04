@@ -40,7 +40,6 @@ public class BoardCharacter : MonoBehaviour {
         actionable = GetComponent<Actionable>();
         AI = GetComponent<AI>();
 
-
         if (outline) {
             outline.enabled = false;
         }
