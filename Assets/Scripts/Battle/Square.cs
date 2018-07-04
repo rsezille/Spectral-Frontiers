@@ -26,7 +26,7 @@ public class Square : MonoBehaviour {
     private Sequence colorAnimation;
 
     public BoardEntity boardEntity;
-
+    
     private MarkType _markType = MarkType.None;
     public MarkType markType {
         get {
@@ -36,13 +36,21 @@ public class Square : MonoBehaviour {
         set {
             _markType = value;
 
-            if (value != MarkType.None) {
+            if (_markType != MarkType.None) {
+                if (colorAnimation != null) return;
+
                 // Don't use a tween with LoopType.Yoyo as we will lose elapsed time and Goto
                 colorAnimation = DOTween
                     .Sequence()
                     .Append(tileSelector.DOFade(0.3f, 0.8f).SetEase(Ease.Linear))
                     .Append(tileSelector.DOFade(maxAlpha, 0.8f).SetEase(Ease.Linear))
                     .SetLoops(-1);
+                battleManager.markedSquareAnimations.Add(colorAnimation);
+            } else {
+                if (colorAnimation != null) {
+                    colorAnimation.Kill();
+                    colorAnimation = null;
+                }
             }
 
             RefreshColor();
@@ -76,7 +84,6 @@ public class Square : MonoBehaviour {
         }
 
         markType = MarkType.None;
-        battleManager.markedSquareAnimations.Clear();
 
         RefreshColor();
     }
@@ -148,7 +155,8 @@ public class Square : MonoBehaviour {
                         battleManager.GetSelectedPlayerBoardCharacter().GetSquare().x,
                         battleManager.GetSelectedPlayerBoardCharacter().GetSquare().y,
                         this.x,
-                        this.y
+                        this.y,
+                        battleManager.GetSelectedPlayerBoardCharacter().side.value
                     );
 
                     if (p != null) {
@@ -184,6 +192,14 @@ public class Square : MonoBehaviour {
 
     public bool IsNotBlocking() {
         return boardEntity == null;
+    }
+
+    public bool IsNotBlocking(Side.Type side) {
+        Side entitySide = boardEntity?.GetComponent<Side>();
+
+        if (entitySide == null) return IsNotBlocking();
+
+        return boardEntity == null || entitySide.value == side;
     }
 
     public int GetManhattanDistance(Square square) {

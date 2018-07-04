@@ -86,7 +86,8 @@ public class AI : MonoBehaviour {
                     boardCharacter.GetSquare().x,
                     boardCharacter.GetSquare().y,
                     playerCharacter.GetSquare().x,
-                    playerCharacter.GetSquare().y
+                    playerCharacter.GetSquare().y,
+                    boardCharacter.side.value
                 );
                 if (p != null) {
                     if (bestPath == null) {

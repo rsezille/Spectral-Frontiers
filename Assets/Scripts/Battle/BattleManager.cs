@@ -141,6 +141,8 @@ public class BattleManager : MonoBehaviour {
     }
 
     public void EventOnLeavingMarkStep() {
+        markedSquareAnimations.Clear();
+
         OnLeavingMarkStep();
     }
 

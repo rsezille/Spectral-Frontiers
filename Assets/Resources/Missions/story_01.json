@@ -36,16 +36,12 @@
   ],
   "starting_squares": [
 	{
-		"posX": 5,
-		"posY": 7
-	},
-	{
-		"posX": 2,
-		"posY": 7
-	},
-	{
-		"posX": 2,
+		"posX": 1,
 		"posY": 8
+	},
+	{
+		"posX": 1,
+		"posY": 7
 	}
   ]
 }

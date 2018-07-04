@@ -29,7 +29,7 @@ public class PathFinder {
      * @param ty Target location Y
      * @return The path
      */
-    public Path FindPath(int sx, int sy, int tx, int ty) {
+    public Path FindPath(int sx, int sy, int tx, int ty, Side.Type side) {
         if (board.GetSquare(tx, ty) == null || board.GetSquare(tx, ty).solid) {
             return null;
         }
@@ -67,7 +67,7 @@ public class PathFinder {
                     int xp = x + current.x;
                     int yp = y + current.y;
 
-                    if (IsValidLocation(sx, sy, xp, yp, tx, ty)) {
+                    if (IsValidLocation(sx, sy, xp, yp, tx, ty, side)) {
                         float nextStepCost = current.cost + 1;
                         Node neighbour = nodes[xp, yp];
                         // map.pathFinderVisited(xp, yp);
@@ -102,7 +102,7 @@ public class PathFinder {
 
         while (target != nodes[sx, sy]) {
             // Don't add the targeted square if it is blocking
-            if (target != nodes[tx, ty] || (target == nodes[tx, ty] && board.GetSquare(tx, ty).IsNotBlocking())) {
+            if (target != nodes[tx, ty] || (target == nodes[tx, ty] && board.GetSquare(tx, ty).IsNotBlocking(side))) {
                 path.PrependStep(board.GetSquare(target.x, target.y));
             }
 
@@ -114,7 +114,7 @@ public class PathFinder {
         return path;
     }
 
-    private bool IsValidLocation(int sx, int sy, int x, int y, int tx, int ty) {
+    private bool IsValidLocation(int sx, int sy, int x, int y, int tx, int ty, Side.Type side) {
         bool invalid = (x < 0) || (y < 0) || (x >= board.width) || (y >= board.height);
 
         if ((!invalid) && ((sx != x) || (sy != y))) {
@@ -124,7 +124,7 @@ public class PathFinder {
                 if (x == tx && y == ty) {
                     invalid = false;
                 } else {
-                    invalid = !board.GetSquare(x, y).IsNotBlocking();
+                    invalid = !board.GetSquare(x, y).IsNotBlocking(side);
                 }
             }
         }
