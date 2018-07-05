@@ -9,8 +9,6 @@ public class SpriteMouseReactive : MonoBehaviour {
     private BoardCharacter boardCharacter;
 
     private void Awake() {
-        boardCharacter = GetComponentInParent<BoardCharacter>();
-
         mouseReactive = GetComponent<MouseReactive>();
         mouseReactive.MouseEnter = new UnityEvent();
         mouseReactive.MouseEnter.AddListener(MouseEnter);
@@ -18,6 +16,10 @@ public class SpriteMouseReactive : MonoBehaviour {
         mouseReactive.MouseLeave.AddListener(MouseLeave);
         mouseReactive.Click = new UnityEvent();
         mouseReactive.Click.AddListener(Click);
+    }
+
+    private void Start() {
+        boardCharacter = GetComponentInParent<BoardCharacter>();
     }
 
     /**

@@ -199,7 +199,7 @@ public class BattlePlacingManager {
                     pc.boardCharacter.character.boardCharacter = pc.boardCharacter;
                     battleManager.playerCharacters.Add(pc.boardCharacter);
 
-                    pc.transform.SetParent(battleManager.transform);
+                    //pc.transform.SetParent(battleManager.transform);
 
                     if (pc.boardCharacter.outline != null) {
                         pc.boardCharacter.outline.enabled = true;
