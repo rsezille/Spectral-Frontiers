@@ -188,6 +188,7 @@ public class BattlePlacingManager {
                 if (battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter != null) {
                     battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter.SetSquare(square);
                     battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter.outline.enabled = true;
+                    battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter.direction = square.startingDirection;
                 } else {
                     PlayerCharacter pc = Object.Instantiate(battleManager.testPlayerCharacter, square.transform.position, Quaternion.identity) as PlayerCharacter;
                     pc.boardCharacter.character = battleManager.playerPlacingChars[battleManager.placingCharIndex];
