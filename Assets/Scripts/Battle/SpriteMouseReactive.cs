@@ -12,7 +12,6 @@ public class SpriteMouseReactive : MonoBehaviour {
         boardCharacter = GetComponentInParent<BoardCharacter>();
 
         mouseReactive = GetComponent<MouseReactive>();
-
         mouseReactive.MouseEnter = new UnityEvent();
         mouseReactive.MouseEnter.AddListener(MouseEnter);
         mouseReactive.MouseLeave = new UnityEvent();
