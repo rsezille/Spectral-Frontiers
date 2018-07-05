@@ -37,8 +37,7 @@
   "starting_squares": [
 	{
 		"posX": 1,
-		"posY": 8,
-		"direction": "East"
+		"posY": 8
 	},
 	{
 		"posX": 1,
