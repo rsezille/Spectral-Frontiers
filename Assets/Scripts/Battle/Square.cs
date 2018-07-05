@@ -123,22 +123,6 @@ public class Square : MonoBehaviour {
         }
     }
 
-    public void PlayColorAnimation() {
-        if (colorAnimation == null) return;
-
-        if (battleManager.markedSquareAnimations.Count > 0) {
-            float elapsed = battleManager.markedSquareAnimations[0].Elapsed(false);
-            
-            colorAnimation.Goto(elapsed);
-        }
-        
-        colorAnimation.Play();
-
-        if (!battleManager.markedSquareAnimations.Contains(colorAnimation)) {
-            battleManager.markedSquareAnimations.Add(colorAnimation);
-        }
-    }
-
     /**
      * Triggered by Board (SFTileSelector)
      */
@@ -169,6 +153,22 @@ public class Square : MonoBehaviour {
                 }
 
                 break;
+        }
+    }
+
+    public void PlayColorAnimation() {
+        if (colorAnimation == null) return;
+
+        if (battleManager.markedSquareAnimations.Count > 0) {
+            float elapsed = battleManager.markedSquareAnimations[0].Elapsed(false);
+
+            colorAnimation.Goto(elapsed);
+        }
+
+        colorAnimation.Play();
+
+        if (!battleManager.markedSquareAnimations.Contains(colorAnimation)) {
+            battleManager.markedSquareAnimations.Add(colorAnimation);
         }
     }
 
