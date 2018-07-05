@@ -14,7 +14,7 @@ public class Square : MonoBehaviour {
     [SerializeField]
     private int height;
     public bool solid = false; // Collision detection
-    public BoardCharacter.Direction startingDirection = BoardCharacter.Direction.East;
+    public BoardCharacter.Direction startingDirection = Globals.DefaultDirection;
 
     // Colors
     public static float maxAlpha = 0.8f;

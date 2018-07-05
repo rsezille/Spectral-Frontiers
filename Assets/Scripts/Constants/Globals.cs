@@ -5,6 +5,8 @@
 
     public const int PixelsPerUnit = 64;
 
+    public const BoardCharacter.Direction DefaultDirection = BoardCharacter.Direction.East;
+
     // Language
     public const string DefaultLanguage = "en";
 
