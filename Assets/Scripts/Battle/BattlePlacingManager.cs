@@ -193,6 +193,7 @@ public class BattlePlacingManager {
                     pc.boardCharacter.character = battleManager.playerPlacingChars[battleManager.placingCharIndex];
                     pc.GetComponent<Side>().value = Side.Type.Player;
                     pc.boardCharacter.SetSquare(square);
+                    pc.boardCharacter.direction = square.startingDirection;
 
                     pc.boardCharacter.character.boardCharacter = pc.boardCharacter;
                     battleManager.playerCharacters.Add(pc.boardCharacter);

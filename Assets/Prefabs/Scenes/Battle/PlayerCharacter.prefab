@@ -32,6 +32,7 @@ GameObject:
   - component: {fileID: 114628054442890148}
   - component: {fileID: 114241991584310632}
   - component: {fileID: 114396361631682662}
+  - component: {fileID: 95620412932511886}
   m_Layer: 0
   m_Name: PlayerCharacter
   m_TagString: Untagged
@@ -116,6 +117,24 @@ PolygonCollider2D:
       - {x: -0.28339088, y: 0.3527645}
       - {x: -0.25137997, y: 0.34378064}
       - {x: -0.25564337, y: 0.21856308}
+--- !u!95 &95620412932511886
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1878317023255400}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f38543d8e435b724ebab6d85867b5edb, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114052589186591142
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -133,6 +152,7 @@ MonoBehaviour:
   actionable: {fileID: 0}
   AI: {fileID: 0}
   isMoving: 0
+  direction: 0
 --- !u!114 &114098185219839834
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -37,11 +37,13 @@
   "starting_squares": [
 	{
 		"posX": 1,
-		"posY": 8
+		"posY": 8,
+		"direction": "East"
 	},
 	{
 		"posX": 1,
-		"posY": 7
+		"posY": 7,
+		"direction": "West"
 	}
   ]
 }

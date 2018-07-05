@@ -9,8 +9,12 @@ using UnityEngine.Events;
  * The GameObject is placed in the attached Square inside the EntityContainer
  */
 [RequireComponent(typeof(BoardEntity), typeof(SpriteRenderer), typeof(Side))]
-[RequireComponent(typeof(MouseReactive))]
+[RequireComponent(typeof(MouseReactive), typeof(Animator))]
 public class BoardCharacter : MonoBehaviour {
+    public enum Direction {
+        North, East, South, West // Rotate a 2D plan by 90 degrees clockwise
+    };
+
     private BattleManager battleManager;
 
     public Character character;
@@ -19,6 +23,7 @@ public class BoardCharacter : MonoBehaviour {
     private BoardEntity boardEntity;
     private SpriteRenderer sprite;
     private MouseReactive mouseReactive;
+    private Animator animator;
     public Side side;
     // Components which can be null
     public SpriteGlowEffect outline;
@@ -28,12 +33,39 @@ public class BoardCharacter : MonoBehaviour {
 
     public bool isMoving = false;
 
+    private Direction _direction = Direction.South;
+    public Direction direction {
+        get {
+            return _direction;
+        }
+
+        set {
+            _direction = value;
+
+            switch (value) {
+                case Direction.South:
+                    animator.Play("Idle_South");
+                    break;
+                case Direction.North:
+                    animator.Play("Idle_North");
+                    break;
+                case Direction.East:
+                    animator.Play("Idle_East");
+                    break;
+                case Direction.West:
+                    animator.Play("Idle_West");
+                    break;
+            }
+        }
+    }
+
     private void Awake() {
         battleManager = BattleManager.instance;
 
         boardEntity = GetComponent<BoardEntity>();
         sprite = GetComponent<SpriteRenderer>();
         mouseReactive = GetComponent<MouseReactive>();
+        animator = GetComponent<Animator>();
         side = GetComponent<Side>();
         outline = GetComponent<SpriteGlowEffect>();
         movable = GetComponent<Movable>();
