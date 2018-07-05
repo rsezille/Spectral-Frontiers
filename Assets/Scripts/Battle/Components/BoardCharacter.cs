@@ -2,14 +2,12 @@
 using SpriteGlow;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 
 /**
  * Represent a board character on the board
  * The GameObject is placed in the attached Square inside the EntityContainer
  */
-[RequireComponent(typeof(BoardEntity), typeof(SpriteRenderer), typeof(Side))]
-[RequireComponent(typeof(MouseReactive), typeof(Animator))]
+[RequireComponent(typeof(BoardEntity), typeof(Side))]
 public class BoardCharacter : MonoBehaviour {
     public enum Direction {
         North, East, South, West // Rotate a 2D plan by 90 degrees clockwise
@@ -18,19 +16,25 @@ public class BoardCharacter : MonoBehaviour {
     private BattleManager battleManager;
 
     public Character character;
+    private GameObject spriteContainer;
 
     // Components
     private BoardEntity boardEntity;
     private SpriteRenderer sprite;
-    private MouseReactive mouseReactive;
     private Animator animator;
+    [HideInInspector]
     public Side side;
     // Components which can be null
+    [HideInInspector]
     public SpriteGlowEffect outline;
+    [HideInInspector]
     public Movable movable;
+    [HideInInspector]
     public Actionable actionable;
+    [HideInInspector]
     public AI AI;
 
+    [Tooltip("Do not touch this")]
     public bool isMoving = false;
 
     private Direction _direction = Direction.South;
@@ -62,12 +66,24 @@ public class BoardCharacter : MonoBehaviour {
     private void Awake() {
         battleManager = BattleManager.instance;
 
-        boardEntity = GetComponent<BoardEntity>();
-        sprite = GetComponent<SpriteRenderer>();
-        mouseReactive = GetComponent<MouseReactive>();
-        animator = GetComponent<Animator>();
         side = GetComponent<Side>();
-        outline = GetComponent<SpriteGlowEffect>();
+
+        // Enemies have their spriteContainer already linked to the GameObject
+        if (side.value == Side.Type.Player) {
+            // TODO: Replace "Hero" by the main character or the job
+            spriteContainer = Instantiate(Resources.Load<GameObject>("CharacterSprites/Hero"), transform.position, Quaternion.identity) as GameObject;
+            spriteContainer.transform.SetParent(transform);
+        } else {
+            // TODO: Replace this by spriteContainer = GetComponentInChildren<Transform>().gameObject;
+            spriteContainer = gameObject;
+        }
+
+        animator = spriteContainer.GetComponent<Animator>();
+        sprite = spriteContainer.GetComponent<SpriteRenderer>();
+        sprite.sortingOrder = 1;
+        outline = spriteContainer.GetComponent<SpriteGlowEffect>();
+
+        boardEntity = GetComponent<BoardEntity>();
         movable = GetComponent<Movable>();
         actionable = GetComponent<Actionable>();
         AI = GetComponent<AI>();
@@ -75,15 +91,6 @@ public class BoardCharacter : MonoBehaviour {
         if (outline) {
             outline.enabled = false;
         }
-
-        mouseReactive.MouseEnter = new UnityEvent();
-        mouseReactive.MouseEnter.AddListener(MouseEnter);
-        mouseReactive.MouseLeave = new UnityEvent();
-        mouseReactive.MouseLeave.AddListener(MouseLeave);
-        mouseReactive.Click = new UnityEvent();
-        mouseReactive.Click.AddListener(Click);
-
-        sprite.sortingOrder = 1;
     }
 
     public Square GetSquare() {
@@ -113,7 +120,7 @@ public class BoardCharacter : MonoBehaviour {
     }
 
     /**
-     * Triggered by Board
+     * Triggered by Board (SpriteContainer)
      */
     public void MouseEnter() {
         battleManager.fightHUD.SquareHovered(GetSquare());
@@ -124,7 +131,7 @@ public class BoardCharacter : MonoBehaviour {
     }
 
     /**
-     * Triggered by Board
+     * Triggered by Board (SpriteContainer)
      */
     public void MouseLeave() {
         battleManager.fightHUD.SquareHovered(null);
@@ -136,7 +143,7 @@ public class BoardCharacter : MonoBehaviour {
     }
 
     /**
-     * Triggered by Board
+     * Triggered by Board (SpriteContainer)
      */
     public void Click() {
         if (side.value == Side.Type.Player) {
