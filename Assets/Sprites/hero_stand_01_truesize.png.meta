@@ -2,8 +2,8 @@ fileFormatVersion: 2
 guid: 57f2696cc0ba0a84a8bf89b3cf3ac71e
 TextureImporter:
   fileIDToRecycleName:
-    21300000: north_stand_01_draft_0
-    21300002: north_stand_01_draft_1
+    21300000: Idle_East
+    21300002: Idle_North
   externalObjects: {}
   serializedVersion: 5
   mipmaps:
@@ -84,7 +84,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: north_stand_01_draft_0
+      name: Idle_East
       rect:
         serializedVersion: 2
         x: 4
@@ -104,7 +104,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: north_stand_01_draft_1
+      name: Idle_North
       rect:
         serializedVersion: 2
         x: 34
