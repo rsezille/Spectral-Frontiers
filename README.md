@@ -6,4 +6,5 @@
 
 ## Documentation
 
+[Game mechanics](Documentation/Mechanics.md)
 [SFMapEditor](Documentation/SFMapEditor.md)
