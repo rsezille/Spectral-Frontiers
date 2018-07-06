@@ -18,7 +18,9 @@ public class SFMapEditorCustom : Editor {
         serializedObject.Update();
 
         GUILayout.Label("/!\\ Do NOT touch the Map GameObject and its children", EditorStyles.boldLabel);
-        
+
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("map"), new GUIContent("Map GameObject"));
+
         GUILayout.Label("Grid", EditorStyles.boldLabel);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("size"), new GUIContent("Size"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("gridColor"), new GUIContent("Color"));
