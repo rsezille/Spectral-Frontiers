@@ -2,8 +2,8 @@ fileFormatVersion: 2
 guid: 8bc41bc41f5172a4492da76b7b6b0d5b
 TextureImporter:
   fileIDToRecycleName:
-    21300000: hero_stand_01_0
-    21300002: hero_stand_01_1
+    21300000: Idle_East
+    21300002: Idle_North
   externalObjects: {}
   serializedVersion: 5
   mipmaps:
@@ -84,7 +84,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: hero_stand_01_0
+      name: Idle_East
       rect:
         serializedVersion: 2
         x: 8
@@ -104,7 +104,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: hero_stand_01_1
+      name: Idle_North
       rect:
         serializedVersion: 2
         x: 68

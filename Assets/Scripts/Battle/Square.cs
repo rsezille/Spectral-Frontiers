@@ -14,6 +14,7 @@ public class Square : MonoBehaviour {
     [SerializeField]
     private int height;
     public bool solid = false; // Collision detection
+    public BoardCharacter.Direction startingDirection = Globals.DefaultDirection;
 
     // Colors
     public static float maxAlpha = 0.8f;
@@ -42,7 +43,7 @@ public class Square : MonoBehaviour {
                 // Don't use a tween with LoopType.Yoyo as we will lose elapsed time and Goto
                 colorAnimation = DOTween
                     .Sequence()
-                    .Append(tileSelector.DOFade(0.3f, 0.8f).SetEase(Ease.Linear))
+                    .Append(tileSelector.DOFade(0.55f, 0.8f).SetEase(Ease.Linear))
                     .Append(tileSelector.DOFade(maxAlpha, 0.8f).SetEase(Ease.Linear))
                     .SetLoops(-1);
                 battleManager.markedSquareAnimations.Add(colorAnimation);
@@ -122,22 +123,6 @@ public class Square : MonoBehaviour {
         }
     }
 
-    public void PlayColorAnimation() {
-        if (colorAnimation == null) return;
-
-        if (battleManager.markedSquareAnimations.Count > 0) {
-            float elapsed = battleManager.markedSquareAnimations[0].Elapsed(false);
-            
-            colorAnimation.Goto(elapsed);
-        }
-        
-        colorAnimation.Play();
-
-        if (!battleManager.markedSquareAnimations.Contains(colorAnimation)) {
-            battleManager.markedSquareAnimations.Add(colorAnimation);
-        }
-    }
-
     /**
      * Triggered by Board (SFTileSelector)
      */
@@ -168,6 +153,22 @@ public class Square : MonoBehaviour {
                 }
 
                 break;
+        }
+    }
+
+    public void PlayColorAnimation() {
+        if (colorAnimation == null) return;
+
+        if (battleManager.markedSquareAnimations.Count > 0) {
+            float elapsed = battleManager.markedSquareAnimations[0].Elapsed(false);
+
+            colorAnimation.Goto(elapsed);
+        }
+
+        colorAnimation.Play();
+
+        if (!battleManager.markedSquareAnimations.Contains(colorAnimation)) {
+            battleManager.markedSquareAnimations.Add(colorAnimation);
         }
     }
 

@@ -36,6 +36,21 @@ public class BattleFightManager {
                 Next();
             }
         }
+
+        if (battleManager.currentTurnStep == BattleManager.TurnStep.Direction) {
+            if (Input.GetKeyDown(KeyCode.UpArrow)) {
+                battleManager.GetSelectedPlayerBoardCharacter().direction = BoardCharacter.Direction.North;
+            } else if (Input.GetKeyDown(KeyCode.DownArrow)) {
+                battleManager.GetSelectedPlayerBoardCharacter().direction = BoardCharacter.Direction.South;
+            } else if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+                battleManager.GetSelectedPlayerBoardCharacter().direction = BoardCharacter.Direction.West;
+            } else if (Input.GetKeyDown(KeyCode.RightArrow)) {
+                battleManager.GetSelectedPlayerBoardCharacter().direction = BoardCharacter.Direction.East;
+            } else if (Input.GetKeyDown(KeyCode.Return)) {
+                battleManager.fightHUD.SetActiveWithAnimation(true);
+                battleManager.EnterTurnStepNone();
+            }
+        }
     }
 
     // Called by BattleManager
@@ -101,6 +116,11 @@ public class BattleFightManager {
     // Called by FightHUD
     public void Status() {
         battleManager.EnterTurnStepStatus();
+    }
+
+    // Called by FightHUD
+    public void Direction() {
+        EnterTurnStepDirection();
     }
 
     // Called by FightHUD
@@ -244,6 +264,11 @@ public class BattleFightManager {
         battleManager.currentTurnStep = BattleManager.TurnStep.Attack;
 
         MarkSquares(1, Square.MarkType.Attack, true); // TODO [RANGED] weapon range
+    }
+
+    public void EnterTurnStepDirection() {
+        battleManager.currentTurnStep = BattleManager.TurnStep.Direction;
+        battleManager.fightHUD.SetActiveWithAnimation(false);
     }
 
     private void SelectPreviousPlayerBoardCharacter(bool checkForDead = true) {

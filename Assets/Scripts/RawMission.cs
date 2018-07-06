@@ -12,6 +12,7 @@ public class RawMission {
     public class RawStartingSquare {
         public int posX;
         public int posY;
+        public string direction = Globals.DefaultDirection.ToString();
     }
 
     public string id;

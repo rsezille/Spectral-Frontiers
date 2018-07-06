@@ -64,6 +64,10 @@
       "id": "battle.hud.menu.status",
       "text": "Statut"
     },
+	{
+	  "id": "battle.hud.menu.direction",
+	  "text": "Direction"
+	},
     {
       "id": "battle.hud.menu.end_turn",
       "text": "Fin du Tour"

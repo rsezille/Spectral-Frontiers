@@ -11,6 +11,7 @@ public class FightHUD : MonoBehaviour {
     public GameObject previousButton;
     public GameObject nextButton;
     public GameObject statusButton;
+    public GameObject directionButton;
     public GameObject endTurnButton;
 
     public ActionMenu actionMenu;
@@ -31,6 +32,7 @@ public class FightHUD : MonoBehaviour {
         previousButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Previous);
         nextButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Next);
         statusButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Status);
+        directionButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Direction);
         endTurnButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.EndTurn);
     }
 
