@@ -2,11 +2,17 @@
 using UnityEngine.Events;
 
 [RequireComponent(typeof(MouseReactive))]
-public class SpriteMouseReactive : MonoBehaviour {
+[ExecuteInEditMode]
+public class SpriteManager : MonoBehaviour {
     // Components
     private MouseReactive mouseReactive;
 
     private BoardCharacter boardCharacter;
+
+    [Header("Animation controls")]
+    public Collider2D[] colliders;
+    private int _enabledCollider = 0;
+    public int enabledCollider = 0;
 
     private void Awake() {
         mouseReactive = GetComponent<MouseReactive>();
@@ -20,6 +26,26 @@ public class SpriteMouseReactive : MonoBehaviour {
 
     private void Start() {
         boardCharacter = GetComponentInParent<BoardCharacter>();
+
+        CheckColliders();
+    }
+
+    private void Update() {
+        if (_enabledCollider != enabledCollider) {
+            _enabledCollider = enabledCollider;
+
+            CheckColliders();
+        }
+    }
+
+    private void CheckColliders() {
+        for (int i = 0; i < colliders.Length; i++) {
+            if (i == enabledCollider) {
+                colliders[i].enabled = true;
+            } else {
+                colliders[i].enabled = false;
+            }
+        }
     }
 
     /**
