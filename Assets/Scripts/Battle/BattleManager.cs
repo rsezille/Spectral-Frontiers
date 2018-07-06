@@ -14,8 +14,8 @@ public class BattleManager : MonoBehaviour {
     public enum BattleStep {
         Placing, Fight, Victory
     };
-    public enum TurnStep { // Placing: None or Status - Fight: None, Move, Attack, Skill, Item, Enemy, Status - Victory: None
-        None, Move, Attack, Skill, Item, Enemy, Status
+    public enum TurnStep { // Placing: None or Status - Fight: None, Move, Attack, Skill, Item, Enemy, Status, Direction - Victory: None
+        None, Move, Attack, Skill, Item, Enemy, Status, Direction
     };
 
     public BattleStep currentBattleStep;

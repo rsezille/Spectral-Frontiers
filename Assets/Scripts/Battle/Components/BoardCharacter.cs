@@ -237,9 +237,7 @@ public class BoardCharacter : MonoBehaviour {
         isMoving = false;
 
         if (battleManager.currentTurnStep != BattleManager.TurnStep.Enemy) {
-            //bm.fightHUD.SetFightMenuActive(true);
-
-            battleManager.EnterTurnStepNone();
+            battleManager.fight.EnterTurnStepDirection();
         }
     }
 }

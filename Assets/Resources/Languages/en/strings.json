@@ -92,6 +92,10 @@
       "id": "battle.hud.menu.status",
       "text": "Status"
     },
+	{
+	  "id": "battle.hud.menu.direction",
+	  "text": "Direction"
+	},
     {
       "id": "battle.hud.menu.end_turn",
       "text": "End Turn"
