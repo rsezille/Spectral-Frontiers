@@ -241,6 +241,7 @@ public class BoardCharacter : MonoBehaviour {
         isMoving = false;
 
         if (battleManager.currentTurnStep != BattleManager.TurnStep.Enemy) {
+            battleManager.EventOnLeavingMarkStep();
             battleManager.fight.EnterTurnStepDirection();
         }
     }
