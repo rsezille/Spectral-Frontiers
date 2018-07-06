@@ -43,7 +43,7 @@ public class Square : MonoBehaviour {
                 // Don't use a tween with LoopType.Yoyo as we will lose elapsed time and Goto
                 colorAnimation = DOTween
                     .Sequence()
-                    .Append(tileSelector.DOFade(0.3f, 0.8f).SetEase(Ease.Linear))
+                    .Append(tileSelector.DOFade(0.55f, 0.8f).SetEase(Ease.Linear))
                     .Append(tileSelector.DOFade(maxAlpha, 0.8f).SetEase(Ease.Linear))
                     .SetLoops(-1);
                 battleManager.markedSquareAnimations.Add(colorAnimation);
