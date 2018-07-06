@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 [RequireComponent(typeof(BoardEntity), typeof(PlayerCharacter)), DisallowMultipleComponent]
 public class HealthBarHUD : MonoBehaviour {
-    public static float BaseOffset = 0.3f;
+    public static float BaseOffset = 0.2f;
 
     private BoardCharacter boardCharacter;
     private Image healthBarImage;
@@ -18,7 +18,7 @@ public class HealthBarHUD : MonoBehaviour {
     }
 
     private void Start() {
-        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+        SpriteRenderer sprite = GetComponentInChildren<SpriteRenderer>();
         float spriteSizeY = sprite ? sprite.bounds.size.y : 0;
 
         instance.position += new Vector3(0f, spriteSizeY + BaseOffset);

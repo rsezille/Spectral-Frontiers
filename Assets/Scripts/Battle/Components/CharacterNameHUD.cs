@@ -16,7 +16,7 @@ public class CharacterNameHUD : MonoBehaviour {
     }
 
     private void Start() {
-        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+        SpriteRenderer sprite = GetComponentInChildren<SpriteRenderer>();
         float spriteSizeY = sprite ? sprite.bounds.size.y : 0;
         float offset = HealthBarHUD.BaseOffset;
 
