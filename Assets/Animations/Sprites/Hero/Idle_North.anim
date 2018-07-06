@@ -31,7 +31,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: enabledCollider
+    attribute: enabledColliderIndex
     path: 
     classID: 114
     script: {fileID: 11500000, guid: 312469f6b98a1d1439ea43b4336702bc, type: 3}
@@ -52,7 +52,7 @@ AnimationClip:
     genericBindings:
     - serializedVersion: 2
       path: 0
-      attribute: 3435540705
+      attribute: 1447046267
       script: {fileID: 11500000, guid: 312469f6b98a1d1439ea43b4336702bc, type: 3}
       typeID: 114
       customType: 0
@@ -102,7 +102,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: enabledCollider
+    attribute: enabledColliderIndex
     path: 
     classID: 114
     script: {fileID: 11500000, guid: 312469f6b98a1d1439ea43b4336702bc, type: 3}

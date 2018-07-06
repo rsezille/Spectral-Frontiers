@@ -11,8 +11,8 @@ public class SpriteManager : MonoBehaviour {
 
     [Header("Animation controls")]
     public Collider2D[] colliders;
-    private int _enabledCollider = 0;
-    public int enabledCollider = 0;
+    private int _enabledColliderIndex = 0;
+    public int enabledColliderIndex = 0;
 
     private void Awake() {
         mouseReactive = GetComponent<MouseReactive>();
@@ -31,8 +31,8 @@ public class SpriteManager : MonoBehaviour {
     }
 
     private void Update() {
-        if (_enabledCollider != enabledCollider) {
-            _enabledCollider = enabledCollider;
+        if (_enabledColliderIndex != enabledColliderIndex) {
+            _enabledColliderIndex = enabledColliderIndex;
 
             CheckColliders();
         }
@@ -40,7 +40,7 @@ public class SpriteManager : MonoBehaviour {
 
     private void CheckColliders() {
         for (int i = 0; i < colliders.Length; i++) {
-            if (i == enabledCollider) {
+            if (i == enabledColliderIndex) {
                 colliders[i].enabled = true;
             } else {
                 colliders[i].enabled = false;

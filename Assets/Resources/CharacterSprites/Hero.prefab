@@ -230,7 +230,7 @@ MonoBehaviour:
   colliders:
   - {fileID: 60317722787919470}
   - {fileID: 60854710477427274}
-  enabledCollider: 0
+  enabledColliderIndex: 0
 --- !u!114 &114769327589938692
 MonoBehaviour:
   m_ObjectHideFlags: 1
