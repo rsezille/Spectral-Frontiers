@@ -192,7 +192,7 @@ public class Square : MonoBehaviour {
     }
 
     public bool IsNotBlocking() {
-        return boardEntity == null;
+        return boardEntity == null && !solid;
     }
 
     public bool IsNotBlocking(Side.Type side) {
@@ -200,7 +200,7 @@ public class Square : MonoBehaviour {
 
         if (entitySide == null) return IsNotBlocking();
 
-        return boardEntity == null || entitySide.value == side;
+        return (boardEntity == null || entitySide.value == side) && !solid;
     }
 
     public int GetManhattanDistance(Square square) {
