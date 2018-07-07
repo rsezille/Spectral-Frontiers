@@ -58,9 +58,10 @@ public class Board : MonoBehaviour {
                     SFEntityContainer entityContainer = mr.transform.parent.GetComponent<SFEntityContainer>();
                     SFEntityContainer previousEntityContainer = entityHit != null ? entityHit.transform.parent.GetComponent<SFEntityContainer>() : null;
 
-                    // Check for square sorting order in the mouse reactive is a game object in the entity container of a square
+                    // Check for square sorting order in the mouse reactive is a game object in the entity container of a square ; and if it's a board character over the same square, target it
                     if (entityContainer != null && previousEntityContainer != null) {
-                        if (entityContainer.transform.parent.GetComponent<SortingGroup>().sortingOrder > previousEntityContainer.transform.parent.GetComponent<SortingGroup>().sortingOrder) {
+                        if (entityContainer.transform.parent.GetComponent<SortingGroup>().sortingOrder > previousEntityContainer.transform.parent.GetComponent<SortingGroup>().sortingOrder
+                                || (mr.GetComponentInParent<BoardCharacter>() != null && mr.transform.parent == entityHit.transform.parent)) {
                             entityHit = mr;
                             continue;
                         }
