@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 /**
  * Load the map
@@ -53,9 +54,20 @@ public class Board : MonoBehaviour {
                 MouseReactive mr = hit.collider.gameObject.GetComponent<MouseReactive>();
 
                 // Only trigger game objects that react to the mouse
-                if (mr != null && entityHit == null) {
-                    entityHit = mr;
-                    continue;
+                if (mr != null) {
+                    SFEntityContainer entityContainer = mr.transform.parent.GetComponent<SFEntityContainer>();
+                    SFEntityContainer previousEntityContainer = entityHit != null ? entityHit.transform.parent.GetComponent<SFEntityContainer>() : null;
+
+                    // Check for square sorting order in the mouse reactive is a game object in the entity container of a square
+                    if (entityContainer != null && previousEntityContainer != null) {
+                        if (entityContainer.transform.parent.GetComponent<SortingGroup>().sortingOrder > previousEntityContainer.transform.parent.GetComponent<SortingGroup>().sortingOrder) {
+                            entityHit = mr;
+                            continue;
+                        }
+                    } else if (entityHit == null) {
+                        entityHit = mr;
+                        continue;
+                    }
                 }
             }
 
