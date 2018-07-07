@@ -11,10 +11,12 @@ The entity prefab must have the *SFSemiTransparent.cs* script attached to them, 
 The default behavior is to change the opacity when the mouse enters/leaves the entity.
 
 But we can also trigger the change of the opacity when mouseovering an object which has a part hidden behind an entity. For example if the head of a boardcharacter is hidden by a tree.  
-That is why the above script will automatically add the `SemiTransparent` layer to instancied prefabs, enabling a `Collider2D.OverlapCollider` with a layer mask to retrieve overlapped entities.
+That is why the above script will automatically add the `SemiTransparent` layer to instancied prefabs, enabling a `Collider2D.OverlapCollider()` with a layer mask to retrieve overlapped entities.
 
 Example:
 ```C#
+++++ public void MouseEnter() ++++
+
 Collider2D collider = GetComponentInChildren<Collider2D>();
 
 Collider2D[] collidersHit = new Collider2D[20];

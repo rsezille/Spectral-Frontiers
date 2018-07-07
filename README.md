@@ -7,5 +7,5 @@
 ## Documentation
 
 [Game mechanics](Documentation/Mechanics.md)  
-[Semi transparent entities](Documentation/SemiTransparentEntities.md)
+[Semi transparent entities](Documentation/SemiTransparentEntities.md)  
 [SFMapEditor](Documentation/SFMapEditor.md)
