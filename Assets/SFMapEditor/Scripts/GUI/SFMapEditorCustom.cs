@@ -18,7 +18,9 @@ public class SFMapEditorCustom : Editor {
         serializedObject.Update();
 
         GUILayout.Label("/!\\ Do NOT touch the Map GameObject and its children", EditorStyles.boldLabel);
-        
+
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("map"), new GUIContent("Map GameObject"));
+
         GUILayout.Label("Grid", EditorStyles.boldLabel);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("size"), new GUIContent("Size"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("gridColor"), new GUIContent("Color"));
@@ -262,7 +264,7 @@ public class SFMapEditorCustom : Editor {
             int hitSortingOrder = tileContainer.GetComponentInParent<Square>().GetComponent<SortingGroup>().sortingOrder;
 
             // Retrieve the closiest map object, the one we are seeing
-            if (visibleTileHit == null || hitSortingOrder > visibleTileHit.GetComponentInParent<SFTileContainer>().GetComponentInParent<Square>().GetComponent<SortingGroup>().sortingOrder) {
+            if (visibleTileHit == null || hitSortingOrder > visibleTileHit.GetComponentInParent<Square>().GetComponent<SortingGroup>().sortingOrder) {
                 visibleTileHit = tileOrEntity;
             }
         }

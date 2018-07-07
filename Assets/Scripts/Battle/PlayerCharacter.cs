@@ -5,7 +5,7 @@
  * Manage graphics and attached components
  */
 [RequireComponent(typeof(BoardEntity), typeof(Movable), typeof(Actionable))]
-[RequireComponent(typeof(Side), typeof(MouseReactive), typeof(BoardCharacter))]
+[RequireComponent(typeof(Side), typeof(BoardCharacter))]
 public class PlayerCharacter : MonoBehaviour {
     // Components
     public BoardCharacter boardCharacter;
