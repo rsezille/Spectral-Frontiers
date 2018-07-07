@@ -9,6 +9,7 @@ using UnityEngine;
 public class Board : MonoBehaviour {
     private Square[] squares;
 
+    private List<SFSemiTransparent> previousSemiTransparents = new List<SFSemiTransparent>(); // Used to detect a mouse leave
     private MouseReactive previousMouseEntity = null; // Used to detect a mouse leave
 
     public Transform boardSquaresTransform;
@@ -31,46 +32,68 @@ public class Board : MonoBehaviour {
         if (BattleManager.instance.currentTurnStep != BattleManager.TurnStep.Status) {
             Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            MouseReactive entity = GetTouchedEntity(position);
+            MouseReactive entityHit = null;
+            List<SFSemiTransparent> semiTransparentsHit = new List<SFSemiTransparent>();
 
-            if (previousMouseEntity != null && previousMouseEntity != entity) {
+            // Process mouse position
+            foreach (RaycastHit2D hit in Physics2D.RaycastAll(position, Vector2.zero)) {
+                // If the mouse is hovering a HUD, don't trigger any board entity
+                if (hit.collider.tag == "HUD") {
+                    entityHit = null;
+                    break;
+                }
+
+                // If the mouse is hovering a semi transparent sprite, triggers it before checking for MouseReactive
+                SFSemiTransparent sFSemiTransparent = hit.collider.gameObject.GetComponent<SFSemiTransparent>();
+
+                if (sFSemiTransparent != null) {
+                    semiTransparentsHit.Add(sFSemiTransparent);
+                }
+
+                MouseReactive mr = hit.collider.gameObject.GetComponent<MouseReactive>();
+
+                // Only trigger game objects that react to the mouse
+                if (mr != null && entityHit == null) {
+                    entityHit = mr;
+                    continue;
+                }
+            }
+
+            // Dispatch events to entity
+            if (previousMouseEntity != null && previousMouseEntity != entityHit) {
                 previousMouseEntity.MouseLeave.Invoke();
             }
 
-            if (entity != null) {
+            if (entityHit != null) {
                 if (Input.GetButtonDown(InputBinds.Click)) {
-                    entity.Click.Invoke();
+                    entityHit.Click.Invoke();
                 }
 
-                if (entity == previousMouseEntity) {
+                if (entityHit == previousMouseEntity) {
                     //entity.MouseOver.Invoke();
                 } else {
-                    entity.MouseEnter.Invoke();
+                    entityHit.MouseEnter.Invoke();
                 }
             }
 
-            previousMouseEntity = entity;
-        }
-    }
-
-    private MouseReactive GetTouchedEntity(Vector3 position) {
-        MouseReactive entity = null;
-
-        foreach (RaycastHit2D hit in Physics2D.RaycastAll(position, Vector2.zero)) {
-            if (hit.collider.tag == "HUD") {
-                return null;
+            // Dispatch events to semi transparent sprites
+            foreach (SFSemiTransparent previousSemiTransparent in previousSemiTransparents) {
+                if (!semiTransparentsHit.Contains(previousSemiTransparent)) {
+                    previousSemiTransparent.MouseLeave();
+                }
             }
 
-            MouseReactive mr = hit.collider.gameObject.GetComponent<MouseReactive>();
-
-            // Only trigger game objects that react to the mouse
-            if (mr && entity == null) {
-                entity = mr;
-                break;
+            foreach (SFSemiTransparent semiTransparentHit in semiTransparentsHit) {
+                if (!previousSemiTransparents.Contains(semiTransparentHit)) {
+                    semiTransparentHit.MouseEnter();
+                }
             }
-        }
 
-        return entity;
+            previousSemiTransparents.Clear();
+            previousSemiTransparents.AddRange(semiTransparentsHit);
+
+            previousMouseEntity = entityHit;
+        }
     }
 
     public void LoadMap(RawMission mission) {
