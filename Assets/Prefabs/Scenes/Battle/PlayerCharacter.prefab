@@ -24,7 +24,6 @@ GameObject:
   - component: {fileID: 114218011024368482}
   - component: {fileID: 114114744037974550}
   - component: {fileID: 114515143091738508}
-  - component: {fileID: 114576763524298736}
   - component: {fileID: 114321648030043348}
   - component: {fileID: 114241991584310632}
   - component: {fileID: 114396361631682662}
@@ -153,29 +152,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionTokens: 0
---- !u!114 &114576763524298736
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1878317023255400}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cd9c33e7e21c044ab97c7d4f1b9c420, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MouseEnter:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  MouseLeave:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  Click:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
