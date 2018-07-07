@@ -264,7 +264,7 @@ public class SFMapEditorCustom : Editor {
             int hitSortingOrder = tileContainer.GetComponentInParent<Square>().GetComponent<SortingGroup>().sortingOrder;
 
             // Retrieve the closiest map object, the one we are seeing
-            if (visibleTileHit == null || hitSortingOrder > visibleTileHit.GetComponentInParent<SFTileContainer>().GetComponentInParent<Square>().GetComponent<SortingGroup>().sortingOrder) {
+            if (visibleTileHit == null || hitSortingOrder > visibleTileHit.GetComponentInParent<Square>().GetComponent<SortingGroup>().sortingOrder) {
                 visibleTileHit = tileOrEntity;
             }
         }
