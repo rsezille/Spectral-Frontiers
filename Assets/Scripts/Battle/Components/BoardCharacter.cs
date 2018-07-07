@@ -119,10 +119,32 @@ public class BoardCharacter : MonoBehaviour {
         gameObject.name = character.name; // To find it inside the editor
     }
 
+    private void CheckForSemiTransparent(bool enter) {
+        Collider2D collider = GetComponentInChildren<Collider2D>();
+
+        Collider2D[] collidersHit = new Collider2D[20];
+        ContactFilter2D contactFilter = new ContactFilter2D();
+        contactFilter.SetLayerMask(LayerMask.GetMask("SemiTransparent"));
+
+        int collidersNb = collider.OverlapCollider(contactFilter, collidersHit);
+
+        if (collidersNb > 0) {
+            for (int i = 0; i < collidersNb; i++) {
+                if (enter) {
+                    collidersHit[i].GetComponent<SFSemiTransparent>().MouseEnter();
+                } else {
+                    collidersHit[i].GetComponent<SFSemiTransparent>().MouseLeave();
+                }
+            }
+        }
+    }
+
     /**
      * Triggered by Board (SpriteContainer)
      */
     public void MouseEnter() {
+        CheckForSemiTransparent(true);
+
         battleManager.fightHUD.SquareHovered(GetSquare());
 
         if (outline != null) {
@@ -134,6 +156,8 @@ public class BoardCharacter : MonoBehaviour {
      * Triggered by Board (SpriteContainer)
      */
     public void MouseLeave() {
+        CheckForSemiTransparent(false);
+
         battleManager.fightHUD.SquareHovered(null);
 
         if ((battleManager.currentBattleStep == BattleManager.BattleStep.Placing && battleManager.placing.GetCurrentPlacingChar().boardCharacter != this
