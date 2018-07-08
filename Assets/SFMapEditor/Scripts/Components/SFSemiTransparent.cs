@@ -8,7 +8,7 @@ public class SFSemiTransparent : MonoBehaviour {
     private SpriteRenderer spriteRenderer;
 
     // Because several objects can trigger the opacity change, we need to store the count of those objects
-    int transparentObjectsCount = 0;
+    public int transparentObjectsCount = 0;
 
     private void Start() {
         gameObject.layer = LayerMask.NameToLayer("SemiTransparent");
