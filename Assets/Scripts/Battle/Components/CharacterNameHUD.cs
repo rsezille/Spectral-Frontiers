@@ -3,7 +3,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(BoardEntity), typeof(BoardCharacter)), DisallowMultipleComponent]
 public class CharacterNameHUD : MonoBehaviour {
-    private TextMeshProUGUI characterName;
+    public TextMeshProUGUI characterName;
     private Transform instance;
 
     private BoardCharacter boardCharacter;
