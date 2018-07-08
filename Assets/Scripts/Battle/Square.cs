@@ -1,6 +1,8 @@
 ﻿using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Rendering;
 
+[RequireComponent(typeof(SortingGroup))]
 public class Square : MonoBehaviour {
     private BattleManager battleManager;
 
@@ -27,6 +29,8 @@ public class Square : MonoBehaviour {
     private Sequence colorAnimation;
 
     public BoardEntity boardEntity;
+
+    public SortingGroup sortingGroup;
     
     private MarkType _markType = MarkType.None;
     public MarkType markType {
@@ -65,6 +69,8 @@ public class Square : MonoBehaviour {
 
     private void Awake() {
         battleManager = BattleManager.instance;
+
+        sortingGroup = GetComponent<SortingGroup>();
 
         tileSelector.color = defaultColor;
 
