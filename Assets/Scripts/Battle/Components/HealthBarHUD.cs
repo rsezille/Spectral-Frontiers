@@ -69,6 +69,8 @@ public class HealthBarHUD : MonoBehaviour {
             } else {
                 ChangeOpacity(0.16f, 1f);
             }
+        } else {
+            ChangeOpacity(0.16f, 1f);
         }
     }
 
