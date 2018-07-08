@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using SF;
+using UnityEngine;
 using UnityEngine.UI;
 
 /**
@@ -10,9 +11,7 @@ public class TranslatedText : MonoBehaviour {
 
     // Don't use awake as the LanguageManager needs to be loaded
     private void Start() {
-        if (textBox == null) {
-            textBox = GetComponent<Text>();
-        }
+        textBox = GetComponent<Text>();
 
         textBox.text = LanguageManager.getInstance().getString(textBox.text);
     }
