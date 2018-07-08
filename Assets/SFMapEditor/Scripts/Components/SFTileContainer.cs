@@ -1,14 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Rendering;
 
-public class SFTileContainer : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-}
+[RequireComponent(typeof(SortingGroup))]
+public class SFTileContainer : MonoBehaviour {}

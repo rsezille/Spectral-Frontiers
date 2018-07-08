@@ -41,11 +41,7 @@ public class SFMapEditor : MonoBehaviour {
     }
 
     private GameObject CreateNewMap() {
-        GameObject map = new GameObject("Map");
-
-        map.AddComponent<SFMap>();
-
-        return map;
+        return new GameObject("Map", typeof(SFMap));
     }
 
     public GameObject CreateSquare(int x, int y) {
@@ -53,29 +49,24 @@ public class SFMapEditor : MonoBehaviour {
         float Cx = x - y;
         float Cy = (x + y + 1f) / 2f;
 
-        GameObject square = new GameObject("Square(" + x + "," + y + ")");
-        square.transform.position = new Vector3(Cx, Cy, 0f);
-        Square sfSquare = square.AddComponent<Square>();
-        sfSquare.x = x;
-        sfSquare.y = y;
-        SortingGroup sortingGroup = square.AddComponent<SortingGroup>();
-        sortingGroup.sortingOrder = -(size.x * y + x);
-        square.transform.SetParent(map.transform);
+        GameObject squareGameObject = new GameObject("Square(" + x + "," + y + ")", typeof(Square));
+        squareGameObject.transform.position = new Vector3(Cx, Cy, 0f);
+        Square square = squareGameObject.GetComponent<Square>();
+        square.x = x;
+        square.y = y;
+        squareGameObject.GetComponent<SortingGroup>().sortingOrder = -(size.x * y + x);
+        squareGameObject.transform.SetParent(map.transform);
 
         // Create the tile container
-        GameObject tileContainer = new GameObject("TileContainer");
-        tileContainer.AddComponent<SFTileContainer>();
-        SortingGroup sgTileContainer = tileContainer.AddComponent<SortingGroup>();
-        sgTileContainer.sortingOrder = 0;
-        tileContainer.transform.SetParent(square.transform);
+        GameObject tileContainer = new GameObject("TileContainer", typeof(SFTileContainer));
+        tileContainer.GetComponent<SortingGroup>().sortingOrder = 0;
+        tileContainer.transform.SetParent(squareGameObject.transform);
         tileContainer.transform.localPosition = Vector3.zero;
 
         // Create the entity container
-        GameObject entityContainer = new GameObject("EntityContainer");
-        entityContainer.AddComponent<SFEntityContainer>();
-        SortingGroup sgEntityContainer = entityContainer.AddComponent<SortingGroup>();
-        sgEntityContainer.sortingOrder = 1;
-        entityContainer.transform.SetParent(square.transform);
+        GameObject entityContainer = new GameObject("EntityContainer", typeof(SFEntityContainer));
+        entityContainer.GetComponent<SortingGroup>().sortingOrder = 1;
+        entityContainer.transform.SetParent(squareGameObject.transform);
         entityContainer.transform.localPosition = Vector3.zero;
 
         // Create the tile selector
@@ -83,11 +74,11 @@ public class SFMapEditor : MonoBehaviour {
         tileSelector.transform.SetParent(entityContainer.transform);
         tileSelector.transform.localPosition = Vector3.zero;
         tileSelector.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
-        tileSelector.GetComponent<SFTileSelector>().square = sfSquare;
+        tileSelector.GetComponent<SFTileSelector>().square = square;
 
-        sfSquare.tileSelector = tileSelector.GetComponent<SpriteRenderer>();
+        square.tileSelector = tileSelector.GetComponent<SpriteRenderer>();
 
-        return square;
+        return squareGameObject;
     }
 
     public GameObject CreateTile(Square square, int sortingOrder = 0, float height = 0f) {
