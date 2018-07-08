@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using SF;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,19 +12,19 @@ public class BattlePlacingManager {
 
     // Called by BattleManager
     public void Update() {
-        if (Input.GetButtonDown(InputBinds.Previous)) {
+        if (InputManager.Previous.IsKeyDown) {
             PreviousPlacingChar();
 
             if (battleManager.currentTurnStep == BattleManager.TurnStep.Status) {
                 battleManager.statusHUD.Show(battleManager.playerPlacingChars[battleManager.placingCharIndex]);
             }
-        } else if (Input.GetButtonDown(InputBinds.Next)) {
+        } else if (InputManager.Next.IsKeyDown) {
             NextPlacingChar();
 
             if (battleManager.currentTurnStep == BattleManager.TurnStep.Status) {
                 battleManager.statusHUD.Show(battleManager.playerPlacingChars[battleManager.placingCharIndex]);
             }
-        } else if (Input.GetButtonDown(InputBinds.SpecialKey1)) {
+        } else if (InputManager.Special1.IsKeyDown) {
             battleManager.fight.EnterBattleStepFight();
         }
     }

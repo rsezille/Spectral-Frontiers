@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using SF;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ public class BattleFightManager {
 
     // Called by BattleManager
     public void Update() {
-        if (Input.GetButtonDown(InputBinds.Previous)) {
+        if (InputManager.Previous.IsKeyDown) {
             if (battleManager.currentTurnStep == BattleManager.TurnStep.Status) {
                 SelectPreviousPlayerBoardCharacter(false);
 
@@ -23,7 +24,7 @@ public class BattleFightManager {
             } else {
                 Previous();
             }
-        } else if (Input.GetButtonDown(InputBinds.Next)) {
+        } else if (InputManager.Next.IsKeyDown) {
             if (battleManager.currentTurnStep == BattleManager.TurnStep.Status) {
                 SelectNextPlayerBoardCharacter(false);
 
@@ -38,15 +39,15 @@ public class BattleFightManager {
         }
 
         if (battleManager.currentTurnStep == BattleManager.TurnStep.Direction) {
-            if (Input.GetKeyDown(KeyCode.UpArrow)) {
+            if (InputManager.Up.IsKeyDown) {
                 battleManager.GetSelectedPlayerBoardCharacter().direction = BoardCharacter.Direction.North;
-            } else if (Input.GetKeyDown(KeyCode.DownArrow)) {
+            } else if (InputManager.Down.IsKeyDown) {
                 battleManager.GetSelectedPlayerBoardCharacter().direction = BoardCharacter.Direction.South;
-            } else if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+            } else if (InputManager.Left.IsKeyDown) {
                 battleManager.GetSelectedPlayerBoardCharacter().direction = BoardCharacter.Direction.West;
-            } else if (Input.GetKeyDown(KeyCode.RightArrow)) {
+            } else if (InputManager.Right.IsKeyDown) {
                 battleManager.GetSelectedPlayerBoardCharacter().direction = BoardCharacter.Direction.East;
-            } else if (Input.GetKeyDown(KeyCode.Return)) {
+            } else if (InputManager.Confirm.IsKeyDown) {
                 battleManager.fightHUD.SetActiveWithAnimation(true);
                 battleManager.EnterTurnStepNone();
             }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using DG.Tweening;
+using SF;
 
 [RequireComponent(typeof(Camera))]
 public class BattleCamera : MonoBehaviour {
@@ -18,11 +19,11 @@ public class BattleCamera : MonoBehaviour {
         float tmpSpeed = speed;
 
         // Lower the speed if the camera is going diagonally
-        if (Input.GetAxisRaw(InputBinds.CameraH) != 0 && Input.GetAxisRaw(InputBinds.CameraV) != 0) {
+        if (InputManager.CameraHorizontalAxis() != 0 && InputManager.CameraVerticalAxis() != 0) {
             tmpSpeed = speed / Mathf.Sqrt(2f);
         }
 
-        transform.position += new Vector3(tmpSpeed * Time.deltaTime * Input.GetAxisRaw(InputBinds.CameraH), tmpSpeed * Time.deltaTime * Input.GetAxisRaw(InputBinds.CameraV));
+        transform.position += new Vector3(tmpSpeed * Time.deltaTime * InputManager.CameraHorizontalAxis(), tmpSpeed * Time.deltaTime * InputManager.CameraVerticalAxis());
     }
     
     public void Zoom(float axis) {

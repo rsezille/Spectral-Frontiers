@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using SF;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -114,12 +115,13 @@ public class BattleManager : MonoBehaviour {
             battleCamera.ResetCameraSize();
         }
 
+        // Do not use InputBinds as this code is for editor only
         if (Input.GetKeyDown(KeyCode.P)) {
             battleCamera.SetPosition(0, 0, true);
         }
 
-        if (Input.GetAxis(InputBinds.Zoom) != 0) {
-            battleCamera.Zoom(Input.GetAxis(InputBinds.Zoom));
+        if (Input.GetAxis(InputManager.Axis.Zoom) != 0) {
+            battleCamera.Zoom(Input.GetAxis(InputManager.Axis.Zoom));
         }
 #endif
 
