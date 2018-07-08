@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using SF;
+using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(BoardEntity), typeof(BoardCharacter)), DisallowMultipleComponent]
@@ -63,7 +64,7 @@ public class HealthBarHUD : MonoBehaviour {
                 return;
             }
 
-            if (collidersHit[0].GetComponent<SFSemiTransparent>().transparentObjectsCount == 0) {
+            if (collidersHit[0].GetComponent<SemiTransparent>().transparentObjectsCount == 0) {
                 ChangeOpacity(0.05f, 0.5f);
             } else {
                 ChangeOpacity(0.16f, 1f);

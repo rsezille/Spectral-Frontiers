@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using SF;
 using SpriteGlow;
 using System.Collections;
 using UnityEngine;
@@ -147,9 +148,9 @@ public class BoardCharacter : MonoBehaviour {
                 }
 
                 if (enter) {
-                    collidersHit[i].GetComponent<SFSemiTransparent>().MouseEnter();
+                    collidersHit[i].GetComponent<SemiTransparent>().MouseEnter();
                 } else {
-                    collidersHit[i].GetComponent<SFSemiTransparent>().MouseLeave();
+                    collidersHit[i].GetComponent<SemiTransparent>().MouseLeave();
                 }
             }
         }

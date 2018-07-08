@@ -11,7 +11,7 @@ using UnityEngine.Rendering;
 public class Board : MonoBehaviour {
     private Square[] squares;
 
-    private List<SFSemiTransparent> previousSemiTransparents = new List<SFSemiTransparent>(); // Used to detect a mouse leave
+    private List<SemiTransparent> previousSemiTransparents = new List<SemiTransparent>(); // Used to detect a mouse leave
     private MouseReactive previousMouseEntity = null; // Used to detect a mouse leave
 
     public Transform boardSquaresTransform;
@@ -35,7 +35,7 @@ public class Board : MonoBehaviour {
             Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             MouseReactive entityHit = null;
-            List<SFSemiTransparent> semiTransparentsHit = new List<SFSemiTransparent>();
+            List<SemiTransparent> semiTransparentsHit = new List<SemiTransparent>();
 
             // Process mouse position
             foreach (RaycastHit2D hit in Physics2D.RaycastAll(position, Vector2.zero)) {
@@ -46,7 +46,7 @@ public class Board : MonoBehaviour {
                 }
 
                 // If the mouse is hovering a semi transparent sprite, triggers it before checking for MouseReactive
-                SFSemiTransparent sFSemiTransparent = hit.collider.gameObject.GetComponent<SFSemiTransparent>();
+                SemiTransparent sFSemiTransparent = hit.collider.gameObject.GetComponent<SemiTransparent>();
 
                 if (sFSemiTransparent != null) {
                     semiTransparentsHit.Add(sFSemiTransparent);
@@ -56,8 +56,8 @@ public class Board : MonoBehaviour {
 
                 // Only trigger game objects that react to the mouse
                 if (mr != null) {
-                    SFEntityContainer entityContainer = mr.transform.parent.GetComponent<SFEntityContainer>();
-                    SFEntityContainer previousEntityContainer = entityHit != null ? entityHit.transform.parent.GetComponent<SFEntityContainer>() : null;
+                    EntityContainer entityContainer = mr.transform.parent.GetComponent<EntityContainer>();
+                    EntityContainer previousEntityContainer = entityHit != null ? entityHit.transform.parent.GetComponent<EntityContainer>() : null;
 
                     // Check for square sorting order in the mouse reactive is a game object in the entity container of a square ; and if it's a board character over the same square, target it
                     if (entityContainer != null && previousEntityContainer != null) {
@@ -91,13 +91,13 @@ public class Board : MonoBehaviour {
             }
 
             // Dispatch events to semi transparent sprites
-            foreach (SFSemiTransparent previousSemiTransparent in previousSemiTransparents) {
+            foreach (SemiTransparent previousSemiTransparent in previousSemiTransparents) {
                 if (!semiTransparentsHit.Contains(previousSemiTransparent)) {
                     previousSemiTransparent.MouseLeave();
                 }
             }
 
-            foreach (SFSemiTransparent semiTransparentHit in semiTransparentsHit) {
+            foreach (SemiTransparent semiTransparentHit in semiTransparentsHit) {
                 if (!previousSemiTransparents.Contains(semiTransparentHit)) {
                     semiTransparentHit.MouseEnter();
                 }

@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using SF;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -64,8 +65,8 @@ public class Square : MonoBehaviour {
 
     public SpriteRenderer tileSelector;
 
-    private SFTileContainer _tileContainer;
-    private SFEntityContainer _entityContainer;
+    private TileContainer _tileContainer;
+    private EntityContainer _entityContainer;
 
     private void Awake() {
         battleManager = BattleManager.instance;
@@ -213,20 +214,20 @@ public class Square : MonoBehaviour {
         return Mathf.Abs(square.x - this.x) + Mathf.Abs(square.y - this.y);
     }
 
-    public SFTileContainer tileContainer {
+    public TileContainer tileContainer {
         get {
             if (_tileContainer == null) {
-                _tileContainer = GetComponentInChildren<SFTileContainer>();
+                _tileContainer = GetComponentInChildren<TileContainer>();
             }
 
             return _tileContainer;
         }
     }
 
-    public SFEntityContainer entityContainer {
+    public EntityContainer entityContainer {
         get {
             if (_entityContainer == null) {
-                _entityContainer = GetComponentInChildren<SFEntityContainer>();
+                _entityContainer = GetComponentInChildren<EntityContainer>();
             }
 
             return _entityContainer;
