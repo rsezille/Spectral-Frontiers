@@ -4,8 +4,7 @@ namespace SF {
     /**
      * Define all input bindings
      * 
-     * Usage:
-     *   if (InputManager.Next.IsKeyDown) { do something }
+     * Usage: if (InputManager.Next.IsKeyDown) { do something }
      * 
      * TODO: Delete this and use a professionnal input manager instead
      */
