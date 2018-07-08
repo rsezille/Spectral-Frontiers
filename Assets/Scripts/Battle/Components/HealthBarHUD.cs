@@ -49,7 +49,7 @@ public class HealthBarHUD : MonoBehaviour {
             healthBar.localScale.z
         );
 
-        // PERF: can be consuming to do it in Update()
+        // PERF: can be consuming to do it in Update(), OverlapCollider perfs?
         Collider2D[] collidersHit = new Collider2D[1];
         ContactFilter2D contactFilter = new ContactFilter2D();
         contactFilter.SetLayerMask(LayerMask.GetMask("SemiTransparent"));
@@ -58,34 +58,26 @@ public class HealthBarHUD : MonoBehaviour {
 
         if (collidersNb > 0) {
             if (boardCharacter.GetSquare().sortingGroup.sortingOrder > collidersHit[0].GetComponentInParent<Square>().sortingGroup.sortingOrder) {
-                outline.effectColor = new Color(outline.effectColor.r, outline.effectColor.g, outline.effectColor.b, 0.16f);
-                changeColorByScale.minColor = new Color(changeColorByScale.minColor.r, changeColorByScale.minColor.g, changeColorByScale.minColor.b, 1f);
-                changeColorByScale.maxColor = new Color(changeColorByScale.maxColor.r, changeColorByScale.maxColor.g, changeColorByScale.maxColor.b, 1f);
-
-                if (characterNameHUD != null) {
-                    characterNameHUD.characterName.color = new Color(characterNameHUD.characterName.color.r, characterNameHUD.characterName.color.g, characterNameHUD.characterName.color.b, 1f);
-                }
+                ChangeOpacity(0.16f, 1f);
 
                 return;
             }
 
             if (collidersHit[0].GetComponent<SFSemiTransparent>().transparentObjectsCount == 0) {
-                outline.effectColor = new Color(outline.effectColor.r, outline.effectColor.g, outline.effectColor.b, 0.05f);
-                changeColorByScale.minColor = new Color(changeColorByScale.minColor.r, changeColorByScale.minColor.g, changeColorByScale.minColor.b, 0.5f);
-                changeColorByScale.maxColor = new Color(changeColorByScale.maxColor.r, changeColorByScale.maxColor.g, changeColorByScale.maxColor.b, 0.5f);
-
-                if (characterNameHUD != null) {
-                    characterNameHUD.characterName.color = new Color(characterNameHUD.characterName.color.r, characterNameHUD.characterName.color.g, characterNameHUD.characterName.color.b, 0.5f);
-                }
+                ChangeOpacity(0.05f, 0.5f);
             } else {
-                outline.effectColor = new Color(outline.effectColor.r, outline.effectColor.g, outline.effectColor.b, 0.16f);
-                changeColorByScale.minColor = new Color(changeColorByScale.minColor.r, changeColorByScale.minColor.g, changeColorByScale.minColor.b, 1f);
-                changeColorByScale.maxColor = new Color(changeColorByScale.maxColor.r, changeColorByScale.maxColor.g, changeColorByScale.maxColor.b, 1f);
-
-                if (characterNameHUD != null) {
-                    characterNameHUD.characterName.color = new Color(characterNameHUD.characterName.color.r, characterNameHUD.characterName.color.g, characterNameHUD.characterName.color.b, 1f);
-                }
+                ChangeOpacity(0.16f, 1f);
             }
+        }
+    }
+
+    private void ChangeOpacity(float outlineOpacity, float otherOpacity) {
+        outline.effectColor = new Color(outline.effectColor.r, outline.effectColor.g, outline.effectColor.b, outlineOpacity);
+        changeColorByScale.minColor = new Color(changeColorByScale.minColor.r, changeColorByScale.minColor.g, changeColorByScale.minColor.b, otherOpacity);
+        changeColorByScale.maxColor = new Color(changeColorByScale.maxColor.r, changeColorByScale.maxColor.g, changeColorByScale.maxColor.b, otherOpacity);
+
+        if (characterNameHUD != null) {
+            characterNameHUD.characterName.color = new Color(characterNameHUD.characterName.color.r, characterNameHUD.characterName.color.g, characterNameHUD.characterName.color.b, otherOpacity);
         }
     }
 }
