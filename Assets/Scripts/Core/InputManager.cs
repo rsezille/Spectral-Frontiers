@@ -10,6 +10,9 @@ namespace SF {
      * TODO: Delete this and use a professionnal input manager instead
      */
     public static class InputManager {
+        /**
+         * Usage: Input.GetAxis(InputManager.Axis.Zoom)
+         */
         public static class Axis {
             public const string Zoom = "input.mouse_scrollwheel";
         }
