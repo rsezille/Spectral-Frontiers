@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using SF;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -78,7 +79,7 @@ public class Board : MonoBehaviour {
             }
 
             if (entityHit != null) {
-                if (Input.GetButtonDown(InputBinds.Click)) {
+                if (InputManager.Click.IsKeyDown) {
                     entityHit.Click.Invoke();
                 }
 

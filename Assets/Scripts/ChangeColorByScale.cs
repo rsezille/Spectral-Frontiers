@@ -4,6 +4,7 @@ using UnityEngine.UI;
 /**
  * Scale a color to another one given min & max values
  */
+ [RequireComponent(typeof(Image))]
 public class ChangeColorByScale : MonoBehaviour {
     // Target
     public Image image;
@@ -15,9 +16,7 @@ public class ChangeColorByScale : MonoBehaviour {
     public Color maxColor = Color.green;
 
     private void Awake() {
-        if (image == null) {
-            image = GetComponent<Image>();
-        }
+        image = GetComponent<Image>();
     }
 
     private void Update() {

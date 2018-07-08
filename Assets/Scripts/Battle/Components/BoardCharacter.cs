@@ -120,16 +120,32 @@ public class BoardCharacter : MonoBehaviour {
     }
 
     private void CheckForSemiTransparent(bool enter) {
-        Collider2D collider = GetComponentInChildren<Collider2D>();
+        // A sprite can have several colliders depending on its animations
+        Collider2D[] spriteColliders = spriteContainer.GetComponents<Collider2D>();
+
+        Collider2D spriteCollider = null;
+
+        foreach (Collider2D spriteCol in spriteColliders) {
+            if (spriteCol.isActiveAndEnabled) {
+                spriteCollider = spriteCol;
+                break;
+            }
+        }
+
+        if (spriteCollider == null) return;
 
         Collider2D[] collidersHit = new Collider2D[20];
         ContactFilter2D contactFilter = new ContactFilter2D();
         contactFilter.SetLayerMask(LayerMask.GetMask("SemiTransparent"));
 
-        int collidersNb = collider.OverlapCollider(contactFilter, collidersHit);
+        int collidersNb = spriteCollider.OverlapCollider(contactFilter, collidersHit);
 
         if (collidersNb > 0) {
             for (int i = 0; i < collidersNb; i++) {
+                if (GetSquare().sortingGroup.sortingOrder > collidersHit[i].GetComponentInParent<Square>().sortingGroup.sortingOrder) {
+                    continue;
+                }
+
                 if (enter) {
                     collidersHit[i].GetComponent<SFSemiTransparent>().MouseEnter();
                 } else {
