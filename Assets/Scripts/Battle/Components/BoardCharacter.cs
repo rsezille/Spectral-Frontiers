@@ -142,7 +142,9 @@ public class BoardCharacter : MonoBehaviour {
 
         if (collidersNb > 0) {
             for (int i = 0; i < collidersNb; i++) {
-                if (GetSquare().sortingGroup.sortingOrder > collidersHit[i].GetComponentInParent<Square>().sortingGroup.sortingOrder) continue;
+                if (GetSquare().sortingGroup.sortingOrder > collidersHit[i].GetComponentInParent<Square>().sortingGroup.sortingOrder) {
+                    continue;
+                }
 
                 if (enter) {
                     collidersHit[i].GetComponent<SFSemiTransparent>().MouseEnter();
