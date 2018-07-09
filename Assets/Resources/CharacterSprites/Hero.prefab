@@ -27,6 +27,7 @@ GameObject:
   - component: {fileID: 114583737885074008}
   - component: {fileID: 114706372431421632}
   - component: {fileID: 114427534289433398}
+  - component: {fileID: 114927453756017122}
   m_Layer: 0
   m_Name: Hero
   m_TagString: Untagged
@@ -248,6 +249,17 @@ MonoBehaviour:
   _alphaThreshold: 0
   _drawOutside: 1
   _enableInstancing: 0
+--- !u!114 &114927453756017122
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1754958333634280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7bf91905cce1b24c9d43dde9297f0de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212048418438309762
 SpriteRenderer:
   m_ObjectHideFlags: 1

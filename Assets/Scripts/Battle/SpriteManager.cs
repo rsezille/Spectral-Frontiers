@@ -22,20 +22,7 @@ public class SpriteManager : MonoBehaviour {
         mouseReactive.MouseLeave.AddListener(MouseLeave);
         mouseReactive.Click = new UnityEvent();
         mouseReactive.Click.AddListener(Click);
-
-
-
-        reflectGo = new GameObject("Water Reflect", typeof(SpriteRenderer));
-        reflectGo.transform.parent = transform;
-        reflectGo.transform.localPosition = Vector3.zero;
-        reflectGo.layer = LayerMask.NameToLayer("Reflectable");
-
-        SpriteRenderer sr = reflectGo.GetComponent<SpriteRenderer>();
-        sr.flipY = !GetComponent<SpriteRenderer>().flipY;
-        sr.sortingOrder = 10;
     }
-
-    private GameObject reflectGo;
 
     private void Start() {
         boardCharacter = GetComponentInParent<BoardCharacter>();
@@ -49,13 +36,6 @@ public class SpriteManager : MonoBehaviour {
 
             CheckColliders();
         }
-    }
-
-    private void LateUpdate() {
-        SpriteRenderer sr = reflectGo.GetComponent<SpriteRenderer>();
-
-        sr.flipX = GetComponent<SpriteRenderer>().flipX;
-        sr.sprite = GetComponent<SpriteRenderer>().sprite;
     }
 
     private void CheckColliders() {
