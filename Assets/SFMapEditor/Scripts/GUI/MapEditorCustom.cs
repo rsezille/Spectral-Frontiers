@@ -335,7 +335,11 @@ namespace SF {
         }
 
         private void DrawSquareAndTile(int squareX, int squareY) {
-            if (sfMapEditor.useWater) return;
+            if (sfMapEditor.useWater) {
+                Debug.LogError("Can't put water overlay when there is no tile.");
+
+                return;
+            }
 
             GameObject squareGameObject = sfMapEditor.CreateSquare(squareX, squareY);
 
