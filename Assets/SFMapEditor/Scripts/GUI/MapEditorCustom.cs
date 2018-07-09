@@ -327,7 +327,7 @@ namespace SF {
                 DestroyImmediate(mapObject);
 
                 if (sfMapEditor.useWater && !sfSpritePicker.isEntity) {
-                    SpriteRenderer[] underwaterSprites = square.GetComponentsInChildren<SpriteRenderer>();
+                    SpriteRenderer[] underwaterSprites = square.GetComponentInChildren<TileContainer>().GetComponentsInChildren<SpriteRenderer>();
 
                     foreach (SpriteRenderer underwaterSprite in underwaterSprites) {
                         underwaterSprite.color = Color.white;
