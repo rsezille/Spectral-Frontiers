@@ -100,6 +100,8 @@ namespace SF {
 
                 spriteRenderer.color = sfSpritePicker.waterColor;
                 tile.transform.localPosition = new Vector3(0f, ((float)sfSpritePicker.waterOffset / Globals.PixelsPerUnit) + height);
+
+                tile.GetComponentInParent<Square>().Height += sfSpritePicker.waterOffset;
             } else {
                 tile.transform.localPosition = new Vector3(0f, height);
             }
