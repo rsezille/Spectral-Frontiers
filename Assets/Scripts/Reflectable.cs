@@ -27,5 +27,7 @@ public class Reflectable : MonoBehaviour {
     private void LateUpdate() {
         reflectionSpriteRenderer.flipX = spriteRenderer.flipX;
         reflectionSpriteRenderer.sprite = spriteRenderer.sprite;
+
+        reflectionSpriteRenderer.transform.localPosition = new Vector3(0f, - (spriteRenderer.sprite.pivot.y * 2f) / Globals.PixelsPerUnit);
     }
 }
