@@ -127,8 +127,7 @@ namespace SF {
 
                             // If the tile hit is the highest of the square, we need to update the square height
                             if (highestTile != null && highestTile.gameObject == tileHit) {
-                                Square sfSquare = highestTile.GetComponentInParent<Square>();
-                                sfSquare.Height += (int)delta * sfMapEditor.scrollStep;
+                                highestTile.GetComponentInParent<Square>().Height += (int)delta * sfMapEditor.scrollStep;
                             }
                         }
                     } else if (sfMapEditor.currentSelectMode == MapEditor.SelectMode.Grid) { // Update height of the last tile of the square
@@ -136,18 +135,17 @@ namespace SF {
 
                         if (squarePosition.x < 0 || squarePosition.x >= sfMapEditor.size.x || squarePosition.y < 0 || squarePosition.y >= sfMapEditor.size.y) return;
 
-                        GameObject square = GameObject.Find("Square(" + squarePosition.x + "," + squarePosition.y + ")");
+                        GameObject squareGameObject = GameObject.Find("Square(" + squarePosition.x + "," + squarePosition.y + ")");
 
-                        if (square) {
-                            SpriteRenderer highestTile = GetHighestTile(square.GetComponent<Square>());
+                        if (squareGameObject) {
+                            SpriteRenderer highestTile = GetHighestTile(squareGameObject.GetComponent<Square>());
 
                             if (highestTile != null) {
                                 float delta = e.delta.y < 0 ? 1f : -1f;
 
                                 highestTile.transform.Translate(new Vector3(0f, (delta * sfMapEditor.scrollStep) / Globals.TileHeight));
-
-                                Square sfSquare = highestTile.GetComponentInParent<Square>();
-                                sfSquare.Height += (int)delta * sfMapEditor.scrollStep;
+                                
+                                highestTile.GetComponentInParent<Square>().Height += (int)delta * sfMapEditor.scrollStep;
                             }
                         }
                     }
@@ -166,9 +164,9 @@ namespace SF {
 
                         if (squarePosition.x < 0 || squarePosition.x >= sfMapEditor.size.x || squarePosition.y < 0 || squarePosition.y >= sfMapEditor.size.y) return;
 
-                        GameObject square = GameObject.Find("Square(" + squarePosition.x + "," + squarePosition.y + ")");
+                        GameObject squareGameObject = GameObject.Find("Square(" + squarePosition.x + "," + squarePosition.y + ")");
 
-                        if (!square) {
+                        if (!squareGameObject) {
                             DrawSquareAndTile(squarePosition.x, squarePosition.y);
                         }
                     }
@@ -178,18 +176,18 @@ namespace SF {
                     if (sfMapEditor.useWater && !sfSpritePicker.waterPrefab) {
                         Debug.LogWarning("Trying to draw water but the sprite is null");
                     } else {
-                        Square sfSquare = null;
+                        Square square = null;
 
                         if (sfMapEditor.currentSelectMode == MapEditor.SelectMode.Tile) {
-                            sfSquare = GetSquareHit();
+                            square = GetSquareHit();
 
-                            if (sfSquare != null) {
-                                DrawOnSquare(sfSquare.gameObject);
+                            if (square != null) {
+                                DrawOnSquare(square.gameObject);
                             }
                         }
 
                         // Will be null if SelectMode.Grid or if the ray hit nothing (meaning targeting an empty square)
-                        if (sfSquare == null) {
+                        if (square == null) {
                             if (sfSpritePicker.isEntity) {
                                 Debug.LogWarning("Can't draw an entity on an empty square ; at least one tile is required");
                             } else {
@@ -197,12 +195,12 @@ namespace SF {
 
                                 if (squarePosition.x < 0 || squarePosition.x >= sfMapEditor.size.x || squarePosition.y < 0 || squarePosition.y >= sfMapEditor.size.y) return;
 
-                                GameObject square = GameObject.Find("Square(" + squarePosition.x + "," + squarePosition.y + ")");
+                                GameObject squareGameObject = GameObject.Find("Square(" + squarePosition.x + "," + squarePosition.y + ")");
 
-                                if (!square) {
+                                if (!squareGameObject) {
                                     DrawSquareAndTile(squarePosition.x, squarePosition.y);
                                 } else {
-                                    DrawOnSquare(square);
+                                    DrawOnSquare(squareGameObject);
                                 }
                             }
                         }
@@ -339,12 +337,12 @@ namespace SF {
         private void DrawSquareAndTile(int squareX, int squareY) {
             if (sfMapEditor.useWater) return;
 
-            GameObject square = sfMapEditor.CreateSquare(squareX, squareY);
+            GameObject squareGameObject = sfMapEditor.CreateSquare(squareX, squareY);
 
-            sfMapEditor.CreateTile(square.GetComponent<Square>(), 0);
+            sfMapEditor.CreateTile(squareGameObject.GetComponent<Square>(), 0);
 
             sfMapEditor.undoStack.Push(() => {
-                DestroyImmediate(square);
+                DestroyImmediate(squareGameObject);
             });
         }
 
