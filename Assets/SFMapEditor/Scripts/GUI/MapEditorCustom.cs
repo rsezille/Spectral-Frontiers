@@ -322,15 +322,15 @@ namespace SF {
             }
 
             sfMapEditor.undoStack.Push(() => {
-                DestroyImmediate(mapObject);
-
-                if (sfMapEditor.useWater && !sfSpritePicker.isEntity) {
+                if (mapObject.tag == Tags.WaterOverlayTile && !sfSpritePicker.isEntity) {
                     SpriteRenderer[] underwaterSprites = square.GetComponentInChildren<TileContainer>().GetComponentsInChildren<SpriteRenderer>();
 
                     foreach (SpriteRenderer underwaterSprite in underwaterSprites) {
                         underwaterSprite.color = Color.white;
                     }
                 }
+
+                DestroyImmediate(mapObject);
             });
         }
 
