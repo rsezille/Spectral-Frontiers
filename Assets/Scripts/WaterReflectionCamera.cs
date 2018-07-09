@@ -8,7 +8,6 @@
 [RequireComponent(typeof(Camera))]
 public class WaterReflectionCamera : MonoBehaviour {
     private Camera reflectionCamera;
-    private Camera mainCamera;
 
     [SerializeField, Range(0, 1)]
     private float refractionVisibility = 0;
@@ -25,7 +24,6 @@ public class WaterReflectionCamera : MonoBehaviour {
 
     private void Awake() {
         reflectionCamera = GetComponent<Camera>();
-        mainCamera = transform.parent.GetComponent<Camera>();
 
 #if UNITY_EDITOR
         screenResolution = new Vector2Int(Screen.width, Screen.height);
