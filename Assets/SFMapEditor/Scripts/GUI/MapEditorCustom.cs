@@ -275,7 +275,9 @@ namespace SF {
                 int hitSortingOrder = tileContainer.GetComponentInParent<Square>().GetComponent<SortingGroup>().sortingOrder;
 
                 // Retrieve the closiest map object, the one we are seeing
-                if (visibleTileHit == null || hitSortingOrder > visibleTileHit.GetComponentInParent<Square>().GetComponent<SortingGroup>().sortingOrder) {
+                if (visibleTileHit == null
+                        || hitSortingOrder > visibleTileHit.GetComponentInParent<Square>().GetComponent<SortingGroup>().sortingOrder
+                        || (tileOrEntity.GetComponentInParent<Square>() == visibleTileHit.GetComponentInParent<Square>() && tileOrEntity.GetComponent<SpriteRenderer>().sortingOrder > visibleTileHit.GetComponent<SpriteRenderer>().sortingOrder)) {
                     visibleTileHit = tileOrEntity;
                 }
             }
