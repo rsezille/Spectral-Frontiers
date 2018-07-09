@@ -96,9 +96,19 @@ namespace SF {
             // Selection
             if (sfMapEditor.currentSelectMode == MapEditor.SelectMode.Tile) {
                 sfMapEditor.hoveredSquare = GetSquareHit();
+            } else if (sfMapEditor.currentSelectMode == MapEditor.SelectMode.Grid) {
+                Vector2Int squarePosition = GetSquarePosition(e.mousePosition);
 
-                HandleUtility.Repaint(); // Faster OnSceneGUI calls
+                if (squarePosition.x < 0 || squarePosition.x >= sfMapEditor.size.x || squarePosition.y < 0 || squarePosition.y >= sfMapEditor.size.y) return;
+
+                GameObject square = GameObject.Find("Square(" + squarePosition.x + "," + squarePosition.y + ")");
+
+                if (square) {
+                    sfMapEditor.hoveredSquare = square.GetComponent<Square>();
+                }
             }
+
+            HandleUtility.Repaint(); // Faster OnSceneGUI calls
 
             // Height
             if (sfMapEditor.currentMode == MapEditor.Mode.Height) {
