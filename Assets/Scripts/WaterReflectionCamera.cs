@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 /**
- * TODO[BETA]   In this script, we detect screen size change when in the editor, to not distort the RenderTexture we assign to the reflection camera.
+ * TODO [BETA]  In this script, we detect screen size change when in the editor, to not distort the RenderTexture we assign to the reflection camera.
  *              Obviously it is done in the update method, that is why it is editor only.
  *              Redo this using a global method, to re-generate the render texture (GenerateRenderTexture) only at launch and when the player changes the settings.
  */

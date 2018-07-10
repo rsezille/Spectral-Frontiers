@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using SF;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -56,7 +57,7 @@ public class PlacingHUD : MonoBehaviour {
             previousCharText.color = Color.white;
         }
 
-        previousCharText.text = "Previous [" + KeyCode.A + "]\n" + previousCharacter.name; //TODO: Custom InputManager + LanguageManager with a multi key translation
+        previousCharText.text = "Previous [" + InputManager.Previous.bindedKey + "]\n" + previousCharacter.name; //TODO [BETA] LanguageManager with a multi key translation
 
         // Next character text
         Character nextCharacter = battleManager.placing.GetNextPlacingChar();
@@ -67,7 +68,7 @@ public class PlacingHUD : MonoBehaviour {
             nextCharText.color = Color.white;
         }
 
-        nextCharText.text = "Next [" + KeyCode.E + "]\n" + nextCharacter.name; //TODO: Custom InputManager + LanguageManager with a multi key translation
+        nextCharText.text = "Next [" + InputManager.Next.bindedKey + "]\n" + nextCharacter.name; //TODO [BETA] LanguageManager with a multi key translation
     }
 
     public void SetActiveWithAnimation(bool active) {
