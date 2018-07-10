@@ -153,12 +153,13 @@ namespace SF {
             }
 
             // Draw
-            if (sfMapEditor.currentMode == MapEditor.Mode.Draw) {
-                if (e.isMouse && e.type == EventType.MouseDrag && e.button == 0 && sfSpritePicker.selectedIndex >= 0 && sfMapEditor.currentSelectMode == MapEditor.SelectMode.Grid) {
+            if (sfMapEditor.currentMode == MapEditor.Mode.Draw && e.isMouse && e.button == 0) {
+                // When mouse dragging during grid selection mode
+                if (e.type == EventType.MouseDrag && sfSpritePicker.selectedIndex >= 0 && sfMapEditor.currentSelectMode == MapEditor.SelectMode.Grid) {
                     e.Use();
 
                     if (sfSpritePicker.isEntity) {
-                        Debug.LogWarning("Can't draw an entity on an empty square ; at least one tile is required");
+                        Debug.LogWarning("Can't draw an entity when mouse dragging");
                     } else {
                         Vector2Int squarePosition = GetSquarePosition(e.mousePosition);
 
@@ -170,7 +171,7 @@ namespace SF {
                             DrawSquareAndTile(squarePosition.x, squarePosition.y);
                         }
                     }
-                } else if (e.isMouse && e.type == EventType.MouseDown && e.button == 0 && (sfSpritePicker.selectedIndex >= 0 || sfMapEditor.useWater)) {
+                } else if (e.type == EventType.MouseDown && (sfSpritePicker.selectedIndex >= 0 || sfMapEditor.useWater)) {
                     e.Use();
 
                     if (sfMapEditor.useWater && !sfSpritePicker.waterPrefab) {
@@ -188,20 +189,22 @@ namespace SF {
 
                         // Will be null if SelectMode.Grid or if the ray hit nothing (meaning targeting an empty square)
                         if (square == null) {
-                            if (sfSpritePicker.isEntity) {
-                                Debug.LogWarning("Can't draw an entity on an empty square ; at least one tile is required");
-                            } else {
-                                Vector2Int squarePosition = GetSquarePosition(e.mousePosition);
+                            Vector2Int squarePosition = GetSquarePosition(e.mousePosition);
 
-                                if (squarePosition.x < 0 || squarePosition.x >= sfMapEditor.size.x || squarePosition.y < 0 || squarePosition.y >= sfMapEditor.size.y) return;
+                            if (squarePosition.x < 0 || squarePosition.x >= sfMapEditor.size.x || squarePosition.y < 0 || squarePosition.y >= sfMapEditor.size.y) return;
 
-                                GameObject squareGameObject = GameObject.Find("Square(" + squarePosition.x + "," + squarePosition.y + ")");
+                            GameObject squareGameObject = GameObject.Find("Square(" + squarePosition.x + "," + squarePosition.y + ")");
 
-                                if (!squareGameObject) {
-                                    DrawSquareAndTile(squarePosition.x, squarePosition.y);
-                                } else {
-                                    DrawOnSquare(squareGameObject);
+                            if (!squareGameObject) {
+                                if (sfSpritePicker.isEntity) {
+                                    Debug.LogWarning("Can't draw an entity on an empty square ; at least one tile is required");
+
+                                    return;
                                 }
+
+                                DrawSquareAndTile(squarePosition.x, squarePosition.y);
+                            } else {
+                                DrawOnSquare(squareGameObject);
                             }
                         }
                     }
@@ -215,7 +218,7 @@ namespace SF {
 
                     GameObject tileHit = GetTileHit();
 
-                    if (tileHit.GetComponentInParent<Square>().transform.childCount == 1) {
+                    if (tileHit.GetComponentInParent<TileContainer>().transform.childCount == 1) {
                         DestroyImmediate(tileHit.GetComponentInParent<Square>().gameObject);
                     } else {
                         DestroyImmediate(tileHit);
@@ -336,7 +339,7 @@ namespace SF {
 
         private void DrawSquareAndTile(int squareX, int squareY) {
             if (sfMapEditor.useWater) {
-                Debug.LogError("Can't put water overlay when there is no tile.");
+                Debug.LogWarning("Can't put water overlay when there is no tile.");
 
                 return;
             }
