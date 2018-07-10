@@ -1,7 +1,7 @@
 {
   "id": "story_01",
   "map": "001",
-  "max_chars": 4,
+  "max_player_characters": 2,
   "background": {
     "id": null,
     "main_color": "0059B8",

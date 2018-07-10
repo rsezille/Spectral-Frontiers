@@ -17,7 +17,7 @@ public class RawMission {
 
     public string id;
     public string map;
-    public int max_chars = 1;
+    public int max_player_characters = 1; // Should be inferior to starting_squares length
     public bool is_storyline = false;
 
     // Missions tree

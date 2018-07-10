@@ -191,6 +191,10 @@ public class BattlePlacingManager {
                     battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter.outline.enabled = true;
                     battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter.direction = square.startingDirection;
                 } else {
+                    if (battleManager.playerCharacters.Count >= battleManager.mission.max_player_characters) {
+                        return;
+                    }
+
                     PlayerCharacter pc = Object.Instantiate(battleManager.testPlayerCharacter, square.transform.position, Quaternion.identity) as PlayerCharacter;
                     pc.boardCharacter.character = battleManager.playerPlacingChars[battleManager.placingCharIndex];
                     pc.GetComponent<Side>().value = Side.Type.Player;
