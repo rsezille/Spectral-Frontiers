@@ -97,7 +97,7 @@ public class Square : MonoBehaviour {
     }
 
     /**
-     * Triggered by Board (SFTileSelector)
+     * Triggered by Board (TileSelector)
      */
     public void MouseEnter() {
         if (colorAnimation != null) {
@@ -118,7 +118,7 @@ public class Square : MonoBehaviour {
     }
 
     /**
-     * Triggered by Board (SFTileSelector)
+     * Triggered by Board (TileSelector)
      */
     public void MouseLeave() {
         battleManager.fightHUD.SquareHovered(null);
@@ -131,7 +131,7 @@ public class Square : MonoBehaviour {
     }
 
     /**
-     * Triggered by Board (SFTileSelector)
+     * Triggered by Board (TileSelector)
      */
     public void Click() {
         switch (battleManager.currentBattleStep) {
