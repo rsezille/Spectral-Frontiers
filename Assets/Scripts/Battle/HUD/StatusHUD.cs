@@ -82,13 +82,15 @@ public class StatusHUD : MonoBehaviour {
     }
 
     private void UpdateText() {
-        statusText.text = character.name + "\n";
-        statusText.text += "HP: " + character.GetCurrentHP() + "/" + character.GetMaxHP() + "\n";
-        statusText.text += "SP: " + character.GetCurrentMP() + "/" + character.GetMaxMP() + "\n";
-        statusText.text += "PhyAtk: " + character.GetPhysicalAttack() + "\n";
-        statusText.text += "PhyDef: " + character.GetPhysicalDefense() + "\n";
-        statusText.text += "MagPow: " + character.GetMagicalPower() + "\n";
-        statusText.text += "MagRes: " + character.GetMagicalResistance();
+        statusText.text = $@"
+            { character.name }
+            HP: { character.GetCurrentHP() }/{ character.GetMaxHP() }
+            SP: { character.GetCurrentMP() }/{ character.GetMaxMP() }
+            PhyAtk: { character.GetPhysicalAttack() }
+            PhyDef: { character.GetPhysicalDefense() }
+            MagPow: { character.GetMagicalPower() }
+            MagRes: { character.GetMagicalResistance() }
+        ";
     }
 
     private void DisableGameObject() {
