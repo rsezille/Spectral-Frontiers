@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212558339555044296}
   - component: {fileID: 60409476625455946}
   - component: {fileID: 114469546932475542}
+  - component: {fileID: 114242701527307914}
   m_Layer: 0
   m_Name: Entity_Tree_Leaf_01
   m_TagString: Untagged
@@ -330,6 +331,17 @@ PolygonCollider2D:
       - {x: 0.45640898, y: -0.877965}
       - {x: 0.690784, y: -0.690465}
       - {x: 0.940784, y: -0.627965}
+--- !u!114 &114242701527307914
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1740853501873868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7bf91905cce1b24c9d43dde9297f0de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114469546932475542
 MonoBehaviour:
   m_ObjectHideFlags: 1

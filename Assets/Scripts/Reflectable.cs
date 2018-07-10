@@ -22,11 +22,13 @@ public class Reflectable : MonoBehaviour {
         reflectionSpriteRenderer = reflectionGameObject.GetComponent<SpriteRenderer>();
         reflectionSpriteRenderer.flipY = !spriteRenderer.flipY;
         reflectionSpriteRenderer.flipX = spriteRenderer.flipX;
+        reflectionSpriteRenderer.transform.localScale = Vector3.one;
     }
 
     private void LateUpdate() {
         reflectionSpriteRenderer.flipX = spriteRenderer.flipX;
         reflectionSpriteRenderer.sprite = spriteRenderer.sprite;
+        reflectionSpriteRenderer.transform.localScale = Vector3.one;
 
         reflectionSpriteRenderer.transform.localPosition = new Vector3(0f, - (spriteRenderer.sprite.pivot.y * 2f) / Globals.PixelsPerUnit);
     }
