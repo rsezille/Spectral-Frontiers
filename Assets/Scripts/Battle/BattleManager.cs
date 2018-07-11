@@ -19,15 +19,10 @@ public class BattleManager : MonoBehaviour {
         None, Move, Attack, Skill, Item, Enemy, Status, Direction
     };
 
+    [Header("Information")]
     public BattleStep currentBattleStep;
     public TurnStep currentTurnStep;
     public int turn;
-
-    public Board board;
-    public BattleCamera battleCamera;
-
-    public PlayerCharacter testPlayerCharacter; //TODO: Find the correct character giving the name & job
-    public FloatingText floatingText;
 
     public RawMission mission;
 
@@ -38,11 +33,22 @@ public class BattleManager : MonoBehaviour {
     public List<BoardCharacter> enemyCharacters;
     private BoardCharacter selectedPlayerBoardCharacter;
 
+    [Header("Direct references")]
+    public Board board;
+    public BattleCamera battleCamera;
+
     // HUD
     public PlacingHUD placingHUD;
     public StatusHUD statusHUD;
     public FightHUD fightHUD;
     public VictoryHUD victoryHUD;
+
+    public PlayerCharacter testPlayerCharacter; //TODO: Find the correct character giving the name & job
+    public FloatingText floatingText;
+
+    [Header("Options")]
+    public bool waterReflection = true;
+    public bool waterDistortion = true;
 
     // Events
     public delegate void EnterStepEvent();
