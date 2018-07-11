@@ -51,9 +51,11 @@ public class BattleManager : MonoBehaviour {
     public bool waterDistortion = true;
 
     // Events
-    public delegate void EnterStepEvent();
-    public event EnterStepEvent OnEnterPlacing;
-    public event EnterStepEvent OnLeavingMarkStep;
+    public delegate void SFEvent();
+    public event SFEvent OnEnterPlacing;
+    public event SFEvent OnLeavingMarkStep;
+    public event SFEvent OnZoomChange;
+    public event SFEvent OnScreenChange;
 
     // Dedicated managers for each BattleStep
     public BattlePlacingManager placing;
@@ -61,6 +63,10 @@ public class BattleManager : MonoBehaviour {
     public BattleVictoryManager victory;
     
     public List<Sequence> markedSquareAnimations = new List<Sequence>();
+
+    #if UNITY_EDITOR
+    private Vector2Int previousScreenResolution;
+    #endif
 
     public static BattleManager instance {
         get {
@@ -89,6 +95,10 @@ public class BattleManager : MonoBehaviour {
         statusHUD.gameObject.SetActive(false);
         fightHUD.gameObject.SetActive(false);
         victoryHUD.gameObject.SetActive(false);
+
+        #if UNITY_EDITOR
+        previousScreenResolution = new Vector2Int(Screen.width, Screen.height);
+        #endif
     }
 
     private void Start() {
@@ -115,7 +125,7 @@ public class BattleManager : MonoBehaviour {
 
     // Update is called once per frame
     private void Update() {
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
         // Do not use InputBinds as this code is for editor only
         if (Input.GetKeyDown(KeyCode.O)) {
             battleCamera.ResetCameraSize();
@@ -128,8 +138,10 @@ public class BattleManager : MonoBehaviour {
 
         if (Input.GetAxis(InputManager.Axis.Zoom) != 0) {
             battleCamera.Zoom(Input.GetAxis(InputManager.Axis.Zoom));
+
+            OnZoomChange?.Invoke();
         }
-#endif
+        #endif
 
         switch (currentBattleStep) {
             case BattleStep.Placing:
@@ -142,16 +154,23 @@ public class BattleManager : MonoBehaviour {
                 victory.Update();
                 break;
         }
+
+        #if UNITY_EDITOR
+        if (previousScreenResolution.x != Screen.width || previousScreenResolution.y != Screen.height) {
+            OnScreenChange?.Invoke();
+            previousScreenResolution = new Vector2Int(Screen.width, Screen.height);
+        }
+        #endif
     }
 
     public void EventOnEnterPlacing() {
-        OnEnterPlacing();
+        OnEnterPlacing?.Invoke();
     }
 
     public void EventOnLeavingMarkStep() {
         markedSquareAnimations.Clear();
 
-        OnLeavingMarkStep();
+        OnLeavingMarkStep?.Invoke();
     }
 
     /**

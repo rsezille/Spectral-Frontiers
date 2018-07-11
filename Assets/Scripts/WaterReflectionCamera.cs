@@ -18,25 +18,15 @@ public class WaterReflectionCamera : MonoBehaviour {
     private static readonly string globalVisibilityName = "_GlobalVisibility";
     private static readonly string globalMagnitudeName = "_GlobalRefractionMag";
 
-#if UNITY_EDITOR
-    private Vector2Int screenResolution;
-#endif
-
     private void Awake() {
         reflectionCamera = GetComponent<Camera>();
 
-#if UNITY_EDITOR
-        screenResolution = new Vector2Int(Screen.width, Screen.height);
-#endif
+        BattleManager.instance.OnZoomChange += OnZoomChange;
+        BattleManager.instance.OnScreenChange += GenerateRenderTexture;
     }
 
-    private void Update() {
-#if UNITY_EDITOR
-        if (screenResolution.x != Screen.width || screenResolution.y != Screen.height) {
-            GenerateRenderTexture();
-            screenResolution = new Vector2Int(Screen.width, Screen.height);
-        }
-#endif
+    private void OnZoomChange() {
+        reflectionCamera.orthographicSize = GetComponentInParent<BattleCamera>().GetComponent<Camera>().orthographicSize;
     }
 
     private void OnEnable() {
