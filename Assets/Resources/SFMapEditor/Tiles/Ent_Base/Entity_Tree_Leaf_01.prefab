@@ -342,6 +342,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7bf91905cce1b24c9d43dde9297f0de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  distortionShader: {fileID: 2100000, guid: 974aa3966879eb949b2085d4c5fa2def, type: 2}
 --- !u!114 &114469546932475542
 MonoBehaviour:
   m_ObjectHideFlags: 1
