@@ -11,6 +11,8 @@ public class Reflectable : MonoBehaviour {
     private GameObject reflectionGameObject;
     private SpriteRenderer reflectionSpriteRenderer;
 
+    public Material distortionShader;
+
     private void Awake() {
         spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -23,6 +25,10 @@ public class Reflectable : MonoBehaviour {
         reflectionSpriteRenderer.flipY = !spriteRenderer.flipY;
         reflectionSpriteRenderer.flipX = spriteRenderer.flipX;
         reflectionSpriteRenderer.transform.localScale = Vector3.one;
+
+        if (distortionShader && BattleManager.instance.waterDistortion) {
+            reflectionSpriteRenderer.material = distortionShader;
+        }
     }
 
     private void LateUpdate() {
