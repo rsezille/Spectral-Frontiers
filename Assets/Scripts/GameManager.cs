@@ -23,7 +23,9 @@ public class GameManager : MonoBehaviour {
     public string missionToLoad;
 
     [SerializeField]
-    private GameObject dialogBoxPrefab;
+    private DialogBox dialogBoxPrefab;
+
+    private DialogBox dialogBox; // The instantiated game object
 
     // Transitions between scenes
     private GameObject transition;
@@ -131,5 +133,15 @@ public class GameManager : MonoBehaviour {
         transitionImage.DOColor(new Color(outColor.r, outColor.g, outColor.b, 0f), speed).OnComplete(() => {
             Destroy(transition);
         });
+    }
+
+    public DialogBox DialogBox {
+        get {
+            if (dialogBox == null) {
+                dialogBox = Instantiate(dialogBoxPrefab, transform) as DialogBox;
+            }
+
+            return dialogBox;
+        }
     }
 }

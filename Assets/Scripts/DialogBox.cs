@@ -15,6 +15,8 @@ public class DialogBox : MonoBehaviour {
      * Can set a name if wanna display one
      */
     public void Show(int preset, string name = "") {
+        Debug.Log("Show:   " + preset);
+
         //ResetAllProperties();
         //EnablePreset(preset);   // The dialogbox prefab comes with several sub game objects containing a background and a canvas with a textmesh pro text
                                 // Allowing to customize the text per background and so on

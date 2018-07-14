@@ -136,6 +136,10 @@ public class BattleManager : MonoBehaviour {
             battleCamera.SetPosition(0, 0, true);
         }
 
+        if (Input.GetKeyDown(KeyCode.M)) {
+            GameManager.instance.DialogBox.Show(0);
+        }
+
         if (Input.GetAxis(InputManager.Axis.Zoom) != 0) {
             battleCamera.Zoom(Input.GetAxis(InputManager.Axis.Zoom));
 
