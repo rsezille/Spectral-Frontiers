@@ -19,8 +19,13 @@ public class GameManager : MonoBehaviour {
     private Dictionary<string, RawMission> missions;
     private Dictionary<string, RawMonster> monsters;
 
+    [HideInInspector]
     public string missionToLoad;
 
+    [SerializeField]
+    private GameObject dialogBoxPrefab;
+
+    // Transitions between scenes
     private GameObject transition;
     private Image transitionImage;
 

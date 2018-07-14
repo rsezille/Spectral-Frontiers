@@ -9,48 +9,45 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1985753394244862}
+  m_RootGameObject: {fileID: 1818324352494296}
   m_IsPrefabParent: 1
---- !u!1 &1985753394244862
+--- !u!1 &1818324352494296
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4182488936680670}
-  - component: {fileID: 114448582467500868}
+  - component: {fileID: 4017487053708582}
+  - component: {fileID: 114705553325998528}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: DialogBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4182488936680670
+--- !u!4 &4017487053708582
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1985753394244862}
+  m_GameObject: {fileID: 1818324352494296}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.032936513, y: 0.3231119, z: 0.079420336}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114448582467500868
+--- !u!114 &114705553325998528
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1985753394244862}
+  m_GameObject: {fileID: 1818324352494296}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22b7a6e1149675c4f996ffd2f16fe867, type: 3}
+  m_Script: {fileID: 11500000, guid: e8b3ff2357dd2564cb47bf1ebfa4a2c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  missionToLoad: 
-  dialogBoxPrefab: {fileID: 1818324352494296, guid: f3816b75dcd0bad44b17b3f974069a01,
-    type: 2}
