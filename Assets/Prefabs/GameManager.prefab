@@ -34,7 +34,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1985753394244862}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.032936513, y: 0.3231119, z: 0.079420336}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -52,5 +52,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   missionToLoad: 
-  dialogBoxPrefab: {fileID: 1818324352494296, guid: f3816b75dcd0bad44b17b3f974069a01,
+  dialogBoxPrefab: {fileID: 114705553325998528, guid: f3816b75dcd0bad44b17b3f974069a01,
     type: 2}
