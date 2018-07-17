@@ -137,7 +137,7 @@ public class BattleManager : MonoBehaviour {
         }
 
         if (Input.GetKeyDown(KeyCode.M)) {
-            GameManager.instance.DialogBox.Show(0);
+            GameManager.instance.DialogBox.Show("prologue_01");
         }
 
         if (Input.GetAxis(InputManager.Axis.Zoom) != 0) {
