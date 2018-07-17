@@ -5,6 +5,7 @@ using UnityEngine;
 /**
  * Scope: GameManager (all scenes)
  * Be aware that BattleManager singleton isn't available here
+ * /!\ Reserved characters: £, €, ¥
  */
 public class DialogBox : MonoBehaviour {
     public enum TextSpeed {
@@ -21,11 +22,13 @@ public class DialogBox : MonoBehaviour {
     public Canvas[] presets; // 0 is the default one
 
     public TextSpeed textSpeed;
+    public Color playerTagColor = new Color(0f, 0.5f, 1f);
+    public Color specialTagColor = Color.red;
 
     private void Awake() {
         gameManager = GameManager.instance;
 
-        textSpeed = TextSpeed.VeryFast;
+        textSpeed = TextSpeed.Fast;
 
         if (presets == null) {
             presets = new Canvas[0]; // Avoid undefined
@@ -38,19 +41,18 @@ public class DialogBox : MonoBehaviour {
         }
     }
 
-    string initialText = "Lorem ipsum dolor sit amet, [player_name] adipiscing adipiscing adipiscing [player_name] adipiscing adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
+    //string initialText = "Lorem ipsum dolor sit amet, [player_name] adipiscing adipiscing adipiscing [player_name] adipiscing adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
+    string initialText = "Bienvenue dans ce super monde [player_name] où règne traitrises et trahisons. [player_name] est prêt à arpenter ce monde plein de malédictions et de magie. La seule âme qui puisse être sauvé n'est sans nul doute que celle du faux héros de l'histoire, triomphant du mal et du boss final très moche. C'est sans nul doute que ce vis de procédure pourra donner lieu à interrogations.";
+    string parsedText = "";
     int countLetters = 0;
     bool shown = false;
     public float timerLetters = 0f;
 
     private void Update() {
         if (shown && textMesh != null) {
-            if (countLetters < initialText.Length) {
+            if (countLetters <= textMesh.textInfo.pageInfo[textMesh.pageToDisplay - 1].lastCharacterIndex) {
                 if (textSpeed == TextSpeed.Instant) {
-                    textMesh.text = initialText;
-                    //Canvas.ForceUpdateCanvases();
-                    //countLetters = dialog.cachedTextGenerator.characterCountVisible + 2;
-                    countLetters = initialText.Length;
+                    countLetters = textMesh.textInfo.pageInfo[textMesh.pageToDisplay - 1].lastCharacterIndex;
                 } else {
                     timerLetters += Time.deltaTime * 1000;
 
@@ -61,22 +63,44 @@ public class DialogBox : MonoBehaviour {
                 }
             }
 
-            countLetters = Mathf.Min(countLetters, initialText.Length);
-            string tmpText = initialText.Substring(0, countLetters);
+            countLetters = Mathf.Min(countLetters, parsedText.Length);
 
+            Debug.Log(textMesh.GetTextInfo(parsedText).lineCount + "     " + textMesh.textInfo.lineCount);
+            string tmpText = parsedText.Insert(countLetters, "€");
 
-
-            Match m = Regex.Match(initialText.Substring(0, countLetters), @"(£+)", RegexOptions.RightToLeft);
+            Match m = Regex.Match(tmpText, @"(£+€?£+)", RegexOptions.RightToLeft);
 
             while (m.Success) {
-                tmpText = tmpText.Remove(m.Index, m.Value.Length).Insert(m.Index, "<color=\"red\">" + gameManager.player.playerName.Substring(0, m.Value.Length) + "</color>");
+                string pouet = m.Value;
+                int euro = pouet.IndexOf("€");
+                string finalText = "";
+
+                if (euro != -1) {
+                    finalText = "<color=#" + ColorUtility.ToHtmlStringRGB(playerTagColor) + ">" + gameManager.player.playerName.Substring(0, euro) + "</color><alpha=#00>" + gameManager.player.playerName.Substring(euro);
+                    tmpText = tmpText.Remove(m.Index, pouet.Length).Insert(m.Index, finalText);
+                } else {
+                    finalText = gameManager.player.playerName;
+
+                    if (countLetters < m.Index)
+                        tmpText = tmpText.Remove(m.Index, pouet.Length).Insert(m.Index, finalText);
+                    else
+                        tmpText = tmpText.Remove(m.Index, pouet.Length).Insert(m.Index, "<color=#" + ColorUtility.ToHtmlStringRGB(playerTagColor) + ">" + finalText + "</color>");
+                }
+
                 m = m.NextMatch();
             }
-
-            Debug.Log("rich?   " + textMesh.text.Length + "                         " + textMesh.GetParsedText().Length);
+            
+            tmpText = tmpText.Replace("€", "<alpha=#00>");
 
             textMesh.SetText(tmpText);
-            //textMesh.text = tmpText;
+
+            if (Input.GetKeyDown(KeyCode.L)) {
+                if (countLetters < textMesh.textInfo.pageInfo[textMesh.pageToDisplay - 1].lastCharacterIndex) {
+                    countLetters = textMesh.textInfo.pageInfo[textMesh.pageToDisplay - 1].lastCharacterIndex;
+                } else if (textMesh.pageToDisplay < textMesh.textInfo.pageCount) {
+                    textMesh.pageToDisplay++;
+                }
+            }
         }
     }
 
@@ -86,7 +110,7 @@ public class DialogBox : MonoBehaviour {
      * Show a global dialog box
      * Can set a name if wanna display one
      */
-    public void Show(int presetIndex, string name = "") {
+    public void Show(int presetIndex, string specialTag = "", string name = "") {
         Debug.Log("Show:   " + presetIndex);
 
         if (presets.Length == 0) {
@@ -101,13 +125,10 @@ public class DialogBox : MonoBehaviour {
         presets[presetIndex].gameObject.SetActive(true);
         textMesh = presets[presetIndex].transform.GetChild(0).GetComponentInChildren<TextMeshProUGUI>();
 
-        initialText = initialText.Replace("[player_name]", "".PadLeft(gameManager.player.playerName.Length, '£'));
+        parsedText = initialText.Replace("[player_name]", "".PadLeft(gameManager.player.playerName.Length, '£'));
         textMesh.richText = true;
-        textMesh.text = initialText;
-
-        Debug.Log("Pouet    " + textMesh.textInfo.characterCount + "    " + textMesh.textInfo.lineCount + "     " + textMesh.GetTextInfo(initialText).lineCount);
-        Debug.Log("Text:   " + textMesh.text);
-
+        textMesh.text = "";
+        
         ResetAllProperties();
         //EnablePreset(preset);   // The dialogbox prefab comes with several sub game objects containing a background and a canvas with a textmesh pro text
         // Allowing to customize the text per background and so on
