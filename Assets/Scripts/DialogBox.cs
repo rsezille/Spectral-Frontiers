@@ -112,28 +112,6 @@ public class DialogBox : MonoBehaviour {
             return;
         }
 
-        PreShow(dialogId, presetIndex, name);
-
-        currentShownPreset.canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        transform.localPosition = Vector3.zero;
-    }
-
-    /**
-     * Show a dialog box attached to a character, with his name
-     */
-    public void Show(BoardCharacter boardCharacter, string dialogId, int presetIndex = 0, string name = "") {
-        if (currentShownPreset != null) {
-            return;
-        }
-
-        PreShow(dialogId, presetIndex, name);
-
-        currentShownPreset.canvas.renderMode = RenderMode.WorldSpace;
-        transform.localPosition = boardCharacter.GetSquare().transform.localPosition;
-        currentShownPreset.canvas.transform.localPosition = Vector3.zero;
-    }
-
-    private void PreShow(string dialogId, int presetIndex, string name) {
         if (presets.Length == 0) {
             Debug.LogWarning("No preset set, dialogbox will not be shown");
 
@@ -154,6 +132,20 @@ public class DialogBox : MonoBehaviour {
 
         parsedText = LanguageManager.instance.getDialog(dialogId).Replace("[player_name]", "".PadLeft(gameManager.player.playerName.Length, '£'));
         currentShownPreset.textMesh.SetText("");
+
+        currentShownPreset.canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        transform.localPosition = Vector3.zero;
+    }
+
+    /**
+     * Show a dialog box attached to a character, with his name
+     */
+    public void Show(BoardCharacter boardCharacter, string dialogId, int presetIndex = 0) {
+        Show(dialogId, presetIndex, boardCharacter.character.name);
+
+        currentShownPreset.canvas.renderMode = RenderMode.WorldSpace;
+        transform.localPosition = boardCharacter.GetSquare().transform.localPosition;
+        currentShownPreset.canvas.transform.localPosition = Vector3.zero;
     }
 
     private void Hide() {
