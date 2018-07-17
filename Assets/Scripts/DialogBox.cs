@@ -1,6 +1,5 @@
 ﻿using SF;
 using System.Text.RegularExpressions;
-using TMPro;
 using UnityEngine;
 
 /**
@@ -89,13 +88,7 @@ public class DialogBox : MonoBehaviour {
             }
 
             if (InputManager.Confirm.IsKeyDown) {
-                if (countLetters < currentShownPreset.textMesh.textInfo.pageInfo[currentShownPreset.textMesh.pageToDisplay - 1].lastCharacterIndex) { // Show instantly the current page
-                    countLetters = currentShownPreset.textMesh.textInfo.pageInfo[currentShownPreset.textMesh.pageToDisplay - 1].lastCharacterIndex;
-                } else if (currentShownPreset.textMesh.pageToDisplay < currentShownPreset.textMesh.textInfo.pageCount) { // Show the next page
-                    currentShownPreset.textMesh.pageToDisplay++;
-                } else if (currentShownPreset.textMesh.pageToDisplay >= currentShownPreset.textMesh.textInfo.pageCount) { // End the dialog box
-                    Hide();
-                }
+                Next();
             }
         }
     }
@@ -130,8 +123,25 @@ public class DialogBox : MonoBehaviour {
         //EnableDialogBox(); // By enabling the game object and try to use DOTween to animate the text ?
     }
 
+    /**
+     * Show a dialog box attached to a character, with his name
+     */
+    public void Show(BoardCharacter boardCharacter) {
+
+    }
+
     private void Hide() {
         ResetAllProperties();
+    }
+
+    public void Next() {
+        if (countLetters < currentShownPreset.textMesh.textInfo.pageInfo[currentShownPreset.textMesh.pageToDisplay - 1].lastCharacterIndex) { // Show instantly the current page
+            countLetters = currentShownPreset.textMesh.textInfo.pageInfo[currentShownPreset.textMesh.pageToDisplay - 1].lastCharacterIndex;
+        } else if (currentShownPreset.textMesh.pageToDisplay < currentShownPreset.textMesh.textInfo.pageCount) { // Show the next page
+            currentShownPreset.textMesh.pageToDisplay++;
+        } else if (currentShownPreset.textMesh.pageToDisplay >= currentShownPreset.textMesh.textInfo.pageCount) { // End the dialog box
+            Hide();
+        }
     }
 
     private void ResetAllProperties() {
@@ -143,12 +153,5 @@ public class DialogBox : MonoBehaviour {
         foreach (DialogPreset preset in presets) {
             preset.gameObject.SetActive(false);
         }
-    }
-
-    /**
-     * Show a dialog box attached to a character, with his name
-     */
-    public void Show(BoardCharacter boardCharacter) {
-
     }
 }
