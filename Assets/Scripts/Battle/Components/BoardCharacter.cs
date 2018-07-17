@@ -178,7 +178,7 @@ public class BoardCharacter : MonoBehaviour {
         battleManager.fightHUD.SquareHovered(null);
 
         if ((battleManager.currentBattleStep == BattleManager.BattleStep.Placing && battleManager.placing.GetCurrentPlacingChar().boardCharacter != this
-                || battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleManager.GetSelectedPlayerBoardCharacter() != this) && outline != null) {
+                || battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleManager.fight.selectedPlayerCharacter != this) && outline != null) {
             outline.enabled = false;
         }
     }
@@ -192,7 +192,7 @@ public class BoardCharacter : MonoBehaviour {
                 // Focus the clicked character as the current one to place
                 battleManager.placing.SetCurrentPlacingChar(character);
             } else if (battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleManager.currentTurnStep == BattleManager.TurnStep.None) {
-                battleManager.SetSelectedPlayerBoardCharacter(this);
+                battleManager.fight.selectedPlayerCharacter = this;
             }
         }
     }

@@ -38,13 +38,13 @@ public class FightHUD : MonoBehaviour {
 
     // Compute all checks on buttons availability
     public void Refresh() {
-        if (battleManager.GetSelectedPlayerBoardCharacter() == null) return;
+        if (battleManager.fight.selectedPlayerCharacter == null) return;
 
-        Movable movable = battleManager.GetSelectedPlayerBoardCharacter().GetComponent<Movable>();
-        moveButton.GetComponent<Button>().interactable = movable != null && movable.CanMove() && !battleManager.GetSelectedPlayerBoardCharacter().IsDead();
+        Movable movable = battleManager.fight.selectedPlayerCharacter.GetComponent<Movable>();
+        moveButton.GetComponent<Button>().interactable = movable != null && movable.CanMove() && !battleManager.fight.selectedPlayerCharacter.IsDead();
 
-        Actionable actionable = battleManager.GetSelectedPlayerBoardCharacter().GetComponent<Actionable>();
-        actionButton.GetComponent<Button>().interactable = actionable != null && actionable.CanDoAction() && !battleManager.GetSelectedPlayerBoardCharacter().IsDead();
+        Actionable actionable = battleManager.fight.selectedPlayerCharacter.GetComponent<Actionable>();
+        actionButton.GetComponent<Button>().interactable = actionable != null && actionable.CanDoAction() && !battleManager.fight.selectedPlayerCharacter.IsDead();
         actionMenu.Refresh();
 
         previousButton.GetComponent<Button>().interactable = true; //TODO [ALPHA] if no other character available, disable it
@@ -113,10 +113,10 @@ public class FightHUD : MonoBehaviour {
     public void UpdateSelectedSquare() {
         Text currentSquareText = currentSquare.GetComponentInChildren<Text>();
 
-        if (battleManager.GetSelectedPlayerBoardCharacter() != null) {
+        if (battleManager.fight.selectedPlayerCharacter != null) {
             currentSquareText.text =
-                battleManager.GetSelectedPlayerBoardCharacter().character.name +
-                "\n" + battleManager.GetSelectedPlayerBoardCharacter().character.GetCurrentHP() + "/" + battleManager.GetSelectedPlayerBoardCharacter().character.GetMaxHP() + " HP";
+                battleManager.fight.selectedPlayerCharacter.character.name +
+                "\n" + battleManager.fight.selectedPlayerCharacter.character.GetCurrentHP() + "/" + battleManager.fight.selectedPlayerCharacter.character.GetMaxHP() + " HP";
         } else {
             currentSquareText.text = "No currently selected character";
         }

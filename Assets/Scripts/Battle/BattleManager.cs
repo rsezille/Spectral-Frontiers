@@ -31,7 +31,6 @@ public class BattleManager : MonoBehaviour {
     public int placingCharIndex;
     public List<BoardCharacter> playerCharacters;
     public List<BoardCharacter> enemyCharacters;
-    private BoardCharacter selectedPlayerBoardCharacter; // TODO [ALPHA] Move this to BattleFightManager as it is only available during fight step
 
     [Header("Direct references")]
     public Board board;
@@ -221,28 +220,6 @@ public class BattleManager : MonoBehaviour {
                     victory.EnterTurnStepNone(previousTurnStep);
                     break;
             }
-        }
-    }
-
-    public BoardCharacter GetSelectedPlayerBoardCharacter() {
-        return selectedPlayerBoardCharacter;
-    }
-
-    public void SetSelectedPlayerBoardCharacter(BoardCharacter boardCharacter) {
-        if (selectedPlayerBoardCharacter != null && selectedPlayerBoardCharacter.outline != null) {
-            selectedPlayerBoardCharacter.outline.enabled = false;
-        }
-
-        selectedPlayerBoardCharacter = boardCharacter;
-        fightHUD.UpdateSelectedSquare();
-
-        if (selectedPlayerBoardCharacter != null) {
-            if (selectedPlayerBoardCharacter.outline != null) {
-                selectedPlayerBoardCharacter.outline.enabled = true;
-            }
-
-            battleCamera.SetPosition(selectedPlayerBoardCharacter, true);
-            fightHUD.Refresh();
         }
     }
 

@@ -6,6 +6,31 @@ using UnityEngine;
 public class BattleFightManager {
     private BattleManager battleManager; // Shortcut for BattleManager.instance
 
+    private BoardCharacter _selectedPlayerCharacter;
+    public BoardCharacter selectedPlayerCharacter {
+        get {
+            return _selectedPlayerCharacter;
+        }
+
+        set {
+            if (_selectedPlayerCharacter != null && _selectedPlayerCharacter.outline != null) {
+                _selectedPlayerCharacter.outline.enabled = false;
+            }
+
+            _selectedPlayerCharacter = value;
+            battleManager.fightHUD.UpdateSelectedSquare();
+
+            if (_selectedPlayerCharacter != null) {
+                if (_selectedPlayerCharacter.outline != null) {
+                    _selectedPlayerCharacter.outline.enabled = true;
+                }
+
+                battleManager.battleCamera.SetPosition(_selectedPlayerCharacter, true);
+                battleManager.fightHUD.Refresh();
+            }
+        }
+    }
+
     public BattleFightManager() {
         battleManager = BattleManager.instance;
     }
@@ -40,13 +65,13 @@ public class BattleFightManager {
 
         if (battleManager.currentTurnStep == BattleManager.TurnStep.Direction) {
             if (InputManager.Up.IsKeyDown) {
-                battleManager.GetSelectedPlayerBoardCharacter().direction = BoardCharacter.Direction.North;
+                selectedPlayerCharacter.direction = BoardCharacter.Direction.North;
             } else if (InputManager.Down.IsKeyDown) {
-                battleManager.GetSelectedPlayerBoardCharacter().direction = BoardCharacter.Direction.South;
+                selectedPlayerCharacter.direction = BoardCharacter.Direction.South;
             } else if (InputManager.Left.IsKeyDown) {
-                battleManager.GetSelectedPlayerBoardCharacter().direction = BoardCharacter.Direction.West;
+                selectedPlayerCharacter.direction = BoardCharacter.Direction.West;
             } else if (InputManager.Right.IsKeyDown) {
-                battleManager.GetSelectedPlayerBoardCharacter().direction = BoardCharacter.Direction.East;
+                selectedPlayerCharacter.direction = BoardCharacter.Direction.East;
             } else if (InputManager.Confirm.IsKeyDown) {
                 battleManager.fightHUD.SetActiveWithAnimation(true);
                 battleManager.EnterTurnStepNone();
@@ -82,7 +107,7 @@ public class BattleFightManager {
 
         battleManager.fightHUD.SetActiveWithAnimation(false);
 
-        battleManager.statusHUD.Show(battleManager.GetSelectedPlayerBoardCharacter());
+        battleManager.statusHUD.Show(selectedPlayerCharacter);
     }
 
     // Called by FightHUD
@@ -92,7 +117,7 @@ public class BattleFightManager {
         } else {
             battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
 
-            if (battleManager.GetSelectedPlayerBoardCharacter().movable != null && battleManager.GetSelectedPlayerBoardCharacter().movable.CanMove()) {
+            if (selectedPlayerCharacter.movable != null && selectedPlayerCharacter.movable.CanMove()) {
                 EnterTurnStepMove();
             }
         }
@@ -130,8 +155,8 @@ public class BattleFightManager {
         // TODO [ALPHA] FlashMessage
         // TODO [ALPHA] Disable inputs
 
-        if (battleManager.GetSelectedPlayerBoardCharacter().outline != null) {
-            battleManager.GetSelectedPlayerBoardCharacter().outline.enabled = false;
+        if (selectedPlayerCharacter.outline != null) {
+            selectedPlayerCharacter.outline.enabled = false;
         }
 
         EnterTurnStepEnemy();
@@ -141,7 +166,7 @@ public class BattleFightManager {
     public void Action() {
         battleManager.EnterTurnStepNone();
 
-        if (battleManager.GetSelectedPlayerBoardCharacter().actionable.CanDoAction()) {
+        if (selectedPlayerCharacter.actionable.CanDoAction()) {
             battleManager.fightHUD.actionMenu.Toggle();
         }
     }
@@ -153,7 +178,7 @@ public class BattleFightManager {
         } else {
             battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
 
-            if (battleManager.GetSelectedPlayerBoardCharacter().actionable != null && battleManager.GetSelectedPlayerBoardCharacter().actionable.CanDoAction()) {
+            if (selectedPlayerCharacter.actionable != null && selectedPlayerCharacter.actionable.CanDoAction()) {
                 EnterTurnStepAttack();
             }
         }
@@ -197,7 +222,7 @@ public class BattleFightManager {
             }
         }
 
-        battleManager.SetSelectedPlayerBoardCharacter(aliveCharacter);
+        selectedPlayerCharacter = aliveCharacter;
     }
 
     private void EnterTurnStepEnemy() {
@@ -242,7 +267,7 @@ public class BattleFightManager {
     private void MarkSquares(int distance, Square.MarkType markType, bool ignoreBlocking = false) {
         battleManager.EventOnLeavingMarkStep();
 
-        List<Square> squaresHit = battleManager.board.PropagateLinear(battleManager.GetSelectedPlayerBoardCharacter().GetSquare(), distance, battleManager.GetSelectedPlayerBoardCharacter().side.value, ignoreBlocking);
+        List<Square> squaresHit = battleManager.board.PropagateLinear(selectedPlayerCharacter.GetSquare(), distance, selectedPlayerCharacter.side.value, ignoreBlocking);
 
         foreach (Square squareHit in squaresHit) {
             if (squareHit.IsNotBlocking() || ignoreBlocking) {
@@ -257,7 +282,7 @@ public class BattleFightManager {
 
         battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
 
-        MarkSquares(battleManager.GetSelectedPlayerBoardCharacter().movable.movementPoints, Square.MarkType.Movement);
+        MarkSquares(selectedPlayerCharacter.movable.movementPoints, Square.MarkType.Movement);
     }
 
     // Mark all squares the character can attack
@@ -273,7 +298,7 @@ public class BattleFightManager {
     }
 
     private void SelectPreviousPlayerBoardCharacter(bool checkForDead = true) {
-        BoardCharacter boardCharacter = battleManager.GetSelectedPlayerBoardCharacter();
+        BoardCharacter boardCharacter = selectedPlayerCharacter;
 
         do {
             if (battleManager.playerCharacters.IndexOf(boardCharacter) == 0) {
@@ -283,11 +308,11 @@ public class BattleFightManager {
             }
         } while (boardCharacter.IsDead() && checkForDead);
 
-        battleManager.SetSelectedPlayerBoardCharacter(boardCharacter);
+        selectedPlayerCharacter = boardCharacter;
     }
 
     private void SelectNextPlayerBoardCharacter(bool checkForDead = true) {
-        BoardCharacter boardCharacter = battleManager.GetSelectedPlayerBoardCharacter();
+        BoardCharacter boardCharacter = selectedPlayerCharacter;
 
         do {
             if (battleManager.playerCharacters.IndexOf(boardCharacter) >= battleManager.playerCharacters.Count - 1) {
@@ -297,6 +322,6 @@ public class BattleFightManager {
             }
         } while (boardCharacter.IsDead() && checkForDead);
 
-        battleManager.SetSelectedPlayerBoardCharacter(boardCharacter);
+        selectedPlayerCharacter = boardCharacter;
     }
 }

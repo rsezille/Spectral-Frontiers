@@ -12,8 +12,8 @@
     public void EnterTurnStepNone(BattleManager.TurnStep previousTurnStep) {}
 
     public void EnterBattleStepVictory() {
-        if (battleManager.GetSelectedPlayerBoardCharacter().outline != null) {
-            battleManager.GetSelectedPlayerBoardCharacter().outline.enabled = false;
+        if (battleManager.fight.selectedPlayerCharacter.outline != null) {
+            battleManager.fight.selectedPlayerCharacter.outline.enabled = false;
         }
 
         battleManager.currentBattleStep = BattleManager.BattleStep.Victory;

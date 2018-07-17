@@ -144,18 +144,18 @@ public class Square : MonoBehaviour {
             case BattleManager.BattleStep.Fight:
                 if (battleManager.currentTurnStep == BattleManager.TurnStep.Move && markType == MarkType.Movement) {
                     Path p = battleManager.board.pathFinder.FindPath(
-                        battleManager.GetSelectedPlayerBoardCharacter().GetSquare().x,
-                        battleManager.GetSelectedPlayerBoardCharacter().GetSquare().y,
+                        battleManager.fight.selectedPlayerCharacter.GetSquare().x,
+                        battleManager.fight.selectedPlayerCharacter.GetSquare().y,
                         this.x,
                         this.y,
-                        battleManager.GetSelectedPlayerBoardCharacter().side.value
+                        battleManager.fight.selectedPlayerCharacter.side.value
                     );
 
                     if (p != null) {
-                        battleManager.GetSelectedPlayerBoardCharacter().Move(p, true);
+                        battleManager.fight.selectedPlayerCharacter.Move(p, true);
                     }
                 } else if (battleManager.currentTurnStep == BattleManager.TurnStep.Attack && markType == MarkType.Attack) {
-                    battleManager.GetSelectedPlayerBoardCharacter().BasicAttack(boardEntity.GetComponent<BoardCharacter>());
+                    battleManager.fight.selectedPlayerCharacter.BasicAttack(boardEntity.GetComponent<BoardCharacter>());
                     battleManager.EnterTurnStepNone();
                 }
 
