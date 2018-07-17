@@ -1,6 +1,7 @@
 ﻿using SF;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.UI;
 
 /**
  * Scope: GameManager (all scenes)
@@ -17,6 +18,10 @@ public class DialogBox : MonoBehaviour {
         Fast = 40,
         VeryFast = 20,
         Instant = 0,
+    };
+
+    public enum Position {
+        Top, Bottom
     };
 
     private GameManager gameManager; // Shortcut
@@ -58,6 +63,10 @@ public class DialogBox : MonoBehaviour {
                         countLetters++;
                         timerLetters -= (int)textSpeed;
                     }
+                }
+
+                if (countLetters > parsedText.Length) {
+                    countLetters = parsedText.Length;
                 }
 
                 string tmpText = parsedText.Insert(countLetters, "€");
@@ -107,11 +116,51 @@ public class DialogBox : MonoBehaviour {
     /**
      * Show a global dialog box
      */
-    public void Show(string dialogId, int presetIndex = 0, string name = "") {
+    public void Show(string dialogId, Position position = Position.Bottom, int presetIndex = 0, string name = "") {
         if (currentShownPreset != null) {
             return;
         }
 
+        PreShow(dialogId, presetIndex, name);
+
+        currentShownPreset.canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        transform.localPosition = Vector3.zero;
+
+        switch (position) {
+            case Position.Bottom:
+                currentShownPreset.image.rectTransform.anchorMin = new Vector2(0.5f, 0f);
+                currentShownPreset.image.rectTransform.anchorMax = new Vector2(0.5f, 0f);
+                
+                currentShownPreset.image.rectTransform.anchoredPosition = new Vector3(0f, currentShownPreset.yOffset);
+                break;
+            case Position.Top:
+                currentShownPreset.image.rectTransform.anchorMin = new Vector2(0.5f, 1f);
+                currentShownPreset.image.rectTransform.anchorMax = new Vector2(0.5f, 1f);
+
+                currentShownPreset.image.rectTransform.anchoredPosition = new Vector3(0f, - currentShownPreset.yOffset);
+                break;
+        }
+    }
+
+    /**
+     * Show a dialog box attached to a character, with his name
+     */
+    public void Show(BoardCharacter boardCharacter, string dialogId, int presetIndex = 0) {
+        if (currentShownPreset != null) {
+            return;
+        }
+
+        PreShow(dialogId, presetIndex, boardCharacter.character.name);
+
+        currentShownPreset.canvas.renderMode = RenderMode.WorldSpace;
+        transform.localPosition = boardCharacter.GetSquare().transform.localPosition;
+        currentShownPreset.canvas.transform.localPosition = Vector3.zero;
+        currentShownPreset.image.rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+        currentShownPreset.image.rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+        currentShownPreset.image.rectTransform.anchoredPosition = Vector3.zero;
+    }
+
+    private void PreShow(string dialogId, int presetIndex = 0, string name = "") {
         if (presets.Length == 0) {
             Debug.LogWarning("No preset set, dialogbox will not be shown");
 
@@ -132,20 +181,6 @@ public class DialogBox : MonoBehaviour {
 
         parsedText = LanguageManager.instance.getDialog(dialogId).Replace("[player_name]", "".PadLeft(gameManager.player.playerName.Length, '£'));
         currentShownPreset.textMesh.SetText("");
-
-        currentShownPreset.canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        transform.localPosition = Vector3.zero;
-    }
-
-    /**
-     * Show a dialog box attached to a character, with his name
-     */
-    public void Show(BoardCharacter boardCharacter, string dialogId, int presetIndex = 0) {
-        Show(dialogId, presetIndex, boardCharacter.character.name);
-
-        currentShownPreset.canvas.renderMode = RenderMode.WorldSpace;
-        transform.localPosition = boardCharacter.GetSquare().transform.localPosition;
-        currentShownPreset.canvas.transform.localPosition = Vector3.zero;
     }
 
     private void Hide() {
