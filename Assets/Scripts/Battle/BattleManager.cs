@@ -31,7 +31,7 @@ public class BattleManager : MonoBehaviour {
     public int placingCharIndex;
     public List<BoardCharacter> playerCharacters;
     public List<BoardCharacter> enemyCharacters;
-    private BoardCharacter selectedPlayerBoardCharacter;
+    private BoardCharacter selectedPlayerBoardCharacter; //TODO [ALPHA] Move this to BattleFightManager as it is only available during fight step
 
     [Header("Direct references")]
     public Board board;
@@ -138,6 +138,10 @@ public class BattleManager : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.M)) {
             GameManager.instance.DialogBox.Show("prologue_01");
+        }
+
+        if (Input.GetKeyDown(KeyCode.L)) {
+            GameManager.instance.DialogBox.Show(playerCharacters[0], "prologue_01");
         }
 
         if (Input.GetAxis(InputManager.Axis.Zoom) != 0) {

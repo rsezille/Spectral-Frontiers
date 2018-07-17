@@ -48,10 +48,6 @@ public class DialogBox : MonoBehaviour {
 
     private void Update() {
         if (currentShownPreset != null) {
-            if (Input.GetKeyDown(KeyCode.L)) {
-                currentShownPreset.GetComponentInChildren<Canvas>().renderMode = RenderMode.WorldSpace;
-            }
-
             if (countLetters <= currentShownPreset.textMesh.textInfo.pageInfo[currentShownPreset.textMesh.pageToDisplay - 1].lastCharacterIndex) {
                 if (textSpeed == TextSpeed.Instant) {
                     countLetters = currentShownPreset.textMesh.textInfo.pageInfo[currentShownPreset.textMesh.pageToDisplay - 1].lastCharacterIndex;
@@ -112,8 +108,32 @@ public class DialogBox : MonoBehaviour {
      * Show a global dialog box
      */
     public void Show(string dialogId, int presetIndex = 0, string name = "") {
-        ResetAllProperties();
+        if (currentShownPreset != null) {
+            return;
+        }
 
+        PreShow(dialogId, presetIndex, name);
+
+        currentShownPreset.canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        transform.localPosition = Vector3.zero;
+    }
+
+    /**
+     * Show a dialog box attached to a character, with his name
+     */
+    public void Show(BoardCharacter boardCharacter, string dialogId, int presetIndex = 0, string name = "") {
+        if (currentShownPreset != null) {
+            return;
+        }
+
+        PreShow(dialogId, presetIndex, name);
+
+        currentShownPreset.canvas.renderMode = RenderMode.WorldSpace;
+        transform.localPosition = boardCharacter.GetSquare().transform.localPosition;
+        currentShownPreset.canvas.transform.localPosition = Vector3.zero;
+    }
+
+    private void PreShow(string dialogId, int presetIndex, string name) {
         if (presets.Length == 0) {
             Debug.LogWarning("No preset set, dialogbox will not be shown");
 
@@ -125,6 +145,8 @@ public class DialogBox : MonoBehaviour {
             presetIndex = 0;
         }
 
+        ResetAllProperties();
+
         currentShownPreset = presets[presetIndex];
         currentShownPreset.gameObject.SetActive(true);
         currentShownPreset.NoCursor();
@@ -132,13 +154,6 @@ public class DialogBox : MonoBehaviour {
 
         parsedText = LanguageManager.instance.getDialog(dialogId).Replace("[player_name]", "".PadLeft(gameManager.player.playerName.Length, '£'));
         currentShownPreset.textMesh.SetText("");
-    }
-
-    /**
-     * Show a dialog box attached to a character, with his name
-     */
-    public void Show(BoardCharacter boardCharacter) {
-
     }
 
     private void Hide() {

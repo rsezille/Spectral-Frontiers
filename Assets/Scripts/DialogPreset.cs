@@ -6,6 +6,7 @@ public class DialogPreset : MonoBehaviour, IPointerClickHandler {
     [Header("Direct references")]
     public TextMeshProUGUI textMesh;
     public Animator cursor;
+    public Canvas canvas;
 
     private DialogBox dialogBox;
 
