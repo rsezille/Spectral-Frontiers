@@ -27,8 +27,6 @@ public class BattleManager : MonoBehaviour {
     public RawMission mission;
 
     // Characters
-    public List<Character> playerPlacingChars;
-    public int placingCharIndex;
     public List<BoardCharacter> playerCharacters;
     public List<BoardCharacter> enemyCharacters;
 
@@ -85,9 +83,6 @@ public class BattleManager : MonoBehaviour {
         currentBattleStep = BattleStep.Placing;
         currentTurnStep = TurnStep.None;
         turn = 0;
-
-        placingCharIndex = 0;
-        playerPlacingChars = new List<Character>();
 
         // Disable all HUD by default
         placingHUD.gameObject.SetActive(false);

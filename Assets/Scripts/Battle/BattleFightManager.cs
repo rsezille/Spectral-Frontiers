@@ -189,8 +189,8 @@ public class BattleFightManager {
 
         if (battleManager.playerCharacters.Count > 0) {
             // Disable outlines from the PlacingStep
-            if (battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter != null) {
-                battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter.outline.enabled = false;
+            if (battleManager.placing.GetCurrentPlacingChar().boardCharacter != null) {
+                battleManager.placing.GetCurrentPlacingChar().boardCharacter.outline.enabled = false;
             }
 
             battleManager.currentBattleStep = BattleManager.BattleStep.Fight;
