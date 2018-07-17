@@ -48,6 +48,10 @@ public class DialogBox : MonoBehaviour {
 
     private void Update() {
         if (currentShownPreset != null) {
+            if (Input.GetKeyDown(KeyCode.L)) {
+                currentShownPreset.GetComponentInChildren<Canvas>().renderMode = RenderMode.WorldSpace;
+            }
+
             if (countLetters <= currentShownPreset.textMesh.textInfo.pageInfo[currentShownPreset.textMesh.pageToDisplay - 1].lastCharacterIndex) {
                 if (textSpeed == TextSpeed.Instant) {
                     countLetters = currentShownPreset.textMesh.textInfo.pageInfo[currentShownPreset.textMesh.pageToDisplay - 1].lastCharacterIndex;
@@ -87,6 +91,17 @@ public class DialogBox : MonoBehaviour {
                 currentShownPreset.textMesh.SetText(tmpText.Replace("€", "<alpha=#00>"));
             }
 
+            if (countLetters >= currentShownPreset.textMesh.textInfo.pageInfo[currentShownPreset.textMesh.pageToDisplay - 1].lastCharacterIndex
+                   && currentShownPreset.textMesh.pageToDisplay < currentShownPreset.textMesh.textInfo.pageCount) {
+                currentShownPreset.NextCursor();
+            } else if (countLetters >= currentShownPreset.textMesh.textInfo.pageInfo[currentShownPreset.textMesh.pageToDisplay - 1].lastCharacterIndex
+                    && currentShownPreset.textMesh.pageToDisplay >= currentShownPreset.textMesh.textInfo.pageCount
+                    && currentShownPreset.textMesh.textInfo.pageInfo[currentShownPreset.textMesh.pageToDisplay - 1].lastCharacterIndex > 0) {
+                currentShownPreset.EndCursor();
+            } else {
+                currentShownPreset.NoCursor();
+            }
+
             if (InputManager.Confirm.IsKeyDown) {
                 Next();
             }
@@ -112,6 +127,8 @@ public class DialogBox : MonoBehaviour {
 
         currentShownPreset = presets[presetIndex];
         currentShownPreset.gameObject.SetActive(true);
+        currentShownPreset.NoCursor();
+        currentShownPreset.textMesh.pageToDisplay = 1;
 
         parsedText = LanguageManager.instance.getDialog(dialogId).Replace("[player_name]", "".PadLeft(gameManager.player.playerName.Length, '£'));
         currentShownPreset.textMesh.SetText("");
@@ -133,7 +150,8 @@ public class DialogBox : MonoBehaviour {
             countLetters = currentShownPreset.textMesh.textInfo.pageInfo[currentShownPreset.textMesh.pageToDisplay - 1].lastCharacterIndex;
         } else if (currentShownPreset.textMesh.pageToDisplay < currentShownPreset.textMesh.textInfo.pageCount) { // Show the next page
             currentShownPreset.textMesh.pageToDisplay++;
-        } else if (currentShownPreset.textMesh.pageToDisplay >= currentShownPreset.textMesh.textInfo.pageCount) { // End the dialog box
+        } else if (currentShownPreset.textMesh.pageToDisplay >= currentShownPreset.textMesh.textInfo.pageCount
+                && currentShownPreset.textMesh.textInfo.pageInfo[currentShownPreset.textMesh.pageToDisplay - 1].lastCharacterIndex > 0) { // End the dialog box
             Hide();
         }
     }

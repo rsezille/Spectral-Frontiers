@@ -5,8 +5,7 @@ using UnityEngine.EventSystems;
 public class DialogPreset : MonoBehaviour, IPointerClickHandler {
     [Header("Direct references")]
     public TextMeshProUGUI textMesh;
-    public GameObject nextCursor;
-    public GameObject endCursor;
+    public Animator cursor;
 
     private DialogBox dialogBox;
 
@@ -14,9 +13,23 @@ public class DialogPreset : MonoBehaviour, IPointerClickHandler {
         dialogBox = GetComponentInParent<DialogBox>();
 
         textMesh.richText = true;
+
+        dialogBox.GetComponentInChildren<Canvas>().worldCamera = Camera.main;
     }
 
     public void OnPointerClick(PointerEventData eventData) {
         dialogBox.Next();
+    }
+
+    public void NextCursor() {
+        cursor.Play("NextCursor");
+    }
+
+    public void EndCursor() {
+        cursor.Play("EndCursor");
+    }
+
+    public void NoCursor() {
+        cursor.Play("NoCursor");
     }
 }
