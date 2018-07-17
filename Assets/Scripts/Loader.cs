@@ -21,7 +21,7 @@ public class Loader : MonoBehaviour {
                 case Scenes.Battle:
                     Debug.Log("First scene: Battle");
                     GameManager.instance.missionToLoad = "story_01";
-                    LanguageManager.getInstance().loadDefaultLanguage();
+                    LanguageManager.instance.loadDefaultLanguage();
                     break;
             }
 #endif

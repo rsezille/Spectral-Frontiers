@@ -15,7 +15,7 @@ namespace SF {
             public Pair[] list;
         }
 
-        private static LanguageManager instance = new LanguageManager();
+        public static LanguageManager instance { private set; get; } = new LanguageManager();
 
         // Load both default language & desired one (default is mainly used for fallback if keys not found)
         private Dictionary<string, string> defaultStrings = new Dictionary<string, string>();
@@ -24,10 +24,6 @@ namespace SF {
         private Dictionary<string, string> currentDialogs = new Dictionary<string, string>();
 
         private LanguageManager() { }
-
-        public static LanguageManager getInstance() {
-            return instance;
-        }
 
         public void loadDefaultLanguage() {
             Debug.Log("Loading default language... [" + Globals.DefaultLanguage + "]");

@@ -13,6 +13,6 @@ public class TranslatedText : MonoBehaviour {
     private void Start() {
         textBox = GetComponent<Text>();
 
-        textBox.text = LanguageManager.getInstance().getString(textBox.text);
+        textBox.text = LanguageManager.instance.getString(textBox.text);
     }
 }

@@ -11,7 +11,7 @@
     public const string DefaultLanguage = "en";
 
     // Player
-    public const string DefaultPlayerName = "Test";
+    public const string DefaultPlayerName = "Test pouet yolo wesh trop cool maggle yo";
     public const int MinPlayerNameLength = 3;
     public const int MaxPlayerNameLength = 10;
 }
