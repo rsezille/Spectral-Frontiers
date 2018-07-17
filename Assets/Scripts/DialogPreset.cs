@@ -1,16 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using TMPro;
 using UnityEngine;
 
 public class DialogPreset : MonoBehaviour {
+    [Header("Direct references")]
+    public TextMeshProUGUI textMesh;
+    public GameObject nextCursor;
+    public GameObject endCursor;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    private void Awake() {
+        textMesh.richText = true;
+    }
 }

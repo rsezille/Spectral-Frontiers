@@ -22,7 +22,7 @@ public class DialogBox : MonoBehaviour {
 
     private GameManager gameManager; // Shortcut
 
-    public Canvas[] presets; // 0 is the default one
+    private DialogPreset[] presets; // 0 is the default one
 
     public TextSpeed textSpeed;
     public Color playerTagColor = new Color(0f, 0.5f, 1f);
@@ -30,32 +30,28 @@ public class DialogBox : MonoBehaviour {
 
     private float timerLetters = 0f;
     private int countLetters = 0;
+    private DialogPreset currentShownPreset;
+    private string parsedText = "";
 
     private void Awake() {
         gameManager = GameManager.instance;
 
         textSpeed = TextSpeed.Fast;
 
-        if (presets == null) {
-            presets = new Canvas[0]; // Avoid undefined
-        }
+        presets = GetComponentsInChildren<DialogPreset>();
 
         if (presets.Length > 0) {
-            foreach (Canvas preset in presets) {
+            foreach (DialogPreset preset in presets) {
                 preset.gameObject.SetActive(false);
             }
         }
     }
 
-    //string initialText = "Lorem ipsum dolor sit amet, [player_name] adipiscing adipiscing adipiscing [player_name] adipiscing adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
-    string initialText = "Bienvenue dans ce super monde [player_name] où règne traitrises et trahisons. [player_name] est prêt à arpenter ce monde plein de malédictions et de magie. La seule âme qui puisse être sauvé n'est sans nul doute que celle du faux héros de l'histoire, triomphant du mal et du boss final très moche. C'est sans nul doute que ce vis [player_name] pourra donner lieu à rien.";
-    string parsedText = "";
-
     private void Update() {
-        if (textMesh != null) {
-            if (countLetters <= textMesh.textInfo.pageInfo[textMesh.pageToDisplay - 1].lastCharacterIndex) {
+        if (currentShownPreset != null) {
+            if (countLetters <= currentShownPreset.textMesh.textInfo.pageInfo[currentShownPreset.textMesh.pageToDisplay - 1].lastCharacterIndex) {
                 if (textSpeed == TextSpeed.Instant) {
-                    countLetters = textMesh.textInfo.pageInfo[textMesh.pageToDisplay - 1].lastCharacterIndex;
+                    countLetters = currentShownPreset.textMesh.textInfo.pageInfo[currentShownPreset.textMesh.pageToDisplay - 1].lastCharacterIndex;
                 } else {
                     timerLetters += Time.deltaTime * 1000;
 
@@ -89,33 +85,31 @@ public class DialogBox : MonoBehaviour {
                     m = m.NextMatch();
                 }
 
-                textMesh.SetText(tmpText.Replace("€", "<alpha=#00>"));
+                currentShownPreset.textMesh.SetText(tmpText.Replace("€", "<alpha=#00>"));
             }
 
             if (InputManager.Confirm.IsKeyDown) {
-                if (countLetters < textMesh.textInfo.pageInfo[textMesh.pageToDisplay - 1].lastCharacterIndex) { // Show instantly the current page
-                    countLetters = textMesh.textInfo.pageInfo[textMesh.pageToDisplay - 1].lastCharacterIndex;
-                } else if (textMesh.pageToDisplay < textMesh.textInfo.pageCount) { // Show the next page
-                    textMesh.pageToDisplay++;
-                } else if (textMesh.pageToDisplay >= textMesh.textInfo.pageCount) { // End the dialog box
+                if (countLetters < currentShownPreset.textMesh.textInfo.pageInfo[currentShownPreset.textMesh.pageToDisplay - 1].lastCharacterIndex) { // Show instantly the current page
+                    countLetters = currentShownPreset.textMesh.textInfo.pageInfo[currentShownPreset.textMesh.pageToDisplay - 1].lastCharacterIndex;
+                } else if (currentShownPreset.textMesh.pageToDisplay < currentShownPreset.textMesh.textInfo.pageCount) { // Show the next page
+                    currentShownPreset.textMesh.pageToDisplay++;
+                } else if (currentShownPreset.textMesh.pageToDisplay >= currentShownPreset.textMesh.textInfo.pageCount) { // End the dialog box
                     Hide();
                 }
             }
         }
     }
 
-    TextMeshProUGUI textMesh;
-
     /**
      * Show a global dialog box
      */
     public void Show(string dialogId, int presetIndex = 0, string name = "") {
-        Debug.Log("Show:   " + presetIndex);
-
         ResetAllProperties();
 
         if (presets.Length == 0) {
             Debug.LogWarning("No preset set, dialogbox will not be shown");
+
+            return;
         }
 
         if (presetIndex >= presets.Length) {
@@ -123,12 +117,11 @@ public class DialogBox : MonoBehaviour {
             presetIndex = 0;
         }
 
-        presets[presetIndex].gameObject.SetActive(true);
-        textMesh = presets[presetIndex].transform.GetChild(0).GetComponentInChildren<TextMeshProUGUI>();
+        currentShownPreset = presets[presetIndex];
+        currentShownPreset.gameObject.SetActive(true);
 
         parsedText = LanguageManager.instance.getDialog(dialogId).Replace("[player_name]", "".PadLeft(gameManager.player.playerName.Length, '£'));
-        textMesh.richText = true;
-        textMesh.text = "";
+        currentShownPreset.textMesh.SetText("");
         
         //EnablePreset(preset);   // The dialogbox prefab comes with several sub game objects containing a background and a canvas with a textmesh pro text
         // Allowing to customize the text per background and so on
@@ -144,9 +137,10 @@ public class DialogBox : MonoBehaviour {
     private void ResetAllProperties() {
         timerLetters = 0f;
         countLetters = 0;
-        textMesh = null;
+        currentShownPreset = null;
+        parsedText = "";
 
-        foreach (Canvas preset in presets) {
+        foreach (DialogPreset preset in presets) {
             preset.gameObject.SetActive(false);
         }
     }

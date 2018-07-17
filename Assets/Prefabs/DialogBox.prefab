@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 223799258046201074}
   - component: {fileID: 114197786319085530}
   - component: {fileID: 114898972246385530}
+  - component: {fileID: 114456282231275322}
   m_Layer: 0
   m_Name: Preset1
   m_TagString: Untagged
@@ -229,6 +230,20 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+--- !u!114 &114456282231275322
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1451814196591064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ed21968efea0d9408e6726662769eec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textMesh: {fileID: 114171920168125672}
+  nextCursor: {fileID: 0}
+  endCursor: {fileID: 0}
 --- !u!114 &114595600593580048
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -267,12 +282,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8b3ff2357dd2564cb47bf1ebfa4a2c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  presets:
-  - {fileID: 223799258046201074}
   textSpeed: 0
   playerTagColor: {r: 0, g: 0.5, b: 1, a: 1}
   specialTagColor: {r: 1, g: 0, b: 0, a: 1}
-  timerLetters: 0
 --- !u!114 &114898972246385530
 MonoBehaviour:
   m_ObjectHideFlags: 1
