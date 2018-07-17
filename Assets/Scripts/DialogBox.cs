@@ -115,12 +115,6 @@ public class DialogBox : MonoBehaviour {
 
         parsedText = LanguageManager.instance.getDialog(dialogId).Replace("[player_name]", "".PadLeft(gameManager.player.playerName.Length, '£'));
         currentShownPreset.textMesh.SetText("");
-        
-        //EnablePreset(preset);   // The dialogbox prefab comes with several sub game objects containing a background and a canvas with a textmesh pro text
-        // Allowing to customize the text per background and so on
-        // Should also contain a little arrow to point the dialogbox to the character
-        //GetTextFromPreset(); // Just do a preset.GetComponentInChildren<TextMesh>
-        //EnableDialogBox(); // By enabling the game object and try to use DOTween to animate the text ?
     }
 
     /**
@@ -145,6 +139,10 @@ public class DialogBox : MonoBehaviour {
     }
 
     private void ResetAllProperties() {
+        if (currentShownPreset != null) {
+            currentShownPreset.textMesh.pageToDisplay = 1;
+        }
+
         timerLetters = 0f;
         countLetters = 0;
         currentShownPreset = null;
