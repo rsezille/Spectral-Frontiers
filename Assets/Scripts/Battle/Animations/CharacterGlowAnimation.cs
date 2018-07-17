@@ -3,7 +3,7 @@ using SpriteGlow;
 using DG.Tweening;
 
 /**
- * TODO: May have a performance improvement: pause the DOTween animation when the glow is disabled
+ * TODO [FINAL] May have a performance improvement: pause the DOTween animation when the glow is disabled
  */
 [RequireComponent(typeof(SpriteGlowEffect))]
 public class CharacterGlowAnimation : MonoBehaviour {

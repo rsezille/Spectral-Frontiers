@@ -47,8 +47,8 @@ public class FightHUD : MonoBehaviour {
         actionButton.GetComponent<Button>().interactable = actionable != null && actionable.CanDoAction() && !battleManager.GetSelectedPlayerBoardCharacter().IsDead();
         actionMenu.Refresh();
 
-        previousButton.GetComponent<Button>().interactable = true; //TODO: if no other character available, disable it
-        nextButton.GetComponent<Button>().interactable = true; //TODO: if no other character available, disable it
+        previousButton.GetComponent<Button>().interactable = true; //TODO [ALPHA] if no other character available, disable it
+        nextButton.GetComponent<Button>().interactable = true; //TODO [ALPHA] if no other character available, disable it
         statusButton.GetComponent<Button>().interactable = true;
         endTurnButton.GetComponent<Button>().interactable = true;
     }

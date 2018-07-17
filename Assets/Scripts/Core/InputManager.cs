@@ -6,7 +6,7 @@ namespace SF {
      * 
      * Usage: if (InputManager.Next.IsKeyDown) { do something }
      * 
-     * TODO: Delete this and use a professionnal input manager instead
+     * TODO [FINAL] Delete this and use a professionnal input manager instead
      */
     public static class InputManager {
         /**

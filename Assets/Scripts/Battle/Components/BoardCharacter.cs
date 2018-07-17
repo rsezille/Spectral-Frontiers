@@ -71,11 +71,11 @@ public class BoardCharacter : MonoBehaviour {
 
         // Enemies have their spriteContainer already linked to the GameObject
         if (side.value == Side.Type.Player) {
-            // TODO: Replace "Hero" by the main character or the job
+            // TODO [ALPHA] Replace "Hero" by the main character or the job
             spriteContainer = Instantiate(Resources.Load<GameObject>("CharacterSprites/Hero"), transform.position, Quaternion.identity) as GameObject;
             spriteContainer.transform.SetParent(transform);
         } else {
-            // TODO: Replace this by spriteContainer = GetComponentInChildren<Transform>().gameObject;
+            // TODO [ALPHA] Replace this by spriteContainer = GetComponentInChildren<Transform>().gameObject;
             spriteContainer = gameObject;
         }
 

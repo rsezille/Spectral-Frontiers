@@ -16,7 +16,7 @@ public class AI : MonoBehaviour {
 
     /**
      * Use a custom AI if it exists, otherwise use the standard one
-     * TODO [AI] Create presets such as normal, aggressive, and so on
+     * TODO [ALPHA] Create presets such as normal, aggressive, and so on
      */
     public IEnumerator Process() {
         CustomAI customAI = GetComponent<CustomAI>();
@@ -43,7 +43,7 @@ public class AI : MonoBehaviour {
     }
 
     /**
-     * TODO: Add skills, etc.
+     * TODO [ALPHA] Add skills, etc.
      */
     private bool Action() {
         bool attacked = false;

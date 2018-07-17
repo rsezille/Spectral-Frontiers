@@ -10,7 +10,7 @@ public class Player {
         playerName = Globals.DefaultPlayerName;
         gold = 0;
 
-        //TODO: Use scenario to load default characters
+        // TODO [ALPHA] Use scenario to load default characters
         Character ritz = new Character("Ritz");
         Character mew = new Character("Mew");
         Character kupo = new Character("Kupo");

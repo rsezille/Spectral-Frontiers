@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour {
             Destroy(gameObject);
         }
 
-        //TODO: do it when starting a new game (don't when loading a previously saved game)
+        // TODO [BETA] do it when starting a new game (don't when loading a previously saved game)
         if (player == null) {
             player = new Player();
         }
@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour {
 
         Debug.Log("Game Manager awakes");
 
-        //TODO: Logs + time
+        // TODO [BETA] Logs + time
         InitMissions();
         InitMonsters();
     }
@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviour {
     /**
      * immediate is used to not wait the fade in to be completed before loading the scene - can speed up scene loading
      * /!\ be aware that when using immediate = true, the speed must be less than the loading time (otherwise the fade in will not be finished when swaping scenes)
-     * TODO [SCENE] Add a loading screen between scenes (or on purpose, for example when loading a mission (BattleScene)
+     * TODO [BETA] Add a loading screen between scenes (or on purpose, for example when loading a mission (BattleScene)
      */
     public void LoadSceneAsync(string scene, bool immediate = false, float speed = 1f, Color? inColorN = null, Color? outColorN = null) {
         Color inColor = inColorN ?? Color.black;

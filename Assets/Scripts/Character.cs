@@ -37,7 +37,7 @@ public class Character {
 
     public int movementPoints = 3; // Number of squares the character can travel with one movement token
 
-    public BoardCharacter boardCharacter; //TODO: its ugly but I don't care
+    public BoardCharacter boardCharacter; //TODO [FINAL] its ugly but I don't care
 
     public Character(string name) {
         this.name = name;
@@ -46,7 +46,6 @@ public class Character {
     }
 
     public int ComputeMaxHP() {
-        //TODO: Equipment impact
         maximumHP = baseHP;
 
         return maximumHP;
@@ -58,7 +57,7 @@ public class Character {
 
     /**
      * For testing purpose
-     * TODO [ENEMY] Initialize method
+     * TODO [ALPHA] Initialize method
      */
     public void SetMaxHP(int maxHP) {
         baseHP = maxHP;
@@ -75,7 +74,6 @@ public class Character {
     }
 
     public int ComputeMaxMP() {
-        //TODO: Equipement impact
         maximumMP = baseMP;
 
         return maximumMP;
@@ -90,22 +88,18 @@ public class Character {
     }
 
     public int GetPhysicalAttack() {
-        //TODO: Equipment impact
         return basePhysicalAttack;
     }
 
     public int GetPhysicalDefense() {
-        //TODO: Equipment impact
         return basePhysicalDefense;
     }
 
     public int GetMagicalPower() {
-        //TODO: Equipment impact
         return baseMagicalPower;
     }
 
     public int GetMagicalResistance() {
-        //TODO: Equipment impact
         return baseMagicalResistance;
     }
 

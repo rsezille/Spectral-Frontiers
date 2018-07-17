@@ -31,7 +31,7 @@ public class BattleManager : MonoBehaviour {
     public int placingCharIndex;
     public List<BoardCharacter> playerCharacters;
     public List<BoardCharacter> enemyCharacters;
-    private BoardCharacter selectedPlayerBoardCharacter; //TODO [ALPHA] Move this to BattleFightManager as it is only available during fight step
+    private BoardCharacter selectedPlayerBoardCharacter; // TODO [ALPHA] Move this to BattleFightManager as it is only available during fight step
 
     [Header("Direct references")]
     public Board board;
@@ -43,7 +43,7 @@ public class BattleManager : MonoBehaviour {
     public FightHUD fightHUD;
     public VictoryHUD victoryHUD;
 
-    public PlayerCharacter testPlayerCharacter; //TODO: Find the correct character giving the name & job
+    public PlayerCharacter testPlayerCharacter; // TODO [ALPHA] Find the correct character giving the name & job
     public FloatingText floatingText;
 
     [Header("Options")]

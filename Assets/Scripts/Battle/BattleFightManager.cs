@@ -127,8 +127,8 @@ public class BattleFightManager {
     // Called by FightHUD
     public void EndTurn() {
         battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
-        //TODO: FlashMessage
-        //TODO: Disable inputs
+        // TODO [ALPHA] FlashMessage
+        // TODO [ALPHA] Disable inputs
 
         if (battleManager.GetSelectedPlayerBoardCharacter().outline != null) {
             battleManager.GetSelectedPlayerBoardCharacter().outline.enabled = false;
@@ -264,7 +264,7 @@ public class BattleFightManager {
     private void EnterTurnStepAttack() {
         battleManager.currentTurnStep = BattleManager.TurnStep.Attack;
 
-        MarkSquares(1, Square.MarkType.Attack, true); // TODO [RANGED] weapon range
+        MarkSquares(1, Square.MarkType.Attack, true); // TODO [ALPHA] weapon range
     }
 
     public void EnterTurnStepDirection() {

@@ -2,7 +2,7 @@
 
 namespace SF {
     /**
-     * TODO: Delete this and use a professionnal input manager instead
+     * TODO [FINAL] Delete this and use a professionnal input manager instead
      */
     public class KeyBind {
         public KeyCode defaultKey { get; private set; }
