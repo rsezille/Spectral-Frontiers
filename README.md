@@ -9,7 +9,8 @@
 [Dialog box](Documentation/DialogBox.md)  
 [Inputs](Documentation/Inputs.md)  
 [Map Editor](Documentation/SFMapEditor.md)  
-[Semi transparent entities](Documentation/SemiTransparentEntities.md)
+[Semi transparent entities](Documentation/SemiTransparentEntities.md)  
+[Water reflection](Documentation/WaterReflection.md)
 
 **Game mechanics**  
    [Direction](Documentation/Direction.md)  
