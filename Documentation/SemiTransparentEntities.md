@@ -8,26 +8,12 @@ One solution that has been implanted is to change the opacity of the big entitie
 
 The entity prefab must have the *SFSemiTransparent.cs* script attached to them, as well as a collider2D to determine its bounds.
 
-The default behavior is to change the opacity when the mouse enters/leaves the entity.
+The default behavior is to change the opacity when the mouse enters/leaves the entity, as well as being semi transparent when hiding a board character.
 
-But we can also trigger the change of the opacity when mouseovering an object which has a part hidden behind an entity. For example if the head of a boardcharacter is hidden by a tree.  
 That is why the above script will automatically add the `SemiTransparent` layer to instancied prefabs, enabling a `Collider2D.OverlapCollider()` with a layer mask to retrieve overlapped entities.
 
-Example:
-```C#
-++++ public void MouseEnter() ++++
+**Board character detection**
 
-Collider2D collider = GetComponentInChildren<Collider2D>();
-
-Collider2D[] collidersHit = new Collider2D[20];
-ContactFilter2D contactFilter = new ContactFilter2D();
-contactFilter.SetLayerMask(LayerMask.GetMask("SemiTransparent"));
-
-int collidersNb = collider.OverlapCollider(contactFilter, collidersHit);
-
-if (collidersNb > 0) {
-    for (int i = 0; i < collidersNb; i++) {
-        collidersHit[i].GetComponent<SFSemiTransparent>().MouseEnter(); // or .MouseLeave()
-    }
-}
-```
+In order to detect if semi transparent entities are hiding board characters, when characters are moved on the board (placing or moving one), we emit two events:
+- The first one will reset the opacity of all semi transparent entities
+- The second will check for each board characters if they touch semi transparent entites and if so, update the opacity of the touched entites.
