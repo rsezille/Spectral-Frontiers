@@ -1,8 +1,4 @@
-# Game mechanics
-
-## During fights
-
-### Direction
+# Direction
 
 A character has one direction: north, south, east or west. This direction impacts directly precision and dodge chances.
 
@@ -28,9 +24,3 @@ In a mission json, simply add a direction key to a starting square:
 ```
 
 Values are `North`, `South`, `East`, `West`. Case doesn't matter.
-
-### Mandatory character
-
-A mission can specify mandatory main character(s) that can not be removed from the map and are already placed on it at the beginning of the placing step.
-
-It is for scenario purpose, such as dialog boxes and cinematics.

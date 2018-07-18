@@ -6,9 +6,11 @@
 
 ## Documentation
 
-[Game mechanics](Documentation/Mechanics.md)  
+[Map Editor](Documentation/SFMapEditor.md)  
 [Semi transparent entities](Documentation/SemiTransparentEntities.md)  
-[SFMapEditor](Documentation/SFMapEditor.md)
+**Game mechanics**  
+   [Direction](Documentation/Direction.md)  
+   [Mandatory Character](Documentation/MandatoryCharacter.md)
 
 ### Misc
 
