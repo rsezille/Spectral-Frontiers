@@ -2,7 +2,7 @@
   "list": [
     {
       "id": "prologue_01",
-      "text": "Bienvenue dans ce super monde [player_name] où règne traitrises et trahisons. [player_name] est prêt à arpenter ce monde plein de malédictions et de magie. La seule âme qui puisse être sauvé n'est sans nul doute que celle du faux héros de l'histoire, triomphant du mal et du boss final très moche. C'est sans nul doute que ce vis [player_name] pourra donner lieu à rien."
+      "text": "Hello [player_name]! Welcome in the awesome world of Spectral Frontiers! You are going to discover a world filled with darkness, betrayals and epic battles. You will not be alone to face all the challenges the world keeps secret!"
     },
     {
       "id": "prologue_02",
