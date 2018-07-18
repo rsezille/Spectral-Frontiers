@@ -217,6 +217,8 @@ public class BattlePlacingManager {
                     RefreshStartBattleText();
                 }
 
+                battleManager.EventOnSemiTransparentReset();
+
                 //battleManager.battleCamera.SetPosition(battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter, true);
             }
         }

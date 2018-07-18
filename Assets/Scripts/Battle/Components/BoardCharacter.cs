@@ -67,6 +67,8 @@ public class BoardCharacter : MonoBehaviour {
     private void Awake() {
         battleManager = BattleManager.instance;
 
+        battleManager.OnCheckSemiTransparent += OnCheckSemiTransparent;
+
         side = GetComponent<Side>();
 
         // Enemies have their spriteContainer already linked to the GameObject
@@ -120,7 +122,7 @@ public class BoardCharacter : MonoBehaviour {
         gameObject.name = character.name; // To find it inside the editor
     }
 
-    private void CheckForSemiTransparent(bool enter) {
+    private void OnCheckSemiTransparent() {
         // A sprite can have several colliders depending on its animations
         Collider2D[] spriteColliders = spriteContainer.GetComponents<Collider2D>();
 
@@ -146,12 +148,8 @@ public class BoardCharacter : MonoBehaviour {
                 if (GetSquare().sortingGroup.sortingOrder > collidersHit[i].GetComponentInParent<Square>().sortingGroup.sortingOrder) {
                     continue;
                 }
-
-                if (enter) {
-                    collidersHit[i].GetComponent<SemiTransparent>().MouseEnter();
-                } else {
-                    collidersHit[i].GetComponent<SemiTransparent>().MouseLeave();
-                }
+                
+                collidersHit[i].GetComponent<SemiTransparent>().CharacterHiding();
             }
         }
     }
@@ -160,8 +158,6 @@ public class BoardCharacter : MonoBehaviour {
      * Triggered by Board (SpriteContainer)
      */
     public void MouseEnter() {
-        CheckForSemiTransparent(true);
-
         battleManager.fightHUD.SquareHovered(GetSquare());
 
         if (outline != null) {
@@ -173,8 +169,6 @@ public class BoardCharacter : MonoBehaviour {
      * Triggered by Board (SpriteContainer)
      */
     public void MouseLeave() {
-        CheckForSemiTransparent(false);
-
         battleManager.fightHUD.SquareHovered(null);
 
         if ((battleManager.currentBattleStep == BattleManager.BattleStep.Placing && battleManager.placing.GetCurrentPlacingChar().boardCharacter != this

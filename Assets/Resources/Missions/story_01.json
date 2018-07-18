@@ -1,7 +1,7 @@
 {
   "id": "story_01",
-  "map": "001",
-  "max_player_characters": 2,
+  "map": "003",
+  "max_player_characters": 3,
   "background": {
     "id": null,
     "main_color": "0059B8",
@@ -51,18 +51,13 @@
 		"direction": "West"
 	},
 	{
-		"posX": 5,
-		"posY": 3,
-		"direction": "West"
-	},
-	{
-		"posX": 3,
-		"posY": 5,
-		"direction": "West"
-	},
-	{
-		"posX": 3,
+		"posX": 9,
 		"posY": 8,
+		"direction": "West"
+	},
+	{
+		"posX": 8,
+		"posY": 9,
 		"direction": "West"
 	}
   ]

@@ -10,20 +10,28 @@ namespace SF {
 
         // Because several objects can trigger the opacity change, we need to store the count of those objects
         public int transparentObjectsCount = 0;
+        private bool hideCharacter = false;
+
+        private void Awake() {
+            BattleManager.instance.OnSemiTransparentReset += OnSemiTransparentReset;
+        }
 
         private void Start() {
             gameObject.layer = LayerMask.NameToLayer("SemiTransparent");
             spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
+        public void CharacterHiding() {
+            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 0.5f);
+            hideCharacter = true;
+        }
+
         /**
          * Triggered by Board and also by other objects (board character...)
          */
         public void MouseEnter() {
-            if (transparentObjectsCount == 0) {
-                spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 0.5f);
-            }
-
+            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 0.5f);
+            
             transparentObjectsCount++;
         }
 
@@ -31,11 +39,19 @@ namespace SF {
          * Triggered by Board and also by other objects (board character...)
          */
         public void MouseLeave() {
-            if (transparentObjectsCount == 1) {
+            transparentObjectsCount = Mathf.Min(0, transparentObjectsCount - 1);
+
+            if (transparentObjectsCount <= 0 && !hideCharacter) {
                 spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 1f);
             }
+        }
 
-            transparentObjectsCount--;
+        private void OnSemiTransparentReset() {
+            hideCharacter = false;
+
+            if (transparentObjectsCount == 0) {
+                spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 1f);
+            }
         }
     }
 }

@@ -53,6 +53,8 @@ public class BattleManager : MonoBehaviour {
     public event SFEvent OnLeavingMarkStep;
     public event SFEvent OnZoomChange;
     public event SFEvent OnScreenChange;
+    public event SFEvent OnSemiTransparentReset;
+    public event SFEvent OnCheckSemiTransparent;
 
     // Dedicated managers for each BattleStep
     public BattlePlacingManager placing;
@@ -167,6 +169,11 @@ public class BattleManager : MonoBehaviour {
 
     public void EventOnEnterPlacing() {
         OnEnterPlacing?.Invoke();
+    }
+
+    public void EventOnSemiTransparentReset() {
+        OnSemiTransparentReset?.Invoke();
+        OnCheckSemiTransparent?.Invoke();
     }
 
     public void EventOnLeavingMarkStep() {
