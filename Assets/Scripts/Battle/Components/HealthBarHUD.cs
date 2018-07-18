@@ -1,6 +1,4 @@
-﻿using SF;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(BoardEntity), typeof(BoardCharacter)), DisallowMultipleComponent]
 public class HealthBarHUD : MonoBehaviour {
@@ -26,14 +24,14 @@ public class HealthBarHUD : MonoBehaviour {
         
         healthBar = instance.Find("HealthBar").transform;
 
-        healthBar.localScale = new Vector3(
-            (float)boardCharacter.character.GetCurrentHP() / (float)boardCharacter.character.GetMaxHP(),
-            healthBar.localScale.y,
-            healthBar.localScale.z
-        );
+        UpdateScaleByHP();
     }
 
     private void Update() {
+        UpdateScaleByHP();
+    }
+
+    private void UpdateScaleByHP() {
         healthBar.localScale = new Vector3(
             (float)boardCharacter.character.GetCurrentHP() / (float)boardCharacter.character.GetMaxHP(),
             healthBar.localScale.y,

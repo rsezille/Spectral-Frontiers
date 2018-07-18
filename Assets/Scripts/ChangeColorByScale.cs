@@ -19,7 +19,15 @@ public class ChangeColorByScale : MonoBehaviour {
         image = GetComponent<Image>();
     }
 
+    private void Start() {
+        UpdateColor();
+    }
+
     private void Update() {
+        UpdateColor();
+    }
+
+    private void UpdateColor() {
         image.color = Color.Lerp(
             minColor,
             maxColor,
