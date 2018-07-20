@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using SF;
 using System.Collections;
 using System.Globalization;
 using UnityEngine;
@@ -13,12 +14,18 @@ public class BattleCinematicManager {
     private string[] actions;
     private Type type;
 
+    private Coroutine cinematicCoroutine;
+
     public BattleCinematicManager() {
         battleManager = BattleManager.instance;
     }
 
     // Called by BattleManager
     public void Update() {
+        if (InputManager.Special1.IsKeyDown) {
+            battleManager.StopCoroutine(cinematicCoroutine);
+            EndCinematic();
+        }
     }
 
     public void EnterBattleStepCinematic(Type type) {
@@ -34,7 +41,7 @@ public class BattleCinematicManager {
         actions = type == Type.Opening ? battleManager.mission.openingCinematic : battleManager.mission.endingCinematic;
 
         if (actions.Length > 0) {
-            battleManager.StartCoroutine(ProcessCinematic());
+            cinematicCoroutine = battleManager.StartCoroutine(ProcessCinematic());
         } else {
             EndCinematic();
         }

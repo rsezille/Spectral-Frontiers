@@ -45,7 +45,8 @@
 		"dialogbox::prologue_02"
 	],
 	"endingCinematic": [
-	
+		"dialogbox::prologue_01",
+		"camera:square:10,7"
 	],
 	"startingSquares": [
 		{
