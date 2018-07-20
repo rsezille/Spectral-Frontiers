@@ -9,7 +9,11 @@ public class WaitForCustom : CustomYieldInstruction {
 
     public override bool keepWaiting {
         get {
-            return !waitForCustom.IsFinished();
+            if (waitForCustom == null) {
+                return false;
+            } else {
+                return !waitForCustom.IsFinished();
+            }
         }
     }
 
