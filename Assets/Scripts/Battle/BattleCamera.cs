@@ -16,6 +16,8 @@ public class BattleCamera : MonoBehaviour {
     }
 
     private void Update() {
+        if (BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Cinematic) return;
+
         float tmpSpeed = speed;
 
         // Lower the speed if the camera is going diagonally

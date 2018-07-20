@@ -69,6 +69,8 @@ public class FightHUD : MonoBehaviour {
             selectedSquare.anchoredPosition3D = new Vector3(selectedSquare.anchoredPosition3D.x, -120f, selectedSquare.anchoredPosition3D.z);
             selectedSquare.DOAnchorPos3D(new Vector3(selectedSquare.anchoredPosition3D.x, selectedSquare.sizeDelta.y / 2f, selectedSquare.anchoredPosition3D.z), speed).SetEase(Ease.OutCubic);
         } else {
+            if (!gameObject.activeSelf) return;
+
             actionMenu.SetActiveWithAnimation(false);
 
             isGoingEnabled = false;

@@ -17,8 +17,8 @@ public class RawMission {
 
     public string id;
     public string map;
-    public int max_player_characters = 1; // Should be inferior to starting_squares length
-    public bool is_storyline = false;
+    public int maxPlayerCharacters = 1; // Should be inferior to starting_squares length
+    public bool isStoryline = false;
 
     // Missions tree
     public string[] parents;
@@ -26,5 +26,8 @@ public class RawMission {
 
     public RawEnemy[] enemies;
 
-    public RawStartingSquare[] starting_squares;
+    public string[] openingCinematic;
+    public string[] endingCinematic;
+
+    public RawStartingSquare[] startingSquares;
 }

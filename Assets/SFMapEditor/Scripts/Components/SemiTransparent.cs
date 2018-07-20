@@ -30,6 +30,8 @@ namespace SF {
          * Triggered by Board and also by other objects (board character...)
          */
         public void MouseEnter() {
+            if (BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Cinematic) return;
+
             spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 0.5f);
             
             transparentObjectsCount++;
@@ -39,6 +41,8 @@ namespace SF {
          * Triggered by Board and also by other objects (board character...)
          */
         public void MouseLeave() {
+            if (BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Cinematic) return;
+
             transparentObjectsCount = Mathf.Min(0, transparentObjectsCount - 1);
 
             if (transparentObjectsCount <= 0 && !hideCharacter) {

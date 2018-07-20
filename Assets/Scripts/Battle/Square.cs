@@ -100,6 +100,8 @@ public class Square : MonoBehaviour {
      * Triggered by Board (TileSelector)
      */
     public void MouseEnter() {
+        if (battleManager.currentBattleStep == BattleManager.BattleStep.Cinematic) return;
+
         if (colorAnimation != null) {
             colorAnimation.Pause();
             battleManager.markedSquareAnimations.Remove(colorAnimation);
@@ -121,6 +123,8 @@ public class Square : MonoBehaviour {
      * Triggered by Board (TileSelector)
      */
     public void MouseLeave() {
+        if (battleManager.currentBattleStep == BattleManager.BattleStep.Cinematic) return;
+
         battleManager.fightHUD.SquareHovered(null);
 
         RefreshColor();
@@ -166,6 +170,7 @@ public class Square : MonoBehaviour {
     public void PlayColorAnimation() {
         if (colorAnimation == null) return;
 
+        // We're doing this to keep the current animation frame when leaving an hovering and marked square (which change the color)
         if (battleManager.markedSquareAnimations.Count > 0) {
             float elapsed = battleManager.markedSquareAnimations[0].Elapsed(false);
 
