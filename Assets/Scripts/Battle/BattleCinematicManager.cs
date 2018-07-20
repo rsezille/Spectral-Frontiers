@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Globalization;
 using UnityEngine;
 
 public class BattleCinematicManager {
@@ -40,7 +41,9 @@ public class BattleCinematicManager {
 
     private IEnumerator ProcessCinematic() {
         foreach (string action in actions) {
-            Debug.Log(action);
+            string[] substrings = action.Split(':');
+
+            yield return ProcessAction(substrings);
         }
 
         EndCinematic();
@@ -52,7 +55,21 @@ public class BattleCinematicManager {
         if (type == Type.Opening) {
             battleManager.placing.EnterBattleStepPlacing();
         } else {
-            // TODO [ALPHA] End of battle
+            battleManager.victory.EnterBattleStepVictory();
+        }
+    }
+
+    private IEnumerator ProcessAction(string[] splitAction) {
+        string key = splitAction[0];
+        string option = splitAction[1];
+        string value = splitAction[2];
+
+        if (key == "wait") {
+            yield return new WaitForSeconds(float.Parse(value, CultureInfo.InvariantCulture));
+        } else if (key == "dialogbox") {
+            yield return new WaitForCustom(GameManager.instance.DialogBox.Show(value));
+        } else {
+            yield return null;
         }
     }
 }
