@@ -166,6 +166,7 @@ public class Square : MonoBehaviour {
     public void PlayColorAnimation() {
         if (colorAnimation == null) return;
 
+        // We're doing this to keep the current animation frame when leaving an hovering and marked square (which change the color)
         if (battleManager.markedSquareAnimations.Count > 0) {
             float elapsed = battleManager.markedSquareAnimations[0].Elapsed(false);
 
