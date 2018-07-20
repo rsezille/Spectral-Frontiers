@@ -85,6 +85,8 @@ public class PlacingHUD : MonoBehaviour {
             
             BattleManager.instance.placing.RefreshStartBattleText();
         } else {
+            if (!gameObject.activeSelf) return;
+            
             isGoingEnabled = false;
             startBattleText.gameObject.SetActive(false);
             

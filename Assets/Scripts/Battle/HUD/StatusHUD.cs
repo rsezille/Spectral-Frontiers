@@ -4,8 +4,6 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class StatusHUD : MonoBehaviour {
-    private BattleManager battleManager;
-
     public RectTransform blockMiddle;
     public RectTransform blockTop;
     public RectTransform blockBottom;
@@ -21,10 +19,6 @@ public class StatusHUD : MonoBehaviour {
     private float animationSpeed = 0.6f;
     private bool isGoingDisabled = false; // True during the disabling animation
     private bool isGoingEnabled = false;
-
-    private void Awake() {
-        battleManager = BattleManager.instance;
-    }
 
     private void Start() {
         backButton.AddListener(EventTriggerType.PointerClick, Hide);
@@ -78,7 +72,7 @@ public class StatusHUD : MonoBehaviour {
         blockBottom.DOAnchorPos3D(new Vector3(blockBottom.anchoredPosition3D.x, -blockBottom.sizeDelta.y, blockBottom.anchoredPosition3D.z), animationSpeed).SetEase(Ease.OutCubic)
         .OnComplete(DisableGameObject);
 
-        battleManager.EnterTurnStepNone();
+        BattleManager.instance.EnterTurnStepNone();
     }
 
     private void UpdateText() {
