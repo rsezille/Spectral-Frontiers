@@ -197,7 +197,7 @@ public class BattlePlacingManager {
                     GetCurrentPlacingChar().boardCharacter.outline.enabled = true;
                     GetCurrentPlacingChar().boardCharacter.direction = square.startingDirection;
                 } else {
-                    if (battleManager.playerCharacters.Count >= battleManager.mission.max_player_characters) {
+                    if (battleManager.playerCharacters.Count >= battleManager.mission.maxPlayerCharacters) {
                         return;
                     }
 

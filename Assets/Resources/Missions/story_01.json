@@ -1,64 +1,73 @@
 {
-  "id": "story_01",
-  "map": "003",
-  "max_player_characters": 3,
-  "background": {
-    "id": null,
-    "main_color": "0059B8",
-    "sub_color": "73AFF0"
-  },
-  "foreground": {
-    "image": "fg_beam",
-    "alpha": null,
-    "mode_add": true,
-    "color": null,
-    "speed_mvt": null,
-    "move_dir": 0
-  },
-  "parents": null,
-  "children": [
-    "002"
-  ],
-  "is_storyline": true,
-  "enemies": [
-    {
-      "key": "Goblin",
-      "level": 1,
-      "posX": 0,
-      "posY": 1
-    },
-    {
-      "key": "Orc",
-      "level": 1,
-      "posX": 0,
-      "posY": 0
-    }
-  ],
-  "starting_squares": [
-	{
-		"posX": 5,
-		"posY": 9,
-		"direction": "South"
+	"id": "story_01",
+	"map": "003",
+	"maxPlayerCharacters": 3,
+	"background": {
+		"id": null,
+		"main_color": "0059B8",
+		"sub_color": "73AFF0"
 	},
-	{
-		"posX": 7,
-		"posY": 8,
-		"direction": "North"
+	"foreground": {
+		"image": "fg_beam",
+		"alpha": null,
+		"mode_add": true,
+		"color": null,
+		"speed_mvt": null,
+		"move_dir": 0
 	},
-	{
-		"posX": 7,
-		"posY": 6,
-		"direction": "West"
-	},
-	{
-		"posX": 9,
-		"posY": 8,
-		"direction": "West"
-	},
-	{
-		"posX": 8,
-		"posY": 9,
-		"direction": "West"
-	}
-  ]
+	"parents": null,
+	"children": [
+		"002"
+	],
+	"isStoryline": true,
+	"enemies": [
+		{
+			"key": "Goblin",
+			"level": 1,
+			"posX": 0,
+			"posY": 1
+		},
+		{
+			"key": "Orc",
+			"level": 1,
+			"posX": 0,
+			"posY": 0
+		}
+	],
+	"openingCinematic": [
+		"dialogbox::prologue_01",
+		"camerafocus:enemy:0",
+		"wait::5",
+		"dialogbox::prologue_02"
+	],
+	"endingCinematic": [
+	
+	],
+	"startingSquares": [
+		{
+			"posX": 5,
+			"posY": 9,
+			"direction": "South"
+		},
+		{
+			"posX": 7,
+			"posY": 8,
+			"direction": "North"
+		},
+		{
+			"posX": 7,
+			"posY": 6,
+			"direction": "West"
+		},
+		{
+			"posX": 9,
+			"posY": 8,
+			"direction": "West"
+		},
+		{
+			"posX": 8,
+			"posY": 9,
+			"direction": "West"
+		}
+	]
 }
