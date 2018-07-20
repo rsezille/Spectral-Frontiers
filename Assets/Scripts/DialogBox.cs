@@ -1,16 +1,18 @@
 ﻿using SF;
 using System.Text.RegularExpressions;
 using UnityEngine;
-using UnityEngine.UI;
 
 /**
  * Scope: GameManager (all scenes)
  * Be aware that BattleManager singleton isn't available here
  * /!\ Reserved characters: £, €, ¥
  * 
+ * Can be used inside a coroutine with WaitForCustom:
+ *      yield return new WaitForCustom(GameManager.instance.DialogBox.Show("prologue_01"));
+ * 
  * TODO? Priority input
  */
-public class DialogBox : MonoBehaviour {
+public class DialogBox : MonoBehaviour, IWaitForCustom {
     public enum TextSpeed {
         VerySlow = 180,
         Slow = 135,
@@ -116,9 +118,9 @@ public class DialogBox : MonoBehaviour {
     /**
      * Show a global dialog box
      */
-    public void Show(string dialogId, Position position = Position.Bottom, int presetIndex = 0, string name = "") {
+    public IWaitForCustom Show(string dialogId, Position position = Position.Bottom, int presetIndex = 0, string name = "") {
         if (currentShownPreset != null) {
-            return;
+            return null;
         }
 
         PreShow(dialogId, presetIndex, name);
@@ -140,14 +142,16 @@ public class DialogBox : MonoBehaviour {
                 currentShownPreset.image.rectTransform.anchoredPosition = new Vector3(0f, - currentShownPreset.yOffset);
                 break;
         }
+
+        return this;
     }
 
     /**
      * Show a dialog box attached to a character, with his name
      */
-    public void Show(BoardCharacter boardCharacter, string dialogId, int presetIndex = 0) {
+    public IWaitForCustom Show(BoardCharacter boardCharacter, string dialogId, int presetIndex = 0) {
         if (currentShownPreset != null) {
-            return;
+            return null;
         }
 
         PreShow(dialogId, presetIndex, boardCharacter.character.name);
@@ -158,6 +162,8 @@ public class DialogBox : MonoBehaviour {
         currentShownPreset.image.rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
         currentShownPreset.image.rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
         currentShownPreset.image.rectTransform.anchoredPosition = Vector3.zero;
+
+        return this;
     }
 
     private void PreShow(string dialogId, int presetIndex = 0, string name = "") {
@@ -211,5 +217,9 @@ public class DialogBox : MonoBehaviour {
         foreach (DialogPreset preset in presets) {
             preset.gameObject.SetActive(false);
         }
+    }
+
+    public bool IsFinished() {
+        return currentShownPreset == null;
     }
 }
