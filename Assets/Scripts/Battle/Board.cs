@@ -138,8 +138,6 @@ public class Board : MonoBehaviour {
             }
 
             foreach (RawMission.RawStartingSquare startingSquare in mission.startingSquares) {
-                squares[PositionToIndexSquare(startingSquare.posX, startingSquare.posY)].markType = Square.MarkType.Placing;
-
                 squares[PositionToIndexSquare(startingSquare.posX, startingSquare.posY)].startingDirection = EnumUtil.ParseEnum<BoardCharacter.Direction>(startingSquare.direction, BoardCharacter.Direction.North);
             }
 

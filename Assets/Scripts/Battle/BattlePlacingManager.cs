@@ -56,6 +56,10 @@ public class BattlePlacingManager {
             playerPlacingChars.Add(character);
         }
 
+        foreach (RawMission.RawStartingSquare startingSquare in battleManager.mission.startingSquares) {
+            battleManager.board.GetSquare(startingSquare.posX, startingSquare.posY).markType = Square.MarkType.Placing;
+        }
+
         battleManager.currentBattleStep = BattleManager.BattleStep.Placing;
         battleManager.placingHUD.SetActiveWithAnimation(true);
 
