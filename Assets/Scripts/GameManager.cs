@@ -17,7 +17,6 @@ public class GameManager : MonoBehaviour {
     public Player player;
 
     private Dictionary<string, RawMission> missions;
-    private Dictionary<string, RawMonster> monsters;
 
     [HideInInspector]
     public string missionToLoad;
@@ -50,7 +49,6 @@ public class GameManager : MonoBehaviour {
 
         // TODO [BETA] Logs + time
         InitMissions();
-        InitMonsters();
     }
 
     private void InitMissions() {
@@ -61,17 +59,6 @@ public class GameManager : MonoBehaviour {
         foreach (TextAsset jsonMission in jsonMissions) {
             RawMission mission = JsonUtility.FromJson<RawMission>(jsonMission.text);
             missions.Add(mission.id, mission);
-        }
-    }
-
-    private void InitMonsters() {
-        monsters = new Dictionary<string, RawMonster>();
-
-        TextAsset[] jsonMonsters = Resources.LoadAll<TextAsset>("Monsters");
-
-        foreach (TextAsset jsonMonster in jsonMonsters) {
-            RawMonster monster = JsonUtility.FromJson<RawMonster>(jsonMonster.text);
-            monsters.Add(monster.id, monster);
         }
     }
 
