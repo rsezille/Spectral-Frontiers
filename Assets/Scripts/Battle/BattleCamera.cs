@@ -16,16 +16,16 @@ public class BattleCamera : MonoBehaviour {
     }
 
     private void Update() {
-        if (BattleManager.instance.currentBattleStep != BattleManager.BattleStep.Cinematic) {
-            float tmpSpeed = speed;
+        if (BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Cinematic) return;
 
-            // Lower the speed if the camera is going diagonally
-            if (InputManager.CameraHorizontalAxis() != 0 && InputManager.CameraVerticalAxis() != 0) {
-                tmpSpeed = speed / Mathf.Sqrt(2f);
-            }
+        float tmpSpeed = speed;
 
-            transform.position += new Vector3(tmpSpeed * Time.deltaTime * InputManager.CameraHorizontalAxis(), tmpSpeed * Time.deltaTime * InputManager.CameraVerticalAxis());
+        // Lower the speed if the camera is going diagonally
+        if (InputManager.CameraHorizontalAxis() != 0 && InputManager.CameraVerticalAxis() != 0) {
+            tmpSpeed = speed / Mathf.Sqrt(2f);
         }
+
+        transform.position += new Vector3(tmpSpeed * Time.deltaTime * InputManager.CameraHorizontalAxis(), tmpSpeed * Time.deltaTime * InputManager.CameraVerticalAxis());
     }
     
     public void Zoom(float axis) {
