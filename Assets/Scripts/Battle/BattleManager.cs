@@ -141,7 +141,7 @@ public class BattleManager : MonoBehaviour {
             GameManager.instance.DialogBox.Show(playerCharacters[0], "prologue_01");
         }
 
-        if (Input.GetAxis(InputManager.Axis.Zoom) != 0) {
+        if (currentBattleStep != BattleStep.Cinematic && Input.GetAxis(InputManager.Axis.Zoom) != 0) {
             battleCamera.Zoom(Input.GetAxis(InputManager.Axis.Zoom));
 
             OnZoomChange?.Invoke();
