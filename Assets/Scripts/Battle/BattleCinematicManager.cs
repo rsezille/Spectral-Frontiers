@@ -64,12 +64,16 @@ public class BattleCinematicManager {
         string option = splitAction[1];
         string value = splitAction[2];
 
-        if (key == "wait") {
-            yield return new WaitForSeconds(float.Parse(value, CultureInfo.InvariantCulture));
-        } else if (key == "dialogbox") {
-            yield return new WaitForCustom(GameManager.instance.DialogBox.Show(value));
-        } else {
-            yield return null;
+        switch (key) {
+            case "wait":
+                yield return new WaitForSeconds(float.Parse(value, CultureInfo.InvariantCulture));
+                break;
+            case "dialogbox":
+                yield return new WaitForCustom(GameManager.instance.DialogBox.Show(value));
+                break;
+            default:
+                yield return null;
+                break;
         }
     }
 }

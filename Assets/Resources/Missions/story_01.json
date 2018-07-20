@@ -36,7 +36,7 @@
 	],
 	"openingCinematic": [
 		"dialogbox::prologue_01",
-		"wait::5.0",
+		"wait::3.0",
 		"dialogbox::prologue_02"
 	],
 	"endingCinematic": [
