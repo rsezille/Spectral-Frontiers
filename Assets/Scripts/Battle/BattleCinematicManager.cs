@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Globalization;
 using UnityEngine;
 
@@ -70,6 +71,15 @@ public class BattleCinematicManager {
                 break;
             case "dialogbox":
                 yield return new WaitForCustom(GameManager.instance.DialogBox.Show(value));
+                break;
+            case "camera":
+                if (option == "square") {
+                    string[] squarePosition = value.Split(',');
+
+                    yield return battleManager.battleCamera.SetPosition(int.Parse(squarePosition[0]), int.Parse(squarePosition[1]), true).WaitForCompletion();
+                } else if (option == "enemy") {
+                    yield return battleManager.battleCamera.SetPosition(battleManager.enemyCharacters[int.Parse(value)], true).WaitForCompletion();
+                }
                 break;
             default:
                 yield return null;

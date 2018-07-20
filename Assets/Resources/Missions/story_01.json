@@ -35,8 +35,11 @@
 		}
 	],
 	"openingCinematic": [
+		"camera:square:0,0",
 		"dialogbox::prologue_01",
 		"wait::3.0",
+		"camera:square:10,7",
+		"camera:enemy:0",
 		"dialogbox::prologue_02"
 	],
 	"endingCinematic": [
