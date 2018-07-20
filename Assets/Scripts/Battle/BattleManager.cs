@@ -118,7 +118,6 @@ public class BattleManager : MonoBehaviour {
         turn = 0;
 
         cinematic.EnterBattleStepCinematic(BattleCinematicManager.Type.Opening);
-        //placing.EnterBattleStepPlacing();
     }
 
     // Update is called once per frame
@@ -252,7 +251,7 @@ public class BattleManager : MonoBehaviour {
         }
 
         if (playerAlive && !enemyAlive) { // The player wins
-            victory.EnterBattleStepVictory();
+            cinematic.EnterBattleStepCinematic(BattleCinematicManager.Type.Ending);
 
             return true;
         } else if (!playerAlive && enemyAlive) { // The enemy wins
