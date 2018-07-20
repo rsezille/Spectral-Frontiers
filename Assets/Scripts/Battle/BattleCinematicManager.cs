@@ -72,6 +72,9 @@ public class BattleCinematicManager {
             case "dialogbox":
                 yield return new WaitForCustom(GameManager.instance.DialogBox.Show(value));
                 break;
+            case "dialogenemy":
+                yield return new WaitForCustom(GameManager.instance.DialogBox.Show(battleManager.enemyCharacters[int.Parse(option)], value));
+                break;
             case "camera":
                 if (option == "square") {
                     string[] squarePosition = value.Split(',');

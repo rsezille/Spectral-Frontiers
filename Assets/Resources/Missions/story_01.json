@@ -38,6 +38,8 @@
 		"camera:square:0,0",
 		"dialogbox::prologue_01",
 		"wait::3.0",
+		"camera:enemy:0",
+		"dialogenemy:0:prologue_01",
 		"camera:square:10,7",
 		"camera:enemy:0",
 		"dialogbox::prologue_02"
