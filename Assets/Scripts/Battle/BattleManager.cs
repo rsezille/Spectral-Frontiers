@@ -13,7 +13,7 @@ public class BattleManager : MonoBehaviour {
     private static BattleManager _instance;
 
     public enum BattleStep {
-        Placing, Fight, Victory
+        Cinematic, Placing, Fight, Victory
     };
     public enum TurnStep { // Placing: None or Status - Fight: None, Move, Attack, Skill, Item, Enemy, Status, Direction - Victory: None
         None, Move, Attack, Skill, Item, Enemy, Status, Direction
@@ -57,6 +57,7 @@ public class BattleManager : MonoBehaviour {
     public event SFEvent OnCheckSemiTransparent;
 
     // Dedicated managers for each BattleStep
+    public BattleCinematicManager cinematic;
     public BattlePlacingManager placing;
     public BattleFightManager fight;
     public BattleVictoryManager victory;
@@ -81,10 +82,7 @@ public class BattleManager : MonoBehaviour {
         placing = new BattlePlacingManager();
         fight = new BattleFightManager();
         victory = new BattleVictoryManager();
-
-        currentBattleStep = BattleStep.Placing;
-        currentTurnStep = TurnStep.None;
-        turn = 0;
+        cinematic = new BattleCinematicManager();
 
         // Disable all HUD by default
         placingHUD.gameObject.SetActive(false);
@@ -115,8 +113,12 @@ public class BattleManager : MonoBehaviour {
             enemyBC.SetSquare(board.GetSquare(enemy.posX, enemy.posY));
             enemyCharacters.Add(enemyBC);
         }
+        
+        currentTurnStep = TurnStep.None;
+        turn = 0;
 
-        placing.EnterBattleStepPlacing();
+        cinematic.EnterBattleStepCinematic(BattleCinematicManager.Type.Opening);
+        //placing.EnterBattleStepPlacing();
     }
 
     // Update is called once per frame
@@ -148,6 +150,9 @@ public class BattleManager : MonoBehaviour {
         #endif
 
         switch (currentBattleStep) {
+            case BattleStep.Cinematic:
+                cinematic.Update();
+                break;
             case BattleStep.Placing:
                 placing.Update();
                 break;
