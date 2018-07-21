@@ -114,6 +114,14 @@ public class PathFinder {
         return path;
     }
 
+    /**
+     * @param sx Start location X
+     * @param sy Start location Y
+     * @param x  Current location X
+     * @param y  Current location Y
+     * @param tx Target location X
+     * @param ty Target location Y
+     */
     private bool IsValidLocation(int sx, int sy, int x, int y, int tx, int ty, Side.Type side) {
         bool invalid = (x < 0) || (y < 0) || (x >= board.width) || (y >= board.height);
 
