@@ -16,24 +16,22 @@
    [Direction](Documentation/Direction.md)  
    [Mandatory Character](Documentation/MandatoryCharacter.md)
 
-### Misc
+### Commit Message Guidelines
 
-#### Commit Message Guidelines
+`<Type>(<Scope>): <Message>`
 
-If possible: `<Type>(<Scope>): <Message>`
-
-Type:
+Type (mandatory, if possible):
 - **Feat** new feature
 - **Fix**
 - **Style** code style: typo, naming, formatting...
 - **Art** sprites, materials, fonts, font size, colliders, bounds...
 - **Docs** documentation changes
 
-Scope:
+Scope (optional):
 - **SFME** the map editor
 - **Battle** the battle, placing, fight, victory, cinematic
 - **Editor** unity editor
 
-#### SF namespace
+### SF namespace
 
 Used mainly for map editor related scripts, and Util/Core scripts.
