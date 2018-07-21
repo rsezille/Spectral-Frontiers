@@ -116,7 +116,7 @@ public class AI : MonoBehaviour {
             }
         }
 
-        if (bestPath != null) {
+        if (bestPath != null && bestPath.GetLength() > 0) {
             boardCharacter.MoveThroughPath(bestPath, true);
         }
     }
