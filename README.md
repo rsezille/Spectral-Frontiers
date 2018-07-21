@@ -23,6 +23,7 @@
 Type (mandatory, if possible):
 - **Feat** new feature
 - **Fix**
+- **Perf** improve performance 
 - **Style** code style: typo, naming, formatting...
 - **Art** sprites, materials, fonts, font size, colliders, bounds...
 - **Docs** documentation changes
