@@ -24,6 +24,7 @@ public class BattleCinematicManager {
     public void Update() {
         if (InputManager.Special1.IsKeyDown) {
             battleManager.StopCoroutine(cinematicCoroutine);
+            GameManager.instance.DialogBox.Hide();
             EndCinematic();
         }
     }

@@ -189,7 +189,7 @@ public class DialogBox : MonoBehaviour, IWaitForCustom {
         currentShownPreset.textMesh.SetText("");
     }
 
-    private void Hide() {
+    public void Hide() {
         ResetAllProperties();
     }
 
