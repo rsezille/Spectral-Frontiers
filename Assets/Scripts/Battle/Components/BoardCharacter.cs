@@ -251,18 +251,18 @@ public class BoardCharacter : MonoBehaviour {
 
             movable.movementPoints--;
 
-            Tween characterAnimation = this.transform.DOMove(path.steps[i].transform.position, duration).SetEase(Ease.Linear);
+            Tween characterAnimation = transform.DOMove(path.steps[i].transform.position, duration).SetEase(Ease.Linear);
             cameraAnimation = battleManager.battleCamera.SetPosition(path.steps[i], true, duration, Ease.Linear);
 
             yield return characterAnimation.WaitForPosition(duration / 4);
 
-            if (path.steps[i].x - previousSquare.x > 0 || path.steps[i].y - previousSquare.y > 0) {
+            if (path.steps[i].x - previousSquare.x < 0 || path.steps[i].y - previousSquare.y < 0) {
                 transform.SetParent(path.steps[i].entityContainer.transform);
             }
 
             yield return characterAnimation.WaitForPosition(duration * 3 / 4);
 
-            if (path.steps[i].x - previousSquare.x < 0 || path.steps[i].y - previousSquare.y < 0) {
+            if (path.steps[i].x - previousSquare.x > 0 || path.steps[i].y - previousSquare.y > 0) {
                 transform.SetParent(path.steps[i].entityContainer.transform);
             }
 
