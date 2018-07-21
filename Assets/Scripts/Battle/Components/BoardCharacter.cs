@@ -281,4 +281,8 @@ public class BoardCharacter : MonoBehaviour {
             battleManager.EventOnSemiTransparentReset();
         }
     }
+
+    private void OnDestroy() {
+        battleManager.OnCheckSemiTransparent -= OnCheckSemiTransparent;
+    }
 }
