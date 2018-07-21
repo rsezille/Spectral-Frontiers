@@ -191,9 +191,9 @@ public class BattleFightManager {
     }
 
     public void EnterBattleStepFight() {
-        battleManager.EventOnLeavingMarkStep();
-
         if (battleManager.playerCharacters.Count > 0) {
+            battleManager.EventOnLeavingMarkStep();
+
             // Disable outlines from the PlacingStep
             if (battleManager.placing.GetCurrentPlacingChar().boardCharacter != null) {
                 battleManager.placing.GetCurrentPlacingChar().boardCharacter.outline.enabled = false;

@@ -31,7 +31,7 @@ public class BattlePlacingManager {
             if (battleManager.currentTurnStep == BattleManager.TurnStep.Status) {
                 battleManager.statusHUD.Show(GetCurrentPlacingChar());
             }
-        } else if (InputManager.Special1.IsKeyDown) {
+        } else if (InputManager.Special1.IsKeyDown && battleManager.playerCharacters.Count > 0) {
             battleManager.fight.EnterBattleStepFight();
         }
     }
