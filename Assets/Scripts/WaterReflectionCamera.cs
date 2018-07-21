@@ -7,6 +7,7 @@
  */
 [RequireComponent(typeof(Camera))]
 public class WaterReflectionCamera : MonoBehaviour {
+    private BattleManager battleManager; // Shortcut
     private Camera reflectionCamera;
 
     [SerializeField, Range(0, 1)]
@@ -19,10 +20,11 @@ public class WaterReflectionCamera : MonoBehaviour {
     private static readonly string globalMagnitudeName = "_GlobalRefractionMag";
 
     private void Awake() {
+        battleManager = BattleManager.instance;
         reflectionCamera = GetComponent<Camera>();
 
-        BattleManager.instance.OnZoomChange += OnZoomChange;
-        BattleManager.instance.OnScreenChange += GenerateRenderTexture;
+        battleManager.OnZoomChange += OnZoomChange;
+        battleManager.OnScreenChange += GenerateRenderTexture;
     }
 
     private void OnZoomChange() {
@@ -66,5 +68,10 @@ public class WaterReflectionCamera : MonoBehaviour {
         reflectionCamera.targetTexture.filterMode = FilterMode.Bilinear;
 
         Shader.SetGlobalTexture(globalTextureName, reflectionCamera.targetTexture);
+    }
+
+    private void OnDestroy() {
+        battleManager.OnZoomChange -= OnZoomChange;
+        battleManager.OnScreenChange -= GenerateRenderTexture;
     }
 }

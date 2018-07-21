@@ -6,6 +6,7 @@ namespace SF {
      */
     [RequireComponent(typeof(Collider2D), typeof(SpriteRenderer))]
     public class SemiTransparent : MonoBehaviour {
+        private BattleManager battleManager;
         private SpriteRenderer spriteRenderer;
 
         // Because several objects can trigger the opacity change, we need to store the count of those objects
@@ -13,7 +14,8 @@ namespace SF {
         private bool hideCharacter = false;
 
         private void Awake() {
-            BattleManager.instance.OnSemiTransparentReset += OnSemiTransparentReset;
+            battleManager = BattleManager.instance;
+            battleManager.OnSemiTransparentReset += OnSemiTransparentReset;
         }
 
         private void Start() {
@@ -30,7 +32,7 @@ namespace SF {
          * Triggered by Board and also by other objects (board character...)
          */
         public void MouseEnter() {
-            if (BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Cinematic) return;
+            if (battleManager.currentBattleStep == BattleManager.BattleStep.Cinematic) return;
 
             spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 0.5f);
             
@@ -41,7 +43,7 @@ namespace SF {
          * Triggered by Board and also by other objects (board character...)
          */
         public void MouseLeave() {
-            if (BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Cinematic) return;
+            if (battleManager.currentBattleStep == BattleManager.BattleStep.Cinematic) return;
 
             transparentObjectsCount = Mathf.Min(0, transparentObjectsCount - 1);
 
@@ -56,6 +58,10 @@ namespace SF {
             if (transparentObjectsCount == 0) {
                 spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 1f);
             }
+        }
+
+        private void OnDestroy() {
+            battleManager.OnSemiTransparentReset -= OnSemiTransparentReset;
         }
     }
 }

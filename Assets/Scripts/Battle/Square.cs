@@ -249,4 +249,9 @@ public class Square : MonoBehaviour {
             entityContainer.transform.localPosition = new Vector3(0f, (float)Height / Globals.TileHeight);
         }
     }
+
+    private void OnDestroy() {
+        battleManager.OnEnterPlacing -= OnEnterPlacing;
+        battleManager.OnLeavingMarkStep -= OnLeavingMarkStep;
+    }
 }
