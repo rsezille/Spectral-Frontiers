@@ -38,28 +38,34 @@ public class BattleFightManager {
     // Called by BattleManager
     public void Update() {
         if (InputManager.Previous.IsKeyDown) {
-            if (battleManager.currentTurnStep == BattleManager.TurnStep.Status) {
-                SelectPreviousPlayerBoardCharacter(false);
+            switch (battleManager.currentTurnStep) {
+                case BattleManager.TurnStep.Status:
+                    SelectPreviousPlayerBoardCharacter(false);
 
-                battleManager.statusHUD.Show(
-                    battleManager.playerCharacters.IndexOf(battleManager.statusHUD.boardCharacter) <= 0 ?
-                    battleManager.playerCharacters[battleManager.playerCharacters.Count - 1] :
-                    battleManager.playerCharacters[battleManager.playerCharacters.IndexOf(battleManager.statusHUD.boardCharacter) - 1]
-                );
-            } else {
-                Previous();
+                    battleManager.statusHUD.Show(
+                        battleManager.playerCharacters.IndexOf(battleManager.statusHUD.boardCharacter) <= 0 ?
+                        battleManager.playerCharacters[battleManager.playerCharacters.Count - 1] :
+                        battleManager.playerCharacters[battleManager.playerCharacters.IndexOf(battleManager.statusHUD.boardCharacter) - 1]
+                    );
+                    break;
+                case BattleManager.TurnStep.None:
+                    Previous();
+                    break;
             }
         } else if (InputManager.Next.IsKeyDown) {
-            if (battleManager.currentTurnStep == BattleManager.TurnStep.Status) {
-                SelectNextPlayerBoardCharacter(false);
+            switch (battleManager.currentTurnStep) {
+                case BattleManager.TurnStep.Status:
+                    SelectNextPlayerBoardCharacter(false);
 
-                battleManager.statusHUD.Show(
-                    battleManager.playerCharacters.IndexOf(battleManager.statusHUD.boardCharacter) >= battleManager.playerCharacters.Count - 1 ?
-                    battleManager.playerCharacters[0] :
-                    battleManager.playerCharacters[battleManager.playerCharacters.IndexOf(battleManager.statusHUD.boardCharacter) + 1]
-                );
-            } else {
-                Next();
+                    battleManager.statusHUD.Show(
+                        battleManager.playerCharacters.IndexOf(battleManager.statusHUD.boardCharacter) >= battleManager.playerCharacters.Count - 1 ?
+                        battleManager.playerCharacters[0] :
+                        battleManager.playerCharacters[battleManager.playerCharacters.IndexOf(battleManager.statusHUD.boardCharacter) + 1]
+                    );
+                    break;
+                case BattleManager.TurnStep.None:
+                    Next();
+                    break;
             }
         }
 
