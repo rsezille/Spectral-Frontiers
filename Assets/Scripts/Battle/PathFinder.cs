@@ -29,7 +29,7 @@ public class PathFinder {
      * @param ty Target location Y
      * @return The path
      */
-    public Path FindPath(int sx, int sy, int tx, int ty, Side.Type side) {
+    public Path FindPath(int sx, int sy, int tx, int ty, Side.Type side, int maxLength = 9999) {
         if (board.GetSquare(tx, ty) == null || board.GetSquare(tx, ty).solid) {
             return null;
         }
@@ -67,7 +67,11 @@ public class PathFinder {
                     int xp = x + current.x;
                     int yp = y + current.y;
 
-                    if (IsValidLocation(sx, sy, xp, yp, tx, ty, side)) {
+                    // The length of the targeted square of the IA is not equal to the character's movement points. That is why we are checking for maxLength.
+                    // A character can move through an allied one but can't stay on a square if a character is already present.
+                    // maxLength == GetCost(sx, sy, xp, yp) returns true when the current square(xp, yp) could be the last for the IA character
+                    if (IsValidLocation(sx, sy, xp, yp, tx, ty, side)
+                            && (maxLength != GetCost(sx, sy, xp, yp) || (maxLength == GetCost(sx, sy, xp, yp) && board.GetSquare(xp, yp).IsNotBlocking()))) {
                         float nextStepCost = current.cost + 1;
                         Node neighbour = nodes[xp, yp];
                         // map.pathFinderVisited(xp, yp);
@@ -84,7 +88,7 @@ public class PathFinder {
 
                         if (!opened.Contains(neighbour) && !(closed.Contains(neighbour))) {
                             neighbour.cost = nextStepCost;
-                            neighbour.heuristic = getCost(xp, yp, tx, ty);
+                            neighbour.heuristic = GetCost(xp, yp, tx, ty);
                             maxDepth = Mathf.Max(maxDepth, neighbour.SetParent(current));
                             opened.Add(neighbour);
                         }
@@ -102,7 +106,7 @@ public class PathFinder {
 
         while (target != nodes[sx, sy]) {
             // Don't add the targeted square if it is blocking
-            if (target != nodes[tx, ty] || (target == nodes[tx, ty] && board.GetSquare(tx, ty).IsNotBlocking(side))) {
+            if (target != nodes[tx, ty] || (target == nodes[tx, ty] && board.GetSquare(tx, ty).IsNotBlocking())) {
                 path.PrependStep(board.GetSquare(target.x, target.y));
             }
 
@@ -140,7 +144,7 @@ public class PathFinder {
         return !invalid;
     }
 
-    private int getCost(int x, int y, int tx, int ty) {
+    private int GetCost(int x, int y, int tx, int ty) {
         return Mathf.Abs(tx - x) + Mathf.Abs(ty - y);
     }
 

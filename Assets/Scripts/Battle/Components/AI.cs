@@ -87,7 +87,8 @@ public class AI : MonoBehaviour {
                     boardCharacter.GetSquare().y,
                     playerCharacter.GetSquare().x,
                     playerCharacter.GetSquare().y,
-                    boardCharacter.side.value
+                    boardCharacter.side.value,
+                    boardCharacter.character.movementPoints
                 );
 
                 if (p != null) {
