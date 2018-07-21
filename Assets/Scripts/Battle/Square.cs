@@ -208,11 +208,11 @@ public class Square : MonoBehaviour {
     }
 
     public bool IsNotBlocking(Side.Type side) {
-        Side entitySide = boardEntity?.GetComponent<Side>();
+        if (boardEntity?.side == null) {
+            return IsNotBlocking();
+        }
 
-        if (entitySide == null) return IsNotBlocking();
-
-        return (boardEntity == null || entitySide.value == side) && !solid;
+        return (boardEntity == null || boardEntity.side.value == side) && !solid;
     }
 
     public int GetManhattanDistance(Square square) {
