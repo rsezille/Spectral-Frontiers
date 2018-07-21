@@ -18,12 +18,21 @@
 
 ### Misc
 
-#### Commits
+#### Commit Message Guidelines
 
-Try to use tags:
-- [Docs] for anything related to the documentation
-- [Battle] for anything related to the battle, placing, fight
-- [SFME] for anything related to the map editor
+If possible: `<Type>(<Scope>): <Message>`
+
+Type:
+- **Feat** new feature
+- **Fix**
+- **Style** code style: typo, naming, formatting...
+- **Art** sprites, materials, fonts, font size, colliders, bounds...
+- **Docs** documentation changes
+
+Scope:
+- **SFME** the map editor
+- **Battle** the battle, placing, fight, victory, cinematic
+- **Editor** unity editor
 
 #### SF namespace
 
