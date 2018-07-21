@@ -109,11 +109,11 @@ public class BoardCharacter : MonoBehaviour {
 
         if (targetedSquare != null) {
             targetedSquare.boardEntity = boardEntity;
-            SetSortingOrder(targetedSquare);
+            SetSortingParent(targetedSquare);
         }
     }
 
-    public void SetSortingOrder(Square square) {
+    public void SetSortingParent(Square square) {
         transform.SetParent(square.entityContainer.transform);
         transform.localPosition = Vector3.zero;
     }
