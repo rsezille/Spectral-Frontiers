@@ -8,6 +8,7 @@ namespace SF {
         public KeyCode defaultKey { get; private set; }
         public KeyCode bindedKey { get; private set; }
         private bool bindable = false;
+        public bool enabled = true;
 
         public KeyBind(KeyCode defaultKey, bool bindable = false) {
             this.defaultKey = defaultKey;
@@ -17,13 +18,13 @@ namespace SF {
 
         public bool IsKeyDown {
             get {
-                return Input.GetKeyDown(bindedKey);
+                return Input.GetKeyDown(bindedKey) && enabled;
             }
         }
 
         public bool IsKeyHeld {
             get {
-                return Input.GetKey(bindedKey);
+                return Input.GetKey(bindedKey) && enabled;
             }
         }
 
