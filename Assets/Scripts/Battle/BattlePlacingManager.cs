@@ -63,6 +63,8 @@ public class BattlePlacingManager {
         battleManager.currentBattleStep = BattleManager.BattleStep.Placing;
         battleManager.placingHUD.SetActiveWithAnimation(true);
 
+        battleManager.battleCamera.SetPosition(battleManager.mission.startingSquares[0].posX, battleManager.mission.startingSquares[0].posY, true);
+
         battleManager.EventOnEnterPlacing();
     }
 
