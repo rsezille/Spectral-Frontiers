@@ -156,7 +156,7 @@ public class Square : MonoBehaviour {
                     );
 
                     if (p != null) {
-                        battleManager.fight.selectedPlayerCharacter.Move(p, true);
+                        battleManager.fight.selectedPlayerCharacter.MoveThroughPath(p, true);
                     }
                 } else if (battleManager.currentTurnStep == BattleManager.TurnStep.Attack && markType == MarkType.Attack) {
                     battleManager.fight.selectedPlayerCharacter.BasicAttack(boardEntity.GetComponent<BoardCharacter>());

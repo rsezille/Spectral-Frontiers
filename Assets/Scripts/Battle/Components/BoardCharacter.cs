@@ -219,14 +219,14 @@ public class BoardCharacter : MonoBehaviour {
         }
     }
 
-    public void Move(Path p, bool cameraFollow = false) {
+    public void MoveThroughPath(Path p, bool cameraFollow = false) {
         if (movable != null && movable.CanMove()) {
-            StartCoroutine(MoveThroughPath(p));
+            StartCoroutine(MoveCoroutine(p));
             movable.movementTokens--;
         }
     }
 
-    private IEnumerator MoveThroughPath(Path path) {
+    private IEnumerator MoveCoroutine(Path path) {
         isMoving = true;
         float duration = 0.5f;
         Tween cameraAnimation;
