@@ -140,18 +140,12 @@ public class BattlePlacingManager {
 
     public void RemoveCurrentMapChar() {
         if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing) {
-            if (GetCurrentPlacingChar().boardCharacter != null) {
-                Object.Destroy(GetCurrentPlacingChar().boardCharacter.gameObject);
-
-                battleManager.playerCharacters.Remove(GetCurrentPlacingChar().boardCharacter);
-                GetCurrentPlacingChar().boardCharacter.SetSquare(null);
-                GetCurrentPlacingChar().boardCharacter.character.boardCharacter = null;
-
-                if (battleManager.playerCharacters.Count <= 0) {
-                    battleManager.placingHUD.startBattleText.gameObject.SetActive(false);
-                }
-            } else {
-                Debug.LogWarning("Trying to remove a PlayerCharacter which does not exist");
+            if (GetCurrentPlacingChar().boardCharacter == null) return;
+            
+            Object.Destroy(GetCurrentPlacingChar().boardCharacter.gameObject);
+            
+            if (battleManager.playerCharacters.Count <= 0) {
+                battleManager.placingHUD.startBattleText.gameObject.SetActive(false);
             }
         }
     }

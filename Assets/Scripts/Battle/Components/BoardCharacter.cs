@@ -284,5 +284,14 @@ public class BoardCharacter : MonoBehaviour {
 
     private void OnDestroy() {
         battleManager.OnCheckSemiTransparent -= OnCheckSemiTransparent;
+
+        SetSquare(null);
+        character.boardCharacter = null;
+
+        if (side.value == Side.Type.Player) {
+            battleManager.playerCharacters.Remove(this);
+        } else if (side.value == Side.Type.Enemy) {
+            battleManager.enemyCharacters.Remove(this);
+        }
     }
 }
