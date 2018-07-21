@@ -16,7 +16,10 @@ public class BattleCamera : MonoBehaviour {
     }
 
     private void Update() {
-        if (BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Cinematic) return;
+        if (BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Cinematic
+                || BattleManager.instance.currentTurnStep == BattleManager.TurnStep.Enemy) {
+            return;
+        }
 
         float tmpSpeed = speed;
 
