@@ -166,6 +166,7 @@ public class Board : MonoBehaviour {
 
     /**
      * Return all square hit by a linear propagation, epicenter excluded
+     * ignoreBlocking is usefull for attacks
      */
     public List<Square> PropagateLinear(Square epicenter, int distance, Side.Type side, bool ignoreBlocking) {
         List<Square> squaresHit = new List<Square>();
