@@ -29,8 +29,8 @@ public class PathFinder {
      * @param ty Target location Y
      * @return The path
      */
-    public Path FindPath(int sx, int sy, int tx, int ty, Side.Type side, int maxLength = 9999) {
-        if (board.GetSquare(tx, ty) == null || board.GetSquare(tx, ty).solid) {
+    public Path FindPath(int sx, int sy, int tx, int ty, Side.Type side, int maxLength = -1) {
+        if (board.GetSquare(tx, ty) == null) {
             return null;
         }
 
@@ -43,6 +43,10 @@ public class PathFinder {
         nodes[tx, ty].parent = null;
 
         int maxDepth = 0;
+
+        if (maxLength != -1) {
+            maxLength = Mathf.Min(maxLength, GetCost(sx, sy, tx, ty) - 1);
+        }
 
         while ((maxDepth < maxSearchDistance) && (opened.Count != 0)) {
             Node current = opened[0];
@@ -66,12 +70,8 @@ public class PathFinder {
 
                     int xp = x + current.x;
                     int yp = y + current.y;
-
-                    // The length of the targeted square of the IA is not equal to the character's movement points. That is why we are checking for maxLength.
-                    // A character can move through an allied one but can't stay on a square if a character is already present.
-                    // maxLength == GetCost(sx, sy, xp, yp) returns true when the current square(xp, yp) could be the last for the IA character
-                    if (IsValidLocation(sx, sy, xp, yp, tx, ty, side)
-                            && (maxLength != GetCost(sx, sy, xp, yp) || (maxLength == GetCost(sx, sy, xp, yp) && board.GetSquare(xp, yp).IsNotBlocking()))) {
+                    
+                    if (IsValidLocation(sx, sy, xp, yp, tx, ty, side, maxLength)) {
                         float nextStepCost = current.cost + 1;
                         Node neighbour = nodes[xp, yp];
                         // map.pathFinderVisited(xp, yp);
@@ -126,7 +126,7 @@ public class PathFinder {
      * @param tx Target location X
      * @param ty Target location Y
      */
-    private bool IsValidLocation(int sx, int sy, int x, int y, int tx, int ty, Side.Type side) {
+    private bool IsValidLocation(int sx, int sy, int x, int y, int tx, int ty, Side.Type side, int maxLength = -1) {
         bool invalid = (x < 0) || (y < 0) || (x >= board.width) || (y >= board.height);
 
         if ((!invalid) && ((sx != x) || (sy != y))) {
@@ -136,7 +136,15 @@ public class PathFinder {
                 if (x == tx && y == ty) {
                     invalid = false;
                 } else {
-                    invalid = !board.GetSquare(x, y).IsNotBlocking(side);
+                    // The length of the targeted square of the IA is not equal to the character's movement points. That is why we are checking for maxLength.
+                    // A character can move through an allied one but can't stay on a square if a character is already present.
+                    // maxLength == GetCost(sx, sy, xp, yp) returns true when the current square(xp, yp) can be the last for the IA character
+                    if (maxLength != -1) {
+                        invalid = !((maxLength != GetCost(sx, sy, x, y) && board.GetSquare(x, y).IsNotBlocking(side))
+                                 || (maxLength == GetCost(sx, sy, x, y) && board.GetSquare(x, y).IsNotBlocking()));
+                    } else {
+                        invalid = !board.GetSquare(x, y).IsNotBlocking(side);
+                    }
                 }
             }
         }
