@@ -59,6 +59,10 @@ public class StatusHUD : MonoBehaviour {
     }
 
     public void Hide() {
+        if (character == null) {
+            return;
+        }
+
         boardCharacter = null;
         character = null;
         
