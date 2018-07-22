@@ -215,8 +215,8 @@ public class BoardCharacter : MonoBehaviour {
             
             actionable.actionTokens--;
 
-            if (target.IsDead()) Destroy(target.gameObject);
-            if (IsDead()) Destroy(gameObject);
+            if (target.IsDead()) target.Remove();
+            if (IsDead()) Remove();
         }
     }
 
@@ -283,9 +283,7 @@ public class BoardCharacter : MonoBehaviour {
         }
     }
 
-    private void OnDestroy() {
-        battleManager.OnCheckSemiTransparent -= OnCheckSemiTransparent;
-
+    public void Remove() {
         SetSquare(null);
         character.boardCharacter = null;
 
@@ -296,5 +294,11 @@ public class BoardCharacter : MonoBehaviour {
         }
 
         battleManager.CheckEndBattle();
+
+        Destroy(gameObject);
+    }
+
+    private void OnDestroy() {
+        battleManager.OnCheckSemiTransparent -= OnCheckSemiTransparent;
     }
 }
