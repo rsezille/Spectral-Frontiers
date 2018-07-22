@@ -34,6 +34,10 @@ Scope (optional):
 - **AI** artificial intelligence related things
 - **Editor** unity editor
 
+### Coding style
+
+Consistency.
+
 ### SF namespace
 
 Used mainly for map editor related scripts, and Util/Core scripts.
