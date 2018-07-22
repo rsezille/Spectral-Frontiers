@@ -214,8 +214,9 @@ public class BoardCharacter : MonoBehaviour {
             floatingText.text = "-" + dmgDone;
             
             actionable.actionTokens--;
-            
-            battleManager.CheckEndBattle();
+
+            if (target.IsDead()) Destroy(target.gameObject);
+            if (IsDead()) Destroy(gameObject);
         }
     }
 
@@ -293,5 +294,7 @@ public class BoardCharacter : MonoBehaviour {
         } else if (side.value == Side.Type.Enemy) {
             battleManager.enemyCharacters.Remove(this);
         }
+
+        battleManager.CheckEndBattle();
     }
 }

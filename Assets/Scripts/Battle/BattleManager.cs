@@ -64,6 +64,8 @@ public class BattleManager : MonoBehaviour {
     
     public List<Sequence> markedSquareAnimations = new List<Sequence>();
 
+    private bool goingGameOver = false;
+
     #if UNITY_EDITOR
     private Vector2Int previousScreenResolution;
     #endif
@@ -233,32 +235,25 @@ public class BattleManager : MonoBehaviour {
      * Return true if the battle has ended
      */
     public bool CheckEndBattle() {
-        bool playerAlive = false;
-        bool enemyAlive = false;
-
-        foreach (BoardCharacter playerCharacter in playerCharacters) {
-            if (!playerCharacter.IsDead()) {
-                playerAlive = true;
-                break;
-            }
+        if (currentBattleStep != BattleStep.Fight) {
+            return false;
         }
 
-        foreach (BoardCharacter enemyCharacter in enemyCharacters) {
-            if (!enemyCharacter.IsDead()) {
-                enemyAlive = true;
-                break;
-            }
+        if (goingGameOver) {
+            return true;
         }
 
-        if (playerAlive && !enemyAlive) { // The player wins
+        if (playerCharacters.Count > 0 && enemyCharacters.Count == 0) { // The player wins
             cinematic.EnterBattleStepCinematic(BattleCinematicManager.Type.Ending);
 
             return true;
-        } else if (!playerAlive && enemyAlive) { // The enemy wins
+        } else if (playerCharacters.Count == 0 && enemyCharacters.Count > 0) { // The enemy wins
+            goingGameOver = true;
             StartCoroutine(WaitGameOver());
 
             return true;
-        } else if (!playerAlive) { // No allied and enemy chars alive, enemy wins
+        } else if (playerCharacters.Count == 0 && enemyCharacters.Count == 0) { // No allied and enemy chars alive, enemy wins
+            goingGameOver = true;
             StartCoroutine(WaitGameOver());
 
             return true;
