@@ -109,7 +109,7 @@ public class BattleManager : MonoBehaviour {
 
             BoardCharacter enemyBC = Instantiate(enemyTemplate, board.GetSquare(enemy.posX, enemy.posY).transform.position, Quaternion.identity);
             enemyBC.character = enemyChar;
-            enemyBC.side.value = Side.Type.Neutral;
+            enemyBC.side.value = Side.Type.Enemy;
             enemyBC.SetSquare(board.GetSquare(enemy.posX, enemy.posY));
             enemyCharacters.Add(enemyBC);
         }
