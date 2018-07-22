@@ -44,8 +44,8 @@ public class BattleManager : MonoBehaviour {
     public FloatingText floatingText;
 
     [Header("Options")]
-    public bool waterReflection = true;
-    public bool waterDistortion = true;
+    public bool waterReflection = true; // TODO [BETA] Implement it
+    public bool waterDistortion = true; // TODO [BETA] Implement it
 
     // Events
     public delegate void SFEvent();
