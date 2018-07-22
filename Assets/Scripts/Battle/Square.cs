@@ -216,7 +216,7 @@ public class Square : MonoBehaviour {
     }
 
     public int GetManhattanDistance(Square square) {
-        return Mathf.Abs(square.x - this.x) + Mathf.Abs(square.y - this.y);
+        return Mathf.Abs(square.x - x) + Mathf.Abs(square.y - y);
     }
 
     public TileContainer tileContainer {
