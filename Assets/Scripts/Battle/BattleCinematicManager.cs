@@ -30,13 +30,12 @@ public class BattleCinematicManager {
     }
 
     public void EnterBattleStepCinematic(Type type) {
-        battleManager.currentBattleStep = BattleManager.BattleStep.Cinematic;
+        if (battleManager.currentBattleStep == BattleManager.BattleStep.Fight) {
+            battleManager.statusHUD.Hide();
+            battleManager.fightHUD.SetActiveWithAnimation(false);
+        }
 
-        // Disable all HUD by default
-        battleManager.placingHUD.SetActiveWithAnimation(false);
-        battleManager.statusHUD.Hide();
-        battleManager.fightHUD.SetActiveWithAnimation(false);
-        battleManager.victoryHUD.SetActiveWithAnimation(false);
+        battleManager.currentBattleStep = BattleManager.BattleStep.Cinematic;
 
         this.type = type;
         actions = type == Type.Opening ? battleManager.mission.openingCinematic : battleManager.mission.endingCinematic;
