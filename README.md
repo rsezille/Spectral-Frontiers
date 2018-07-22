@@ -26,7 +26,7 @@ Type (mandatory, if possible):
 - **Perf** improve performance 
 - **Style** code style: typo, naming, formatting...
 - **Art** sprites, materials, fonts, font size, colliders, bounds...
-- **Docs** documentation changes
+- **Docs** markdown documentation or code comments
 
 Scope (optional):
 - **SFME** the map editor
