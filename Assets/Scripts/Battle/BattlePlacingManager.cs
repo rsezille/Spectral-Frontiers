@@ -7,14 +7,12 @@ using UnityEngine.UI;
 public class BattlePlacingManager {
     private BattleManager battleManager; // Shortcut for BattleManager.instance
 
-    public List<Character> playerPlacingChars;
-    public int placingCharIndex;
+    private int placingCharIndex;
 
     public BattlePlacingManager() {
         battleManager = BattleManager.instance;
 
         placingCharIndex = 0;
-        playerPlacingChars = new List<Character>();
     }
 
     // Called by BattleManager
@@ -51,11 +49,6 @@ public class BattlePlacingManager {
     }
 
     public void EnterBattleStepPlacing() {
-        // Create a temporary list with all available characters from the player
-        foreach (Character character in GameManager.instance.player.characters) {
-            playerPlacingChars.Add(character);
-        }
-
         foreach (RawMission.RawStartingSquare startingSquare in battleManager.mission.startingSquares) {
             battleManager.board.GetSquare(startingSquare.posX, startingSquare.posY).markType = Square.MarkType.Placing;
         }
@@ -69,84 +62,82 @@ public class BattlePlacingManager {
     }
 
     private void PreviousPlacingChar() {
-        if (playerPlacingChars.Count > 1) {
-            if (placingCharIndex == 0) {
-                SetCurrentPlacingChar(playerPlacingChars.Count - 1);
-            } else {
-                SetCurrentPlacingChar(placingCharIndex - 1);
-            }
+        if (placingCharIndex == 0) {
+            SetCurrentPlacingChar(GameManager.instance.player.characters.Count - 1);
+        } else {
+            SetCurrentPlacingChar(placingCharIndex - 1);
         }
     }
 
     private void NextPlacingChar() {
-        if (playerPlacingChars.Count > 1) {
-            if (placingCharIndex >= playerPlacingChars.Count - 1) {
-                SetCurrentPlacingChar(0);
-            } else {
-                SetCurrentPlacingChar(placingCharIndex + 1);
-            }
+        if (placingCharIndex >= GameManager.instance.player.characters.Count - 1) {
+            SetCurrentPlacingChar(0);
+        } else {
+            SetCurrentPlacingChar(placingCharIndex + 1);
         }
     }
 
     public void SetCurrentPlacingChar(Character character) {
-        if (playerPlacingChars.Contains(character)) {
-            SetCurrentPlacingChar(playerPlacingChars.IndexOf(character));
-        } else {
-            Debug.LogWarning("Trying to set an inexisting character");
+        if (!GameManager.instance.player.characters.Contains(character)) {
+            return;
         }
+
+        SetCurrentPlacingChar(GameManager.instance.player.characters.IndexOf(character));
     }
 
     public void SetCurrentPlacingChar(int index) {
-        if (index >= 0 && index <= playerPlacingChars.Count - 1) {
-            if (GetCurrentPlacingChar().boardCharacter != null && GetCurrentPlacingChar().boardCharacter.outline != null) {
-                GetCurrentPlacingChar().boardCharacter.outline.enabled = false;
+        if (index < 0 || index > GameManager.instance.player.characters.Count - 1) {
+            return;
+        }
+
+        if (GetCurrentPlacingChar().boardCharacter != null && GetCurrentPlacingChar().boardCharacter.outline != null) {
+            GetCurrentPlacingChar().boardCharacter.outline.enabled = false;
+        }
+
+        placingCharIndex = index;
+
+        if (GetCurrentPlacingChar().boardCharacter != null) {
+            if (GetCurrentPlacingChar().boardCharacter.outline != null) {
+                GetCurrentPlacingChar().boardCharacter.outline.enabled = true;
             }
 
-            placingCharIndex = index;
-
-            if (GetCurrentPlacingChar().boardCharacter != null) {
-                if (GetCurrentPlacingChar().boardCharacter.outline != null) {
-                    GetCurrentPlacingChar().boardCharacter.outline.enabled = true;
-                }
-
-                battleManager.battleCamera.SetPosition(GetCurrentPlacingChar().boardCharacter, true);
-            }
-        } else {
-            Debug.LogWarning("Trying to set an out of bound index");
+            battleManager.battleCamera.SetPosition(GetCurrentPlacingChar().boardCharacter, true);
         }
     }
 
     public Character GetCurrentPlacingChar() {
-        return playerPlacingChars[placingCharIndex];
+        return GameManager.instance.player.characters[placingCharIndex];
     }
 
     // Used by the placing HUD to display the next character data
     public Character GetPreviousPlacingChar() {
         if (placingCharIndex <= 0) {
-            return playerPlacingChars[playerPlacingChars.Count - 1];
+            return GameManager.instance.player.characters[GameManager.instance.player.characters.Count - 1];
         } else {
-            return playerPlacingChars[placingCharIndex - 1];
+            return GameManager.instance.player.characters[placingCharIndex - 1];
         }
     }
 
     // Used by the placing HUD to display the next character data
     public Character GetNextPlacingChar() {
-        if (placingCharIndex >= playerPlacingChars.Count - 1) {
-            return playerPlacingChars[0];
+        if (placingCharIndex >= GameManager.instance.player.characters.Count - 1) {
+            return GameManager.instance.player.characters[0];
         } else {
-            return playerPlacingChars[placingCharIndex + 1];
+            return GameManager.instance.player.characters[placingCharIndex + 1];
         }
     }
 
     public void RemoveCurrentMapChar() {
-        if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing) {
-            if (GetCurrentPlacingChar().boardCharacter == null) return;
+        if (battleManager.currentBattleStep != BattleManager.BattleStep.Placing) {
+            return;
+        }
+
+        if (GetCurrentPlacingChar().boardCharacter == null) return;
             
-            Object.Destroy(GetCurrentPlacingChar().boardCharacter.gameObject);
+        Object.Destroy(GetCurrentPlacingChar().boardCharacter.gameObject);
             
-            if (battleManager.playerCharacters.Count <= 0) {
-                battleManager.placingHUD.startBattleText.gameObject.SetActive(false);
-            }
+        if (battleManager.playerCharacters.Count <= 0) {
+            battleManager.placingHUD.startBattleText.gameObject.SetActive(false);
         }
     }
 
@@ -218,8 +209,6 @@ public class BattlePlacingManager {
                 }
 
                 battleManager.EventOnSemiTransparentReset();
-
-                //battleManager.battleCamera.SetPosition(battleManager.playerPlacingChars[battleManager.placingCharIndex].boardCharacter, true);
             }
         }
     }

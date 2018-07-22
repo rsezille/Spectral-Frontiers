@@ -9,7 +9,7 @@ public class StatusHUD : MonoBehaviour {
     public RectTransform blockBottom;
     public Text statusText;
 
-    private Character character;
+    public Character character { private set; get; }
     public BoardCharacter boardCharacter;
 
     public GameObject backButton;

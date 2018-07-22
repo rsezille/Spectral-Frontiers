@@ -52,11 +52,9 @@ public class AI : MonoBehaviour {
             BoardCharacter target = null;
 
             foreach (BoardCharacter playerCharacter in battleManager.playerCharacters) {
-                if (!playerCharacter.IsDead()) {
-                    if (playerCharacter.GetSquare().GetManhattanDistance(boardCharacter.GetSquare()) == 1) {
-                        if (target == null || target.character.GetCurrentHP() > playerCharacter.character.GetCurrentHP()) {
-                            target = playerCharacter;
-                        }
+                if (playerCharacter.GetSquare().GetManhattanDistance(boardCharacter.GetSquare()) == 1) {
+                    if (target == null || target.character.GetCurrentHP() > playerCharacter.character.GetCurrentHP()) {
+                        target = playerCharacter;
                     }
                 }
             }
@@ -81,35 +79,33 @@ public class AI : MonoBehaviour {
         int lowestCharHP = 0;
 
         foreach (BoardCharacter playerCharacter in battleManager.playerCharacters) {
-            if (!playerCharacter.IsDead()) {
-                Path p = battleManager.board.pathFinder.FindPath(
-                    boardCharacter.GetSquare().x,
-                    boardCharacter.GetSquare().y,
-                    playerCharacter.GetSquare().x,
-                    playerCharacter.GetSquare().y,
-                    boardCharacter.side.value,
-                    boardCharacter.character.movementPoints
-                );
+            Path p = battleManager.board.pathFinder.FindPath(
+                boardCharacter.GetSquare().x,
+                boardCharacter.GetSquare().y,
+                playerCharacter.GetSquare().x,
+                playerCharacter.GetSquare().y,
+                boardCharacter.side.value,
+                boardCharacter.character.movementPoints
+            );
 
-                if (p != null) {
-                    if (bestPath == null) {
-                        bestPath = p;
-                        lowestCharHP = playerCharacter.character.GetCurrentHP();
+            if (p != null) {
+                if (bestPath == null) {
+                    bestPath = p;
+                    lowestCharHP = playerCharacter.character.GetCurrentHP();
+                } else {
+                    if (p.GetLength() > boardCharacter.character.movementPoints + 1) {
+                        if (p.GetLength() < bestPath.GetLength()) {
+                            bestPath = p;
+                            lowestCharHP = playerCharacter.character.GetCurrentHP();
+                        }
                     } else {
-                        if (p.GetLength() > boardCharacter.character.movementPoints + 1) {
-                            if (p.GetLength() < bestPath.GetLength()) {
-                                bestPath = p;
-                                lowestCharHP = playerCharacter.character.GetCurrentHP();
-                            }
+                        if (bestPath.GetLength() > boardCharacter.character.movementPoints + 1) {
+                            bestPath = p;
+                            lowestCharHP = playerCharacter.character.GetCurrentHP();
                         } else {
-                            if (bestPath.GetLength() > boardCharacter.character.movementPoints + 1) {
+                            if (playerCharacter.character.GetCurrentHP() < lowestCharHP) {
                                 bestPath = p;
                                 lowestCharHP = playerCharacter.character.GetCurrentHP();
-                            } else {
-                                if (playerCharacter.character.GetCurrentHP() < lowestCharHP) {
-                                    bestPath = p;
-                                    lowestCharHP = playerCharacter.character.GetCurrentHP();
-                                }
                             }
                         }
                     }

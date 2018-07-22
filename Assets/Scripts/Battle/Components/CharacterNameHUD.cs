@@ -30,12 +30,4 @@ public class CharacterNameHUD : MonoBehaviour {
 
         characterName.text = boardCharacter.character.name;
     }
-
-    private void Update() {
-        if (boardCharacter.IsDead()) {
-            characterName.text = "(Dead) " + boardCharacter.character.name;
-        } else {
-            characterName.text = boardCharacter.character.name;
-        }
-    }
 }

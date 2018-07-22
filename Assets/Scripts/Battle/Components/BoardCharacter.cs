@@ -202,7 +202,7 @@ public class BoardCharacter : MonoBehaviour {
         }
     }
 
-    public bool IsDead() {
+    private bool IsDead() {
         return character.GetCurrentHP() <= 0;
     }
 

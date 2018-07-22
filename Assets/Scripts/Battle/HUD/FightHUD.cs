@@ -41,10 +41,10 @@ public class FightHUD : MonoBehaviour {
         if (battleManager.fight.selectedPlayerCharacter == null) return;
 
         Movable movable = battleManager.fight.selectedPlayerCharacter.GetComponent<Movable>();
-        moveButton.GetComponent<Button>().interactable = movable != null && movable.CanMove() && !battleManager.fight.selectedPlayerCharacter.IsDead();
+        moveButton.GetComponent<Button>().interactable = movable != null && movable.CanMove();
 
         Actionable actionable = battleManager.fight.selectedPlayerCharacter.GetComponent<Actionable>();
-        actionButton.GetComponent<Button>().interactable = actionable != null && actionable.CanDoAction() && !battleManager.fight.selectedPlayerCharacter.IsDead();
+        actionButton.GetComponent<Button>().interactable = actionable != null && actionable.CanDoAction();
         actionMenu.Refresh();
 
         previousButton.GetComponent<Button>().interactable = true; //TODO [ALPHA] if no other character available, disable it
