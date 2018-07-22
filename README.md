@@ -31,6 +31,7 @@ Type (mandatory, if possible):
 Scope (optional):
 - **SFME** the map editor
 - **Battle** the battle, placing, fight, victory, cinematic
+- **AI** artificial intelligence related things
 - **Editor** unity editor
 
 ### SF namespace
