@@ -71,17 +71,15 @@ public class PlacingHUD : MonoBehaviour {
         nextCharText.text = "Next [" + InputManager.Next.bindedKey + "]\n" + nextCharacter.name; //TODO [BETA] LanguageManager with a multi key translation
     }
 
-    public void SetActiveWithAnimation(bool active) {
-        float speed = 0.6f;
-        
+    public void SetActiveWithAnimation(bool active, HUD.Speed speed = HUD.Speed.Normal) {
+        float fSpeed = (int)speed / 1000f;
+
         if (active) {
             isGoingEnabled = true;
-            this.gameObject.SetActive(true);
+            gameObject.SetActive(true);
 
-            if (placingHUDRect.anchoredPosition3D != new Vector3(0f, 0f, 0f)) {
-                placingHUDRect.anchoredPosition3D = new Vector3(0f, -250f, 0f);
-                placingHUDRect.DOAnchorPos3D(new Vector3(0f, 0f, 0f), speed).SetEase(Ease.OutCubic);
-            }
+            placingHUDRect.anchoredPosition3D = new Vector3(0f, -250f, 0f);
+            placingHUDRect.DOAnchorPos3D(new Vector3(0f, 0f, 0f), fSpeed).SetEase(Ease.OutCubic);
             
             BattleManager.instance.placing.RefreshStartBattleText();
         } else {
@@ -90,7 +88,7 @@ public class PlacingHUD : MonoBehaviour {
             isGoingEnabled = false;
             startBattleText.gameObject.SetActive(false);
             
-            placingHUDRect.DOAnchorPos3D(new Vector3(0f, -250f, 0f), speed).SetEase(Ease.OutCubic).OnComplete(DisableGameObject);
+            placingHUDRect.DOAnchorPos3D(new Vector3(0f, -250f, 0f), fSpeed).SetEase(Ease.OutCubic).OnComplete(DisableGameObject);
         }
     }
 
