@@ -33,6 +33,7 @@ public class BattleCinematicManager {
         if (battleManager.currentBattleStep == BattleManager.BattleStep.Fight) {
             battleManager.statusHUD.Hide();
             battleManager.fightHUD.SetActiveWithAnimation(false);
+            battleManager.EventOnLeavingMarkStep();
         }
 
         battleManager.currentBattleStep = BattleManager.BattleStep.Cinematic;
