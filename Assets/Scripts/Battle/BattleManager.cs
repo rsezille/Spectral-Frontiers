@@ -39,6 +39,7 @@ public class BattleManager : MonoBehaviour {
     public StatusHUD statusHUD;
     public FightHUD fightHUD;
     public VictoryHUD victoryHUD;
+    public PausedHUD pausedHUD;
 
     public PlayerCharacter testPlayerCharacter; // TODO [ALPHA] Find the correct character giving the name & job
     public FloatingText floatingText;
@@ -91,6 +92,7 @@ public class BattleManager : MonoBehaviour {
         statusHUD.gameObject.SetActive(false);
         fightHUD.gameObject.SetActive(false);
         victoryHUD.gameObject.SetActive(false);
+        pausedHUD.gameObject.SetActive(false);
 
         #if UNITY_EDITOR
         previousScreenResolution = new Vector2Int(Screen.width, Screen.height);
@@ -125,14 +127,23 @@ public class BattleManager : MonoBehaviour {
     // Update is called once per frame
     private void Update() {
         #if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.M)) {
-            GameManager.instance.DialogBox.Show("prologue_01");
-        }
+            if (Input.GetKeyDown(KeyCode.M)) {
+                GameManager.instance.DialogBox.Show("prologue_01");
+            }
 
-        if (Input.GetKeyDown(KeyCode.L)) {
-            GameManager.instance.DialogBox.Show(playerCharacters[0], "prologue_01");
-        }
+            if (Input.GetKeyDown(KeyCode.L)) {
+                GameManager.instance.DialogBox.Show(playerCharacters[0], "prologue_01");
+            }
         #endif
+
+        if (InputManager.Pause.IsKeyDown) {
+            if (pausedHUD.gameObject.activeSelf) {
+                pausedHUD.Resume();
+            } else {
+                pausedHUD.gameObject.SetActive(true);
+                Time.timeScale = 0;
+            }
+        }
 
         switch (currentBattleStep) {
             case BattleStep.Cinematic:
@@ -150,10 +161,10 @@ public class BattleManager : MonoBehaviour {
         }
 
         #if UNITY_EDITOR
-        if (previousScreenResolution.x != Screen.width || previousScreenResolution.y != Screen.height) {
-            OnScreenChange?.Invoke();
-            previousScreenResolution = new Vector2Int(Screen.width, Screen.height);
-        }
+            if (previousScreenResolution.x != Screen.width || previousScreenResolution.y != Screen.height) {
+                OnScreenChange?.Invoke();
+                previousScreenResolution = new Vector2Int(Screen.width, Screen.height);
+            }
         #endif
     }
 

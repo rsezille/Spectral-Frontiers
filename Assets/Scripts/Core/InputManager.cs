@@ -30,6 +30,7 @@ namespace SF {
         public static readonly KeyBind CameraDown = new KeyBind(KeyCode.S);
         public static readonly KeyBind CameraLeft = new KeyBind(KeyCode.Q);
         public static readonly KeyBind CameraRight = new KeyBind(KeyCode.D);
+        public static readonly KeyBind Pause = new KeyBind(KeyCode.Escape);
 
         // Shortcuts
         public static int CameraHorizontalAxis() { return GetAxis(CameraRight, CameraLeft); }
