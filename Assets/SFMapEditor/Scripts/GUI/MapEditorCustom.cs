@@ -101,7 +101,7 @@ namespace SF {
 
                 if (squarePosition.x < 0 || squarePosition.x >= sfMapEditor.size.x || squarePosition.y < 0 || squarePosition.y >= sfMapEditor.size.y) return;
 
-                GameObject square = GameObject.Find("Square(" + squarePosition.x + "," + squarePosition.y + ")");
+                GameObject square = sfMapEditor.map.transform.Find("Square(" + squarePosition.x + "," + squarePosition.y + ")")?.gameObject;
 
                 if (square) {
                     sfMapEditor.hoveredSquare = square.GetComponent<Square>();
@@ -135,7 +135,7 @@ namespace SF {
 
                         if (squarePosition.x < 0 || squarePosition.x >= sfMapEditor.size.x || squarePosition.y < 0 || squarePosition.y >= sfMapEditor.size.y) return;
 
-                        GameObject squareGameObject = GameObject.Find("Square(" + squarePosition.x + "," + squarePosition.y + ")");
+                        GameObject squareGameObject = sfMapEditor.map.transform.Find("Square(" + squarePosition.x + "," + squarePosition.y + ")")?.gameObject;
 
                         if (squareGameObject) {
                             SpriteRenderer highestTile = GetHighestTile(squareGameObject.GetComponent<Square>());
@@ -165,7 +165,7 @@ namespace SF {
 
                         if (squarePosition.x < 0 || squarePosition.x >= sfMapEditor.size.x || squarePosition.y < 0 || squarePosition.y >= sfMapEditor.size.y) return;
 
-                        GameObject squareGameObject = GameObject.Find("Square(" + squarePosition.x + "," + squarePosition.y + ")");
+                        GameObject squareGameObject = sfMapEditor.map.transform.Find("Square(" + squarePosition.x + "," + squarePosition.y + ")")?.gameObject;
 
                         if (!squareGameObject) {
                             DrawSquareAndTile(squarePosition.x, squarePosition.y);
@@ -193,7 +193,7 @@ namespace SF {
 
                             if (squarePosition.x < 0 || squarePosition.x >= sfMapEditor.size.x || squarePosition.y < 0 || squarePosition.y >= sfMapEditor.size.y) return;
 
-                            GameObject squareGameObject = GameObject.Find("Square(" + squarePosition.x + "," + squarePosition.y + ")");
+                            GameObject squareGameObject = sfMapEditor.map.transform.Find("Square(" + squarePosition.x + "," + squarePosition.y + ")")?.gameObject;
 
                             if (!squareGameObject) {
                                 if (sfSpritePicker.isEntity) {
@@ -242,7 +242,7 @@ namespace SF {
 
                         if (squarePosition.x < 0 || squarePosition.x >= sfMapEditor.size.x || squarePosition.y < 0 || squarePosition.y >= sfMapEditor.size.y) return;
 
-                        GameObject squareHit = GameObject.Find("Square(" + squarePosition.x + "," + squarePosition.y + ")");
+                        GameObject squareHit = sfMapEditor.map.transform.Find("Square(" + squarePosition.x + "," + squarePosition.y + ")")?.gameObject;
 
                         if (squareHit) {
                             squareHit.GetComponent<Square>().solid = !squareHit.GetComponent<Square>().solid;

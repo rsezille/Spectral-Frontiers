@@ -127,7 +127,7 @@ namespace SF {
 
                 for (int i = 0; i < size.x; i++) {
                     for (int j = 0; j < size.y; j++) {
-                        GameObject square = GameObject.Find("Square(" + i + "," + j + ")");
+                        GameObject square = map.transform.Find("Square(" + i + "," + j + ")")?.gameObject;
 
                         // Create the square if it doesn't exist
                         if (!square) {
