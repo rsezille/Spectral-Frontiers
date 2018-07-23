@@ -39,15 +39,17 @@ public class BattleCamera : MonoBehaviour {
             battleManager.EventOnZoomChange();
         }
         #endif
+        
+        if (InputManager.CameraHorizontalAxis() != 0 || InputManager.CameraVerticalAxis() != 0) {
+            float tmpSpeed = speed;
 
-        float tmpSpeed = speed;
+            // Lower the speed if the camera is going diagonally
+            if (InputManager.CameraHorizontalAxis() != 0 && InputManager.CameraVerticalAxis() != 0) {
+                tmpSpeed = speed / Mathf.Sqrt(2f);
+            }
 
-        // Lower the speed if the camera is going diagonally
-        if (InputManager.CameraHorizontalAxis() != 0 && InputManager.CameraVerticalAxis() != 0) {
-            tmpSpeed = speed / Mathf.Sqrt(2f);
+            transform.position += new Vector3(tmpSpeed * Time.deltaTime * InputManager.CameraHorizontalAxis(), tmpSpeed * Time.deltaTime * InputManager.CameraVerticalAxis());
         }
-
-        transform.position += new Vector3(tmpSpeed * Time.deltaTime * InputManager.CameraHorizontalAxis(), tmpSpeed * Time.deltaTime * InputManager.CameraVerticalAxis());
     }
     
     public void Zoom(float axis) {
