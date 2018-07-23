@@ -195,6 +195,13 @@ public class DialogBox : MonoBehaviour, IWaitForCustom {
         currentShownPreset.NoCursor();
         currentShownPreset.textMesh.pageToDisplay = 1;
 
+        if (name != "") {
+            currentShownPreset.name.gameObject.SetActive(true);
+            currentShownPreset.nameTextMesh.SetText(name);
+        } else {
+            currentShownPreset.name.gameObject.SetActive(false);
+        }
+
         parsedText = LanguageManager.instance.getDialog(dialogId).Replace("[player_name]", "".PadLeft(gameManager.player.playerName.Length, '£'));
         currentShownPreset.textMesh.SetText("");
     }
