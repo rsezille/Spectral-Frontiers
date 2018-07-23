@@ -9,7 +9,7 @@ public class DialogPreset : MonoBehaviour, IPointerClickHandler {
     public Animator cursor;
     public Canvas canvas;
     public Image image;
-    public Image name;
+    public Image nameImage;
     public TextMeshProUGUI nameTextMesh;
 
     public float yOffset = 0f;
