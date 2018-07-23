@@ -28,6 +28,7 @@ GameObject:
   - component: {fileID: 114706372431421632}
   - component: {fileID: 114427534289433398}
   - component: {fileID: 114927453756017122}
+  - component: {fileID: 114013202548270436}
   m_Layer: 0
   m_Name: Hero
   m_TagString: Untagged
@@ -63,7 +64,7 @@ PolygonCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.15}
+    pivot: {x: 0.45, y: 0.12}
     oldSize: {x: 0.6875, y: 1.59375}
     newSize: {x: 0.28125, y: 1.203125}
     adaptiveTilingThreshold: 0.5
@@ -125,7 +126,7 @@ PolygonCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.15}
+    pivot: {x: 0.45, y: 0.12}
     oldSize: {x: 0.6875, y: 1.59375}
     newSize: {x: 0.28125, y: 1.203125}
     adaptiveTilingThreshold: 0.5
@@ -177,6 +178,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114013202548270436
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1754958333634280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa8bcffd534500847950c796020f2232, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shadowPrefab: {fileID: 212033615980946702, guid: 7b90bfb2b0bc74b4a9c1a04ea8362d8c,
+    type: 2}
 --- !u!114 &114427534289433398
 MonoBehaviour:
   m_ObjectHideFlags: 1

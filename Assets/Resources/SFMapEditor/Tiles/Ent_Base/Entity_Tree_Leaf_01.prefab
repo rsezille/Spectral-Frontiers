@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 60409476625455946}
   - component: {fileID: 114469546932475542}
   - component: {fileID: 114242701527307914}
+  - component: {fileID: 114265511732155870}
   m_Layer: 0
   m_Name: Entity_Tree_Leaf_01
   m_TagString: Untagged
@@ -58,7 +59,7 @@ PolygonCollider2D:
   m_Offset: {x: 0, y: 0.3}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.47809437, y: 0.075}
+    pivot: {x: 0.4720666, y: 0.075}
     oldSize: {x: 11.5625, y: 16.25}
     newSize: {x: 11.5625, y: 16.25}
     adaptiveTilingThreshold: 0.5
@@ -343,6 +344,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   distortionShader: {fileID: 2100000, guid: 974aa3966879eb949b2085d4c5fa2def, type: 2}
+--- !u!114 &114265511732155870
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1740853501873868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa8bcffd534500847950c796020f2232, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shadowPrefab: {fileID: 212915731210649666, guid: f2e857abfd773bd4089fffc9daf85202,
+    type: 2}
 --- !u!114 &114469546932475542
 MonoBehaviour:
   m_ObjectHideFlags: 1
