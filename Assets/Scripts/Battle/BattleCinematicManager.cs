@@ -78,10 +78,21 @@ public class BattleCinematicManager {
                 yield return new WaitForSeconds(float.Parse(value, CultureInfo.InvariantCulture));
                 break;
             case "dialogbox":
-                yield return new WaitForCustom(GameManager.instance.DialogBox.Show(value));
-                break;
-            case "dialogenemy":
-                yield return new WaitForCustom(GameManager.instance.DialogBox.Show(battleManager.enemyCharacters[int.Parse(option)], value));
+                string[] options = option.Split(';');
+                string scope = options[0];
+
+                if (scope == "global") {
+                    string strPosition = options.Length >= 2 ? options[1] : "bottom";
+                    DialogBox.Position position = strPosition == "bottom" ? DialogBox.Position.Bottom : DialogBox.Position.Top;
+
+                    yield return new WaitForCustom(GameManager.instance.DialogBox.Show(value, position));
+                } else if (scope == "enemy") {
+                    string enemyIndex = options[1];
+                    string strPosition = options.Length >= 3 ? options[2] : "bottom";
+                    DialogBox.Position position = strPosition == "bottom" ? DialogBox.Position.Bottom : DialogBox.Position.Top;
+
+                    yield return new WaitForCustom(GameManager.instance.DialogBox.Show(battleManager.enemyCharacters[int.Parse(enemyIndex)], value, position));
+                }
                 break;
             case "camera":
                 if (option == "square") {
