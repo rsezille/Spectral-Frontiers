@@ -81,10 +81,12 @@ public class BattleCamera : MonoBehaviour {
         );
 
         if (!smooth) {
-            transform.position = target;
-
-            return null;
+            return transform.DOMove(target, 0f);
         } else {
+            if (transform.position == target) {
+                return transform.DOMove(target, 0f);
+            }
+
             return transform.DOMove(target, duration).SetEase(ease);
         }
     }
