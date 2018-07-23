@@ -21,7 +21,7 @@ public class BoardCharacter : MonoBehaviour {
 
     // Components
     private BoardEntity boardEntity;
-    private SpriteRenderer sprite;
+    public SpriteRenderer sprite;
     private Animator animator;
     [HideInInspector]
     public Side side;

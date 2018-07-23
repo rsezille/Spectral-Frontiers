@@ -17,10 +17,7 @@ public class HealthBarHUD : MonoBehaviour {
     }
 
     private void Start() {
-        SpriteRenderer sprite = GetComponentInChildren<SpriteRenderer>();
-        float spriteSizeY = sprite ? sprite.bounds.size.y : 0;
-
-        instance.position += new Vector3(0f, spriteSizeY + BaseOffset);
+        instance.position += new Vector3(0f, boardCharacter.sprite.bounds.size.y + BaseOffset);
         
         healthBar = instance.Find("HealthBar").transform;
 
