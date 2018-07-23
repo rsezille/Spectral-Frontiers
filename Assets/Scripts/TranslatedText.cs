@@ -1,18 +1,25 @@
 ﻿using SF;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 /**
  * Automatically translate the attached UI Text (the default text must be an id specified in strings.json)
+ * Work with Text (unity UI) or TextMeshProUGUI
  */
-[RequireComponent(typeof(Text))]
 public class TranslatedText : MonoBehaviour {
-    Text textBox;
-
     // Don't use awake as the LanguageManager needs to be loaded
     private void Start() {
-        textBox = GetComponent<Text>();
+        Text textBox = GetComponent<Text>();
 
-        textBox.text = LanguageManager.instance.getString(textBox.text);
+        if (textBox != null) {
+            textBox.text = LanguageManager.instance.getString(textBox.text);
+        } else { // Look for TextMesh
+            TextMeshProUGUI textMesh = GetComponent<TextMeshProUGUI>();
+
+            if (textMesh != null) {
+                textMesh.SetText(LanguageManager.instance.getString(textMesh.text));
+            }
+        }
     }
 }
