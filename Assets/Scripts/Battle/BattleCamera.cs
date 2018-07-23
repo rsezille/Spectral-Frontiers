@@ -4,6 +4,7 @@ using SF;
 
 [RequireComponent(typeof(Camera))]
 public class BattleCamera : MonoBehaviour {
+    private BattleManager battleManager;
     private Camera battleCamera;
 
     // Camera speed
@@ -12,6 +13,7 @@ public class BattleCamera : MonoBehaviour {
     private float positionYOffset = 0.7f;
 
     private void Awake() {
+        battleManager = BattleManager.instance;
         battleCamera = GetComponent<Camera>();
     }
 
@@ -20,6 +22,23 @@ public class BattleCamera : MonoBehaviour {
                 || BattleManager.instance.currentTurnStep == BattleManager.TurnStep.Enemy) {
             return;
         }
+
+        #if UNITY_EDITOR
+        // Do not use InputBinds as this code is for editor only
+        if (Input.GetKeyDown(KeyCode.O)) {
+            ResetCameraSize();
+        }
+        
+        if (Input.GetKeyDown(KeyCode.P)) {
+            SetPosition(0, 0, true);
+        }
+
+        if (Input.GetAxis(InputManager.Axis.Zoom) != 0) {
+            Zoom(Input.GetAxis(InputManager.Axis.Zoom));
+
+            battleManager.EventOnZoomChange();
+        }
+        #endif
 
         float tmpSpeed = speed;
 

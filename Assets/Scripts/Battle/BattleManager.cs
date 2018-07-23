@@ -125,28 +125,12 @@ public class BattleManager : MonoBehaviour {
     // Update is called once per frame
     private void Update() {
         #if UNITY_EDITOR
-        // Do not use InputBinds as this code is for editor only
-        if (Input.GetKeyDown(KeyCode.O)) {
-            battleCamera.ResetCameraSize();
-        }
-
-        // Do not use InputBinds as this code is for editor only
-        if (Input.GetKeyDown(KeyCode.P)) {
-            battleCamera.SetPosition(0, 0, true);
-        }
-
         if (Input.GetKeyDown(KeyCode.M)) {
             GameManager.instance.DialogBox.Show("prologue_01");
         }
 
         if (Input.GetKeyDown(KeyCode.L)) {
             GameManager.instance.DialogBox.Show(playerCharacters[0], "prologue_01");
-        }
-
-        if (currentBattleStep != BattleStep.Cinematic && currentTurnStep != TurnStep.Enemy && Input.GetAxis(InputManager.Axis.Zoom) != 0) {
-            battleCamera.Zoom(Input.GetAxis(InputManager.Axis.Zoom));
-
-            OnZoomChange?.Invoke();
         }
         #endif
 
@@ -175,6 +159,10 @@ public class BattleManager : MonoBehaviour {
 
     public void EventOnEnterPlacing() {
         OnEnterPlacing?.Invoke();
+    }
+
+    public void EventOnZoomChange() {
+        OnZoomChange?.Invoke();
     }
 
     public void EventOnSemiTransparentReset() {
