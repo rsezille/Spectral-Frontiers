@@ -149,7 +149,7 @@ public class DialogBox : MonoBehaviour, IWaitForCustom {
     /**
      * Show a dialog box attached to a character, with his name
      */
-    public IWaitForCustom Show(BoardCharacter boardCharacter, string dialogId, int presetIndex = 0) {
+    public IWaitForCustom Show(BoardCharacter boardCharacter, string dialogId, Position position = Position.Top, int presetIndex = 0) {
         if (currentShownPreset != null) {
             return null;
         }
@@ -162,6 +162,16 @@ public class DialogBox : MonoBehaviour, IWaitForCustom {
         currentShownPreset.image.rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
         currentShownPreset.image.rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
         currentShownPreset.image.rectTransform.anchoredPosition = Vector3.zero;
+
+        switch (position) {
+            case Position.Bottom:
+                currentShownPreset.image.rectTransform.anchoredPosition = new Vector3(0f, - currentShownPreset.yOffset, 0f);
+                break;
+            case Position.Top:
+                currentShownPreset.image.rectTransform.anchoredPosition = new Vector3(0f, boardCharacter.sprite.bounds.size.y * Globals.PixelsPerUnit + currentShownPreset.yOffset, 0f);
+                break;
+        }
+
 
         return this;
     }
