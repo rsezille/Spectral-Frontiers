@@ -537,7 +537,7 @@ MonoBehaviour:
   cursor: {fileID: 95151215337205518}
   canvas: {fileID: 223799258046201074}
   image: {fileID: 114595600593580048}
-  name: {fileID: 114445752920687126}
+  nameImage: {fileID: 114445752920687126}
   nameTextMesh: {fileID: 114543209793225746}
   yOffset: 70
 --- !u!114 &114898972246385530
