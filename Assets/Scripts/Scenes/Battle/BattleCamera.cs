@@ -33,7 +33,7 @@ public class BattleCamera : MonoBehaviour {
             SetPosition(0, 0, true);
         }
 
-        if (Input.GetAxis(InputManager.Axis.Zoom) != 0) {
+        if (Input.GetAxis(InputManager.Axis.Zoom) != 0 && Time.timeScale > 0) {
             Zoom(Input.GetAxis(InputManager.Axis.Zoom));
 
             battleManager.EventOnZoomChange();
