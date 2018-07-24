@@ -52,6 +52,8 @@ public class GameManager : MonoBehaviour {
         options = Instantiate(optionsPrefab, transform) as Options;
         options.gameObject.SetActive(false);
 
+        SF.PlayerOptions.Load();
+
         Debug.Log("Game Manager awakes");
 
         // TODO [BETA] Logs + time

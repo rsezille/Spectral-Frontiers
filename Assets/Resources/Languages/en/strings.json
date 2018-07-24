@@ -313,6 +313,10 @@
       "text": "Battle Speed:"
     },
 	{
+	  "id": "options.reset.keys",
+	  "text": "Set default keys"
+	},
+	{
 	  "id": "keybind.click.name",
 	  "text": "Left click"
 	},
