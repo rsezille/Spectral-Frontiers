@@ -137,6 +137,10 @@
       "text": "Resume"
     },
 	{
+	  "id": "battle.hud.pause.options",
+	  "text": "Options"
+	},
+	{
       "id": "battle.hud.pause.quit",
       "text": "Quit"
     },

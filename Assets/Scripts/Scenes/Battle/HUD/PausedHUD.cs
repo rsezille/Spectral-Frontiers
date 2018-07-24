@@ -3,6 +3,7 @@ using UnityEngine.EventSystems;
 
 public class PausedHUD : MonoBehaviour {
     public GameObject resumeButton;
+    public GameObject optionsButton;
     public GameObject quitButton;
 
     private void Start() {
