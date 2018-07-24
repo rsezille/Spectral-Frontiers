@@ -19,6 +19,7 @@ public class SelectLanguageManager : MonoBehaviour {
         Debug.Log("End of loading language... [" + languageCode + "]");
 
         PlayerPrefs.SetString(OptionKeys.Language, languageCode);
+        PlayerPrefs.Save();
 
         GameManager.instance.LoadSceneAsync(Scenes.Title);
     }
