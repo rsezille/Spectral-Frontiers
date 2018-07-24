@@ -16,7 +16,13 @@ public class AutoBox2D : MonoBehaviour {
 
         box = gameObject.AddComponent<BoxCollider2D>();
 
-        box.size = rect.sizeDelta;
+        box.size = new Vector2(rect.rect.width, rect.rect.height);
         box.offset = Vector2.zero;
+    }
+
+    private void OnRectTransformDimensionsChange() {
+        if (box != null) {
+            box.size = new Vector2(rect.rect.width, rect.rect.height);
+        }
     }
 }
