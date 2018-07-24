@@ -11,7 +11,7 @@ namespace SF {
         private bool bindable = false;
         public bool enabled = true;
 
-        public KeyBind(KeyCode defaultKey, string name, bool bindable = false) {
+        public KeyBind(KeyCode defaultKey, string name, bool bindable = true) {
             this.defaultKey = defaultKey;
             bindedKey = defaultKey;
             this.bindable = bindable;
@@ -30,9 +30,13 @@ namespace SF {
             }
         }
 
-        public void Bind(KeyCode key) {
+        public void Bind(KeyCode key, bool toPlayerPrefs = true) {
             if (bindable) {
                 bindedKey = key;
+
+                if (toPlayerPrefs) {
+                    PlayerPrefs.SetString(name, bindedKey.ToString());
+                }
             }
         }
 
