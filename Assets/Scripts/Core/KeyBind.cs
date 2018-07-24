@@ -7,13 +7,15 @@ namespace SF {
     public class KeyBind {
         public KeyCode defaultKey { get; private set; }
         public KeyCode bindedKey { get; private set; }
+        public string name { get; private set; } // Mainly used to display the key in options
         private bool bindable = false;
         public bool enabled = true;
 
-        public KeyBind(KeyCode defaultKey, bool bindable = false) {
+        public KeyBind(KeyCode defaultKey, string name, bool bindable = false) {
             this.defaultKey = defaultKey;
             bindedKey = defaultKey;
             this.bindable = bindable;
+            this.name = name;
         }
 
         public bool IsKeyDown {

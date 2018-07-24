@@ -17,20 +17,20 @@ namespace SF {
         }
 
         // Bindings
-        public static readonly KeyBind Click = new KeyBind(KeyCode.Mouse0);
-        public static readonly KeyBind Previous = new KeyBind(KeyCode.A);
-        public static readonly KeyBind Next = new KeyBind(KeyCode.E);
-        public static readonly KeyBind Special1 = new KeyBind(KeyCode.Space);
-        public static readonly KeyBind Up = new KeyBind(KeyCode.UpArrow);
-        public static readonly KeyBind Down = new KeyBind(KeyCode.DownArrow);
-        public static readonly KeyBind Left = new KeyBind(KeyCode.LeftArrow);
-        public static readonly KeyBind Right = new KeyBind(KeyCode.RightArrow);
-        public static readonly KeyBind Confirm = new KeyBind(KeyCode.Return);
-        public static readonly KeyBind CameraUp = new KeyBind(KeyCode.Z);
-        public static readonly KeyBind CameraDown = new KeyBind(KeyCode.S);
-        public static readonly KeyBind CameraLeft = new KeyBind(KeyCode.Q);
-        public static readonly KeyBind CameraRight = new KeyBind(KeyCode.D);
-        public static readonly KeyBind Pause = new KeyBind(KeyCode.Escape);
+        public static readonly KeyBind Click = new KeyBind(KeyCode.Mouse0, "Left click");
+        public static readonly KeyBind Previous = new KeyBind(KeyCode.A, "Previous");
+        public static readonly KeyBind Next = new KeyBind(KeyCode.E, "Next");
+        public static readonly KeyBind Special1 = new KeyBind(KeyCode.Space, "Special 1");
+        public static readonly KeyBind Up = new KeyBind(KeyCode.UpArrow, "Up");
+        public static readonly KeyBind Down = new KeyBind(KeyCode.DownArrow, "Down");
+        public static readonly KeyBind Left = new KeyBind(KeyCode.LeftArrow, "Left");
+        public static readonly KeyBind Right = new KeyBind(KeyCode.RightArrow, "Right");
+        public static readonly KeyBind Confirm = new KeyBind(KeyCode.Return, "Confirm");
+        public static readonly KeyBind CameraUp = new KeyBind(KeyCode.Z, "Camera Up");
+        public static readonly KeyBind CameraDown = new KeyBind(KeyCode.S, "Camera Down");
+        public static readonly KeyBind CameraLeft = new KeyBind(KeyCode.Q, "Camera Left");
+        public static readonly KeyBind CameraRight = new KeyBind(KeyCode.D, "Camera Right");
+        public static readonly KeyBind Pause = new KeyBind(KeyCode.Escape, "Pause");
 
         // Shortcuts
         public static int CameraHorizontalAxis() { return GetAxis(CameraRight, CameraLeft); }
