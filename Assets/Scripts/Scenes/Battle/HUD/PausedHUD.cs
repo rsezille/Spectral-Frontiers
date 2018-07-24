@@ -7,19 +7,11 @@ public class PausedHUD : MonoBehaviour {
 
     private void Start() {
         resumeButton.AddListener(EventTriggerType.PointerClick, Resume);
-        quitButton.AddListener(EventTriggerType.PointerClick, Quit);
+        quitButton.AddListener(EventTriggerType.PointerClick, GameManager.instance.QuitGame);
     }
 
     public void Resume() {
         Time.timeScale = 1f;
         gameObject.SetActive(false);
-    }
-
-    private void Quit() {
-        #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-        #else
-            Application.Quit();
-        #endif
     }
 }
