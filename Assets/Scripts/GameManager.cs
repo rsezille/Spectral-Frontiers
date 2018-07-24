@@ -73,11 +73,9 @@ public class GameManager : MonoBehaviour {
     }
 
     /**
-     * immediate is used to not wait the fade in to be completed before loading the scene - can speed up scene loading
-     * /!\ be aware that when using immediate = true, the speed must be less than the loading time (otherwise the fade in will not be finished when swaping scenes)
      * TODO [BETA] Add a loading screen between scenes (or on purpose, for example when loading a mission (BattleScene)
      */
-    public void LoadSceneAsync(string scene, bool immediate = false, float speed = 1f, Color? inColorN = null, Color? outColorN = null) {
+    public void LoadSceneAsync(string scene, float speed = 1f, Color? inColorN = null, Color? outColorN = null) {
         Color inColor = inColorN ?? Color.black;
         Color outColor = outColorN ?? Color.black;
 
@@ -89,33 +87,23 @@ public class GameManager : MonoBehaviour {
 
         transitionImage = transition.AddComponent<Image>();
         transitionImage.color = new Color(inColor.r, inColor.g, inColor.b, 0f);
-
-        if (immediate) {
-            StartCoroutine(LoadSceneAsyncCoroutine(scene, immediate, inColor, outColor, speed));
-        } else {
-            transitionImage.DOColor(inColor, speed).OnComplete(() => {
-                StartCoroutine(LoadSceneAsyncCoroutine(scene, immediate, inColor, outColor, speed));
-            });
-        }
+        
+        transitionImage.DOColor(inColor, speed).OnComplete(() => {
+            StartCoroutine(LoadSceneAsyncCoroutine(scene, inColor, outColor, speed));
+        });
     }
 
-    private IEnumerator LoadSceneAsyncCoroutine(string scene, bool immediate, Color inColor, Color outColor, float speed) {
-        bool animationCompleted = !immediate;
-
+    private IEnumerator LoadSceneAsyncCoroutine(string scene, Color inColor, Color outColor, float speed) {
         AsyncOperation AO = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Single);
         AO.allowSceneActivation = false;
 
-        if (immediate) {
-            transitionImage.DOColor(inColor, speed).OnComplete(() => {
-                animationCompleted = true;
-            });
-        }
+        while (!AO.isDone) {
+            if (AO.progress >= 0.9f && !AO.allowSceneActivation) {
+                AO.allowSceneActivation = true;
+            }
 
-        while (AO.progress < 0.9f || !animationCompleted) {
             yield return null;
         }
-
-        AO.allowSceneActivation = true;
 
         transitionImage.DOColor(new Color(outColor.r, outColor.g, outColor.b, 0f), speed).OnComplete(() => {
             Destroy(transition);
