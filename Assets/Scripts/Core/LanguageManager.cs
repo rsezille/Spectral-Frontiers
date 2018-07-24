@@ -25,9 +25,9 @@ namespace SF {
 
         private LanguageManager() { }
 
-        public void loadDefaultLanguage() {
+        public void LoadDefaultLanguage() {
             Debug.Log("Loading default language... [" + Globals.DefaultLanguage + "]");
-            loadLanguage(Globals.DefaultLanguage);
+            LoadLanguage(Globals.DefaultLanguage);
             Debug.Log("End of loading default language... [" + Globals.DefaultLanguage + "]");
         }
 
@@ -35,7 +35,7 @@ namespace SF {
          * Load the given language
          * @param languageCode - 'fr', 'en', etc.
          */
-        public void loadLanguage(string languageCode) {
+        public void LoadLanguage(string languageCode) {
             if (String.IsNullOrEmpty(languageCode)) {
                 Debug.LogError("Language code incorrect");
 
@@ -95,7 +95,7 @@ namespace SF {
          * @param id - The key of the string
          * @return The value of the key (id) in the current language (or the default one if not found)
          */
-        public string getString(string id) {
+        public string GetString(string id) {
             if (currentStrings.ContainsKey(id)) {
                 return currentStrings[id];
             }
@@ -113,7 +113,7 @@ namespace SF {
          * Should be used only in DialogBox
          * @return The value of the key (id) in the current language (or the default one if not found)
          */
-        public string getDialog(string id) {
+        public string GetDialog(string id) {
             if (currentDialogs.ContainsKey(id)) {
                 return currentDialogs[id];
             }

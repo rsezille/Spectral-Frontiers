@@ -53,7 +53,7 @@ public class Options : MonoBehaviour {
         RectTransform instance = Instantiate(keyBindingPrefab, keyBindingsTransform) as RectTransform;
         instance.localPosition += new Vector3(0f, -50 * keyBindings.Count);
 
-        instance.GetComponentInChildren<TextMeshProUGUI>().SetText(LanguageManager.instance.getString(key.name));
+        instance.GetComponentInChildren<TextMeshProUGUI>().SetText(LanguageManager.instance.GetString(key.name));
         instance.GetComponentInChildren<Button>().GetComponentInChildren<TextMeshProUGUI>().SetText(key.bindedKey.ToString());
 
         keyBindings.Add(key.bindedKey.ToString());

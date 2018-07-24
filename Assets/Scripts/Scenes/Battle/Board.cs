@@ -143,7 +143,7 @@ public class Board : MonoBehaviour {
 
             pathFinder = new PathFinder(this, this.width + this.height);
 
-            mapName = LanguageManager.instance.getString("map." + mission.map + ".name");
+            mapName = LanguageManager.instance.GetString("map." + mission.map + ".name");
         } else {
             Debug.LogError("Map not found! " + mission.map);
         }

@@ -15,7 +15,7 @@ public class SelectLanguageManager : MonoBehaviour {
 
     public static void LoadLanguageAndLeave(string languageCode) {
         Debug.Log("Loading language... [" + languageCode + "]");
-        LanguageManager.instance.loadLanguage(languageCode);
+        LanguageManager.instance.LoadLanguage(languageCode);
         Debug.Log("End of loading language... [" + languageCode + "]");
 
         PlayerPrefs.SetString(OptionKeys.Language, languageCode);

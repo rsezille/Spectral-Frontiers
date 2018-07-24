@@ -15,7 +15,7 @@ public class Loader : MonoBehaviour {
             Debug.Log("Game is starting...");
             Instantiate(gameManager);
 
-            LanguageManager.instance.loadDefaultLanguage();
+            LanguageManager.instance.LoadDefaultLanguage();
 
 #if UNITY_EDITOR
             // Allow us to start with any scene instead of the first one

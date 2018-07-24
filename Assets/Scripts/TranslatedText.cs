@@ -13,12 +13,12 @@ public class TranslatedText : MonoBehaviour {
         Text textBox = GetComponent<Text>();
 
         if (textBox != null) {
-            textBox.text = LanguageManager.instance.getString(textBox.text);
+            textBox.text = LanguageManager.instance.GetString(textBox.text);
         } else { // Look for TextMesh
             TextMeshProUGUI textMesh = GetComponent<TextMeshProUGUI>();
 
             if (textMesh != null) {
-                textMesh.SetText(LanguageManager.instance.getString(textMesh.text));
+                textMesh.SetText(LanguageManager.instance.GetString(textMesh.text));
             }
         }
     }

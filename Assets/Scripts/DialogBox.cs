@@ -202,7 +202,7 @@ public class DialogBox : MonoBehaviour, IWaitForCustom {
             currentShownPreset.nameImage.gameObject.SetActive(false);
         }
 
-        parsedText = LanguageManager.instance.getDialog(dialogId).Replace("[player_name]", "".PadLeft(gameManager.player.playerName.Length, '£'));
+        parsedText = LanguageManager.instance.GetDialog(dialogId).Replace("[player_name]", "".PadLeft(gameManager.player.playerName.Length, '£'));
         currentShownPreset.textMesh.SetText("");
     }
 
