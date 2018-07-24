@@ -153,10 +153,6 @@
       "text": "Back"
     },
     {
-      "id": "battle.hud.status.quit",
-      "text": "Quit"
-    },
-    {
       "id": "battle.hud.victory.won",
       "text": "Congratulations! You have won."
     },

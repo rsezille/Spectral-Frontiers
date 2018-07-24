@@ -1,20 +1,20 @@
 ﻿using DG.Tweening;
 using SF;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class StatusHUD : MonoBehaviour {
     public RectTransform blockMiddle;
     public RectTransform blockTop;
     public RectTransform blockBottom;
-    public Text statusText;
+    public TextMeshProUGUI statusText;
 
     public Character character { private set; get; }
+    [HideInInspector]
     public BoardCharacter boardCharacter;
 
     public GameObject backButton;
-    public GameObject quitButton;
 
     private float rotationSpeed = 0.2f;
     private bool isGoingDisabled = false; // True during the disabling animation
@@ -22,7 +22,6 @@ public class StatusHUD : MonoBehaviour {
 
     private void Start() {
         backButton.AddListener(EventTriggerType.PointerClick, () => Hide());
-        quitButton.AddListener(EventTriggerType.PointerClick, Quit);
     }
 
     public void Show(BoardCharacter bc, HUD.Speed speed = HUD.Speed.Normal) {
@@ -84,15 +83,15 @@ public class StatusHUD : MonoBehaviour {
     }
 
     private void UpdateText() {
-        statusText.text = $@"
-            { character.name }
-            HP: { character.GetCurrentHP() }/{ character.GetMaxHP() }
-            SP: { character.GetCurrentMP() }/{ character.GetMaxMP() }
-            PhyAtk: { character.GetPhysicalAttack() }
-            PhyDef: { character.GetPhysicalDefense() }
-            MagPow: { character.GetMagicalPower() }
-            MagRes: { character.GetMagicalResistance() }
-        ";
+        statusText.SetText(
+            character.name + "\n" +
+            "HP: " + character.GetCurrentHP() + "/" + character.GetMaxHP() + "\n" +
+            "SP: " + character.GetCurrentMP() + "/" + character.GetMaxMP() + "\n" +
+            "PhyAtk: " + character.GetPhysicalAttack() + "\n" +
+            "PhyDef: " + character.GetPhysicalDefense() + "\n" +
+            "MagPow: " + character.GetMagicalPower() + "\n" +
+            "MagRes: " + character.GetMagicalResistance()
+        );
     }
 
     private void DisableGameObject() {
@@ -100,9 +99,5 @@ public class StatusHUD : MonoBehaviour {
 
         isGoingDisabled = false;
         gameObject.SetActive(false);
-    }
-
-    private void Quit() {
-        Application.Quit();
     }
 }
