@@ -20,6 +20,6 @@ public class SelectLanguageManager : MonoBehaviour {
 
         PlayerPrefs.SetString(OptionKeys.Language, languageCode);
 
-        GameManager.instance.LoadSceneAsync(Scenes.Battle);
+        GameManager.instance.LoadSceneAsync(Scenes.Title);
     }
 }

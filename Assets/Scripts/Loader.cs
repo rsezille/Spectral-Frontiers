@@ -17,20 +17,24 @@ public class Loader : MonoBehaviour {
 
             LanguageManager.instance.loadDefaultLanguage();
 
-            #if UNITY_EDITOR
-                // Allow us to start with any scene instead of the first one
-                switch (SceneManager.GetActiveScene().name) {
-                    case Scenes.Language:
-                        // Do nothing, normal execution (language is the first scene)
-                        Debug.Log("First scene: Language");
-                        GameManager.instance.missionToLoad = "story_01";
-                        break;
-                    case Scenes.Battle:
-                        Debug.Log("First scene: Battle");
-                        GameManager.instance.missionToLoad = "story_01";
-                        break;
-                }
-            #endif
+#if UNITY_EDITOR
+            // Allow us to start with any scene instead of the first one
+            switch (SceneManager.GetActiveScene().name) {
+                case Scenes.Language:
+                    // Do nothing, normal execution (language is the first scene)
+                    Debug.Log("First scene: Language");
+                    GameManager.instance.missionToLoad = "story_01";
+                    break;
+                case Scenes.Title:
+                    Debug.Log("First scene: Battle");
+                    GameManager.instance.missionToLoad = "story_01";
+                    break;
+                case Scenes.Battle:
+                    Debug.Log("First scene: Battle");
+                    GameManager.instance.missionToLoad = "story_01";
+                    break;
+            }
+#endif
         }
     }
 }
