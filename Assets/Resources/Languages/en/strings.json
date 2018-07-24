@@ -249,18 +249,6 @@
       "text": "Phantom Edge"
     },
     {
-      "id": "ingame.menu.missions",
-      "text": "Select a mission"
-    },
-    {
-      "id": "ingame.menu.return",
-      "text": "Quit"
-    },
-    {
-      "id": "ingame.mission_menu.return",
-      "text": "Back"
-    },
-    {
       "id": "gameover.menu.continue",
       "text": "Continue"
     },
@@ -313,17 +301,73 @@
       "text": "Enter your name: "
     },
     {
-      "id": "options.menu.choose_language",
-      "text": "Choose your language"
+      "id": "options.title",
+      "text": "Options"
     },
     {
-      "id": "options.menu.return",
-      "text": "Back to Title Screen"
+      "id": "options.close",
+      "text": "Close"
     },
-    {
-      "id": "player.money",
-      "text": "Gold"
+	{
+      "id": "options.battlespeed",
+      "text": "Battle Speed:"
     },
+	{
+	  "id": "keybind.click.name",
+	  "text": "Left click"
+	},
+	{
+	  "id": "keybind.previous.name",
+	  "text": "Previous"
+	},
+	{
+	  "id": "keybind.next.name",
+	  "text": "Next"
+	},
+	{
+	  "id": "keybind.special1.name",
+	  "text": "Special 1"
+	},
+	{
+	  "id": "keybind.up.name",
+	  "text": "Up"
+	},
+	{
+	  "id": "keybind.down.name",
+	  "text": "Down"
+	},
+	{
+	  "id": "keybind.left.name",
+	  "text": "Left"
+	},
+	{
+	  "id": "keybind.right.name",
+	  "text": "Right"
+	},
+	{
+	  "id": "keybind.confirm.name",
+	  "text": "Confirm"
+	},
+	{
+	  "id": "keybind.cameraup.name",
+	  "text": "Camera Up"
+	},
+	{
+	  "id": "keybind.cameraleft.name",
+	  "text": "Camera Left"
+	},
+	{
+	  "id": "keybind.cameradown.name",
+	  "text": "Camera Down"
+	},
+	{
+	  "id": "keybind.cameraright.name",
+	  "text": "Camera Right"
+	},
+	{
+	  "id": "keybind.pause.name",
+	  "text": "Pause"
+	},
     {
       "id": "title.menu.new",
       "text": "New Game"
