@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace SF {
     /**
      * Define all input bindings
+     * Work closely with PlayerOptions
      * 
      * Usage: if (InputManager.Next.IsKeyDown) { do something }
      * 
@@ -17,7 +19,7 @@ namespace SF {
         }
 
         // Bindings
-        public static readonly KeyBind Click = new KeyBind(KeyCode.Mouse0, "keybind.click.name");
+        public static readonly KeyBind Click = new KeyBind(KeyCode.Mouse0, "keybind.click.name", false);
         public static readonly KeyBind Previous = new KeyBind(KeyCode.A, "keybind.previous.name");
         public static readonly KeyBind Next = new KeyBind(KeyCode.E, "keybind.next.name");
         public static readonly KeyBind Special1 = new KeyBind(KeyCode.Space, "keybind.special1.name");
@@ -31,6 +33,10 @@ namespace SF {
         public static readonly KeyBind CameraLeft = new KeyBind(KeyCode.Q, "keybind.cameraleft.name");
         public static readonly KeyBind CameraRight = new KeyBind(KeyCode.D, "keybind.cameraright.name");
         public static readonly KeyBind Pause = new KeyBind(KeyCode.Escape, "keybind.pause.name");
+
+        public static readonly List<KeyBind> allKeyBinds = new List<KeyBind>() {
+            Click, Previous, Next, Special1, Up, Down, Left, Right, Confirm, CameraUp, CameraDown, CameraLeft, CameraRight, Pause
+        };
 
         // Shortcuts
         public static int CameraHorizontalAxis() { return GetAxis(CameraRight, CameraLeft); }
