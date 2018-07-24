@@ -26,15 +26,15 @@ public class Options : MonoBehaviour {
         AddKeyBinding(InputManager.CameraLeft);
         AddKeyBinding(InputManager.CameraDown);
         AddKeyBinding(InputManager.CameraRight);
-        AddKeyBinding(InputManager.Confirm);
-        AddKeyBinding(InputManager.Down);
-        AddKeyBinding(InputManager.Left);
-        AddKeyBinding(InputManager.Next);
-        AddKeyBinding(InputManager.Pause);
-        AddKeyBinding(InputManager.Previous);
-        AddKeyBinding(InputManager.Right);
-        AddKeyBinding(InputManager.Special1);
         AddKeyBinding(InputManager.Up);
+        AddKeyBinding(InputManager.Left);
+        AddKeyBinding(InputManager.Down);
+        AddKeyBinding(InputManager.Right);
+        AddKeyBinding(InputManager.Previous);
+        AddKeyBinding(InputManager.Next);
+        AddKeyBinding(InputManager.Confirm);
+        AddKeyBinding(InputManager.Pause);
+        AddKeyBinding(InputManager.Special1);
     }
 
     public void Show() {
