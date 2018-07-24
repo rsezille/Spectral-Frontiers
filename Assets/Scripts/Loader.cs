@@ -23,11 +23,12 @@ public class Loader : MonoBehaviour {
                 case Scenes.Language:
                     // Do nothing, normal execution (language is the first scene)
                     Debug.Log("First scene: Language");
-                    GameManager.instance.missionToLoad = "story_01";
                     break;
                 case Scenes.Title:
-                    Debug.Log("First scene: Battle");
-                    GameManager.instance.missionToLoad = "story_01";
+                    Debug.Log("First scene: Title");
+                    break;
+                case Scenes.InGame:
+                    Debug.Log("First scene: InGame");
                     break;
                 case Scenes.Battle:
                     Debug.Log("First scene: Battle");

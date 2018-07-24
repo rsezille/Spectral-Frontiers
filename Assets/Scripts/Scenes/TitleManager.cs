@@ -15,7 +15,7 @@ public class TitleManager : MonoBehaviour {
     }
 
     private void NewGame() {
-        GameManager.instance.LoadSceneAsync(Scenes.Battle);
+        GameManager.instance.LoadSceneAsync(Scenes.InGame);
     }
 
     private void LoadGame() { }
