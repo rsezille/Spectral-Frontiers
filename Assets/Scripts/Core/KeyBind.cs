@@ -40,8 +40,12 @@ namespace SF {
             }
         }
 
-        public void ResetKey() {
+        public void ResetKey(bool toPlayerPrefs = true) {
             bindedKey = defaultKey;
+
+            if (toPlayerPrefs) {
+                PlayerPrefs.SetString(name, bindedKey.ToString());
+            }
         }
     }
 }
