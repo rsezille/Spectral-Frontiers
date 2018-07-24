@@ -10,7 +10,7 @@ public class TitleManager : MonoBehaviour {
     private void Start() {
         newButton.AddListener(EventTriggerType.PointerClick, NewGame);
         loadButton.AddListener(EventTriggerType.PointerClick, LoadGame);
-        optionsButton.AddListener(EventTriggerType.PointerClick, Options);
+        optionsButton.AddListener(EventTriggerType.PointerClick, GameManager.instance.options.Show);
         quitButton.AddListener(EventTriggerType.PointerClick, GameManager.instance.QuitGame);
     }
 
@@ -19,6 +19,4 @@ public class TitleManager : MonoBehaviour {
     }
 
     private void LoadGame() { }
-
-    private void Options() { }
 }

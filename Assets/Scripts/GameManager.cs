@@ -23,8 +23,12 @@ public class GameManager : MonoBehaviour {
 
     [SerializeField]
     private DialogBox dialogBoxPrefab;
+    [SerializeField]
+    private Options optionsPrefab;
 
-    private DialogBox dialogBox; // The instantiated game object
+    // The instantiated game object
+    private DialogBox dialogBox;
+    public Options options { get; private set; }
 
     // Transitions between scenes
     private GameObject transition;
@@ -44,6 +48,9 @@ public class GameManager : MonoBehaviour {
         }
 
         DontDestroyOnLoad(gameObject);
+
+        options = Instantiate(optionsPrefab, transform) as Options;
+        options.gameObject.SetActive(false);
 
         Debug.Log("Game Manager awakes");
 

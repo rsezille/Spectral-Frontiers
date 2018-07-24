@@ -8,6 +8,7 @@ public class PausedHUD : MonoBehaviour {
 
     private void Start() {
         resumeButton.AddListener(EventTriggerType.PointerClick, Resume);
+        optionsButton.AddListener(EventTriggerType.PointerClick, GameManager.instance.options.Show);
         quitButton.AddListener(EventTriggerType.PointerClick, GameManager.instance.QuitGame);
     }
 

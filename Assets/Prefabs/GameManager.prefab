@@ -54,3 +54,5 @@ MonoBehaviour:
   missionToLoad: 
   dialogBoxPrefab: {fileID: 114705553325998528, guid: f3816b75dcd0bad44b17b3f974069a01,
     type: 2}
+  optionsPrefab: {fileID: 114614131855750122, guid: 351a82af2d9696f48a15712b564e4d5b,
+    type: 2}
