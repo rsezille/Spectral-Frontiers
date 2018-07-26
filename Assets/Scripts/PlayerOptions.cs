@@ -43,64 +43,68 @@ namespace SF {
             PlayerPrefs.Save();
         }
 
-        public static string GetString(string key) {
-            if (options.ContainsKey(key)) {
-                return options[key];
+        public static string GetString(Option option) {
+            if (options.ContainsKey(option.key)) {
+                return options[option.key];
             }
 
-            Debug.LogError("Key doesn't exist in PlayerPrefs: " + key);
+            Debug.LogError("Key doesn't exist in PlayerPrefs: " + option.key);
 
-            return key;
+            return option.key;
         }
 
-        public static float GetFloat(string key) {
-            if (options.ContainsKey(key)) {
-                return float.Parse(options[key], CultureInfo.InvariantCulture);
+        public static float GetFloat(Option option) {
+            if (options.ContainsKey(option.key)) {
+                return float.Parse(options[option.key], CultureInfo.InvariantCulture);
             }
 
-            Debug.LogError("Key doesn't exist in PlayerPrefs: " + key + " ; returning 0f");
+            Debug.LogError("Key doesn't exist in PlayerPrefs: " + option.key + " ; returning 0f");
 
             return 0f;
         }
 
-        public static int GetInt(string key) {
-            if (options.ContainsKey(key)) {
-                return Int32.Parse(options[key]);
+        public static int GetInt(Option option) {
+            if (options.ContainsKey(option.key)) {
+                return Int32.Parse(options[option.key]);
             }
 
-            Debug.LogError("Key doesn't exist in PlayerPrefs: " + key + " ; returning 0");
+            Debug.LogError("Key doesn't exist in PlayerPrefs: " + option.key + " ; returning 0");
 
             return 0;
         }
 
-        public static void SetValue(string key, string value) {
-            if (options.ContainsKey(key)) {
-                options[key] = value;
+        public static void SetValue(Option option, string value) {
+            if (options.ContainsKey(option.key)) {
+                options[option.key] = value;
             } else {
-                options.Add(key, value);
+                options.Add(option.key, value);
             }
 
-            PlayerPrefs.SetString(key, value);
+            PlayerPrefs.SetString(option.key, value);
         }
 
-        public static void SetValue(string key, float value) {
-            if (options.ContainsKey(key)) {
-                options[key] = value.ToString("R");
+        public static void SetValue(Option option, float value) {
+            if (options.ContainsKey(option.key)) {
+                options[option.key] = value.ToString("R");
             } else {
-                options.Add(key, value.ToString("R"));
+                options.Add(option.key, value.ToString("R"));
             }
 
-            PlayerPrefs.SetString(key, value.ToString("R"));
+            PlayerPrefs.SetString(option.key, value.ToString("R"));
         }
 
-        public static void SetValue(string key, int value) {
-            if (options.ContainsKey(key)) {
-                options[key] = value.ToString();
+        public static void SetValue(Option option, int value) {
+            if (options.ContainsKey(option.key)) {
+                options[option.key] = value.ToString();
             } else {
-                options.Add(key, value.ToString());
+                options.Add(option.key, value.ToString());
             }
 
-            PlayerPrefs.SetString(key, value.ToString());
+            PlayerPrefs.SetString(option.key, value.ToString());
+        }
+
+        public static bool HasKey(Option option) {
+            return PlayerPrefs.HasKey(option.key);
         }
     }
 }

@@ -4,12 +4,12 @@ using UnityEngine;
 public class SelectLanguageManager : MonoBehaviour {
     private void Start() {
         #if UNITY_EDITOR
-            PlayerPrefs.DeleteKey(OptionKeys.Language);
+            PlayerPrefs.DeleteKey(PlayerOptions.Language.key);
         #endif
 
         // Only show this scene once, at the first launch of the game
-        if (PlayerPrefs.HasKey(OptionKeys.Language)) {
-            LoadLanguageAndLeave(PlayerPrefs.GetString(OptionKeys.Language));
+        if (PlayerOptions.HasKey(PlayerOptions.Language)) {
+            LoadLanguageAndLeave(PlayerOptions.GetString(PlayerOptions.Language));
         }
     }
 
@@ -18,8 +18,8 @@ public class SelectLanguageManager : MonoBehaviour {
         LanguageManager.instance.LoadLanguage(languageCode);
         Debug.Log("End of loading language... [" + languageCode + "]");
 
-        PlayerPrefs.SetString(OptionKeys.Language, languageCode);
-        PlayerPrefs.Save();
+        PlayerOptions.SetValue(PlayerOptions.Language, languageCode);
+        PlayerOptions.Save();
 
         GameManager.instance.LoadSceneAsync(Scenes.Title);
     }
