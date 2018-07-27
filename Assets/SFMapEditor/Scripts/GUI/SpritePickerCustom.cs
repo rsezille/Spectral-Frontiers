@@ -51,14 +51,14 @@ namespace SF {
 
                 float currentWidth = 0f;
                 float currentHeight = 0f;
-                float maxCurrentHeight = 0f;
+                int sideLength = 75;
 
                 for (int i = 0; i < sfSpritePicker.tileset.Length; i++) {
                     Sprite currentTile = sfSpritePicker.tileset[i].GetComponent<SpriteRenderer>().sprite;
 
                     if (currentTile == null) continue;
 
-                    Rect spriteRect = new Rect(currentWidth, currentHeight, 75, 75);
+                    Rect spriteRect = new Rect(currentWidth, currentHeight, sideLength, sideLength);
 
                     if (e.type == EventType.MouseDown && e.button == 0 && spriteRect.Contains(e.mousePosition)) {
                         sfSpritePicker.selectedIndex = i;
@@ -75,16 +75,11 @@ namespace SF {
 
                     GUI.DrawTexture(spriteRect, currentTile.texture, ScaleMode.ScaleToFit);
 
-                    currentWidth += currentTile.bounds.size.x * Globals.PixelsPerUnit / 2;
+                    currentWidth += sideLength;
 
-                    if (currentTile.bounds.size.y * Globals.PixelsPerUnit / 2 > maxCurrentHeight) {
-                        maxCurrentHeight = currentTile.bounds.size.y * Globals.PixelsPerUnit / 2;
-                    }
-
-                    if (i < sfSpritePicker.tileset.Length - 1 && currentWidth + sfSpritePicker.tileset[i + 1].GetComponent<SpriteRenderer>().sprite.bounds.size.x * Globals.PixelsPerUnit / 2 >= layoutWidth) {
+                    if (i < sfSpritePicker.tileset.Length - 1 && currentWidth + sideLength >= layoutWidth) {
                         currentWidth = 0f;
-                        currentHeight += maxCurrentHeight;
-                        maxCurrentHeight = 0f;
+                        currentHeight += sideLength;
                     }
                 }
 
