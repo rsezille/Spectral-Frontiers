@@ -3,10 +3,11 @@
 --- !u!687078895 &4343727234628468602
 SpriteAtlas:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: GrasslandAtlas
   m_EditorData:
+    serializedVersion: 2
     textureSettings:
       serializedVersion: 2
       anisoLevel: 1
@@ -18,10 +19,21 @@ SpriteAtlas:
       readable: 0
       crunchedCompression: 0
       sRGB: 1
-    platformSettings: []
-    packingParameters:
+    platformSettings:
+    - serializedVersion: 2
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 0
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+    packingSettings:
       serializedVersion: 2
-      padding: 2
+      padding: 4
       blockOffset: 1
       allowAlphaSplitting: 0
       enableRotation: 1
@@ -33,14 +45,14 @@ SpriteAtlas:
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
-  - {fileID: 21300000, guid: 35b01abb4d9b81b4f847870c8e8d4716, type: 3}
-  - {fileID: 21300000, guid: 0c4f8ded0f7526c4388fbefd1ad7c0c7, type: 3}
   - {fileID: 21300000, guid: 1b47b6b23ffccf147806e6f20763bbce, type: 3}
+  - {fileID: 21300000, guid: 35b01abb4d9b81b4f847870c8e8d4716, type: 3}
   - {fileID: 21300000, guid: 4260e16cb4c762b43bd1a4d16e8ea9d4, type: 3}
+  - {fileID: 21300000, guid: 0c4f8ded0f7526c4388fbefd1ad7c0c7, type: 3}
   m_PackedSpriteNamesToIndex:
-  - Tile_Dirt_01
-  - Tile_Dirt_02
   - Tile_Over_Water_01
+  - Tile_Dirt_01
   - Tile_Stone_01
+  - Tile_Dirt_02
   m_Tag: GrasslandAtlas
   m_IsVariant: 0
