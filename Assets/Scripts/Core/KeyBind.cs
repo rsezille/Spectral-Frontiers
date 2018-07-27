@@ -1,21 +1,32 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace SF {
     /**
      * TODO [FINAL] Delete this and use a professionnal input manager instead
      */
     public class KeyBind {
-        public KeyCode defaultKey { get; private set; }
+        private KeyCode defaultKey;
         public KeyCode bindedKey { get; private set; }
         public string name { get; private set; } // Mainly used to display the key in options
         private bool bindable = false;
         public bool enabled = true;
+        private Dictionary<string, KeyCode> languageDefaults = null;
 
-        public KeyBind(KeyCode defaultKey, string name, bool bindable = true) {
+        public KeyBind(KeyCode defaultKey, string name, bool bindable = true, Dictionary<string, KeyCode> languageDefaults = null) {
             this.defaultKey = defaultKey;
             bindedKey = defaultKey;
             this.bindable = bindable;
             this.name = name;
+            this.languageDefaults = languageDefaults;
+        }
+
+        public KeyCode GetDefaultKey() {
+            if (languageDefaults != null && languageDefaults.ContainsKey(PlayerOptions.GetString(PlayerOptions.Language)) && PlayerOptions.HasKey(PlayerOptions.Language)) {
+                return languageDefaults[PlayerOptions.GetString(PlayerOptions.Language)];
+            }
+
+            return defaultKey;
         }
 
         public bool IsKeyDown {
@@ -41,7 +52,7 @@ namespace SF {
         }
 
         public void ResetKey(bool toPlayerPrefs = true) {
-            bindedKey = defaultKey;
+            bindedKey = GetDefaultKey();
 
             if (toPlayerPrefs) {
                 PlayerPrefs.SetString(name, bindedKey.ToString());

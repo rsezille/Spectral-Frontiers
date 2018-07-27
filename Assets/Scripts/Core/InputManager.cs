@@ -20,7 +20,7 @@ namespace SF {
 
         // Bindings
         public static readonly KeyBind Click = new KeyBind(KeyCode.Mouse0, "keybind.click.name", false);
-        public static readonly KeyBind Previous = new KeyBind(KeyCode.A, "keybind.previous.name");
+        public static readonly KeyBind Previous = new KeyBind(KeyCode.Q, "keybind.previous.name", true, new Dictionary<string, KeyCode>(){ { "fr", KeyCode.A } });
         public static readonly KeyBind Next = new KeyBind(KeyCode.E, "keybind.next.name");
         public static readonly KeyBind Special1 = new KeyBind(KeyCode.Space, "keybind.special1.name");
         public static readonly KeyBind Up = new KeyBind(KeyCode.UpArrow, "keybind.up.name");
@@ -28,9 +28,9 @@ namespace SF {
         public static readonly KeyBind Left = new KeyBind(KeyCode.LeftArrow, "keybind.left.name");
         public static readonly KeyBind Right = new KeyBind(KeyCode.RightArrow, "keybind.right.name");
         public static readonly KeyBind Confirm = new KeyBind(KeyCode.Return, "keybind.confirm.name");
-        public static readonly KeyBind CameraUp = new KeyBind(KeyCode.Z, "keybind.cameraup.name");
+        public static readonly KeyBind CameraUp = new KeyBind(KeyCode.W, "keybind.cameraup.name", true, new Dictionary<string, KeyCode>() { { "fr", KeyCode.Z } });
         public static readonly KeyBind CameraDown = new KeyBind(KeyCode.S, "keybind.cameradown.name");
-        public static readonly KeyBind CameraLeft = new KeyBind(KeyCode.Q, "keybind.cameraleft.name");
+        public static readonly KeyBind CameraLeft = new KeyBind(KeyCode.A, "keybind.cameraleft.name", true, new Dictionary<string, KeyCode>() { { "fr", KeyCode.Q } });
         public static readonly KeyBind CameraRight = new KeyBind(KeyCode.D, "keybind.cameraright.name");
         public static readonly KeyBind Pause = new KeyBind(KeyCode.Escape, "keybind.pause.name");
 

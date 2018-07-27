@@ -35,7 +35,13 @@ namespace SF {
             }
 
             foreach (KeyBind keyBind in InputManager.allKeyBinds) {
-                keyBind.Bind(EnumUtil.ParseEnum(PlayerPrefs.GetString(keyBind.name, keyBind.defaultKey.ToString()), KeyCode.None), false);
+                keyBind.Bind(EnumUtil.ParseEnum(PlayerPrefs.GetString(keyBind.name, keyBind.GetDefaultKey().ToString()), KeyCode.None), false);
+            }
+        }
+
+        public static void ResetKeys() {
+            foreach (KeyBind key in InputManager.allKeyBinds) {
+                key.ResetKey();
             }
         }
 
