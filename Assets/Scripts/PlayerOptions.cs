@@ -18,7 +18,7 @@ namespace SF {
             }
         }
 
-        public static Option Language = new Option("language", Globals.DefaultLanguage);
+        public static Option Language = new Option("language", Globals.FallbackLanguage);
         public static Option BattleSpeed = new Option("battlespeed", "1.0");
 
         private static List<Option> initOptions = new List<Option>() {

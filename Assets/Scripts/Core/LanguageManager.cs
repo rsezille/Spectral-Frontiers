@@ -26,9 +26,9 @@ namespace SF {
         private LanguageManager() { }
 
         public void LoadDefaultLanguage() {
-            Debug.Log("Loading default language... [" + Globals.DefaultLanguage + "]");
-            LoadLanguage(Globals.DefaultLanguage);
-            Debug.Log("End of loading default language... [" + Globals.DefaultLanguage + "]");
+            Debug.Log("Loading default language... [" + Globals.FallbackLanguage + "]");
+            LoadLanguage(Globals.FallbackLanguage);
+            Debug.Log("End of loading default language... [" + Globals.FallbackLanguage + "]");
         }
 
         /**
@@ -56,7 +56,7 @@ namespace SF {
             LangFile strings = JsonUtility.FromJson<LangFile>(jsonStrings.text);
 
             foreach (LangFile.Pair pair in strings.list) {
-                if (Globals.DefaultLanguage.Equals(languageCode)) {
+                if (Globals.FallbackLanguage.Equals(languageCode)) {
                     if (!defaultStrings.ContainsKey(pair.id)) {
                         defaultStrings.Add(pair.id, pair.text);
                     }
@@ -78,7 +78,7 @@ namespace SF {
             LangFile dialogs = JsonUtility.FromJson<LangFile>(jsonDialogs.text);
 
             foreach (LangFile.Pair pair in dialogs.list) {
-                if (Globals.DefaultLanguage.Equals(languageCode)) {
+                if (Globals.FallbackLanguage.Equals(languageCode)) {
                     if (!defaultDialogs.ContainsKey(pair.id)) {
                         defaultDialogs.Add(pair.id, pair.text);
                     }

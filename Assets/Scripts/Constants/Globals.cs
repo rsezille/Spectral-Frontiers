@@ -8,7 +8,7 @@
     public const BoardCharacter.Direction DefaultDirection = BoardCharacter.Direction.East;
 
     // Language
-    public const string DefaultLanguage = "en";
+    public const string FallbackLanguage = "en";
 
     // Player
     public const string DefaultPlayerName = "Kupo";
