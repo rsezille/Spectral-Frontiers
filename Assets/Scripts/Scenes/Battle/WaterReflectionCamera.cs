@@ -27,6 +27,10 @@ public class WaterReflectionCamera : MonoBehaviour {
         battleManager.OnScreenChange += GenerateRenderTexture;
     }
 
+    private void Start() {
+        OnZoomChange();
+    }
+
     private void OnZoomChange() {
         reflectionCamera.orthographicSize = GetComponentInParent<BattleCamera>().GetComponent<Camera>().orthographicSize;
     }
