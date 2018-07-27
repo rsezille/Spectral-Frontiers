@@ -289,11 +289,13 @@ public class BoardCharacter : MonoBehaviour {
 
         if (side.value == Side.Type.Player) {
             battleManager.playerCharacters.Remove(this);
-        } else if (side.value == Side.Type.Enemy) {
+        } else if (side.value == Side.Type.Enemy && battleManager.currentBattleStep == BattleManager.BattleStep.Fight) {
             battleManager.enemyCharacters.Remove(this);
         }
 
-        battleManager.CheckEndBattle();
+        if (battleManager.currentBattleStep == BattleManager.BattleStep.Fight) {
+            battleManager.CheckEndBattle();
+        }
 
         Destroy(gameObject);
     }

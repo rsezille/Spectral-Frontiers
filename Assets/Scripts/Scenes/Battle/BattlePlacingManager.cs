@@ -133,9 +133,9 @@ public class BattlePlacingManager {
         }
 
         if (GetCurrentPlacingChar().boardCharacter == null) return;
-            
-        Object.Destroy(GetCurrentPlacingChar().boardCharacter.gameObject);
-            
+
+        GetCurrentPlacingChar().boardCharacter.Remove();
+        
         if (battleManager.playerCharacters.Count <= 0) {
             battleManager.placingHUD.startBattleText.gameObject.SetActive(false);
         }
