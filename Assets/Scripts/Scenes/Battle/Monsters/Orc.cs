@@ -6,7 +6,7 @@ using SpriteGlow;
 [RequireComponent(typeof(BoardCharacter), typeof(AI))]
 public class Orc : MonoBehaviour {
     /**
-     * BoardCharacter.character is not available in Awake(), but is in Start()
+     * BoardCharacter.character is not available in Awake, but it is in Start
      */
     private void Start() {
         GetComponent<BoardCharacter>().character.SetMaxHP(20);

@@ -6,8 +6,16 @@ using UnityEngine;
  */
  [RequireComponent(typeof(BoardCharacter))]
 public class AI : MonoBehaviour {
+    public enum Preset {
+        Nothing, // Do nothing
+        Aggressive, // Always try to be in range and attack
+        Passive // Only attack when a player character is in range + movements
+    }
+
     private BattleManager battleManager;
     private BoardCharacter boardCharacter;
+
+    public Preset preset = Preset.Aggressive;
 
     private void Awake() {
         battleManager = BattleManager.instance;
@@ -24,19 +32,28 @@ public class AI : MonoBehaviour {
         if (customAI != null) {
             yield return customAI.Process();
         } else {
-            Move();
+            switch (preset) {
+                case Preset.Aggressive:
+                    Move();
 
-            while (boardCharacter.isMoving) {
-                yield return null;
+                    while (boardCharacter.isMoving) {
+                        yield return null;
+                    }
+
+                    yield return new WaitForSeconds(0.3f);
+
+                    bool attacked = Action();
+
+                    if (attacked) {
+                        yield return new WaitForSeconds(0.5f);
+                    }
+                    break;
+                case Preset.Passive:
+                    break;
+                case Preset.Nothing:
+                    break;
             }
-
-            yield return new WaitForSeconds(0.3f);
-
-            bool attacked = Action();
-
-            if (attacked) {
-                yield return new WaitForSeconds(0.5f);
-            }
+            
         }
 
         yield return null;

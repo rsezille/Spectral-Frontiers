@@ -6,8 +6,7 @@ using UnityEngine;
  * 
  * How to use:
  * - Implement ICustomAI in Goblin.cs for example
- * - Add dynamically this component in Awake (customAI = gameObject.AddComponent<CustomAI>() as CustomAI;)
- * - Right after, call Use(this) in Goblin.cs
+ * - Add dynamically this component in Awake and call Use: gameObject.AddComponent<CustomAI>().Use(this)
  */
 [RequireComponent(typeof(AI))]
 public class CustomAI : MonoBehaviour {
