@@ -19,8 +19,11 @@ public class BoardCharacter : MonoBehaviour {
     public Character character;
     private GameObject spriteContainer;
 
+    public GameObject enemyOrNeutralSpritePrefab;
+
     // Components
     private BoardEntity boardEntity;
+    [HideInInspector]
     public SpriteRenderer sprite;
     private Animator animator;
     [HideInInspector]
@@ -66,19 +69,16 @@ public class BoardCharacter : MonoBehaviour {
 
     private void Awake() {
         battleManager = BattleManager.instance;
-
         battleManager.OnCheckSemiTransparent += OnCheckSemiTransparent;
 
         side = GetComponent<Side>();
 
-        // Enemies have their spriteContainer already linked to the GameObject
+        // Enemies and neutrals have their spriteContainer already linked to the GameObject
         if (side.value == Side.Type.Player) {
             // TODO [ALPHA] Replace "Hero" by the main character or the job
-            spriteContainer = Instantiate(Resources.Load<GameObject>("CharacterSprites/Hero"), transform.position, Quaternion.identity) as GameObject;
-            spriteContainer.transform.SetParent(transform);
+            spriteContainer = Instantiate(Resources.Load<GameObject>("CharacterSprites/Hero"), transform);
         } else {
-            // TODO [ALPHA] Replace this by spriteContainer = GetComponentInChildren<Transform>().gameObject;
-            spriteContainer = gameObject;
+            spriteContainer = Instantiate(enemyOrNeutralSpritePrefab, transform);
         }
 
         animator = spriteContainer.GetComponent<Animator>();

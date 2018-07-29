@@ -1,6 +1,6 @@
 {
 	"id": "story_01",
-	"map": "003",
+	"map": "001",
 	"maxPlayerCharacters": 3,
 	"background": {
 		"id": null,
@@ -22,29 +22,25 @@
 	"isStoryline": true,
 	"enemies": [
 		{
-			"key": "Goblin",
+			"key": "Soldier",
 			"level": 1,
 			"posX": 0,
-			"posY": 1
-		},
-		{
-			"key": "Orc",
-			"level": 1,
-			"posX": 0,
-			"posY": 0
+			"posY": 3
 		}
 	],
 	"openingCinematic": [
+		"wait::1.0",
 		"camera:square:0,0",
-		"dialogbox::prologue_01",
+		"dialogbox:global:prologue_01",
 		"wait::3.0",
-		"camera:enemy:0",
-		"dialogenemy:0:prologue_01",
+		"camera:square:4,3",
+		"dialogbox:enemy;0;bottom:demo_01_bcin_01_goblin",
 		"camera:square:10,7",
 		"camera:enemy:0",
-		"dialogbox::prologue_02"
+		"dialogbox:global:prologue_02"
 	],
 	"endingCinematic": [
+		"wait::1.0",
 		"dialogbox::prologue_01",
 		"camera:square:10,7"
 	],
