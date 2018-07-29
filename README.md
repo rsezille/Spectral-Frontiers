@@ -7,6 +7,7 @@
 ## Documentation
 
 [Dialog box](Documentation/DialogBox.md)  
+[Enemy](Documentation/Enemy.md)  
 [Inputs](Documentation/Inputs.md)  
 [Map Editor](Documentation/SFMapEditor.md)  
 [Semi transparent entities](Documentation/SemiTransparentEntities.md)  
