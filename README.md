@@ -25,6 +25,7 @@ Type (mandatory, if possible):
 - **Feat** new feature
 - **Fix**
 - **Perf** improve performance 
+- **Refactor**
 - **Style** code style: typo, naming, formatting...
 - **Art** sprites, materials, fonts, font size, colliders, bounds...
 - **Content** dialogs, maps, missions, data
@@ -33,7 +34,10 @@ Type (mandatory, if possible):
 Scope (optional):
 - **SFME** the map editor
 - **Cine** battle cinematics
-- **Battle** the battle, placing, fight, victory
+- **Battle** the battle, globally
+- **Placing**
+- **Fight**
+- **Victory**
 - **AI** artificial intelligence related things
 - **Editor** unity editor
 
