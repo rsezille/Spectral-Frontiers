@@ -45,6 +45,9 @@ public class Character {
         currentHP = ComputeMaxHP();
     }
 
+    /**
+     * Must be used when doing something that can change maximum HPs (job/talent, equipment, level up...)
+     */
     public int ComputeMaxHP() {
         maximumHP = baseHP;
 
@@ -57,7 +60,7 @@ public class Character {
 
     /**
      * For testing purpose
-     * TODO [ALPHA] Initialize method
+     * TODO [ALPHA] Replace this by an initializing method in monsters and so on
      */
     public void SetMaxHP(int maxHP) {
         baseHP = maxHP;
