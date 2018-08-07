@@ -220,6 +220,9 @@ public class BoardCharacter : MonoBehaviour {
         }
     }
 
+    /**
+     * TODO [ALPHA] Implement cameraFollow
+     */
     public void MoveThroughPath(Path p, bool cameraFollow = false) {
         if (movable != null && movable.CanMove()) {
             StartCoroutine(MoveCoroutine(p));
