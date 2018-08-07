@@ -1,6 +1,8 @@
 ﻿using DG.Tweening;
 using SF;
 using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Globalization;
 using UnityEngine;
 
@@ -11,8 +13,9 @@ public class BattleCinematicManager {
 
     private BattleManager battleManager; // Shortcut for BattleManager.instance
 
-    private string[] actions;
+    private RawMission.Action[] actions;
     private Type type;
+    private List<BoardCharacter> instanciatedCharacters = new List<BoardCharacter>();
 
     private Coroutine cinematicCoroutine;
 
@@ -49,10 +52,8 @@ public class BattleCinematicManager {
     }
 
     private IEnumerator ProcessCinematic() {
-        foreach (string action in actions) {
-            string[] substrings = action.Split(':');
-
-            yield return ProcessAction(substrings);
+        foreach (RawMission.Action action in actions) {
+            yield return ProcessAction(action);
         }
 
         EndCinematic();
@@ -61,6 +62,10 @@ public class BattleCinematicManager {
     }
 
     private void EndCinematic() {
+        foreach (BoardCharacter character in instanciatedCharacters) {
+            character.Remove();
+        }
+
         if (type == Type.Opening) {
             battleManager.placing.EnterBattleStepPlacing();
         } else {
@@ -68,52 +73,133 @@ public class BattleCinematicManager {
         }
     }
 
-    private IEnumerator ProcessAction(string[] splitAction) {
-        string key = splitAction[0];
-        string option = splitAction[1];
-        string value = splitAction[2];
+    private IEnumerator ProcessAction(RawMission.Action action) {
+        NameValueCollection args = new NameValueCollection();
 
-        switch (key) {
+        foreach (string arg in action.args) {
+            string[] keyValue = arg.Split(':');
+
+            args.Add(keyValue[0], keyValue[1]);
+        }
+
+        switch (action.type) {
             case "wait":
-                yield return new WaitForSeconds(float.Parse(value, CultureInfo.InvariantCulture));
+                yield return ActionWait(args);
+                break;
+            case "show":
+                yield return ActionShow(args);
+                break;
+            case "move":
+                yield return ActionMove(args);
                 break;
             case "dialogbox":
-                string[] options = option.Split(';');
-                string scope = options[0];
-
-                if (scope == "global") {
-                    string strPosition = options.Length >= 2 ? options[1] : "bottom";
-                    DialogBox.Position position = strPosition == "bottom" ? DialogBox.Position.Bottom : DialogBox.Position.Top;
-
-                    yield return new WaitForCustom(GameManager.instance.DialogBox.Show(value, position));
-                } else if (scope == "enemy") {
-                    string enemyIndex = options[1];
-                    string strPosition = options.Length >= 3 ? options[2] : "bottom";
-                    DialogBox.Position position = strPosition == "bottom" ? DialogBox.Position.Bottom : DialogBox.Position.Top;
-
-                    if (int.Parse(enemyIndex) >= battleManager.enemyCharacters.Count) {
-                        break;
-                    }
-
-                    yield return new WaitForCustom(GameManager.instance.DialogBox.Show(battleManager.enemyCharacters[int.Parse(enemyIndex)], value, position));
-                }
+                yield return ActionDialogbox(args);
                 break;
             case "camera":
-                if (option == "square") {
-                    string[] squarePosition = value.Split(',');
-
-                    yield return battleManager.battleCamera.SetPosition(int.Parse(squarePosition[0]), int.Parse(squarePosition[1]), true).WaitForCompletion();
-                } else if (option == "enemy") {
-                    if (int.Parse(value) >= battleManager.enemyCharacters.Count) {
-                        break;
-                    }
-
-                    yield return battleManager.battleCamera.SetPosition(battleManager.enemyCharacters[int.Parse(value)], true).WaitForCompletion();
-                }
+                yield return ActionCamera(args);
                 break;
             default:
                 yield return null;
                 break;
         }
+    }
+
+    private IEnumerator ActionWait(NameValueCollection args) {
+        float time = args["time"] != null ? float.Parse(args["time"], CultureInfo.InvariantCulture) : 1f;
+
+        yield return new WaitForSeconds(time);
+    }
+
+    private IEnumerator ActionShow(NameValueCollection args) {
+        string sprite = args["sprite"] ?? Globals.FallbackSpritePrefab;
+        string name = args["name"] ?? "";
+        string x = args["x"] ?? "0";
+        string y = args["y"] ?? "0";
+        string from = args["from"] ?? "south";
+        string strDirection = args["direction"] ?? "east";
+        BoardCharacter.Direction direction = EnumUtil.ParseEnum(strDirection, BoardCharacter.Direction.East);
+
+        int parsedX = int.Parse(x);
+        int parsedY = int.Parse(y);
+
+        int fromX = parsedX;
+        int fromY = parsedY;
+
+        switch (from) {
+            case "north":
+                fromX++;
+                break;
+            case "east":
+                fromY--;
+                break;
+            case "west":
+                fromY++;
+                break;
+            case "south":
+                fromX--;
+                break;
+            default:
+                break;
+        }
+
+        BoardCharacter boardCharacterPrefab = Resources.Load<BoardCharacter>("CinematicBoardCharacter");
+        boardCharacterPrefab.enemyOrNeutralSpritePrefab = Resources.Load<GameObject>("CharacterSprites/" + sprite);
+
+        BoardCharacter boardCharacter = Object.Instantiate(boardCharacterPrefab, BoardUtil.CoordToWorldPosition(fromX, fromY), Quaternion.identity);
+        boardCharacter.character = new Character(name);
+        boardCharacter.direction = direction;
+        boardCharacter.sprite.color = new Color(boardCharacter.sprite.color.r, boardCharacter.sprite.color.g, boardCharacter.sprite.color.b, 0);
+        boardCharacter.sprite.DOColor(new Color(boardCharacter.sprite.color.r, boardCharacter.sprite.color.g, boardCharacter.sprite.color.b, 1), 1f);
+
+        boardCharacter.transform.DOMove(BoardUtil.CoordToWorldPosition(parsedX, parsedY), 1f).SetEase(Ease.Linear).OnComplete(() => {
+            boardCharacter.SetSquare(battleManager.board.GetSquare(parsedX, parsedY));
+        });
+
+        instanciatedCharacters.Add(boardCharacter);
+
+        yield return null;
+    }
+
+    private IEnumerator ActionMove(NameValueCollection args) {
+        //boardCharacter.MoveTo(battleManager.board.GetSquare(4, 2), true, true);
+
+        yield return null;
+    }
+
+    private IEnumerator ActionDialogbox(NameValueCollection args) {
+        string dialogId = args["id"] ?? Globals.FallbackDialog;
+        string target = args["target"] ?? "global";
+        string strPosition = args["position"] ?? "bottom";
+        string characterIndex = args["charIndex"] ?? "0";
+        string characterName = args["charName"] ?? "";
+
+        DialogBox.Position position = strPosition == "bottom" ? DialogBox.Position.Bottom : DialogBox.Position.Top;
+
+        if (target == "global") {
+            yield return new WaitForCustom(GameManager.instance.DialogBox.Show(dialogId, position, 0, characterName));
+        } else if (target == "character") {
+            if (int.Parse(characterIndex) < instanciatedCharacters.Count) {
+                yield return new WaitForCustom(GameManager.instance.DialogBox.Show(instanciatedCharacters[int.Parse(characterIndex)], dialogId, position));
+            }
+        }
+
+        yield return null;
+    }
+
+    private IEnumerator ActionCamera(NameValueCollection args) {
+        string target = args["target"] ?? "square";
+        string x = args["x"] ?? "0";
+        string y = args["y"] ?? "0";
+        string characterIndex = args["charIndex"] ?? "0";
+
+        if (target == "square") {
+            yield return battleManager.battleCamera.SetPosition(int.Parse(x), int.Parse(y), true).WaitForCompletion();
+        } else if (target == "character") {
+            if (int.Parse(characterIndex) < instanciatedCharacters.Count) {
+                yield return battleManager.battleCamera.SetPosition(instanciatedCharacters[int.Parse(characterIndex)], true).WaitForCompletion();
+            }
+        }
+
+        yield return null;
     }
 }

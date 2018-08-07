@@ -9,9 +9,11 @@
 
     // Language
     public const string FallbackLanguage = "en";
+    public const string FallbackDialog = "fallback";
 
     // Player
     public const string DefaultPlayerName = "Kupo";
     public const int MinPlayerNameLength = 3;
     public const int MaxPlayerNameLength = 10;
+    public const string FallbackSpritePrefab = "Hero";
 }
