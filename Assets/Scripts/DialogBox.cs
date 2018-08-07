@@ -172,7 +172,6 @@ public class DialogBox : MonoBehaviour, IWaitForCustom {
                 break;
         }
 
-
         return this;
     }
 
