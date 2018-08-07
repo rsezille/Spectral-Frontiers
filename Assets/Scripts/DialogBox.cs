@@ -164,7 +164,7 @@ public class DialogBox : MonoBehaviour, IWaitForCustom {
         attachedCharacter = boardCharacter;
 
         currentShownPreset.canvas.renderMode = RenderMode.WorldSpace;
-        transform.localPosition = boardCharacter.transform.localPosition;
+        transform.localPosition = boardCharacter.transform.position;
         currentShownPreset.canvas.transform.localPosition = Vector3.zero;
         currentShownPreset.image.rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
         currentShownPreset.image.rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
