@@ -91,6 +91,10 @@ public class BattleCinematicManager {
                     string strPosition = options.Length >= 3 ? options[2] : "bottom";
                     DialogBox.Position position = strPosition == "bottom" ? DialogBox.Position.Bottom : DialogBox.Position.Top;
 
+                    if (int.Parse(enemyIndex) >= battleManager.enemyCharacters.Count) {
+                        break;
+                    }
+
                     yield return new WaitForCustom(GameManager.instance.DialogBox.Show(battleManager.enemyCharacters[int.Parse(enemyIndex)], value, position));
                 }
                 break;
@@ -100,6 +104,10 @@ public class BattleCinematicManager {
 
                     yield return battleManager.battleCamera.SetPosition(int.Parse(squarePosition[0]), int.Parse(squarePosition[1]), true).WaitForCompletion();
                 } else if (option == "enemy") {
+                    if (int.Parse(value) >= battleManager.enemyCharacters.Count) {
+                        break;
+                    }
+
                     yield return battleManager.battleCamera.SetPosition(battleManager.enemyCharacters[int.Parse(value)], true).WaitForCompletion();
                 }
                 break;
