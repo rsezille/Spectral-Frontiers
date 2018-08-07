@@ -29,6 +29,7 @@ public class DialogBox : MonoBehaviour, IWaitForCustom {
     private GameManager gameManager; // Shortcut
 
     private DialogPreset[] presets; // 0 is the default one
+    private BoardCharacter attachedCharacter;
 
     public TextSpeed textSpeed;
     public Color playerTagColor = new Color(0f, 0.5f, 1f);
@@ -112,6 +113,10 @@ public class DialogBox : MonoBehaviour, IWaitForCustom {
             if (InputManager.Confirm.IsKeyDown) {
                 Next();
             }
+
+            if (attachedCharacter != null) {
+                transform.localPosition = attachedCharacter.transform.position;
+            }
         }
     }
 
@@ -124,6 +129,7 @@ public class DialogBox : MonoBehaviour, IWaitForCustom {
         }
 
         PreShow(dialogId, presetIndex, name);
+        attachedCharacter = null;
 
         currentShownPreset.canvas.renderMode = RenderMode.ScreenSpaceCamera;
         transform.localPosition = Vector3.zero;
@@ -155,9 +161,10 @@ public class DialogBox : MonoBehaviour, IWaitForCustom {
         }
 
         PreShow(dialogId, presetIndex, boardCharacter.character.name);
+        attachedCharacter = boardCharacter;
 
         currentShownPreset.canvas.renderMode = RenderMode.WorldSpace;
-        transform.localPosition = boardCharacter.GetSquare().transform.localPosition;
+        transform.localPosition = boardCharacter.transform.localPosition;
         currentShownPreset.canvas.transform.localPosition = Vector3.zero;
         currentShownPreset.image.rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
         currentShownPreset.image.rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
