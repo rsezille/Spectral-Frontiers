@@ -105,18 +105,6 @@ public class BattleManager : MonoBehaviour {
 
         battleCamera.ResetCameraSize();
         battleCamera.SetPosition(board.width / 2, board.height / 2);
-
-        foreach (RawMission.RawEnemy enemy in mission.enemies) {
-            Character enemyChar = new Character(enemy.key);
-
-            BoardCharacter enemyTemplate = Resources.Load("Monsters/" + enemy.key, typeof(BoardCharacter)) as BoardCharacter;
-
-            BoardCharacter enemyBC = Instantiate(enemyTemplate, board.GetSquare(enemy.posX, enemy.posY).transform.position, Quaternion.identity);
-            enemyBC.character = enemyChar;
-            enemyBC.side.value = Side.Type.Enemy;
-            enemyBC.SetSquare(board.GetSquare(enemy.posX, enemy.posY));
-            enemyCharacters.Add(enemyBC);
-        }
         
         currentTurnStep = TurnStep.None;
         turn = 0;

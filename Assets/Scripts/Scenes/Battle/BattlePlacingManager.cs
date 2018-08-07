@@ -49,6 +49,18 @@ public class BattlePlacingManager {
     }
 
     public void EnterBattleStepPlacing() {
+        foreach (RawMission.RawEnemy enemy in battleManager.mission.enemies) {
+            Character enemyChar = new Character(enemy.key);
+
+            BoardCharacter enemyTemplate = Resources.Load("Monsters/" + enemy.key, typeof(BoardCharacter)) as BoardCharacter;
+
+            BoardCharacter enemyBC = Object.Instantiate(enemyTemplate, battleManager.board.GetSquare(enemy.posX, enemy.posY).transform.position, Quaternion.identity);
+            enemyBC.character = enemyChar;
+            enemyBC.side.value = Side.Type.Enemy;
+            enemyBC.SetSquare(battleManager.board.GetSquare(enemy.posX, enemy.posY));
+            battleManager.enemyCharacters.Add(enemyBC);
+        }
+
         foreach (RawMission.RawStartingSquare startingSquare in battleManager.mission.startingSquares) {
             battleManager.board.GetSquare(startingSquare.posX, startingSquare.posY).markType = Square.MarkType.Placing;
         }
