@@ -11,6 +11,10 @@ public class CharacterGlowAnimation : MonoBehaviour {
     public float maxBrightness = 4.5f;
     public float time = 1f;
 
+    private void Awake() {
+        GetComponent<SpriteGlowEffect>().enabled = false;
+    }
+
     private void Start() {
         SpriteGlowEffect sge = GetComponent<SpriteGlowEffect>();
 
