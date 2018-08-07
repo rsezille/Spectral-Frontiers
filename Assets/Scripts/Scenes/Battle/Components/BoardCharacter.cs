@@ -220,17 +220,34 @@ public class BoardCharacter : MonoBehaviour {
         }
     }
 
-    /**
-     * TODO [ALPHA] Implement cameraFollow
-     */
-    public void MoveThroughPath(Path p, bool cameraFollow = false) {
-        if (movable != null && movable.CanMove()) {
-            StartCoroutine(MoveCoroutine(p));
-            movable.movementTokens--;
+    public void MoveTo(Square target, bool cameraFollow = true, bool inCinematic = false) {
+        Path p = battleManager.board.pathFinder.FindPath(
+            GetSquare().x,
+            GetSquare().y,
+            target.x,
+            target.y,
+            side.value
+        );
+
+        if (p != null) {
+            MoveThroughPath(p, cameraFollow, inCinematic);
         }
     }
 
-    private IEnumerator MoveCoroutine(Path path) {
+    /**
+     * TODO [ALPHA] Implement cameraFollow
+     */
+    public void MoveThroughPath(Path p, bool cameraFollow = true, bool inCinematic = false) {
+        if ((movable != null && movable.CanMove()) || inCinematic) {
+            StartCoroutine(MoveCoroutine(p, inCinematic));
+
+            if (!inCinematic) {
+                movable.movementTokens--;
+            }
+        }
+    }
+
+    private IEnumerator MoveCoroutine(Path path, bool inCinematic = false) {
         isMoving = true;
         float duration = 0.5f;
         Tween cameraAnimation;
@@ -246,14 +263,16 @@ public class BoardCharacter : MonoBehaviour {
 
         // Check at 25% and 75% of each square the sorting order of the BoardChar to set the correct one
         for (int i = 0; i < path.steps.Count; i++) {
-            if (movable.movementPoints <= 0) break;
+            if (movable.movementPoints <= 0 && !inCinematic) break;
             //if (!path.steps[i].IsNotBlocking()) break;
 
             if (i > 0) {
                 previousSquare = path.steps[i - 1];
             }
 
-            movable.movementPoints--;
+            if (!inCinematic) {
+                movable.movementPoints--;
+            }
 
             Tween characterAnimation = transform.DOMove(path.steps[i].transform.position, duration).SetEase(Ease.Linear);
             cameraAnimation = battleManager.battleCamera.SetPosition(path.steps[i], true, duration, Ease.Linear);
