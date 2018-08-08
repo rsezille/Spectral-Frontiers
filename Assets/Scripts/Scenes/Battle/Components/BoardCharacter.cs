@@ -189,6 +189,13 @@ public class BoardCharacter : MonoBehaviour {
                 battleManager.fight.selectedPlayerCharacter = this;
             }
         }
+
+        if (battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleManager.currentTurnStep == BattleManager.TurnStep.Attack) {
+            if (GetSquare().markType == Square.MarkType.Attack) {
+                battleManager.fight.selectedPlayerCharacter.BasicAttack(this);
+                battleManager.EnterTurnStepNone();
+            }
+        }
     }
 
     public void NewTurn() {
