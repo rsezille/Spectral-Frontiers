@@ -266,6 +266,10 @@ public class BoardCharacter : MonoBehaviour {
         float duration = 0.5f;
         Tween cameraAnimation;
 
+        if (battleManager.currentTurnStep != BattleManager.TurnStep.Enemy && !inCinematic) {
+            battleManager.EventOnLeavingMarkStep();
+        }
+
         if (!battleManager.battleCamera.IsOnSquare(GetSquare())) {
             cameraAnimation = battleManager.battleCamera.SetPosition(this, true, duration);
             yield return cameraAnimation.WaitForCompletion();
@@ -313,7 +317,6 @@ public class BoardCharacter : MonoBehaviour {
         isMoving = false;
 
         if (battleManager.currentTurnStep != BattleManager.TurnStep.Enemy && !inCinematic) {
-            battleManager.EventOnLeavingMarkStep();
             battleManager.fight.EnterTurnStepDirection();
             battleManager.EventOnSemiTransparentReset();
         }
