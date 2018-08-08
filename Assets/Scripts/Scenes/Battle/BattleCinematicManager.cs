@@ -26,10 +26,14 @@ public class BattleCinematicManager {
     // Called by BattleManager
     public void Update() {
         if (InputManager.Special1.IsKeyDown) {
-            battleManager.StopCoroutine(cinematicCoroutine);
-            GameManager.instance.DialogBox.Hide();
-            EndCinematic();
+            SkipCinematic();
         }
+    }
+
+    public void SkipCinematic() {
+        battleManager.StopCoroutine(cinematicCoroutine);
+        GameManager.instance.DialogBox.Hide();
+        EndCinematic();
     }
 
     public void EnterBattleStepCinematic(Type type) {
@@ -38,6 +42,8 @@ public class BattleCinematicManager {
             battleManager.fightHUD.SetActiveWithAnimation(false);
             battleManager.EventOnLeavingMarkStep();
         }
+
+        battleManager.cinematicHUD.gameObject.SetActive(true);
 
         battleManager.currentBattleStep = BattleManager.BattleStep.Cinematic;
 
@@ -65,6 +71,8 @@ public class BattleCinematicManager {
         foreach (BoardCharacter character in instanciatedCharacters) {
             character.Remove();
         }
+
+        battleManager.cinematicHUD.gameObject.SetActive(false);
 
         if (type == Type.Opening) {
             battleManager.placing.EnterBattleStepPlacing();
