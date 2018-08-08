@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BattleCinematicManager {
     public enum Type {
@@ -19,6 +20,8 @@ public class BattleCinematicManager {
 
     private Coroutine cinematicCoroutine;
 
+    private bool skipping = false;
+
     public BattleCinematicManager() {
         battleManager = BattleManager.instance;
     }
@@ -31,6 +34,10 @@ public class BattleCinematicManager {
     }
 
     public void SkipCinematic() {
+        if (skipping || battleManager.currentBattleStep != BattleManager.BattleStep.Cinematic) return;
+
+        skipping = true;
+
         if (cinematicCoroutine != null) {
             battleManager.StopCoroutine(cinematicCoroutine);
         }
@@ -46,6 +53,7 @@ public class BattleCinematicManager {
             battleManager.EventOnLeavingMarkStep();
         }
 
+        skipping = false;
         battleManager.cinematicHUD.gameObject.SetActive(true);
 
         battleManager.currentBattleStep = BattleManager.BattleStep.Cinematic;
@@ -71,17 +79,30 @@ public class BattleCinematicManager {
     }
 
     private void EndCinematic() {
-        foreach (BoardCharacter character in instanciatedCharacters) {
-            character.Remove();
-        }
+        GameObject transition = new GameObject("CinematicTransition");
+        transition.transform.SetParent(GameManager.instance.transform);
+        transition.AddComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
 
-        battleManager.cinematicHUD.gameObject.SetActive(false);
+        Image transitionImage = transition.AddComponent<Image>();
+        transitionImage.color = new Color(Color.black.r, Color.black.g, Color.black.b, 0f);
 
-        if (type == Type.Opening) {
-            battleManager.placing.EnterBattleStepPlacing();
-        } else {
-            battleManager.victory.EnterBattleStepVictory();
-        }
+        transitionImage.DOColor(Color.black, 0.5f).OnComplete(() => {
+            foreach (BoardCharacter character in instanciatedCharacters) {
+                character.Remove();
+            }
+
+            battleManager.cinematicHUD.gameObject.SetActive(false);
+
+            if (type == Type.Opening) {
+                battleManager.placing.EnterBattleStepPlacing();
+            } else {
+                battleManager.victory.EnterBattleStepVictory();
+            }
+
+            transitionImage.DOColor(new Color(Color.black.r, Color.black.g, Color.black.b, 0f), 0.5f).OnComplete(() => {
+                Object.Destroy(transition);
+            });
+        });
     }
 
     private IEnumerator ProcessAction(RawMission.Action action) {
