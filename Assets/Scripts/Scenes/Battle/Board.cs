@@ -14,7 +14,6 @@ public class Board : MonoBehaviour {
     private List<SemiTransparent> previousSemiTransparents = new List<SemiTransparent>(); // Used to detect a mouse leave
     private MouseReactive previousMouseEntity = null; // Used to detect a mouse leave
 
-    public Transform boardSquaresTransform;
     public PathFinder pathFinder;
     
     public int width { get; private set; }
