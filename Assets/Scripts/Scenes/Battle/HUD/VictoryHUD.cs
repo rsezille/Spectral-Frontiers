@@ -1,16 +1,21 @@
 ﻿using DG.Tweening;
 using SF;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class VictoryHUD : MonoBehaviour {
-    public Text detailsText;
+    public TextMeshProUGUI detailsText;
+    public GameObject nextButton;
+
+    private void Start() {
+        nextButton.AddListener(UnityEngine.EventSystems.EventTriggerType.PointerClick, BattleManager.instance.BackToInGame);
+    }
 
     public void SetActiveWithAnimation(bool active, HUD.Speed speed = HUD.Speed.Fast) {
         float fSpeed = (int)speed / 1000f;
 
         if (active) {
-            detailsText.text = "Turns: " + BattleManager.instance.turn;
+            detailsText.SetText("Turns: " + BattleManager.instance.turn);
 
             gameObject.transform.localScale = Vector3.zero;
             gameObject.SetActive(true);

@@ -258,4 +258,8 @@ public class BattleManager : MonoBehaviour {
 
         GameManager.instance.LoadSceneAsync(Scenes.GameOver);
     }
+
+    public void BackToInGame() {
+        GameManager.instance.LoadSceneAsync(Scenes.InGame);
+    }
 }

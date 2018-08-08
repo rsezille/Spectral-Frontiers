@@ -1,4 +1,6 @@
-﻿public class BattleVictoryManager {
+﻿using SF;
+
+public class BattleVictoryManager {
     private BattleManager battleManager; // Shortcut for BattleManager.instance
 
     public BattleVictoryManager() {
@@ -6,7 +8,11 @@
     }
 
     // Called by BattleManager
-    public void Update() {}
+    public void Update() {
+        if (InputManager.Special1.IsKeyDown) {
+            battleManager.BackToInGame();
+        }
+    }
 
     // Called by BattleManager
     public void EnterTurnStepNone(BattleManager.TurnStep previousTurnStep) {}
