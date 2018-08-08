@@ -6,6 +6,7 @@ public class RawMission {
         public int level;
         public int posX;
         public int posY;
+        public string direction = Globals.DefaultDirection.ToString();
     }
 
     [System.Serializable]

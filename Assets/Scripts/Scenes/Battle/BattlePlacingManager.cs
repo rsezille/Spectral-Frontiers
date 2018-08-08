@@ -58,6 +58,7 @@ public class BattlePlacingManager {
             enemyBC.character = enemyChar;
             enemyBC.side.value = Side.Type.Enemy;
             enemyBC.SetSquare(battleManager.board.GetSquare(enemy.posX, enemy.posY));
+            enemyBC.direction = EnumUtil.ParseEnum(enemy.direction, Globals.DefaultDirection);
             battleManager.enemyCharacters.Add(enemyBC);
         }
 
