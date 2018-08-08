@@ -220,7 +220,7 @@ public class BoardCharacter : MonoBehaviour {
         }
     }
 
-    public void MoveTo(Square target, bool cameraFollow = true, bool inCinematic = false) {
+    public void MoveTo(Square target, bool cameraFollow = true) {
         Path p = battleManager.board.pathFinder.FindPath(
             GetSquare().x,
             GetSquare().y,
@@ -230,24 +230,38 @@ public class BoardCharacter : MonoBehaviour {
         );
 
         if (p != null) {
-            MoveThroughPath(p, cameraFollow, inCinematic);
+            MoveThroughPath(p, cameraFollow);
         }
+    }
+
+    public IEnumerator CineMoveTo(Square target, bool cameraFollow = true) {
+        Path p = battleManager.board.pathFinder.FindPath(
+            GetSquare().x,
+            GetSquare().y,
+            target.x,
+            target.y,
+            side.value
+        );
+
+        if (p != null) {
+            yield return MoveCoroutine(p, true, cameraFollow);
+        }
+
+        yield return null;
     }
 
     /**
      * TODO [ALPHA] Implement cameraFollow
      */
-    public void MoveThroughPath(Path p, bool cameraFollow = true, bool inCinematic = false) {
-        if ((movable != null && movable.CanMove()) || inCinematic) {
-            StartCoroutine(MoveCoroutine(p, inCinematic));
-
-            if (!inCinematic) {
-                movable.movementTokens--;
-            }
+    public void MoveThroughPath(Path p, bool cameraFollow = true) {
+        if (movable != null && movable.CanMove()) {
+            StartCoroutine(MoveCoroutine(p, false, cameraFollow));
+            
+            movable.movementTokens--;
         }
     }
 
-    private IEnumerator MoveCoroutine(Path path, bool inCinematic = false) {
+    private IEnumerator MoveCoroutine(Path path, bool inCinematic = false, bool cameraFollow = true) {
         isMoving = true;
         float duration = 0.5f;
         Tween cameraAnimation;
@@ -298,7 +312,7 @@ public class BoardCharacter : MonoBehaviour {
 
         isMoving = false;
 
-        if (battleManager.currentTurnStep != BattleManager.TurnStep.Enemy) {
+        if (battleManager.currentTurnStep != BattleManager.TurnStep.Enemy && !inCinematic) {
             battleManager.EventOnLeavingMarkStep();
             battleManager.fight.EnterTurnStepDirection();
             battleManager.EventOnSemiTransparentReset();

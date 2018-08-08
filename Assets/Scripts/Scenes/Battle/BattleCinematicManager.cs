@@ -151,17 +151,23 @@ public class BattleCinematicManager {
         boardCharacter.sprite.color = new Color(boardCharacter.sprite.color.r, boardCharacter.sprite.color.g, boardCharacter.sprite.color.b, 0);
         boardCharacter.sprite.DOColor(new Color(boardCharacter.sprite.color.r, boardCharacter.sprite.color.g, boardCharacter.sprite.color.b, 1), 1f);
 
-        boardCharacter.transform.DOMove(BoardUtil.CoordToWorldPosition(parsedX, parsedY), 1f).SetEase(Ease.Linear).OnComplete(() => {
+        Tween move = boardCharacter.transform.DOMove(BoardUtil.CoordToWorldPosition(parsedX, parsedY), 1f).SetEase(Ease.Linear).OnComplete(() => {
             boardCharacter.SetSquare(battleManager.board.GetSquare(parsedX, parsedY));
         });
 
         instanciatedCharacters.Add(boardCharacter);
 
-        yield return null;
+        yield return move.WaitForCompletion();
     }
 
     private IEnumerator ActionMove(NameValueCollection args) {
-        //boardCharacter.MoveTo(battleManager.board.GetSquare(4, 2), true, true);
+        string characterIndex = args["charIndex"] ?? "0";
+        string x = args["x"] ?? "0";
+        string y = args["y"] ?? "0";
+
+        if (int.Parse(characterIndex) < instanciatedCharacters.Count) {
+            yield return instanciatedCharacters[int.Parse(characterIndex)].CineMoveTo(battleManager.board.GetSquare(int.Parse(x), int.Parse(y)), true);
+        }
 
         yield return null;
     }
