@@ -244,7 +244,7 @@ public class BoardCharacter : MonoBehaviour {
         );
 
         if (p != null) {
-            yield return MoveCoroutine(p, true, cameraFollow);
+            yield return StartCoroutine(MoveCoroutine(p, true, cameraFollow));
         }
 
         yield return null;
@@ -322,6 +322,8 @@ public class BoardCharacter : MonoBehaviour {
     public void Remove() {
         SetSquare(null);
         character.boardCharacter = null;
+
+        StopAllCoroutines();
 
         if (side.value == Side.Type.Player) {
             battleManager.playerCharacters.Remove(this);

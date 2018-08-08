@@ -31,7 +31,10 @@ public class BattleCinematicManager {
     }
 
     public void SkipCinematic() {
-        battleManager.StopCoroutine(cinematicCoroutine);
+        if (cinematicCoroutine != null) {
+            battleManager.StopCoroutine(cinematicCoroutine);
+        }
+
         GameManager.instance.DialogBox.Hide();
         EndCinematic();
     }
