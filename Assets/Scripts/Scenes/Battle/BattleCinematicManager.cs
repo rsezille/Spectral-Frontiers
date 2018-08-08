@@ -98,6 +98,9 @@ public class BattleCinematicManager {
             case "camera":
                 yield return ActionCamera(args);
                 break;
+            case "direction":
+                yield return ActionDirection(args);
+                break;
             default:
                 yield return null;
                 break;
@@ -204,6 +207,18 @@ public class BattleCinematicManager {
             if (int.Parse(characterIndex) < instanciatedCharacters.Count) {
                 yield return battleManager.battleCamera.SetPosition(instanciatedCharacters[int.Parse(characterIndex)], true).WaitForCompletion();
             }
+        }
+
+        yield return null;
+    }
+
+    private IEnumerator ActionDirection(NameValueCollection args) {
+        string characterIndex = args["charIndex"] ?? "0";
+        string strDirection = args["direction"] ?? "east";
+        BoardCharacter.Direction direction = EnumUtil.ParseEnum(strDirection, BoardCharacter.Direction.East);
+
+        if (int.Parse(characterIndex) < instanciatedCharacters.Count) {
+            instanciatedCharacters[int.Parse(characterIndex)].direction = direction;
         }
 
         yield return null;
