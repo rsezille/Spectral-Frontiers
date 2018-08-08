@@ -47,18 +47,35 @@ public class BattleCinematicManager {
     }
 
     public void EnterBattleStepCinematic(Type type) {
-        if (battleManager.currentBattleStep == BattleManager.BattleStep.Fight) {
-            battleManager.statusHUD.Hide();
-            battleManager.fightHUD.SetActiveWithAnimation(false);
-            battleManager.EventOnLeavingMarkStep();
-        }
+        this.type = type;
+        instanciatedCharacters.Clear();
 
+        if (type == Type.Ending) {
+            GameObject transition = new GameObject("CinematicTransition");
+            transition.transform.SetParent(GameManager.instance.transform);
+            transition.AddComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+
+            Image transitionImage = transition.AddComponent<Image>();
+            transitionImage.color = new Color(Color.black.r, Color.black.g, Color.black.b, 0f);
+
+            transitionImage.DOColor(Color.black, 0.5f).OnComplete(() => {
+                foreach (BoardCharacter playerCharacter in battleManager.playerCharacters) {
+                    playerCharacter.Remove();
+                }
+                
+                transitionImage.DOColor(new Color(Color.black.r, Color.black.g, Color.black.b, 0f), 0.5f).OnComplete(ProcessEnterCinematic);
+            });
+        } else {
+            ProcessEnterCinematic();
+        }
+    }
+
+    private void ProcessEnterCinematic() {
         skipping = false;
         battleManager.cinematicHUD.gameObject.SetActive(true);
 
         battleManager.currentBattleStep = BattleManager.BattleStep.Cinematic;
 
-        this.type = type;
         actions = type == Type.Opening ? battleManager.mission.openingCinematic : battleManager.mission.endingCinematic;
 
         if (actions.Length > 0) {
@@ -79,30 +96,32 @@ public class BattleCinematicManager {
     }
 
     private void EndCinematic() {
-        GameObject transition = new GameObject("CinematicTransition");
-        transition.transform.SetParent(GameManager.instance.transform);
-        transition.AddComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+        if (type == Type.Opening) {
+            GameObject transition = new GameObject("CinematicTransition");
+            transition.transform.SetParent(GameManager.instance.transform);
+            transition.AddComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
 
-        Image transitionImage = transition.AddComponent<Image>();
-        transitionImage.color = new Color(Color.black.r, Color.black.g, Color.black.b, 0f);
+            Image transitionImage = transition.AddComponent<Image>();
+            transitionImage.color = new Color(Color.black.r, Color.black.g, Color.black.b, 0f);
 
-        transitionImage.DOColor(Color.black, 0.5f).OnComplete(() => {
-            foreach (BoardCharacter character in instanciatedCharacters) {
-                character.Remove();
-            }
+            transitionImage.DOColor(Color.black, 0.5f).OnComplete(() => {
+                foreach (BoardCharacter character in instanciatedCharacters) {
+                    character.Remove();
+                }
 
-            battleManager.cinematicHUD.gameObject.SetActive(false);
+                instanciatedCharacters.Clear();
 
-            if (type == Type.Opening) {
+                battleManager.cinematicHUD.gameObject.SetActive(false);
+
                 battleManager.placing.EnterBattleStepPlacing();
-            } else {
-                battleManager.victory.EnterBattleStepVictory();
-            }
 
-            transitionImage.DOColor(new Color(Color.black.r, Color.black.g, Color.black.b, 0f), 0.5f).OnComplete(() => {
-                Object.Destroy(transition);
+                transitionImage.DOColor(new Color(Color.black.r, Color.black.g, Color.black.b, 0f), 0.5f).OnComplete(() => {
+                    Object.Destroy(transition);
+                });
             });
-        });
+        } else {
+            GameManager.instance.LoadSceneAsync(Scenes.InGame);
+        }
     }
 
     private IEnumerator ProcessAction(RawMission.Action action) {

@@ -10,8 +10,14 @@ public class BattleVictoryManager {
     // Called by BattleManager
     public void Update() {
         if (InputManager.Special1.IsKeyDown) {
-            battleManager.BackToInGame();
+            Next();
         }
+    }
+
+    public void Next() {
+        battleManager.victoryHUD.SetActiveWithAnimation(false);
+
+        battleManager.cinematic.EnterBattleStepCinematic(BattleCinematicManager.Type.Ending);
     }
 
     // Called by BattleManager
@@ -23,7 +29,9 @@ public class BattleVictoryManager {
         }
 
         battleManager.currentBattleStep = BattleManager.BattleStep.Victory;
-        
+
+        battleManager.EventOnLeavingMarkStep();
+        battleManager.statusHUD.Hide();
         battleManager.fightHUD.SetActiveWithAnimation(false);
         battleManager.victoryHUD.SetActiveWithAnimation(true);
     }

@@ -325,7 +325,7 @@ public class BoardCharacter : MonoBehaviour {
 
         StopAllCoroutines();
 
-        if (side.value == Side.Type.Player) {
+        if (side.value == Side.Type.Player && (battleManager.currentBattleStep == BattleManager.BattleStep.Placing || battleManager.currentBattleStep == BattleManager.BattleStep.Fight)) {
             battleManager.playerCharacters.Remove(this);
         } else if (side.value == Side.Type.Enemy && battleManager.currentBattleStep == BattleManager.BattleStep.Fight) {
             battleManager.enemyCharacters.Remove(this);

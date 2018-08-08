@@ -8,7 +8,7 @@ public class VictoryHUD : MonoBehaviour {
     public GameObject nextButton;
 
     private void Start() {
-        nextButton.AddListener(UnityEngine.EventSystems.EventTriggerType.PointerClick, BattleManager.instance.BackToInGame);
+        nextButton.AddListener(UnityEngine.EventSystems.EventTriggerType.PointerClick, BattleManager.instance.victory.Next);
     }
 
     public void SetActiveWithAnimation(bool active, HUD.Speed speed = HUD.Speed.Fast) {

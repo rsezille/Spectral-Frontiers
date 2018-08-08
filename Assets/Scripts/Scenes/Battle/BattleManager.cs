@@ -233,7 +233,7 @@ public class BattleManager : MonoBehaviour {
         }
 
         if (playerCharacters.Count > 0 && enemyCharacters.Count == 0) { // The player wins
-            cinematic.EnterBattleStepCinematic(BattleCinematicManager.Type.Ending);
+            victory.EnterBattleStepVictory();
 
             return true;
         } else if (playerCharacters.Count == 0 && enemyCharacters.Count > 0) { // The enemy wins
@@ -257,9 +257,5 @@ public class BattleManager : MonoBehaviour {
         yield return new WaitForSeconds(1f);
 
         GameManager.instance.LoadSceneAsync(Scenes.GameOver);
-    }
-
-    public void BackToInGame() {
-        GameManager.instance.LoadSceneAsync(Scenes.InGame);
     }
 }
