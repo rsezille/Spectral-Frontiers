@@ -24,20 +24,55 @@
 		{
 			"key": "Soldier",
 			"level": 1,
-			"posX": 0,
-			"posY": 3
+			"posX": 4,
+			"posY": 0,
+			"direction": "west"
+		},
+		{
+			"key": "Guard",
+			"level": 1,
+			"posX": 5,
+			"posY": 0,
+			"direction": "west"
 		}
 	],
 	"openingCutscene": [
-		{ "type": "wait",		"args": [ "time:0.2" ] },
-		{ "type": "camera",		"args": [ "target:square", "x:3", "y:4" ] },
-		{ "type": "show",		"args": [ "sprite:Soldier01", "name:Soldier", "x:0", "y:3", "from:south", "direction:north" ] },
-		{ "type": "move",		"args": [ "charIndex:0", "x:4", "y:2" ] },
+		{ "type": "wait",		"args": [ "time:0.5" ] },
+		{ "type": "camera",		"args": [ "target:square", "x:0", "y:5" ] },
+		{ "type": "show",		"args": [ "sprite:Hero", "name:Hero", "x:0", "y:5", "from:south", "direction:north" ] },
+		{ "type": "wait",		"args": [ "time:0.5" ] },
+		{ "type": "dialogbox",	"args": [ "target:character", "charIndex:0", "id:test_01" ] },
+		{ "type": "wait",		"args": [ "time:0.5" ] },
 		{ "type": "direction",	"args": [ "charIndex:0", "direction:west" ] },
-		{ "type": "camera",		"args": [ "target:square", "x:0", "y:0" ] },
-		{ "type": "dialogbox",	"args": [ "target:character", "charIndex:0", "id:prologue_01" ] },
-		{ "type": "wait",		"args": [ "time:1.0" ] },
-		{ "type": "camera",		"args": [ "target:square", "x:4", "y:3" ] }
+		{ "type": "camera",		"args": [ "target:square", "x:0", "y:7" ] },
+		{ "type": "wait",		"args": [ "time:0.5" ] },
+		{ "type": "direction",	"args": [ "charIndex:0", "direction:east" ] },
+		{ "type": "camera",		"args": [ "target:square", "x:2", "y:4" ] },
+		{ "type": "wait",		"args": [ "time:0.5" ] },
+		{ "type": "direction",	"args": [ "charIndex:0", "direction:north" ] },
+		{ "type": "camera",		"args": [ "target:character", "charIndex:0" ] },
+		{ "type": "wait",		"args": [ "time:0.5" ] },
+		{ "type": "dialogbox",	"args": [ "target:character", "charIndex:0", "id:test_02" ] },
+		{ "type": "move",		"args": [ "charIndex:0", "x:1", "y:5" ] },
+		{ "type": "wait",		"args": [ "time:0.5" ] },
+		{ "type": "camera",		"args": [ "target:square", "x:4", "y:0" ] },
+		{ "type": "wait",		"args": [ "time:0.5" ] },
+		{ "type": "show",		"args": [ "sprite:Soldier01", "name:Soldier", "x:4", "y:0", "from:east", "direction:west" ] },
+		{ "type": "show",		"args": [ "sprite:Soldier01", "name:Guard", "x:5", "y:0", "from:east", "direction:west" ] },
+		{ "type": "wait",		"args": [ "time:0.5" ] },
+		{ "type": "direction",	"args": [ "charIndex:1", "direction:north" ] },
+		{ "type": "dialogbox",	"args": [ "target:character", "charIndex:1", "id:test_03" ] },
+		{ "type": "wait",		"args": [ "time:0.2" ] },
+		{ "type": "direction",	"args": [ "charIndex:2", "direction:south" ] },
+		{ "type": "dialogbox",	"args": [ "target:character", "charIndex:2", "id:test_04" ] },
+		{ "type": "camera",		"args": [ "target:character", "charIndex:0" ] },
+		{ "type": "direction",	"args": [ "charIndex:0", "direction:east" ] },
+		{ "type": "dialogbox",	"args": [ "target:character", "charIndex:0", "id:test_05" ] },
+		{ "type": "camera",		"args": [ "target:character", "charIndex:1" ] },
+		{ "type": "direction",	"args": [ "charIndex:1", "direction:west" ] },
+		{ "type": "direction",	"args": [ "charIndex:2", "direction:west" ] },
+		{ "type": "dialogbox",	"args": [ "target:character", "charIndex:1", "id:test_06" ] },
+		{ "type": "wait",		"args": [ "time:0.5" ] }
 	],
 	"endingCutscene": [
 		{ "type": "wait",		"args": [ "time:1.0" ] },
@@ -48,27 +83,27 @@
 		{
 			"posX": 5,
 			"posY": 9,
-			"direction": "South"
+			"direction": "East"
 		},
 		{
 			"posX": 7,
 			"posY": 8,
-			"direction": "North"
+			"direction": "East"
 		},
 		{
 			"posX": 7,
 			"posY": 6,
-			"direction": "West"
+			"direction": "East"
 		},
 		{
 			"posX": 9,
 			"posY": 8,
-			"direction": "West"
+			"direction": "East"
 		},
 		{
 			"posX": 8,
 			"posY": 9,
-			"direction": "West"
+			"direction": "East"
 		}
 	]
 }

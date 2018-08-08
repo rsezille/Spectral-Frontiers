@@ -1,12 +1,48 @@
 {
-  "list": [
-    {
-      "id": "prologue_01",
-      "text": "Hello [player_name]! Welcome in the awesome world of Spectral Frontiers! You are going to discover a world filled with darkness, betrayals and epic battles. You will not be alone to face all the challenges the world keeps secret!"
-    },
-    {
-      "id": "prologue_02",
-      "text": "The game is designed to be used with a keyboard, not a gamepad. Most things need to be clicked with your mouse, but if you don't understand something or if you just want to leave a comment, please do it on our official website, via the contact page, many thanks and enjoy the game!"
-    }
-  ]
+	"list": [
+		{
+			"id": "fallback",
+			"text": "This message is a fallback. If you see this, please submit a bug report."
+		},
+		{
+			"id": "prologue_01",
+			"text": "Hello [player_name]! Welcome in the awesome world of Spectral Frontiers! You are going to discover a world filled with darkness, betrayals and epic battles. You will not be alone to face all the challenges the world keeps secret!"
+		},
+		{
+			"id": "prologue_02",
+			"text": "The game is designed to be used with a keyboard, not a gamepad. Most things need to be clicked with your mouse, but if you don't understand something or if you just want to leave a comment, please do it on our official website, via the contact page, many thanks and enjoy the game!"
+		},
+		{
+			"id": "demo_01_bcin_01_goblin",
+			"text": "Y'all gon' die, yippee!"
+		},
+		{
+			"id": "demo_01_bcin_02_hero",
+			"text": "This goblin is blinded by hate, let's put an end to his madness."
+		},
+		{
+			"id": "test_01",
+			"text": "Hmmm..."
+		},
+		{
+			"id": "test_02",
+			"text": "Well... I guess it's here, but I don't see them."
+		},
+		{
+			"id": "test_03",
+			"text": "...and as you know, if you pull just a bit..."
+		},
+		{
+			"id": "test_04",
+			"text": "...yeah..."
+		},
+		{
+			"id": "test_05",
+			"text": "...! Here you are, cowards!"
+		},
+		{
+			"id": "test_06",
+			"text": "Always this farmer... let's give him a lesson!"
+		}
+	]
 }

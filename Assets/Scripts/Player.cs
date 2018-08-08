@@ -11,9 +11,9 @@ public class Player {
         gold = 0;
 
         // TODO [ALPHA] Use scenario to load default characters
-        Character ritz = new Character("Ritz");
+        Character ritz = new Character("Hero");
         Character mew = new Character("Mew");
-        Character kupo = new Character("Kupo");
+        Character kupo = new Character("Mewtwo");
 
         characters.Add(ritz);
         ritz.SetCurrentHP(10);
