@@ -46,12 +46,8 @@ namespace SF {
         }
 
         public GameObject CreateSquare(int x, int y) {
-            // Center of the square
-            float Cx = x - y;
-            float Cy = (x + y + 1f) / 2f;
-
             GameObject squareGameObject = new GameObject("Square(" + x + "," + y + ")", typeof(Square));
-            squareGameObject.transform.position = new Vector3(Cx, Cy, 0f);
+            squareGameObject.transform.position = BoardUtil.CoordToWorldPosition(x, y);
             Square square = squareGameObject.GetComponent<Square>();
             square.x = x;
             square.y = y;

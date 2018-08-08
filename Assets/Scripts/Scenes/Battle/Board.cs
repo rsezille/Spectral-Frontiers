@@ -31,7 +31,8 @@ public class Board : MonoBehaviour {
      * Compute the current mouse position and dispatch events to the first object hit
      */
     private void Update() {
-        if (BattleManager.instance.currentTurnStep != BattleManager.TurnStep.Status) {
+        if (BattleManager.instance.currentTurnStep != BattleManager.TurnStep.Status &&
+                (BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Placing || BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Fight)) {
             Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             MouseReactive entityHit = null;

@@ -15,6 +15,12 @@ public class RawMission {
         public string direction = Globals.DefaultDirection.ToString();
     }
 
+    [System.Serializable]
+    public class Action {
+        public string type;
+        public string[] args;
+    }
+
     public string id;
     public string map;
     public int maxPlayerCharacters = 1; // Should be inferior to starting_squares length
@@ -26,8 +32,8 @@ public class RawMission {
 
     public RawEnemy[] enemies;
 
-    public string[] openingCinematic;
-    public string[] endingCinematic;
+    public Action[] openingCinematic;
+    public Action[] endingCinematic;
 
     public RawStartingSquare[] startingSquares;
 }

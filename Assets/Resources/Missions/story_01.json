@@ -29,20 +29,20 @@
 		}
 	],
 	"openingCinematic": [
-		"wait::1.0",
-		"camera:square:0,0",
-		"dialogbox:global:prologue_01",
-		"wait::3.0",
-		"camera:square:4,3",
-		"dialogbox:enemy;0;bottom:demo_01_bcin_01_goblin",
-		"camera:square:10,7",
-		"camera:enemy:0",
-		"dialogbox:global:prologue_02"
+		{ "type": "wait",		"args": [ "time:0.2" ] },
+		{ "type": "camera",		"args": [ "target:square", "x:3", "y:4" ] },
+		{ "type": "show",		"args": [ "sprite:Soldier01", "name:Soldier", "x:0", "y:3", "from:south", "direction:north" ] },
+		{ "type": "move",		"args": [ "charIndex:0", "x:4", "y:2" ] },
+		{ "type": "direction",	"args": [ "charIndex:0", "direction:west" ] },
+		{ "type": "camera",		"args": [ "target:square", "x:0", "y:0" ] },
+		{ "type": "dialogbox",	"args": [ "target:character", "charIndex:0", "id:prologue_01" ] },
+		{ "type": "wait",		"args": [ "time:1.0" ] },
+		{ "type": "camera",		"args": [ "target:square", "x:4", "y:3" ] }
 	],
 	"endingCinematic": [
-		"wait::1.0",
-		"dialogbox::prologue_01",
-		"camera:square:10,7"
+		{ "type": "wait",		"args": [ "time:1.0" ] },
+		{ "type": "dialogbox",	"args": [ "target:global", "id:prologue_01" ] },
+		{ "type": "camera",		"args": [ "target:square", "x:10", "y:7" ] }
 	],
 	"startingSquares": [
 		{

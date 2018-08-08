@@ -220,14 +220,48 @@ public class BoardCharacter : MonoBehaviour {
         }
     }
 
-    public void MoveThroughPath(Path p, bool cameraFollow = false) {
+    public void MoveTo(Square target, bool cameraFollow = true) {
+        Path p = battleManager.board.pathFinder.FindPath(
+            GetSquare().x,
+            GetSquare().y,
+            target.x,
+            target.y,
+            side.value
+        );
+
+        if (p != null) {
+            MoveThroughPath(p, cameraFollow);
+        }
+    }
+
+    public IEnumerator CineMoveTo(Square target, bool cameraFollow = true) {
+        Path p = battleManager.board.pathFinder.FindPath(
+            GetSquare().x,
+            GetSquare().y,
+            target.x,
+            target.y,
+            side.value
+        );
+
+        if (p != null) {
+            yield return StartCoroutine(MoveCoroutine(p, true, cameraFollow));
+        }
+
+        yield return null;
+    }
+
+    /**
+     * TODO [ALPHA] Implement cameraFollow
+     */
+    public void MoveThroughPath(Path p, bool cameraFollow = true) {
         if (movable != null && movable.CanMove()) {
-            StartCoroutine(MoveCoroutine(p));
+            StartCoroutine(MoveCoroutine(p, false, cameraFollow));
+            
             movable.movementTokens--;
         }
     }
 
-    private IEnumerator MoveCoroutine(Path path) {
+    private IEnumerator MoveCoroutine(Path path, bool inCinematic = false, bool cameraFollow = true) {
         isMoving = true;
         float duration = 0.5f;
         Tween cameraAnimation;
@@ -243,14 +277,16 @@ public class BoardCharacter : MonoBehaviour {
 
         // Check at 25% and 75% of each square the sorting order of the BoardChar to set the correct one
         for (int i = 0; i < path.steps.Count; i++) {
-            if (movable.movementPoints <= 0) break;
+            if (movable.movementPoints <= 0 && !inCinematic) break;
             //if (!path.steps[i].IsNotBlocking()) break;
 
             if (i > 0) {
                 previousSquare = path.steps[i - 1];
             }
 
-            movable.movementPoints--;
+            if (!inCinematic) {
+                movable.movementPoints--;
+            }
 
             Tween characterAnimation = transform.DOMove(path.steps[i].transform.position, duration).SetEase(Ease.Linear);
             cameraAnimation = battleManager.battleCamera.SetPosition(path.steps[i], true, duration, Ease.Linear);
@@ -276,7 +312,7 @@ public class BoardCharacter : MonoBehaviour {
 
         isMoving = false;
 
-        if (battleManager.currentTurnStep != BattleManager.TurnStep.Enemy) {
+        if (battleManager.currentTurnStep != BattleManager.TurnStep.Enemy && !inCinematic) {
             battleManager.EventOnLeavingMarkStep();
             battleManager.fight.EnterTurnStepDirection();
             battleManager.EventOnSemiTransparentReset();
@@ -287,7 +323,9 @@ public class BoardCharacter : MonoBehaviour {
         SetSquare(null);
         character.boardCharacter = null;
 
-        if (side.value == Side.Type.Player) {
+        StopAllCoroutines();
+
+        if (side.value == Side.Type.Player && (battleManager.currentBattleStep == BattleManager.BattleStep.Placing || battleManager.currentBattleStep == BattleManager.BattleStep.Fight)) {
             battleManager.playerCharacters.Remove(this);
         } else if (side.value == Side.Type.Enemy && battleManager.currentBattleStep == BattleManager.BattleStep.Fight) {
             battleManager.enemyCharacters.Remove(this);

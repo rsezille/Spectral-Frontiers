@@ -35,6 +35,7 @@ public class BattleManager : MonoBehaviour {
     public BattleCamera battleCamera;
 
     // HUD
+    public CinematicHUD cinematicHUD;
     public PlacingHUD placingHUD;
     public StatusHUD statusHUD;
     public FightHUD fightHUD;
@@ -88,6 +89,7 @@ public class BattleManager : MonoBehaviour {
         cinematic = new BattleCinematicManager();
 
         // Disable all HUD by default
+        cinematicHUD.gameObject.SetActive(false);
         placingHUD.gameObject.SetActive(false);
         statusHUD.gameObject.SetActive(false);
         fightHUD.gameObject.SetActive(false);
@@ -231,7 +233,7 @@ public class BattleManager : MonoBehaviour {
         }
 
         if (playerCharacters.Count > 0 && enemyCharacters.Count == 0) { // The player wins
-            cinematic.EnterBattleStepCinematic(BattleCinematicManager.Type.Ending);
+            victory.EnterBattleStepVictory();
 
             return true;
         } else if (playerCharacters.Count == 0 && enemyCharacters.Count > 0) { // The enemy wins

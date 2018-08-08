@@ -1,4 +1,6 @@
-﻿public class BattleVictoryManager {
+﻿using SF;
+
+public class BattleVictoryManager {
     private BattleManager battleManager; // Shortcut for BattleManager.instance
 
     public BattleVictoryManager() {
@@ -6,7 +8,17 @@
     }
 
     // Called by BattleManager
-    public void Update() {}
+    public void Update() {
+        if (InputManager.Special1.IsKeyDown) {
+            Next();
+        }
+    }
+
+    public void Next() {
+        battleManager.victoryHUD.SetActiveWithAnimation(false);
+
+        battleManager.cinematic.EnterBattleStepCinematic(BattleCinematicManager.Type.Ending);
+    }
 
     // Called by BattleManager
     public void EnterTurnStepNone(BattleManager.TurnStep previousTurnStep) {}
@@ -17,7 +29,9 @@
         }
 
         battleManager.currentBattleStep = BattleManager.BattleStep.Victory;
-        
+
+        battleManager.EventOnLeavingMarkStep();
+        battleManager.statusHUD.Hide();
         battleManager.fightHUD.SetActiveWithAnimation(false);
         battleManager.victoryHUD.SetActiveWithAnimation(true);
     }
