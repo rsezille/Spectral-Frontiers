@@ -100,10 +100,10 @@ public class FightHUD : MonoBehaviour {
             selectedSquareText.text = "Square: [" + square.x + "," + square.y + "]";
 
             if (square.boardEntity != null) {
-                PlayerCharacter playerCharacter = square.boardEntity.GetComponent<PlayerCharacter>();
+                BoardCharacter boardCharacter = square.boardEntity.GetComponent<BoardCharacter>();
 
-                if (playerCharacter != null) {
-                    selectedSquareText.text += "\nCharacter: " + playerCharacter.boardCharacter.character.name + " (" + playerCharacter.boardCharacter.character.GetCurrentHP() + "/" + playerCharacter.boardCharacter.character.GetMaxHP() + ")";
+                if (boardCharacter != null) {
+                    selectedSquareText.text += "\nCharacter: " + boardCharacter.character.name + " (" + boardCharacter.character.GetCurrentHP() + "/" + boardCharacter.character.GetMaxHP() + ")";
                 } else {
                     selectedSquareText.text += "\nCharacter: none";
                 }
