@@ -13,7 +13,7 @@ public class BattleManager : MonoBehaviour {
     private static BattleManager _instance;
 
     public enum BattleStep {
-        Cinematic, Placing, Fight, Victory
+        Cutscene, Placing, Fight, Victory
     };
     public enum TurnStep { // Placing: None or Status - Fight: None, Move, Attack, Skill, Item, Enemy, Status, Direction - Victory: None
         None, Move, Attack, Skill, Item, Enemy, Status, Direction
@@ -35,7 +35,7 @@ public class BattleManager : MonoBehaviour {
     public BattleCamera battleCamera;
 
     // HUD
-    public CinematicHUD cinematicHUD;
+    public CutsceneHUD cutsceneHUD;
     public PlacingHUD placingHUD;
     public StatusHUD statusHUD;
     public FightHUD fightHUD;
@@ -59,7 +59,7 @@ public class BattleManager : MonoBehaviour {
     public event SFEvent OnCheckSemiTransparent;
 
     // Dedicated managers for each BattleStep
-    public BattleCinematicManager cinematic;
+    public BattleCutsceneManager cutscene;
     public BattlePlacingManager placing;
     public BattleFightManager fight;
     public BattleVictoryManager victory;
@@ -86,10 +86,10 @@ public class BattleManager : MonoBehaviour {
         placing = new BattlePlacingManager();
         fight = new BattleFightManager();
         victory = new BattleVictoryManager();
-        cinematic = new BattleCinematicManager();
+        cutscene = new BattleCutsceneManager();
 
         // Disable all HUD by default
-        cinematicHUD.gameObject.SetActive(false);
+        cutsceneHUD.gameObject.SetActive(false);
         placingHUD.gameObject.SetActive(false);
         statusHUD.gameObject.SetActive(false);
         fightHUD.gameObject.SetActive(false);
@@ -111,7 +111,7 @@ public class BattleManager : MonoBehaviour {
         currentTurnStep = TurnStep.None;
         turn = 0;
 
-        cinematic.EnterBattleStepCinematic(BattleCinematicManager.Type.Opening);
+        cutscene.EnterBattleStepCutscene(BattleCutsceneManager.Type.Opening);
     }
 
     // Update is called once per frame
@@ -136,8 +136,8 @@ public class BattleManager : MonoBehaviour {
         }
 
         switch (currentBattleStep) {
-            case BattleStep.Cinematic:
-                cinematic.Update();
+            case BattleStep.Cutscene:
+                cutscene.Update();
                 break;
             case BattleStep.Placing:
                 placing.Update();

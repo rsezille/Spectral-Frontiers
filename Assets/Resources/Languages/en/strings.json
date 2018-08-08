@@ -21,8 +21,8 @@
       "text": "Enemy's turn"
     },
 	{
-		"id": "battle.hud.cinematic.skip",
-		"text": "Press Space to skip the cinematic"
+		"id": "battle.hud.cutscene.skip",
+		"text": "Press Space to skip the cutscene"
 	},
     {
       "id": "battle.hud.info.turn",

@@ -241,7 +241,7 @@ public class BoardCharacter : MonoBehaviour {
         }
     }
 
-    public IEnumerator CineMoveTo(Square target, bool cameraFollow = true) {
+    public IEnumerator CutsceneMoveTo(Square target, bool cameraFollow = true) {
         Path p = battleManager.board.pathFinder.FindPath(
             GetSquare().x,
             GetSquare().y,
@@ -268,12 +268,12 @@ public class BoardCharacter : MonoBehaviour {
         }
     }
 
-    private IEnumerator MoveCoroutine(Path path, bool inCinematic = false, bool cameraFollow = true) {
+    private IEnumerator MoveCoroutine(Path path, bool inCutscene = false, bool cameraFollow = true) {
         isMoving = true;
         float duration = 0.5f;
         Tween cameraAnimation;
 
-        if (battleManager.currentTurnStep != BattleManager.TurnStep.Enemy && !inCinematic) {
+        if (battleManager.currentTurnStep != BattleManager.TurnStep.Enemy && !inCutscene) {
             battleManager.EventOnLeavingMarkStep();
         }
 
@@ -288,14 +288,14 @@ public class BoardCharacter : MonoBehaviour {
 
         // Check at 25% and 75% of each square the sorting order of the BoardChar to set the correct one
         for (int i = 0; i < path.steps.Count; i++) {
-            if (movable.movementPoints <= 0 && !inCinematic) break;
+            if (movable.movementPoints <= 0 && !inCutscene) break;
             //if (!path.steps[i].IsNotBlocking()) break;
 
             if (i > 0) {
                 previousSquare = path.steps[i - 1];
             }
 
-            if (!inCinematic) {
+            if (!inCutscene) {
                 movable.movementPoints--;
             }
 
@@ -323,7 +323,7 @@ public class BoardCharacter : MonoBehaviour {
 
         isMoving = false;
 
-        if (battleManager.currentTurnStep != BattleManager.TurnStep.Enemy && !inCinematic) {
+        if (battleManager.currentTurnStep != BattleManager.TurnStep.Enemy && !inCutscene) {
             battleManager.fight.EnterTurnStepDirection();
             battleManager.EventOnSemiTransparentReset();
         }

@@ -32,8 +32,8 @@ public class RawMission {
 
     public RawEnemy[] enemies;
 
-    public Action[] openingCinematic;
-    public Action[] endingCinematic;
+    public Action[] openingCutscene;
+    public Action[] endingCutscene;
 
     public RawStartingSquare[] startingSquares;
 }

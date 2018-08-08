@@ -7,7 +7,7 @@ using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BattleCinematicManager {
+public class BattleCutsceneManager {
     public enum Type {
         Opening, Ending
     }
@@ -18,40 +18,40 @@ public class BattleCinematicManager {
     private Type type;
     private List<BoardCharacter> instanciatedCharacters = new List<BoardCharacter>();
 
-    private Coroutine cinematicCoroutine;
+    private Coroutine cutsceneCoroutine;
 
     private bool skipping = false;
 
-    public BattleCinematicManager() {
+    public BattleCutsceneManager() {
         battleManager = BattleManager.instance;
     }
 
     // Called by BattleManager
     public void Update() {
         if (InputManager.Special1.IsKeyDown) {
-            SkipCinematic();
+            SkipCutscene();
         }
     }
 
-    public void SkipCinematic() {
-        if (skipping || battleManager.currentBattleStep != BattleManager.BattleStep.Cinematic) return;
+    public void SkipCutscene() {
+        if (skipping || battleManager.currentBattleStep != BattleManager.BattleStep.Cutscene) return;
 
         skipping = true;
 
-        if (cinematicCoroutine != null) {
-            battleManager.StopCoroutine(cinematicCoroutine);
+        if (cutsceneCoroutine != null) {
+            battleManager.StopCoroutine(cutsceneCoroutine);
         }
 
         GameManager.instance.DialogBox.Hide();
-        EndCinematic();
+        EndCutscene();
     }
 
-    public void EnterBattleStepCinematic(Type type) {
+    public void EnterBattleStepCutscene(Type type) {
         this.type = type;
         instanciatedCharacters.Clear();
 
         if (type == Type.Ending) {
-            GameObject transition = new GameObject("CinematicTransition");
+            GameObject transition = new GameObject("CutsceneTransition");
             transition.transform.SetParent(GameManager.instance.transform);
             transition.AddComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
 
@@ -63,41 +63,41 @@ public class BattleCinematicManager {
                     playerCharacter.Remove();
                 }
                 
-                transitionImage.DOColor(new Color(Color.black.r, Color.black.g, Color.black.b, 0f), 0.5f).OnComplete(ProcessEnterCinematic);
+                transitionImage.DOColor(new Color(Color.black.r, Color.black.g, Color.black.b, 0f), 0.5f).OnComplete(ProcessEnterCutscene);
             });
         } else {
-            ProcessEnterCinematic();
+            ProcessEnterCutscene();
         }
     }
 
-    private void ProcessEnterCinematic() {
+    private void ProcessEnterCutscene() {
         skipping = false;
-        battleManager.cinematicHUD.gameObject.SetActive(true);
+        battleManager.cutsceneHUD.gameObject.SetActive(true);
 
-        battleManager.currentBattleStep = BattleManager.BattleStep.Cinematic;
+        battleManager.currentBattleStep = BattleManager.BattleStep.Cutscene;
 
-        actions = type == Type.Opening ? battleManager.mission.openingCinematic : battleManager.mission.endingCinematic;
+        actions = type == Type.Opening ? battleManager.mission.openingCutscene : battleManager.mission.endingCutscene;
 
         if (actions.Length > 0) {
-            cinematicCoroutine = battleManager.StartCoroutine(ProcessCinematic());
+            cutsceneCoroutine = battleManager.StartCoroutine(ProcessCutscene());
         } else {
-            EndCinematic();
+            EndCutscene();
         }
     }
 
-    private IEnumerator ProcessCinematic() {
+    private IEnumerator ProcessCutscene() {
         foreach (RawMission.Action action in actions) {
             yield return ProcessAction(action);
         }
 
-        EndCinematic();
+        EndCutscene();
 
         yield return null;
     }
 
-    private void EndCinematic() {
+    private void EndCutscene() {
         if (type == Type.Opening) {
-            GameObject transition = new GameObject("CinematicTransition");
+            GameObject transition = new GameObject("CutsceneTransition");
             transition.transform.SetParent(GameManager.instance.transform);
             transition.AddComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
 
@@ -111,7 +111,7 @@ public class BattleCinematicManager {
 
                 instanciatedCharacters.Clear();
 
-                battleManager.cinematicHUD.gameObject.SetActive(false);
+                battleManager.cutsceneHUD.gameObject.SetActive(false);
 
                 battleManager.placing.EnterBattleStepPlacing();
 
@@ -196,7 +196,7 @@ public class BattleCinematicManager {
                 break;
         }
 
-        BoardCharacter boardCharacterPrefab = Resources.Load<BoardCharacter>("CinematicBoardCharacter");
+        BoardCharacter boardCharacterPrefab = Resources.Load<BoardCharacter>("CutsceneBoardCharacter");
         boardCharacterPrefab.enemyOrNeutralSpritePrefab = Resources.Load<GameObject>("CharacterSprites/" + sprite);
 
         BoardCharacter boardCharacter = Object.Instantiate(boardCharacterPrefab, BoardUtil.CoordToWorldPosition(fromX, fromY), Quaternion.identity);
@@ -220,7 +220,7 @@ public class BattleCinematicManager {
         string y = args["y"] ?? "0";
 
         if (int.Parse(characterIndex) < instanciatedCharacters.Count) {
-            yield return instanciatedCharacters[int.Parse(characterIndex)].CineMoveTo(battleManager.board.GetSquare(int.Parse(x), int.Parse(y)), true);
+            yield return instanciatedCharacters[int.Parse(characterIndex)].CutsceneMoveTo(battleManager.board.GetSquare(int.Parse(x), int.Parse(y)), true);
         }
 
         yield return null;

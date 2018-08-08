@@ -100,7 +100,7 @@ public class Square : MonoBehaviour {
      * Triggered by Board (TileSelector)
      */
     public void MouseEnter() {
-        if (battleManager.currentBattleStep == BattleManager.BattleStep.Cinematic) return;
+        if (battleManager.currentBattleStep == BattleManager.BattleStep.Cutscene) return;
 
         if (colorAnimation != null) {
             colorAnimation.Pause();
@@ -123,7 +123,7 @@ public class Square : MonoBehaviour {
      * Triggered by Board (TileSelector)
      */
     public void MouseLeave() {
-        if (battleManager.currentBattleStep == BattleManager.BattleStep.Cinematic) return;
+        if (battleManager.currentBattleStep == BattleManager.BattleStep.Cutscene) return;
 
         battleManager.fightHUD.SquareHovered(null);
 

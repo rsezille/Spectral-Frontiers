@@ -62,14 +62,14 @@ MonoBehaviour:
     parents: []
     children: []
     enemies: []
-    openingCinematic: []
-    endingCinematic: []
+    openingCutscene: []
+    endingCutscene: []
     startingSquares: []
   playerCharacters: []
   enemyCharacters: []
   board: {fileID: 0}
   battleCamera: {fileID: 0}
-  cinematicHUD: {fileID: 0}
+  cutsceneHUD: {fileID: 0}
   placingHUD: {fileID: 0}
   statusHUD: {fileID: 0}
   fightHUD: {fileID: 0}

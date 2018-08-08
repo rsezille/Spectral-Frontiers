@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 114651946931930836}
   - component: {fileID: 114999575844902102}
   m_Layer: 0
-  m_Name: CinematicBoardCharacter
+  m_Name: CutsceneBoardCharacter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

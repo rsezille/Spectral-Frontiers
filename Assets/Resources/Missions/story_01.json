@@ -28,7 +28,7 @@
 			"posY": 3
 		}
 	],
-	"openingCinematic": [
+	"openingCutscene": [
 		{ "type": "wait",		"args": [ "time:0.2" ] },
 		{ "type": "camera",		"args": [ "target:square", "x:3", "y:4" ] },
 		{ "type": "show",		"args": [ "sprite:Soldier01", "name:Soldier", "x:0", "y:3", "from:south", "direction:north" ] },
@@ -39,7 +39,7 @@
 		{ "type": "wait",		"args": [ "time:1.0" ] },
 		{ "type": "camera",		"args": [ "target:square", "x:4", "y:3" ] }
 	],
-	"endingCinematic": [
+	"endingCutscene": [
 		{ "type": "wait",		"args": [ "time:1.0" ] },
 		{ "type": "dialogbox",	"args": [ "target:global", "id:prologue_01" ] },
 		{ "type": "camera",		"args": [ "target:square", "x:10", "y:7" ] }

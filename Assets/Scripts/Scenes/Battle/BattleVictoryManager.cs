@@ -17,7 +17,7 @@ public class BattleVictoryManager {
     public void Next() {
         battleManager.victoryHUD.SetActiveWithAnimation(false);
 
-        battleManager.cinematic.EnterBattleStepCinematic(BattleCinematicManager.Type.Ending);
+        battleManager.cutscene.EnterBattleStepCutscene(BattleCutsceneManager.Type.Ending);
     }
 
     // Called by BattleManager

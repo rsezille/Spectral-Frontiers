@@ -18,7 +18,7 @@ public class BattleCamera : MonoBehaviour {
     }
 
     private void Update() {
-        if (BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Cinematic
+        if (BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Cutscene
                 || BattleManager.instance.currentTurnStep == BattleManager.TurnStep.Enemy) {
             return;
         }

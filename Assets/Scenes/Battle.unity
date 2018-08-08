@@ -641,7 +641,7 @@ Prefab:
       objectReference: {fileID: 519420030}
     - target: {fileID: 114542653793058942, guid: 43fb4b378fca8f94a9de412da769869f,
         type: 2}
-      propertyPath: cinematicHUD
+      propertyPath: cutsceneHUD
       value: 
       objectReference: {fileID: 1086976153}
     - target: {fileID: 114542653793058942, guid: 43fb4b378fca8f94a9de412da769869f,

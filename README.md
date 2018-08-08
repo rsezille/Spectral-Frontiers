@@ -33,7 +33,7 @@ Type (mandatory, if possible):
 
 Scope (optional):
 - **SFME** the map editor
-- **Cine** battle cinematics
+- **Cut** battle cutscenes
 - **Battle** the battle, globally
 - **Placing**
 - **Fight**
