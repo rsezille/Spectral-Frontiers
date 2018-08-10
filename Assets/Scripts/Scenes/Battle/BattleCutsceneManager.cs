@@ -232,14 +232,16 @@ public class BattleCutsceneManager {
         string strPosition = args["position"] ?? "bottom";
         string characterIndex = args["charIndex"] ?? "0";
         string characterName = args["charName"] ?? "";
+        string strStyle = args["style"] ?? "normal";
+        DialogStyle style = EnumUtil.ParseEnum(strStyle, DialogStyle.Normal);
 
         DialogBox.Position position = strPosition == "bottom" ? DialogBox.Position.Bottom : DialogBox.Position.Top;
 
         if (target == "global") {
-            yield return new WaitForCustom(GameManager.instance.DialogBox.Show(dialogId, position, DialogStyle.Normal, 0, characterName));
+            yield return new WaitForCustom(GameManager.instance.DialogBox.Show(dialogId, position, style, 0, characterName));
         } else if (target == "character") {
             if (int.Parse(characterIndex) < instanciatedCharacters.Count) {
-                yield return new WaitForCustom(GameManager.instance.DialogBox.Show(instanciatedCharacters[int.Parse(characterIndex)], dialogId, position));
+                yield return new WaitForCustom(GameManager.instance.DialogBox.Show(instanciatedCharacters[int.Parse(characterIndex)], dialogId, position, style));
             }
         }
 
