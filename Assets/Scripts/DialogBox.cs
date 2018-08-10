@@ -55,68 +55,72 @@ public class DialogBox : MonoBehaviour, IWaitForCustom {
     }
 
     private void Update() {
-        if (currentShownPreset != null) {
-            if (countLetters <= currentShownPreset.textMesh.textInfo.pageInfo[currentShownPreset.textMesh.pageToDisplay - 1].lastCharacterIndex) {
-                if (textSpeed == TextSpeed.Instant) {
-                    countLetters = currentShownPreset.textMesh.textInfo.pageInfo[currentShownPreset.textMesh.pageToDisplay - 1].lastCharacterIndex;
-                } else {
-                    timerLetters += Time.deltaTime * 1000;
+        if (currentShownPreset == null) return;
 
-                    while (timerLetters >= (int)textSpeed) {
-                        countLetters++;
-                        timerLetters -= (int)textSpeed;
-                    }
-                }
-
-                if (countLetters > parsedText.Length) {
-                    countLetters = parsedText.Length;
-                }
-
-                string tmpText = parsedText.Insert(countLetters, "€");
-
-                Match m = Regex.Match(tmpText, @"(£+€?£+)", RegexOptions.RightToLeft);
-
-                while (m.Success) {
-                    int alphaSymbol = m.Value.IndexOf("€");
-
-                    // The <alpha> tag is erased by the <color> tag, that's why we re-put it after </color>
-                    if (alphaSymbol != -1) {
-                        tmpText = tmpText.Remove(m.Index, m.Value.Length).Insert(m.Index,
-                            "<color=#" + ColorUtility.ToHtmlStringRGB(playerTagColor) + ">" + gameManager.player.playerName.Substring(0, alphaSymbol) + "</color>"
-                            + "<alpha=#00>" + gameManager.player.playerName.Substring(alphaSymbol)
-                        );
-                    } else {
-                        if (countLetters < m.Index) { // If the alpha symbol is before, meaning that the tag is hidden, no need to put colors
-                            tmpText = tmpText.Remove(m.Index, m.Value.Length).Insert(m.Index, gameManager.player.playerName);
-                        } else { // Otherwise if the alpha symbol is after, we need to set the color
-                            tmpText = tmpText.Remove(m.Index, m.Value.Length).Insert(m.Index, "<color=#" + ColorUtility.ToHtmlStringRGB(playerTagColor) + ">" + gameManager.player.playerName + "</color>");
-                        }
-                    }
-
-                    m = m.NextMatch();
-                }
-
-                currentShownPreset.textMesh.SetText(tmpText.Replace("€", "<alpha=#00>"));
-            }
-
-            if (countLetters >= currentShownPreset.textMesh.textInfo.pageInfo[currentShownPreset.textMesh.pageToDisplay - 1].lastCharacterIndex
-                   && currentShownPreset.textMesh.pageToDisplay < currentShownPreset.textMesh.textInfo.pageCount) {
-                currentShownPreset.NextCursor();
-            } else if (countLetters >= currentShownPreset.textMesh.textInfo.pageInfo[currentShownPreset.textMesh.pageToDisplay - 1].lastCharacterIndex
-                    && currentShownPreset.textMesh.pageToDisplay >= currentShownPreset.textMesh.textInfo.pageCount
-                    && currentShownPreset.textMesh.textInfo.pageInfo[currentShownPreset.textMesh.pageToDisplay - 1].lastCharacterIndex > 0) {
-                currentShownPreset.EndCursor();
+        // Letters
+        if (countLetters <= currentShownPreset.textMesh.textInfo.pageInfo[currentShownPreset.textMesh.pageToDisplay - 1].lastCharacterIndex) {
+            if (textSpeed == TextSpeed.Instant) {
+                countLetters = currentShownPreset.textMesh.textInfo.pageInfo[currentShownPreset.textMesh.pageToDisplay - 1].lastCharacterIndex;
             } else {
-                currentShownPreset.NoCursor();
+                timerLetters += Time.deltaTime * 1000;
+
+                while (timerLetters >= (int)textSpeed) {
+                    countLetters++;
+                    timerLetters -= (int)textSpeed;
+                }
             }
 
-            if (InputManager.Confirm.IsKeyDown) {
-                Next();
+            if (countLetters > parsedText.Length) {
+                countLetters = parsedText.Length;
             }
 
-            if (attachedCharacter != null) {
-                transform.localPosition = attachedCharacter.transform.position;
+            string tmpText = parsedText.Insert(countLetters, "€");
+
+            Match m = Regex.Match(tmpText, @"(£+€?£+)", RegexOptions.RightToLeft);
+
+            while (m.Success) {
+                int alphaSymbol = m.Value.IndexOf("€");
+
+                // The <alpha> tag is erased by the <color> tag, that's why we re-put it after </color>
+                if (alphaSymbol != -1) {
+                    tmpText = tmpText.Remove(m.Index, m.Value.Length).Insert(m.Index,
+                        "<color=#" + ColorUtility.ToHtmlStringRGB(playerTagColor) + ">" + gameManager.player.playerName.Substring(0, alphaSymbol) + "</color>"
+                        + "<alpha=#00>" + gameManager.player.playerName.Substring(alphaSymbol)
+                    );
+                } else {
+                    if (countLetters < m.Index) { // If the alpha symbol is before, meaning that the tag is hidden, no need to put colors
+                        tmpText = tmpText.Remove(m.Index, m.Value.Length).Insert(m.Index, gameManager.player.playerName);
+                    } else { // Otherwise if the alpha symbol is after, we need to set the color
+                        tmpText = tmpText.Remove(m.Index, m.Value.Length).Insert(m.Index, "<color=#" + ColorUtility.ToHtmlStringRGB(playerTagColor) + ">" + gameManager.player.playerName + "</color>");
+                    }
+                }
+
+                m = m.NextMatch();
             }
+
+            currentShownPreset.textMesh.SetText(tmpText.Replace("€", "<alpha=#00>"));
+        }
+
+        // Cursor
+        if (countLetters >= currentShownPreset.textMesh.textInfo.pageInfo[currentShownPreset.textMesh.pageToDisplay - 1].lastCharacterIndex
+                && currentShownPreset.textMesh.pageToDisplay < currentShownPreset.textMesh.textInfo.pageCount) {
+            currentShownPreset.NextCursor();
+        } else if (countLetters >= currentShownPreset.textMesh.textInfo.pageInfo[currentShownPreset.textMesh.pageToDisplay - 1].lastCharacterIndex
+                && currentShownPreset.textMesh.pageToDisplay >= currentShownPreset.textMesh.textInfo.pageCount
+                && currentShownPreset.textMesh.textInfo.pageInfo[currentShownPreset.textMesh.pageToDisplay - 1].lastCharacterIndex > 0) {
+            currentShownPreset.EndCursor();
+        } else {
+            currentShownPreset.NoCursor();
+        }
+
+        // Key bindings
+        if (InputManager.Confirm.IsKeyDown) {
+            Next();
+        }
+
+        // The dialog box must follow the character if attached to one
+        if (attachedCharacter != null) {
+            transform.localPosition = attachedCharacter.transform.position;
         }
     }
 
