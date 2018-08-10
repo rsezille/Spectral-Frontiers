@@ -30,6 +30,7 @@ public class DialogBox : MonoBehaviour, IWaitForCustom {
 
     private DialogPreset[] presets; // 0 is the default one
     private BoardCharacter attachedCharacter;
+    private DialogStyle dialogStyle;
 
     public TextSpeed textSpeed;
     public Color playerTagColor = new Color(0f, 0.5f, 1f);
@@ -98,7 +99,21 @@ public class DialogBox : MonoBehaviour, IWaitForCustom {
                 m = m.NextMatch();
             }
 
-            currentShownPreset.textMesh.SetText(tmpText.Replace("€", "<alpha=#00>"));
+            string finalText = tmpText.Replace("€", "<alpha=#00>");
+
+            switch (dialogStyle) {
+                case DialogStyle.Italic:
+                    finalText = "<i>" + finalText + "</i>";
+                    break;
+                case DialogStyle.Bold:
+                    finalText = "<b>" + finalText + "</i>";
+                    break;
+                case DialogStyle.BoldAndItalic:
+                    finalText = "<b><i>" + finalText + "</i></b>";
+                    break;
+            }
+
+            currentShownPreset.textMesh.SetText(finalText);
         }
 
         // Cursor
@@ -127,13 +142,14 @@ public class DialogBox : MonoBehaviour, IWaitForCustom {
     /**
      * Show a global dialog box
      */
-    public IWaitForCustom Show(string dialogId, Position position = Position.Bottom, int presetIndex = 0, string name = "") {
+    public IWaitForCustom Show(string dialogId, Position position = Position.Bottom, DialogStyle style = DialogStyle.Normal, int presetIndex = 0, string name = "") {
         if (currentShownPreset != null) {
             return null;
         }
 
         PreShow(dialogId, presetIndex, name);
         attachedCharacter = null;
+        dialogStyle = style;
 
         currentShownPreset.canvas.renderMode = RenderMode.ScreenSpaceCamera;
         transform.localPosition = Vector3.zero;
@@ -159,13 +175,14 @@ public class DialogBox : MonoBehaviour, IWaitForCustom {
     /**
      * Show a dialog box attached to a character, with his name
      */
-    public IWaitForCustom Show(BoardCharacter boardCharacter, string dialogId, Position position = Position.Top, int presetIndex = 0) {
+    public IWaitForCustom Show(BoardCharacter boardCharacter, string dialogId, Position position = Position.Top, DialogStyle style = DialogStyle.Normal, int presetIndex = 0) {
         if (currentShownPreset != null) {
             return null;
         }
 
         PreShow(dialogId, presetIndex, boardCharacter.character.name);
         attachedCharacter = boardCharacter;
+        dialogStyle = style;
 
         currentShownPreset.canvas.renderMode = RenderMode.WorldSpace;
         transform.localPosition = boardCharacter.transform.position;
@@ -240,6 +257,8 @@ public class DialogBox : MonoBehaviour, IWaitForCustom {
         countLetters = 0;
         currentShownPreset = null;
         parsedText = "";
+
+        dialogStyle = DialogStyle.Normal;
 
         foreach (DialogPreset preset in presets) {
             preset.gameObject.SetActive(false);

@@ -236,7 +236,7 @@ public class BattleCutsceneManager {
         DialogBox.Position position = strPosition == "bottom" ? DialogBox.Position.Bottom : DialogBox.Position.Top;
 
         if (target == "global") {
-            yield return new WaitForCustom(GameManager.instance.DialogBox.Show(dialogId, position, 0, characterName));
+            yield return new WaitForCustom(GameManager.instance.DialogBox.Show(dialogId, position, DialogStyle.Normal, 0, characterName));
         } else if (target == "character") {
             if (int.Parse(characterIndex) < instanciatedCharacters.Count) {
                 yield return new WaitForCustom(GameManager.instance.DialogBox.Show(instanciatedCharacters[int.Parse(characterIndex)], dialogId, position));
