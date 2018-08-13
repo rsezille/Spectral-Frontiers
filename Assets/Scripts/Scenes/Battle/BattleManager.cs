@@ -50,13 +50,12 @@ public class BattleManager : MonoBehaviour {
     public bool waterDistortion = true; // TODO [BETA] Implement it
 
     // Events
-    public delegate void SFEvent();
-    public event SFEvent OnEnterPlacing;
-    public event SFEvent OnLeavingMarkStep;
-    public event SFEvent OnZoomChange;
-    public event SFEvent OnScreenChange;
-    public event SFEvent OnSemiTransparentReset;
-    public event SFEvent OnCheckSemiTransparent;
+    public event GameManager.SFEvent OnEnterPlacing;
+    public event GameManager.SFEvent OnLeavingMarkStep;
+    public event GameManager.SFEvent OnZoomChange;
+    public event GameManager.SFEvent OnScreenChange;
+    public event GameManager.SFEvent OnSemiTransparentReset;
+    public event GameManager.SFEvent OnCheckSemiTransparent;
 
     // Dedicated managers for each BattleStep
     public BattleCutsceneManager cutscene;

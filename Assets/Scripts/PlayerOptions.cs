@@ -40,7 +40,7 @@ namespace SF {
             }
         }
 
-        public static void ResetKeys() {
+        public static void ResetKeyBinds() {
             foreach (KeyBind key in InputManager.allKeyBinds) {
                 key.ResetKey();
             }

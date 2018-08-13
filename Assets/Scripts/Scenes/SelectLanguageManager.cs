@@ -14,8 +14,14 @@ public class SelectLanguageManager : MonoBehaviour {
     }
 
     public static void LoadLanguageAndLeave(string languageCode) {
+        if (!LanguageList.availableLanguages.Contains(languageCode)) {
+            Debug.LogError("Language not available: " + languageCode);
+
+            return;
+        }
+
         PlayerOptions.SetValue(PlayerOptions.Language, languageCode);
-        PlayerOptions.ResetKeys();
+        PlayerOptions.ResetKeyBinds();
         PlayerOptions.Save();
 
         Debug.Log("Loading language... [" + languageCode + "]");

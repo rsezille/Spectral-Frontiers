@@ -88,6 +88,8 @@ namespace SF {
                     }
                 }
             }
+
+            GameManager.instance.EventOnLanguageChange();
         }
 
         /**

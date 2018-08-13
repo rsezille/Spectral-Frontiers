@@ -34,6 +34,10 @@ public class GameManager : MonoBehaviour {
     private GameObject transition;
     private Image transitionImage;
 
+    // Events
+    public delegate void SFEvent();
+    public event SFEvent OnLanguageChange;
+
     // Game initialization
     private void Awake() {
         if (instance == null) {
@@ -135,5 +139,9 @@ public class GameManager : MonoBehaviour {
         #else
             Application.Quit();
         #endif
+    }
+
+    public void EventOnLanguageChange() {
+        OnLanguageChange?.Invoke();
     }
 }
