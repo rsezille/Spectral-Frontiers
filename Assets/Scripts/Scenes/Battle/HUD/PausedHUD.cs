@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using SF;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class PausedHUD : MonoBehaviour {
@@ -13,7 +14,7 @@ public class PausedHUD : MonoBehaviour {
     }
 
     public void Resume() {
-        Time.timeScale = 1f;
+        Time.timeScale = PlayerOptions.GetFloat(PlayerOptions.BattleSpeed);
         gameObject.SetActive(false);
     }
 }

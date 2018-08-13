@@ -313,6 +313,14 @@
       "text": "Battle Speed:"
     },
 	{
+	  "id": "options.textspeed",
+	  "text": "Text Speed:"
+	},
+	{
+	  "id": "options.language",
+	  "text": "Language:"
+	},
+	{
 	  "id": "options.reset.keys",
 	  "text": "Set default keys"
 	},

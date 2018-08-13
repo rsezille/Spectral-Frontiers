@@ -112,6 +112,8 @@ public class BattleManager : MonoBehaviour {
         turn = 0;
 
         cutscene.EnterBattleStepCutscene(BattleCutsceneManager.Type.Opening);
+
+        Time.timeScale = PlayerOptions.GetFloat(PlayerOptions.BattleSpeed);
     }
 
     // Update is called once per frame
