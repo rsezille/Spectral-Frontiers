@@ -2314,6 +2314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d918d6fb1cab4040a3139f6c0545e95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  languages: {fileID: 114762733249765592}
 --- !u!114 &114487004215302266
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3147,7 +3148,7 @@ MonoBehaviour:
   m_Interactable: 1
   m_TargetGraphic: {fileID: 114619661013494332}
   m_Template: {fileID: 224721688071545546}
-  m_CaptionText: {fileID: 0}
+  m_CaptionText: {fileID: 114503601613973088}
   m_CaptionImage: {fileID: 0}
   m_ItemText: {fileID: 114612039001712162}
   m_ItemImage: {fileID: 0}
