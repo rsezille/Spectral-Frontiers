@@ -256,10 +256,7 @@ public class BoardCharacter : MonoBehaviour {
 
         yield return null;
     }
-
-    /**
-     * TODO [ALPHA] Implement cameraFollow
-     */
+    
     public void MoveThroughPath(Path p, bool cameraFollow = true) {
         if (movable != null && movable.CanMove()) {
             StartCoroutine(MoveCoroutine(p, false, cameraFollow));
@@ -271,15 +268,17 @@ public class BoardCharacter : MonoBehaviour {
     private IEnumerator MoveCoroutine(Path path, bool inCutscene = false, bool cameraFollow = true) {
         isMoving = true;
         float duration = 0.5f;
-        Tween cameraAnimation;
 
         if (battleManager.currentTurnStep != BattleManager.TurnStep.Enemy && !inCutscene) {
             battleManager.EventOnLeavingMarkStep();
         }
 
-        if (!battleManager.battleCamera.IsOnSquare(GetSquare())) {
-            cameraAnimation = battleManager.battleCamera.SetPosition(this, true, duration);
-            yield return cameraAnimation.WaitForCompletion();
+        if (cameraFollow) {
+            if (!battleManager.battleCamera.IsOnSquare(GetSquare())) {
+                Tween cameraAnimation = battleManager.battleCamera.SetPosition(this, true, duration);
+
+                yield return cameraAnimation.WaitForCompletion();
+            }
         }
 
         Square targetedSquare = null;
@@ -300,7 +299,10 @@ public class BoardCharacter : MonoBehaviour {
             }
 
             Tween characterAnimation = transform.DOMove(path.steps[i].transform.position, duration).SetEase(Ease.Linear);
-            cameraAnimation = battleManager.battleCamera.SetPosition(path.steps[i], true, duration, Ease.Linear);
+
+            if (cameraFollow) {
+                battleManager.battleCamera.SetPosition(path.steps[i], true, duration, Ease.Linear);
+            }
 
             yield return characterAnimation.WaitForPosition(duration / 4);
 
