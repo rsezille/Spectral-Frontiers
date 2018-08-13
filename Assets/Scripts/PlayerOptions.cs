@@ -20,9 +20,10 @@ namespace SF {
 
         public static Option Language = new Option("language", Globals.FallbackLanguage);
         public static Option BattleSpeed = new Option("battlespeed", "1.0");
+        public static Option TextSpeed = new Option("textspeed", DialogBox.TextSpeed.Fast.ToString());
 
         private static List<Option> initOptions = new List<Option>() {
-            Language, BattleSpeed
+            Language, BattleSpeed, TextSpeed
         };
 
         private static Dictionary<string, string> options = new Dictionary<string, string>();

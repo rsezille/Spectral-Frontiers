@@ -44,7 +44,7 @@ public class DialogBox : MonoBehaviour, IWaitForCustom {
     private void Awake() {
         gameManager = GameManager.instance;
 
-        textSpeed = TextSpeed.Fast;
+        textSpeed = EnumUtil.ParseEnum(PlayerOptions.GetString(PlayerOptions.TextSpeed), TextSpeed.Fast);
 
         presets = GetComponentsInChildren<DialogPreset>();
 
