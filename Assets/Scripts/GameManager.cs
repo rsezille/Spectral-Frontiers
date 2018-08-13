@@ -24,11 +24,11 @@ public class GameManager : MonoBehaviour {
     [SerializeField]
     private DialogBox dialogBoxPrefab;
     [SerializeField]
-    private Options optionsPrefab;
+    private OptionsHUD optionsPrefab;
 
     // The instantiated game object
     private DialogBox dialogBox;
-    public Options options { get; private set; }
+    public OptionsHUD options { get; private set; }
 
     // Transitions between scenes
     private GameObject transition;
@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour {
 
         DontDestroyOnLoad(gameObject);
 
-        options = Instantiate(optionsPrefab, transform) as Options;
+        options = Instantiate(optionsPrefab, transform) as OptionsHUD;
         options.gameObject.SetActive(false);
 
         SF.PlayerOptions.Load();

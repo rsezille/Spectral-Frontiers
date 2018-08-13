@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Options : MonoBehaviour {
+public class OptionsHUD : MonoBehaviour {
     public RectTransform keyBindingPrefab;
     public GameObject closeButton;
     public GameObject resetKeysButton;
