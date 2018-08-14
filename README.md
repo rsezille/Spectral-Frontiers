@@ -15,7 +15,8 @@
 
 **Game mechanics**  
    [Direction](Documentation/Direction.md)  
-   [Mandatory Character](Documentation/MandatoryCharacter.md)
+   [Mandatory Character](Documentation/MandatoryCharacter.md)  
+   [Talents](Documentation/Talents.md)
 
 ### Commit Message Guidelines
 
