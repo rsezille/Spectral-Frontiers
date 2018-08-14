@@ -75,18 +75,18 @@ public class Board : MonoBehaviour {
 
             // Dispatch events to entity
             if (previousMouseEntity != null && previousMouseEntity != entityHit) {
-                previousMouseEntity.MouseLeave.Invoke();
+                previousMouseEntity.MouseLeave?.Invoke();
             }
 
             if (entityHit != null) {
                 if (InputManager.Click.IsKeyDown) {
-                    entityHit.Click.Invoke();
+                    entityHit.Click?.Invoke();
                 }
 
                 if (entityHit == previousMouseEntity) {
-                    //entity.MouseOver.Invoke();
+                    //entity.MouseOver?.Invoke();
                 } else {
-                    entityHit.MouseEnter.Invoke();
+                    entityHit.MouseEnter?.Invoke();
                 }
             }
 
