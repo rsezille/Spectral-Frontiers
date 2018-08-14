@@ -6,6 +6,8 @@ using UnityEngine;
 public class BattleFightManager {
     private BattleManager battleManager; // Shortcut for BattleManager.instance
 
+    private GameObject arrows;
+
     private BoardCharacter _selectedPlayerCharacter;
     public BoardCharacter selectedPlayerCharacter {
         get {
@@ -91,10 +93,19 @@ public class BattleFightManager {
             } else if (InputManager.Right.IsKeyDown) {
                 selectedPlayerCharacter.direction = BoardCharacter.Direction.East;
             } else if (InputManager.Confirm.IsKeyDown) {
-                battleManager.fightHUD.SetActiveWithAnimation(true);
-                battleManager.EnterTurnStepNone();
+                EndTurnStepDirection();
             }
         }
+    }
+
+    public void EndTurnStepDirection() {
+        if (arrows != null) {
+            Object.Destroy(arrows);
+            arrows = null;
+        }
+
+        battleManager.fightHUD.SetActiveWithAnimation(true);
+        battleManager.EnterTurnStepNone();
     }
 
     // Called by BattleManager
@@ -302,6 +313,10 @@ public class BattleFightManager {
     public void EnterTurnStepDirection() {
         battleManager.currentTurnStep = BattleManager.TurnStep.Direction;
         battleManager.fightHUD.SetActiveWithAnimation(false);
+
+        GameObject arrowsPrefab = Resources.Load<GameObject>("Arrows");
+
+        arrows = Object.Instantiate(arrowsPrefab, selectedPlayerCharacter.transform.position + new Vector3(arrowsPrefab.transform.position.x, arrowsPrefab.transform.position.y), Quaternion.identity);
     }
 
     private void SelectPreviousPlayerBoardCharacter() {
