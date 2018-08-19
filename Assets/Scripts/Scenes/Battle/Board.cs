@@ -56,13 +56,14 @@ public class Board : MonoBehaviour {
 
                 // Only trigger game objects that react to the mouse
                 if (mr != null) {
-                    EntityContainer entityContainer = mr.transform.parent.GetComponent<EntityContainer>();
-                    EntityContainer previousEntityContainer = entityHit != null ? entityHit.transform.parent.GetComponent<EntityContainer>() : null;
+                    EntityContainer entityContainer = mr.GetComponentInParent<EntityContainer>();
+                    EntityContainer previousEntityContainer = entityHit != null ? entityHit.GetComponentInParent<EntityContainer>() : null;
 
                     // This first if is for checking map related entities
                     if (entityContainer != null && previousEntityContainer != null) {
-                        if (entityContainer.transform.parent.GetComponent<SortingGroup>().sortingOrder > previousEntityContainer.transform.parent.GetComponent<SortingGroup>().sortingOrder
-                                || (mr.GetComponentInParent<BoardCharacter>() != null && mr.transform.parent == entityHit.transform.parent)) {
+                        if (entityContainer.GetComponentInParent<Square>().GetComponent<SortingGroup>().sortingOrder > previousEntityContainer.GetComponentInParent<Square>().GetComponent<SortingGroup>().sortingOrder
+                                || (mr.GetComponentInParent<BoardCharacter>() != null && entityContainer == previousEntityContainer)
+                                || (entityContainer == previousEntityContainer && mr.GetComponentInParent<SortingGroup>().sortingOrder > entityHit.GetComponentInParent<SortingGroup>().sortingOrder)) {
                             entityHit = mr;
                             continue;
                         }
