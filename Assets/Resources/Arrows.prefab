@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4584714396425358}
   - component: {fileID: 114607931663220546}
+  - component: {fileID: 210140314960899582}
   m_Layer: 0
   m_Name: Arrows
   m_TagString: Untagged
@@ -279,6 +280,16 @@ MonoBehaviour:
   west: {fileID: 1300473019685438}
   east: {fileID: 1661996412318176}
   south: {fileID: 1908999115731094}
+--- !u!210 &210140314960899582
+SortingGroup:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1049531736113832}
+  m_Enabled: 1
+  m_SortingLayerID: -437836555
+  m_SortingLayer: 3
+  m_SortingOrder: 1
 --- !u!212 &212300019552599976
 SpriteRenderer:
   m_ObjectHideFlags: 1

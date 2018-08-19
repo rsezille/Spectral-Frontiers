@@ -59,16 +59,32 @@ public class Board : MonoBehaviour {
                     EntityContainer entityContainer = mr.transform.parent.GetComponent<EntityContainer>();
                     EntityContainer previousEntityContainer = entityHit != null ? entityHit.transform.parent.GetComponent<EntityContainer>() : null;
 
-                    // Check for square sorting order in the mouse reactive is a game object in the entity container of a square ; and if it's a board character over the same square, target it
+                    // This first if is for checking map related entities
                     if (entityContainer != null && previousEntityContainer != null) {
                         if (entityContainer.transform.parent.GetComponent<SortingGroup>().sortingOrder > previousEntityContainer.transform.parent.GetComponent<SortingGroup>().sortingOrder
                                 || (mr.GetComponentInParent<BoardCharacter>() != null && mr.transform.parent == entityHit.transform.parent)) {
                             entityHit = mr;
                             continue;
                         }
-                    } else if (entityHit == null) {
-                        entityHit = mr;
-                        continue;
+                    } else {
+                        if (entityHit == null) {
+                            entityHit = mr;
+                            continue;
+                        } else {
+                            // This part is to check objects that are higher than maps
+                            SortingGroup groupEntity = mr.GetComponentInParent<SortingGroup>();
+                            SortingGroup groupPreviousEntity = entityHit.GetComponentInParent<SortingGroup>();
+
+                            if (groupEntity != null && groupEntity.sortingLayerName == "Battle" && groupEntity.sortingOrder > 0) {
+                                if (groupPreviousEntity == null || groupPreviousEntity.sortingLayerName != "Battle") {
+                                    entityHit = mr;
+                                } else {
+                                    if (groupPreviousEntity.sortingLayerName == "Battle" && groupPreviousEntity.sortingOrder <= groupEntity.sortingOrder) {
+                                        entityHit = mr;
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }

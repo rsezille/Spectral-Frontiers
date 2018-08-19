@@ -51,3 +51,6 @@ TagManager:
   - name: HUD
     uniqueID: 3146325687
     locked: 0
+  - name: Battle
+    uniqueID: 3857130741
+    locked: 0
