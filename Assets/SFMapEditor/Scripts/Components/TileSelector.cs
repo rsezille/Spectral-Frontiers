@@ -2,11 +2,15 @@
 using UnityEngine.Events;
 
 namespace SF {
-    [RequireComponent(typeof(MouseReactive))]
+    /**
+     * The game object this script is attached to, is added dynamically when adding tiles in the SF Map Editor
+     */
+    [RequireComponent(typeof(MouseReactive), typeof(SpriteRenderer))]
     public class TileSelector : MonoBehaviour {
         // Components
         private MouseReactive mouseReactive;
-
+        
+        [HideInInspector]
         public Square square;
 
         private void Awake() {
