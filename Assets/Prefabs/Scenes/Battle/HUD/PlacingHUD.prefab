@@ -200,7 +200,7 @@ GameObject:
   - component: {fileID: 114779742025163876}
   m_Layer: 0
   m_Name: PlacingHUD
-  m_TagString: HUD
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -414,6 +414,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a0ee8ea2e7f7f143976e407dd70b08c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  key: 
 --- !u!114 &114593651003470180
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -605,6 +606,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a0ee8ea2e7f7f143976e407dd70b08c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  key: 
 --- !u!114 &114832047334502326
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -676,6 +678,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a0ee8ea2e7f7f143976e407dd70b08c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  key: 
 --- !u!114 &114905378958727276
 MonoBehaviour:
   m_ObjectHideFlags: 1
