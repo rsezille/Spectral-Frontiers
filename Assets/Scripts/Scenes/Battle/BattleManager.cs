@@ -20,7 +20,51 @@ public class BattleManager : MonoBehaviour {
     };
 
     [Header("Information")]
-    public BattleStep currentBattleStep;
+    private BattleStep _currentBattleStep;
+    public BattleStep currentBattleStep {
+        get { return _currentBattleStep; }
+        set {
+            BattleStep previousBattleStep = _currentBattleStep;
+
+            switch (_currentBattleStep) {
+                case BattleStep.Placing:
+                    placing.LeaveBattleStepPlacing();
+                    break;
+                case BattleStep.Fight:
+                    fight.LeaveBattleStepFight();
+                    break;
+                case BattleStep.Victory:
+                    victory.LeaveBattleStepVictory();
+                    break;
+                case BattleStep.Cutscene:
+                    cutscene.LeaveBattleStepCutscene();
+                    break;
+            }
+
+            _currentBattleStep = value;
+
+            switch (value) {
+                case BattleStep.Placing:
+                    placing.EnterBattleStepPlacing();
+                    break;
+                case BattleStep.Fight:
+                    fight.EnterBattleStepFight();
+                    break;
+                case BattleStep.Victory:
+                    victory.EnterBattleStepVictory();
+                    break;
+                case BattleStep.Cutscene:
+                    if (previousBattleStep == BattleStep.Victory) {
+                        cutscene.EnterBattleStepCutscene(BattleCutsceneManager.Type.Ending);
+                    } else {
+                        cutscene.EnterBattleStepCutscene(BattleCutsceneManager.Type.Opening);
+                    }
+
+                    break;
+            }
+        }
+    }
+
     private TurnStep _currentTurnStep;
     public TurnStep currentTurnStep {
         get { return _currentTurnStep; }
@@ -123,7 +167,7 @@ public class BattleManager : MonoBehaviour {
         currentTurnStep = TurnStep.None;
         turn = 0;
 
-        cutscene.EnterBattleStepCutscene(BattleCutsceneManager.Type.Opening);
+        currentBattleStep = BattleStep.Cutscene;
 
         Time.timeScale = PlayerOptions.GetFloat(PlayerOptions.BattleSpeed);
 
@@ -249,7 +293,7 @@ public class BattleManager : MonoBehaviour {
         }
 
         if (playerCharacters.Count > 0 && enemyCharacters.Count == 0) { // The player wins
-            victory.EnterBattleStepVictory();
+            currentBattleStep = BattleStep.Victory;
 
             return true;
         } else if (playerCharacters.Count == 0 && enemyCharacters.Count > 0) { // The enemy wins

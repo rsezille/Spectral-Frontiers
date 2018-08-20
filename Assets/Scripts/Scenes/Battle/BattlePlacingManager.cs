@@ -30,24 +30,11 @@ public class BattlePlacingManager {
                 battleManager.statusHUD.Show(GetCurrentPlacingChar());
             }
         } else if (InputManager.Special1.IsKeyDown && battleManager.playerCharacters.Count > 0) {
-            battleManager.fight.EnterBattleStepFight();
+            battleManager.currentBattleStep = BattleManager.BattleStep.Fight;
         }
     }
 
     // Called by BattleManager
-    public void EnterTurnStepNone(BattleManager.TurnStep previousTurnStep) {
-        if (previousTurnStep == BattleManager.TurnStep.Status) {
-            battleManager.placingHUD.SetActiveWithAnimation(true);
-        }
-    }
-
-    // Called by BattleManager
-    public void EnterTurnStepStatus(BattleManager.TurnStep previousTurnStep) {
-        battleManager.placingHUD.SetActiveWithAnimation(false);
-
-        battleManager.statusHUD.Show(GetCurrentPlacingChar());
-    }
-
     public void EnterBattleStepPlacing() {
         foreach (RawMission.RawEnemy enemy in battleManager.mission.enemies) {
             Character enemyChar = new Character(enemy.key);
@@ -65,13 +52,37 @@ public class BattlePlacingManager {
         foreach (RawMission.RawStartingSquare startingSquare in battleManager.mission.startingSquares) {
             battleManager.board.GetSquare(startingSquare.posX, startingSquare.posY).markType = Square.MarkType.Placing;
         }
-
-        battleManager.currentBattleStep = BattleManager.BattleStep.Placing;
+        
         battleManager.placingHUD.SetActiveWithAnimation(true, HUD.Speed.Slow);
-
         battleManager.battleCamera.SetPosition(battleManager.mission.startingSquares[0].posX, battleManager.mission.startingSquares[0].posY, true);
 
         battleManager.EventOnEnterPlacing();
+    }
+
+    // Called by BattleManager
+    public void LeaveBattleStepPlacing() {
+        battleManager.EventOnLeavingMarkStep();
+
+        // Disable outlines from the placing step
+        if (GetCurrentPlacingChar().boardCharacter != null) {
+            GetCurrentPlacingChar().boardCharacter.outline.enabled = false;
+        }
+
+        battleManager.placingHUD.SetActiveWithAnimation(false);
+    }
+
+    // Called by BattleManager
+    public void EnterTurnStepNone(BattleManager.TurnStep previousTurnStep) {
+        if (previousTurnStep == BattleManager.TurnStep.Status) {
+            battleManager.placingHUD.SetActiveWithAnimation(true);
+        }
+    }
+
+    // Called by BattleManager
+    public void EnterTurnStepStatus(BattleManager.TurnStep previousTurnStep) {
+        battleManager.placingHUD.SetActiveWithAnimation(false);
+
+        battleManager.statusHUD.Show(GetCurrentPlacingChar());
     }
 
     private void PreviousPlacingChar() {

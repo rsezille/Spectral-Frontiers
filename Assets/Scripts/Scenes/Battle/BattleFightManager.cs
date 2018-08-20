@@ -98,6 +98,25 @@ public class BattleFightManager {
         }
     }
 
+    // Called by BattleManager
+    public void EnterBattleStepFight() {
+        battleManager.fightHUD.SetActiveWithAnimation(true);
+        battleManager.turnHUD.gameObject.SetActive(true);
+        NewPlayerTurn();
+    }
+
+    // Called by BattleManager
+    public void LeaveBattleStepFight() {
+        if (selectedPlayerCharacter.outline != null) {
+            selectedPlayerCharacter.outline.enabled = false;
+        }
+
+        battleManager.EventOnLeavingMarkStep();
+        battleManager.statusHUD.Hide();
+        battleManager.turnHUD.gameObject.SetActive(false);
+        battleManager.fightHUD.SetActiveWithAnimation(false);
+    }
+
     public void EndTurnStepDirection() {
         if (arrows != null) {
             Object.Destroy(arrows);
@@ -210,23 +229,6 @@ public class BattleFightManager {
             if (selectedPlayerCharacter.actionable != null && selectedPlayerCharacter.actionable.CanDoAction()) {
                 EnterTurnStepAttack();
             }
-        }
-    }
-
-    public void EnterBattleStepFight() {
-        if (battleManager.playerCharacters.Count > 0) {
-            battleManager.EventOnLeavingMarkStep();
-
-            // Disable outlines from the PlacingStep
-            if (battleManager.placing.GetCurrentPlacingChar().boardCharacter != null) {
-                battleManager.placing.GetCurrentPlacingChar().boardCharacter.outline.enabled = false;
-            }
-
-            battleManager.currentBattleStep = BattleManager.BattleStep.Fight;
-            battleManager.placingHUD.SetActiveWithAnimation(false);
-            battleManager.fightHUD.SetActiveWithAnimation(true);
-            battleManager.turnHUD.gameObject.SetActive(true);
-            NewPlayerTurn();
         }
     }
 

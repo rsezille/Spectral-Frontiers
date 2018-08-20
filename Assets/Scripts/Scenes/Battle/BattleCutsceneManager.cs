@@ -46,6 +46,7 @@ public class BattleCutsceneManager {
         EndCutscene();
     }
 
+    // Called by BattleManager
     public void EnterBattleStepCutscene(Type type) {
         this.type = type;
         instanciatedCharacters.Clear();
@@ -70,11 +71,20 @@ public class BattleCutsceneManager {
         }
     }
 
+    // Called by BattleManager
+    public void LeaveBattleStepCutscene() {
+        foreach (BoardCharacter character in instanciatedCharacters) {
+            character.Remove();
+        }
+
+        instanciatedCharacters.Clear();
+
+        battleManager.cutsceneHUD.gameObject.SetActive(false);
+    }
+
     private void ProcessEnterCutscene() {
         skipping = false;
         battleManager.cutsceneHUD.gameObject.SetActive(true);
-
-        battleManager.currentBattleStep = BattleManager.BattleStep.Cutscene;
 
         actions = type == Type.Opening ? battleManager.mission.openingCutscene : battleManager.mission.endingCutscene;
 
@@ -105,15 +115,7 @@ public class BattleCutsceneManager {
             transitionImage.color = new Color(Color.black.r, Color.black.g, Color.black.b, 0f);
 
             transitionImage.DOColor(Color.black, 0.5f).OnComplete(() => {
-                foreach (BoardCharacter character in instanciatedCharacters) {
-                    character.Remove();
-                }
-
-                instanciatedCharacters.Clear();
-
-                battleManager.cutsceneHUD.gameObject.SetActive(false);
-
-                battleManager.placing.EnterBattleStepPlacing();
+                battleManager.currentBattleStep = BattleManager.BattleStep.Placing;
 
                 transitionImage.DOColor(new Color(Color.black.r, Color.black.g, Color.black.b, 0f), 0.5f).OnComplete(() => {
                     Object.Destroy(transition);

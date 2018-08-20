@@ -15,25 +15,19 @@ public class BattleVictoryManager {
     }
 
     public void Next() {
-        battleManager.victoryHUD.SetActiveWithAnimation(false);
-
-        battleManager.cutscene.EnterBattleStepCutscene(BattleCutsceneManager.Type.Ending);
+        battleManager.currentBattleStep = BattleManager.BattleStep.Cutscene;
     }
 
     // Called by BattleManager
     public void EnterTurnStepNone(BattleManager.TurnStep previousTurnStep) {}
 
+    // Called by BattleManager
     public void EnterBattleStepVictory() {
-        if (battleManager.fight.selectedPlayerCharacter.outline != null) {
-            battleManager.fight.selectedPlayerCharacter.outline.enabled = false;
-        }
-
-        battleManager.currentBattleStep = BattleManager.BattleStep.Victory;
-
-        battleManager.EventOnLeavingMarkStep();
-        battleManager.statusHUD.Hide();
-        battleManager.turnHUD.gameObject.SetActive(false);
-        battleManager.fightHUD.SetActiveWithAnimation(false);
         battleManager.victoryHUD.SetActiveWithAnimation(true);
+    }
+
+    // Called by BattleManager
+    public void LeaveBattleStepVictory() {
+        battleManager.victoryHUD.SetActiveWithAnimation(false);
     }
 }
