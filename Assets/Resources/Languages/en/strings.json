@@ -156,6 +156,14 @@
       "id": "battle.hud.status.back",
       "text": "Back"
     },
+	{
+	  "id": "battle.hud.turn.your",
+	  "text": "Your Turn"
+	},
+	{
+	  "id": "battle.hud.turn.enemy",
+	  "text": "Enemy's Turn"
+	},
     {
       "id": "battle.hud.victory.won",
       "text": "Victory!"

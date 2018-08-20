@@ -21,7 +21,17 @@ public class BattleManager : MonoBehaviour {
 
     [Header("Information")]
     public BattleStep currentBattleStep;
-    public TurnStep currentTurnStep;
+    private TurnStep _currentTurnStep;
+    public TurnStep currentTurnStep {
+        get { return _currentTurnStep; }
+        set {
+            if (_currentTurnStep != value) {
+                _currentTurnStep = value;
+                turnHUD.Check();
+            }
+        }
+    }
+
     public int turn;
 
     public RawMission mission;
@@ -42,6 +52,7 @@ public class BattleManager : MonoBehaviour {
     public FightHUD fightHUD;
     public VictoryHUD victoryHUD;
     public PausedHUD pausedHUD;
+    public TurnHUD turnHUD;
 
     public PlayerCharacter testPlayerCharacter; // TODO [ALPHA] Find the correct character giving the name & job
     public FloatingText floatingText;
@@ -95,6 +106,7 @@ public class BattleManager : MonoBehaviour {
         fightHUD.gameObject.SetActive(false);
         victoryHUD.gameObject.SetActive(false);
         pausedHUD.gameObject.SetActive(false);
+        turnHUD.gameObject.SetActive(false);
 
         #if UNITY_EDITOR
         previousScreenResolution = new Vector2Int(Screen.width, Screen.height);

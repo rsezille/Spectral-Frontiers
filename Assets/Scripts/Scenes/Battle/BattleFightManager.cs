@@ -225,6 +225,7 @@ public class BattleFightManager {
             battleManager.currentBattleStep = BattleManager.BattleStep.Fight;
             battleManager.placingHUD.SetActiveWithAnimation(false);
             battleManager.fightHUD.SetActiveWithAnimation(true);
+            battleManager.turnHUD.gameObject.SetActive(true);
             NewPlayerTurn();
         }
     }

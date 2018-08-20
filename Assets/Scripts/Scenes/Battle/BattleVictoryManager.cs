@@ -32,6 +32,7 @@ public class BattleVictoryManager {
 
         battleManager.EventOnLeavingMarkStep();
         battleManager.statusHUD.Hide();
+        battleManager.turnHUD.gameObject.SetActive(false);
         battleManager.fightHUD.SetActiveWithAnimation(false);
         battleManager.victoryHUD.SetActiveWithAnimation(true);
     }

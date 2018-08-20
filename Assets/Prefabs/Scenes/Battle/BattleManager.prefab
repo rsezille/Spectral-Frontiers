@@ -82,6 +82,7 @@ MonoBehaviour:
   fightHUD: {fileID: 0}
   victoryHUD: {fileID: 0}
   pausedHUD: {fileID: 0}
+  turnHUD: {fileID: 0}
   testPlayerCharacter: {fileID: 114098185219839834, guid: 5b54b037a1a820242bdf8e21d98b6fad,
     type: 2}
   floatingText: {fileID: 114009705672458500, guid: ca4dee2cbfd42694d929853e9e9553a4,
