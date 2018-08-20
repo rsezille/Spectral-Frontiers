@@ -59,6 +59,12 @@ MonoBehaviour:
     map: 
     maxPlayerCharacters: 1
     isStoryline: 0
+    background:
+      preset: 
+      mainColor: 
+      off1Color: 
+      off2Color: 
+      type: 
     parents: []
     children: []
     enemies: []
@@ -69,6 +75,7 @@ MonoBehaviour:
   enemyCharacters: []
   board: {fileID: 0}
   battleCamera: {fileID: 0}
+  background: {fileID: 0}
   cutsceneHUD: {fileID: 0}
   placingHUD: {fileID: 0}
   statusHUD: {fileID: 0}

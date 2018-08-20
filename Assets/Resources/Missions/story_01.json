@@ -2,19 +2,8 @@
 	"id": "story_01",
 	"map": "001",
 	"maxPlayerCharacters": 3,
-	"background": {
-		"id": null,
-		"main_color": "0059B8",
-		"sub_color": "73AFF0"
-	},
-	"foreground": {
-		"image": "fg_beam",
-		"alpha": null,
-		"mode_add": true,
-		"color": null,
-		"speed_mvt": null,
-		"move_dir": 0
-	},
+	"background": {},
+	"foreground": {},
 	"parents": null,
 	"children": [
 		"002"
