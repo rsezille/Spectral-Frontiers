@@ -78,5 +78,5 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Color1: {r: 1, g: 0, b: 0, a: 0}
     - _Color2: {r: 0.16109824, g: 1, b: 0, a: 0}
-    - _Color3: {r: 0, g: 1, b: 0.9381459, a: 0}
+    - _Color3: {r: 0.032451153, g: 0, b: 1, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

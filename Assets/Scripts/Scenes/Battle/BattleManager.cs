@@ -33,6 +33,7 @@ public class BattleManager : MonoBehaviour {
     [Header("Direct references")]
     public Board board;
     public BattleCamera battleCamera;
+    public Background background;
 
     // HUD
     public CutsceneHUD cutsceneHUD;
@@ -113,6 +114,8 @@ public class BattleManager : MonoBehaviour {
         cutscene.EnterBattleStepCutscene(BattleCutsceneManager.Type.Opening);
 
         Time.timeScale = PlayerOptions.GetFloat(PlayerOptions.BattleSpeed);
+
+        background.Load(mission.background);
     }
 
     // Update is called once per frame

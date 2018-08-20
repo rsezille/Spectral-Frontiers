@@ -22,10 +22,20 @@ public class RawMission {
         public string[] args;
     }
 
+    [System.Serializable]
+    public class Background {
+        public string preset;
+        public string mainColor;
+        public string off1Color;
+        public string off2Color;
+        public string type;
+    }
+
     public string id;
     public string map;
     public int maxPlayerCharacters = 1; // Should be inferior to starting_squares length
     public bool isStoryline = false;
+    public Background background;
 
     // Missions tree
     public string[] parents;
