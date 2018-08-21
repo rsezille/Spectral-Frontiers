@@ -5,36 +5,33 @@ Shader "SF/Fire" {
 	Properties {
 		_MainTex("Texture", 2D) = "black" {}
 		_Intensity("Intensity", Range(0, 10)) = 4.0
+		_IntensityStrong("Intensity Strong", Range(0, 5)) = 1.0
+		_Luminosity("Luminosity", Range(0, 10)) = 1.0
 		_Blur("Blur", Range(0, 10)) = 1.0
 		_Speed("Speed", Range(0, 10)) = 1.0
 		_Opacity("Opacity", Range(0, 1)) = 1.0
-		_Test("Test", Range(0, 100)) = 1.0
+		_Stretching("Stretching", Range(0, 3)) = 2.0
+		_Shape("Shape", Range(0, 100)) = 1.5
+		_Width("Width", Range(0, 2)) = 0.25
+		_Height("Height", Range(0, 10)) = 0.75
+		_Border("Border", Range(0.01, 4)) = 1.2
+		_Size("Size", Range(0, 10)) = 1.0
+		_Black("Black", Range(0, 10)) = 5.0
 	}
 
 	SubShader {
-		//Tags{ "Queue" = "Transparent" "RenderType" = "Transparent" }
 		Tags{ "Queue" = "Transparent" "RenderType" = "Transparent" }
 		ZWrite Off
 		Cull Off
-			Blend SrcAlpha OneMinusSrcAlpha
-		//Blend SrcAlpha One
-		//Blend One Zero
-			//Blend SrcAlpha OneMinusSrcAlpha
-		//Blend One SrcAlpha
+		Blend SrcAlpha OneMinusSrcAlpha
 		LOD 200
-
-			//Blend SrcAlpha OneMinusSrcColor why not
-			//Blend SrcAlpha One why not
 
 		Pass {
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
 
-
 			#include "UnityCG.cginc"
-
-
 
 			float2 hash(float2 p) {
 				p = float2(dot(p, float2(127.1, 311.7)), dot(p, float2(269.5, 183.3)));
@@ -91,10 +88,18 @@ Shader "SF/Fire" {
 			sampler2D _MainTex;
 			float4 _MainTex_ST;
 			float _Intensity;
+			float _Luminosity;
+			float _IntensityStrong;
 			float _Blur;
 			float _Speed;
 			float _Opacity;
-			float _Test;
+			float _Stretching;
+			float _Shape;
+			float _Width;
+			float _Height;
+			float _Border;
+			float _Size;
+			float _Black;
 
 			v2f vert(appdata v) {
 				v2f o;
@@ -104,53 +109,37 @@ Shader "SF/Fire" {
 				return o;
 			}
 
-			// no defines, standard redish flames
 			//#define BLUE_FLAME
 			//#define GREEN_FLAME
 
 			fixed4 frag(v2f i) : SV_TARGET {
-				//float2 uv = i.position.xy / _ScreenParams.xy;
-				float2 uv = i.uv;
-				float2 q = uv;
-				//q.x = mul(q.x, 5.0);
-				q.y = mul(q.y, 2.0);
-				//float strength = floor(q.x + 1.0);
-				float strength = _Blur;
-				float T3 = max(3.0, 1.25 * strength) * _Time.y * _Speed;
+				float2 q = i.uv;
+				q.y = q.y * _Stretching;
+
+				float T3 = max(3.0, 1.25 * _Blur) * _Time.y * _Speed;
 				q.x = fmod(q.x, 1.0) - 0.5;
 				q.y = q.y - 0.25;
-				float n = fbm(strength * q - float2(0, T3));
-				float c = 1.0 - 16.0 * pow(max(0., length(q * float2(1.8 + q.y * 1.5, 0.75)) - n * max(0.0, q.y + 0.25)), 1.2);
+				float n = fbm(_Blur * q - float2(0, T3)) * _IntensityStrong;
+				float c = 1.0 - 16.0 * pow(max(0.0, length(q * float2(1.8 + q.y * _Shape, _Height) * _Size) - n * max(0.0, q.y + _Width)), _Border);
 
-				//float c1 = n * c * (1.5 - pow(2.50 * uv.y, _Intensity));
-				float c1 = n * c * (1.5 - pow(uv.y, _Intensity));
-				//float c1 = n * c * (1.5 - 1.0);
-				//float c1 = n * c * (0.5);
+				float c1 = n * c * (1.5 - pow(i.uv.y, _Intensity));
 				c1 = clamp(c1, 0.0, 1.0);
 
 				float3 col = float3(1.5 * c1, 1.5 * c1 * c1 * c1, c1 * c1 * c1 * c1 * c1 * c1) * _Opacity;
-				//float3 col = float3(0.0, 0.0, 0.0);
-
 
 				#ifdef BLUE_FLAME
 				col = col.zyx;
 				#endif
 				#ifdef GREEN_FLAME
-				col = _Test*col.yxz;
+				col = 0.85*col.yxz;
 				#endif
 				 
-				float a = c * (1. - pow(uv.y, 3.0));
-				//float a = _Test * pow(uv.y, 3.0);
-				/*if (col.x == 0.0 && col.y == 0.0 && col.z == 0.0) {
-					return half4(0.0, 0.0, 0.0, 0.0);
-				}*/
-				//return half4(lerp(float3(0.0, 0.0, 0.0), col, a), 1.0);
-				//return half4(lerp(float3(0.0, 0.0, 0.0), col, a), _Test);
+				float a = c * (1. - pow(i.uv.y, 3.0)) * _Luminosity;
 				float blackComponent = (col.r + col.g + col.b) / 3.0;
-				col.r = col.r * (1 + blackComponent) * (1 + blackComponent) * (1 + blackComponent);
 
+				col.r = col.r + ((blackComponent) * _Black);
+				
 				return half4(lerp(float3(0.0, 0.0, 0.0), col, a), blackComponent);
-				//return half4(lerp(float3(uv.x, uv.y, 0.0), col, a), 1.0);
 			}
 
 			ENDCG
