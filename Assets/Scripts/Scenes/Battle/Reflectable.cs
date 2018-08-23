@@ -12,6 +12,7 @@ public class Reflectable : MonoBehaviour {
     private SpriteRenderer reflectionSpriteRenderer;
 
     public Material distortionShader;
+    public float offset = 0.0f;
 
     private void Awake() {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -36,6 +37,6 @@ public class Reflectable : MonoBehaviour {
         reflectionSpriteRenderer.sprite = spriteRenderer.sprite;
         reflectionSpriteRenderer.transform.localScale = Vector3.one;
 
-        reflectionSpriteRenderer.transform.localPosition = new Vector3(0f, - (spriteRenderer.sprite.pivot.y * 2f) / Globals.PixelsPerUnit);
+        reflectionSpriteRenderer.transform.localPosition = new Vector3(0f, - (spriteRenderer.sprite.pivot.y * 2f) / Globals.PixelsPerUnit - offset);
     }
 }

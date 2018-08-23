@@ -6,8 +6,8 @@ Material:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: SF_Fire
-  m_Shader: {fileID: 4800000, guid: e7bacffae77d9fe4a8d47b389fc718b1, type: 3}
+  m_Name: SF_Fire_Old
+  m_Shader: {fileID: 4800000, guid: 424737fe10bd1ba4da001c6cece11e59, type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -39,7 +39,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 2ad0d49caa5014342a6fb4ba70a3227f, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -55,7 +55,9 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Blur: 6.98
+    - _Black: 5
+    - _Blur: 4.76
+    - _Border: 1.2
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
@@ -63,18 +65,24 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _Intensity: 3.97
+    - _Height: 0.75
+    - _Intensity: 4
+    - _IntensityStrong: 1
+    - _Luminosity: 1
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
-    - _Opacity: 0.834
+    - _Opacity: 1
     - _Parallax: 0.02
+    - _Shape: 1.5
+    - _Size: 1.15
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _Speed: 1.15
+    - _Speed: 1
     - _SrcBlend: 1
-    - _Test: 45.8
+    - _Stretching: 2
     - _UVSec: 0
+    - _Width: 0.25
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
