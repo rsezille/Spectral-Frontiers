@@ -19,6 +19,7 @@ Shader "SF/Fire" {
 		//_Black("Black", Range(0, 10)) = 5.0
 		//_BlackBorder("BlackBorder", Range(0, 2)) = 0.0
 		_Test("Test", Range(0, 10)) = 1.0
+		_Random("Random", Range(0, 10)) = 1.0
 	}
 
 	SubShader {
@@ -111,6 +112,7 @@ Shader "SF/Fire" {
 			//float _Black;
 			//float _BlackBorder;
 			float _Test;
+			float _Random;
 
 			v2f vert(appdata v) {
 				v2f o;
@@ -129,8 +131,8 @@ Shader "SF/Fire" {
 				float T3 = max(3.0, 1.25 * _Detailed) * _Time.y * _Speed;
 				q.x = fmod(q.x, 1.0) - 0.5;
 				q.y = q.y - 0.25;
-				float n = fbm(_Detailed * q - float2(0, T3)) * _IntensityStrong;
-				float c = 1.0 - 16.0 * pow(max(0.0, length(q * float2(1.8 + q.y * _Shape, _Height) * _Size) - n * max(0.0, q.y + _Width)), _Border);
+				float n = fbm(_Detailed * q - float2(0, T3 - _Random)) * _IntensityStrong;
+				float c = 1.0 - 16.0 * pow(max(0.0, length(q * float2(_Test + q.y * _Shape, _Height) * _Size) - n * max(0.0, q.y + _Width)), _Border);
 
 				float c1 = n * c * (_Luminosity - pow(i.uv.y, _Intensity));
 				c1 = clamp(c1, 0.0, 1.0);

@@ -77,14 +77,15 @@ Material:
     - _OcclusionStrength: 1
     - _Opacity: 0.183
     - _Parallax: 0.02
+    - _Random: 1
     - _Shape: 3.9
     - _Size: 1.83
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _Speed: 1.46
+    - _Speed: 0.6
     - _SrcBlend: 1
     - _Stretching: 1.16
-    - _Test: 0
+    - _Test: 1
     - _UVSec: 0
     - _Width: 0.32
     - _ZWrite: 1
