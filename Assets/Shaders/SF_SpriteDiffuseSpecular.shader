@@ -12,10 +12,11 @@
 
 	SubShader {
 		Tags {
-			"IgnoreProjector" = "True"
-			"RenderType" = "Opaque"
-			"PreviewType" = "Plane"
-			"CanUseSpriteAtlas" = "True"
+			"Queue"="Transparent"
+			"IgnoreProjector"="True"
+			"RenderType"="Transparent"
+			"PreviewType"="Plane"
+			"CanUseSpriteAtlas"="True"
 		}
 
 		Cull Off
@@ -54,6 +55,7 @@
 			o.Alpha = c.a;
 			o.Normal = UnpackNormal(tex2D(_Dump, IN.uv_Dump));
 		}
+
 		ENDCG
 	}
 
