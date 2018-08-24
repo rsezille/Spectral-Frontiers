@@ -3,7 +3,6 @@
 		[PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {}
 		_Dump("Dump", 2D) = "bump" {}
 		_Color("Tint", Color) = (1,1,1,1)
-			_Test("Test", Range(0, 1)) = 1.0
 		[MaterialToggle] PixelSnap("Pixel snap", Float) = 0
 		[HideInInspector] _RendererColor("RendererColor", Color) = (1,1,1,1)
 		[HideInInspector] _Flip("Flip", Vector) = (1,1,1,1)
@@ -31,7 +30,6 @@
 		#include "UnitySprites.cginc"
 
 		sampler2D _Dump;
-		float _Test;
 
 		struct Input {
 			float2 uv_MainTex;
@@ -55,9 +53,6 @@
 			o.Albedo = c.rgb * c.a;
 			o.Alpha = c.a;
 			o.Normal = UnpackNormal(tex2D(_Dump, IN.uv_Dump));
-			//o.Emission= UnpackNormal(tex2D(_Dump, IN.uv_Dump));
-			
-			o.Gloss = _Test;
 		}
 		ENDCG
 	}
