@@ -21,7 +21,7 @@ Shader "SF/Fire" {
 	}
 
 	SubShader {
-		Tags{
+		Tags {
 			"Queue" = "Transparent"
 			"PreviewType" = "Plane"
 			"DisableBatching" = "True"
