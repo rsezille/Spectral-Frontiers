@@ -1,9 +1,7 @@
 // Unity built-in shader source. Copyright (c) 2016 Unity Technologies. MIT license (see license.txt)
 
-Shader "Sprites/Diffuse"
-{
-    Properties
-    {
+Shader "Sprites/Diffuse" {
+    Properties {
         [PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
         _Color ("Tint", Color) = (1,1,1,1)
         [MaterialToggle] PixelSnap ("Pixel snap", Float) = 0
@@ -13,10 +11,8 @@ Shader "Sprites/Diffuse"
         [PerRendererData] _EnableExternalAlpha ("Enable External Alpha", Float) = 0
     }
 
-    SubShader
-    {
-        Tags
-        {
+    SubShader {
+        Tags {
             "Queue"="Transparent"
             "IgnoreProjector"="True"
             "RenderType"="Transparent"
@@ -35,14 +31,12 @@ Shader "Sprites/Diffuse"
         #pragma multi_compile _ ETC1_EXTERNAL_ALPHA
         #include "UnitySprites.cginc"
 
-        struct Input
-        {
+        struct Input {
             float2 uv_MainTex;
             fixed4 color;
         };
 
-        void vert (inout appdata_full v, out Input o)
-        {
+        void vert (inout appdata_full v, out Input o) {
             v.vertex = UnityFlipSprite(v.vertex, _Flip);
 
             #if defined(PIXELSNAP_ON)
@@ -53,8 +47,7 @@ Shader "Sprites/Diffuse"
             o.color = v.color * _Color * _RendererColor;
         }
 
-        void surf (Input IN, inout SurfaceOutput o)
-        {
+        void surf (Input IN, inout SurfaceOutput o) {
             fixed4 c = SampleSpriteTexture (IN.uv_MainTex) * IN.color;
             o.Albedo = c.rgb * c.a;
             o.Alpha = c.a;
