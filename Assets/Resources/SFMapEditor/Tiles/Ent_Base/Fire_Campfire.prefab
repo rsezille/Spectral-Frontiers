@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4626997896570150}
   - component: {fileID: 108779626348217200}
+  - component: {fileID: 114924698614607992}
   m_Layer: 0
   m_Name: Point Light
   m_TagString: Untagged
@@ -177,6 +178,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf5eb94d793c96b448b5824bd8397cc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114924698614607992
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1762757101234040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c6fc7aaff03e5e46ab4dd9e2cee4c00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nonVisibleIntensity: 0.8
+  fullyVisibleIntensity: 0.2
 --- !u!212 &212061182465022310
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -101,6 +101,8 @@ public class BattleManager : MonoBehaviour {
     public PlayerCharacter testPlayerCharacter; // TODO [ALPHA] Find the correct character giving the name & job
     public FloatingText floatingText;
 
+    public Light sunLight;
+
     [Header("Options")]
     public bool waterReflection = true; // TODO [BETA] Implement it
     public bool waterDistortion = true; // TODO [BETA] Implement it
@@ -112,6 +114,7 @@ public class BattleManager : MonoBehaviour {
     public event GameManager.SFEvent OnScreenChange;
     public event GameManager.SFEvent OnSemiTransparentReset;
     public event GameManager.SFEvent OnCheckSemiTransparent;
+    public event GameManager.SFEvent OnLightChange;
 
     // Dedicated managers for each BattleStep
     public BattleCutsceneManager cutscene;
@@ -235,6 +238,10 @@ public class BattleManager : MonoBehaviour {
         markedSquareAnimations.Clear();
 
         OnLeavingMarkStep?.Invoke();
+    }
+
+    public void EventOnLightChange() {
+        OnLightChange?.Invoke();
     }
 
     /**

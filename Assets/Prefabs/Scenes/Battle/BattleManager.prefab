@@ -51,8 +51,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2aedffb3b1afda4488a84901ff55dca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentBattleStep: 0
-  currentTurnStep: 0
   turn: 0
   mission:
     id: 
@@ -87,5 +85,6 @@ MonoBehaviour:
     type: 2}
   floatingText: {fileID: 114009705672458500, guid: ca4dee2cbfd42694d929853e9e9553a4,
     type: 2}
+  sunLight: {fileID: 0}
   waterReflection: 1
   waterDistortion: 1
