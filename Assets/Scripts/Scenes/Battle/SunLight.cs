@@ -22,6 +22,14 @@ public class SunLight : MonoBehaviour {
         return light.intensity;
     }
 
+    /**
+     * Normalize the current intensity to 0-1 range, depending on dayIntensity and nightIntensity
+     * Can be useful for Lerp values
+     */
+    public float GetNormalizedIntensity() {
+        return Mathf.Clamp((GetIntensity() - nightIntensity) / (dayIntensity - nightIntensity), nightIntensity, dayIntensity);
+    }
+
     public void Load(string missionLighting) {
         Type lightingType = EnumUtil.ParseEnum(missionLighting, Type.Day);
 

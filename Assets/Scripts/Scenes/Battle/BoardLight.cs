@@ -5,18 +5,23 @@
  */
 [RequireComponent(typeof(Light))]
 public class BoardLight : MonoBehaviour {
+    private BattleManager battleManager;
     private Light light;
     private float initialIntensity;
 
     public float nonVisibleIntensity = 0.8f;
     public float fullyVisibleIntensity = 0.1f;
 
-    private void Start() {
+    private void Awake() {
+        battleManager = BattleManager.instance;
+
         light = GetComponent<Light>();
         initialIntensity = light.intensity;
 
-        BattleManager.instance.OnLightChange += CheckIntensity;
+        battleManager.OnLightChange += CheckIntensity;
+    }
 
+    private void Start() {
         CheckIntensity();
     }
 
@@ -27,8 +32,12 @@ public class BoardLight : MonoBehaviour {
     #endif
 
     public void CheckIntensity() {
-        float sunIntensity = Mathf.Clamp(BattleManager.instance.sunLight.GetIntensity(), fullyVisibleIntensity, nonVisibleIntensity);
+        float sunIntensity = Mathf.Clamp(battleManager.sunLight.GetIntensity(), fullyVisibleIntensity, nonVisibleIntensity);
 
         light.intensity = Mathf.Lerp(5.76f, 0f, sunIntensity / nonVisibleIntensity);
+    }
+
+    private void OnDestroy() {
+        battleManager.OnLightChange -= CheckIntensity;
     }
 }
