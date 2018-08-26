@@ -1,6 +1,5 @@
 ﻿using DG.Tweening;
 using SF;
-using SpriteGlow;
 using System.Collections;
 using UnityEngine;
 
@@ -30,7 +29,7 @@ public class BoardCharacter : MonoBehaviour {
     public Side side;
     // Components which can be null
     [HideInInspector]
-    public SpriteGlowEffect outline;
+    public CharacterGlow glow;
     [HideInInspector]
     public Movable movable;
     [HideInInspector]
@@ -84,15 +83,19 @@ public class BoardCharacter : MonoBehaviour {
         animator = spriteContainer.GetComponent<Animator>();
         sprite = spriteContainer.GetComponent<SpriteRenderer>();
         sprite.sortingOrder = 1;
-        outline = spriteContainer.GetComponent<SpriteGlowEffect>();
+        glow = spriteContainer.GetComponent<CharacterGlow>();
 
         boardEntity = GetComponent<BoardEntity>();
         movable = GetComponent<Movable>();
         actionable = GetComponent<Actionable>();
         AI = GetComponent<AI>();
+    }
 
-        if (outline) {
-            outline.enabled = false;
+    private void Start() {
+        gameObject.name = character.name; // To find it inside the editor
+
+        if (glow) {
+            glow.Disable();
         }
     }
 
@@ -116,10 +119,6 @@ public class BoardCharacter : MonoBehaviour {
     public void SetSortingParent(Square square) {
         transform.SetParent(square.entityContainer.transform);
         transform.localPosition = Vector3.zero;
-    }
-
-    private void Start() {
-        gameObject.name = character.name; // To find it inside the editor
     }
 
     private void OnCheckSemiTransparent() {
@@ -155,30 +154,30 @@ public class BoardCharacter : MonoBehaviour {
     }
 
     /**
-     * Triggered by Board (SpriteContainer)
+     * Triggered by Board (SpriteManager)
      */
     public void MouseEnter() {
         battleManager.fightHUD.SquareHovered(GetSquare());
 
-        if (outline != null) {
-            outline.enabled = true;
+        if (glow != null) {
+            glow.Enable();
         }
     }
 
     /**
-     * Triggered by Board (SpriteContainer)
+     * Triggered by Board (SpriteManager)
      */
     public void MouseLeave() {
         battleManager.fightHUD.SquareHovered(null);
 
         if ((battleManager.currentBattleStep == BattleManager.BattleStep.Placing && battleManager.placing.GetCurrentPlacingChar().boardCharacter != this
-                || battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleManager.fight.selectedPlayerCharacter != this) && outline != null) {
-            outline.enabled = false;
+                || battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleManager.fight.selectedPlayerCharacter != this) && glow != null) {
+            glow.Disable();
         }
     }
 
     /**
-     * Triggered by Board (SpriteContainer)
+     * Triggered by Board (SpriteManager)
      */
     public void Click() {
         if (side.value == Side.Type.Player) {
