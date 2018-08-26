@@ -69,7 +69,7 @@ public class SunLight : MonoBehaviour {
         if (turnType) {
             turnTime += 0.2f;
 
-            if (Mathf.Approximately(turnTime, 10f)) {
+            if (Mathf.Approximately(turnTime, 10f) || turnTime > 10f) {
                 turnTime = 0f;
                 light.intensity = dayIntensity;
                 BattleManager.instance.EventOnLightChange();
