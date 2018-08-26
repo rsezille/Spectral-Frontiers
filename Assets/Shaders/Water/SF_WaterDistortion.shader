@@ -1,6 +1,6 @@
 ﻿// By Remi Sezille
 
-Shader "SF/WaterDistortion" {
+Shader "SF/Water/Water Distortion" {
 	Properties {
 		_MainTex ("Texture", 2D) = "black" {}
 		_DistortionTex("Normalmap", 2D) = "bump" {}

@@ -1,7 +1,7 @@
-﻿Shader "SF/SpriteDiffuseSpecular" {
+﻿Shader "SF/Sprites/Diffuse NormalMap" {
 	Properties {
 		[PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {}
-		_Dump("Dump", 2D) = "bump" {}
+		_Normal("Normal", 2D) = "bump" {}
 		_Color("Tint", Color) = (1,1,1,1)
 		[MaterialToggle] PixelSnap("Pixel snap", Float) = 0
 		[HideInInspector] _RendererColor("RendererColor", Color) = (1,1,1,1)
@@ -30,12 +30,12 @@
 		#pragma multi_compile _ ETC1_EXTERNAL_ALPHA
 		#include "UnitySprites.cginc"
 
-		sampler2D _Dump;
+		sampler2D _Normal;
 
 		struct Input {
 			float2 uv_MainTex;
 			fixed4 color;
-			float2 uv_Dump;
+			float2 uv_Normal;
 		};
 
 		void vert(inout appdata_full v, out Input o) {
@@ -53,7 +53,7 @@
 			fixed4 c = SampleSpriteTexture(IN.uv_MainTex) * IN.color;
 			o.Albedo = c.rgb * c.a;
 			o.Alpha = c.a;
-			o.Normal = UnpackNormal(tex2D(_Dump, IN.uv_Dump));
+			o.Normal = UnpackNormal(tex2D(_Normal, IN.uv_Normal));
 		}
 
 		ENDCG

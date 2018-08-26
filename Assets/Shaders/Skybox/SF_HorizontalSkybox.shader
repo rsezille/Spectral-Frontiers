@@ -1,4 +1,4 @@
-﻿Shader "SF/Horizontal Skybox" {
+﻿Shader "SF/Skybox/Horizontal Skybox" {
 	Properties {
 		_Color1("Top Color", Color) = (1, 1, 1, 0)
 		_Color2("Horizon Color", Color) = (1, 1, 1, 0)

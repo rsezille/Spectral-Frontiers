@@ -52,6 +52,7 @@ Shader "Sprites/Diffuse" {
             o.Albedo = c.rgb * c.a;
             o.Alpha = c.a;
         }
+
         ENDCG
     }
 

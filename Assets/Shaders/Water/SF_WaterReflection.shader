@@ -1,7 +1,7 @@
-﻿// Original by Dan Moran http://danjohnmoran.com/
+﻿// Base by Dan Moran http://danjohnmoran.com/
 // Modified by Remi Sezille
 
-Shader "SF/WaterReflection" {
+Shader "SF/Water/Water Reflection" {
 	Properties {
 		_MainTex("Albedo", 2D) = "white" {}
 		_OffsetTex("Refraction Map", 2D) = "white" {}

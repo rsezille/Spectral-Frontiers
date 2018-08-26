@@ -1,4 +1,4 @@
-﻿Shader "SF/Gradient Skybox" {
+﻿Shader "SF/Skybox/Gradient Skybox" {
 	Properties {
 		_Color1("Color 1", Color) = (1, 1, 1, 0)
 		_Color2("Color 2", Color) = (1, 1, 1, 0)
