@@ -35,7 +35,8 @@ public class RawMission {
     public string map;
     public int maxPlayerCharacters = 1; // Should be inferior to starting_squares length
     public bool isStoryline = false;
-    public Background background;
+    public Background background; // Managed in Background class
+    public string lighting; // Managed in SunLight class
 
     // Missions tree
     public string[] parents;

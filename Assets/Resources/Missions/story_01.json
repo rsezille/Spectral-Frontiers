@@ -3,7 +3,7 @@
 	"map": "001",
 	"maxPlayerCharacters": 3,
 	"background": {},
-	"foreground": {},
+	"lighting": "turn",
 	"parents": null,
 	"children": [
 		"002"
@@ -20,9 +20,9 @@
 		{
 			"key": "Guard",
 			"level": 1,
-			"posX": 5,
-			"posY": 0,
-			"direction": "west"
+			"posX": 4,
+			"posY": 3,
+			"direction": "east"
 		}
 	],
 	"openingCutscene": [

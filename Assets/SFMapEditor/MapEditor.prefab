@@ -8,20 +8,20 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications: []
     m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 0}
+  m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1547151299616552}
-  m_IsPrefabParent: 1
+  m_IsPrefabAsset: 1
 --- !u!1 &1547151299616552
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 4279885027302924}
+  - component: {fileID: 114321221161570466}
   - component: {fileID: 114866135100429180}
   - component: {fileID: 114517495542600846}
-  - component: {fileID: 114321221161570466}
   - component: {fileID: 114543608300693920}
   m_Layer: 0
   m_Name: MapEditor
@@ -33,7 +33,7 @@ GameObject:
 --- !u!4 &4279885027302924
 Transform:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1547151299616552}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -46,7 +46,7 @@ Transform:
 --- !u!114 &114321221161570466
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1547151299616552}
   m_Enabled: 1
@@ -57,7 +57,7 @@ MonoBehaviour:
 --- !u!114 &114517495542600846
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1547151299616552}
   m_Enabled: 1
@@ -65,14 +65,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cfc4d75a92df1d46899abe23de3ccb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedIndex: 3
-  selectedTileset: 0
+  selectedIndex: 10
+  selectedTileset: 1
   tileset:
-  - {fileID: 1843015529889800, guid: 7ce2e201d77781a4f9ca4e5f0259180e, type: 2}
-  - {fileID: 1134162609689692, guid: 538f53c8c1d570047a9e9dd0968619ad, type: 2}
-  - {fileID: 1641314326816854, guid: a04651a3ff590614380f52c64f38ba99, type: 2}
-  - {fileID: 1101605466687940, guid: 252b002ee219c7a4592d51bd839b1520, type: 2}
-  isEntity: 0
+  - {fileID: 1098102281929432, guid: 8b12896c9450b374485fe554a9dc06ff, type: 2}
+  - {fileID: 1845379108599926, guid: 70aa0b546438abd4a8a186ea8e87342f, type: 2}
+  - {fileID: 1123042622828860, guid: 192767f925a98824dabc78f56b1dcc43, type: 2}
+  - {fileID: 1107451390694416, guid: 5dfd10d8c5daf04438bbadcd89c6ad3d, type: 2}
+  - {fileID: 1195123291276016, guid: 56ad356fc4e683f449eebc72af85aa2b, type: 2}
+  - {fileID: 1519975848041398, guid: a015c10ab4c43e44b8c2a9d248d9d991, type: 2}
+  - {fileID: 1883254820166940, guid: ced032d5b6d867343b25100ff47157c0, type: 2}
+  - {fileID: 1228250854762152, guid: 8a3d057fe7d928747b338b8c275156e4, type: 2}
+  - {fileID: 1740853501873868, guid: 5afc2adcbda204142b30c617212838dc, type: 2}
+  - {fileID: 1813626307957278, guid: 49427b442fcce7649b6d9e06c0272cb5, type: 2}
+  - {fileID: 1800978969972772, guid: d36a45f0c52196e4bb39be91236fb034, type: 2}
+  isEntity: 1
   waterPrefab: {fileID: 1431631843932532, guid: 04ab14e0d3670b74592c0fb6bdab04c3,
     type: 2}
   waterColor: {r: 0.52, g: 0.82, b: 1, a: 0.56}
@@ -83,7 +90,7 @@ MonoBehaviour:
 --- !u!114 &114543608300693920
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1547151299616552}
   m_Enabled: 1
@@ -94,7 +101,7 @@ MonoBehaviour:
 --- !u!114 &114866135100429180
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1547151299616552}
   m_Enabled: 1
@@ -109,6 +116,9 @@ MonoBehaviour:
   scrollStep: 8
   hoveredSquare: {fileID: 0}
   currentMode: 0
-  currentSelectMode: 1
+  currentSelectMode: 0
   useWater: 0
   orange: {r: 1, g: 0.5, b: 0, a: 1}
+  sunLight: {fileID: 0}
+  lightingToolboxEnabled: 1
+  editorToolboxEnabled: 1

@@ -35,6 +35,11 @@ namespace SF {
 
         public Color orange = new Color(1f, 0.5f, 0f);
 
+        public GameObject sunLight;
+        public bool lightingToolboxEnabled = false;
+
+        public bool editorToolboxEnabled = true;
+
         private void OnDrawGizmos() {
             if (!map) map = GameObject.Find("Map") ?? CreateNewMap();
 

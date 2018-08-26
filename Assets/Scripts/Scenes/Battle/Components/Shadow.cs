@@ -1,16 +1,40 @@
 ﻿using UnityEngine;
 
 public class Shadow : MonoBehaviour {
-    public SpriteRenderer shadowPrefab;
+    private BattleManager battleManager;
 
-    private Transform instance;
+    private SpriteRenderer instance;
+
+    public SpriteRenderer shadowPrefab;
+    public float nightOpacity = 0.4f;
+    public float dayOpacity = 0.7f;
 
     private void Awake() {
-        instance = Instantiate(shadowPrefab, transform).transform;
+        battleManager = BattleManager.instance;
+
+        instance = Instantiate(shadowPrefab, transform);
+
+        battleManager.OnLightChange += CheckOpacity;
     }
 
     private void Start() {
         // Don't show a scaled shadow if the parent is self scaled
-        instance.localScale = new Vector3(1f / instance.lossyScale.x, 1f / instance.lossyScale.y, 1f / instance.lossyScale.z);
+        instance.transform.localScale = new Vector3(1f / instance.transform.lossyScale.x, 1f / instance.transform.lossyScale.y, 1f / instance.transform.lossyScale.z);
+
+        CheckOpacity();
+    }
+
+    #if UNITY_EDITOR
+    private void Update() {
+        CheckOpacity();
+    }
+    #endif
+
+    private void CheckOpacity() {
+        instance.color = new Color(instance.color.r, instance.color.g, instance.color.b, Mathf.Lerp(nightOpacity, dayOpacity, battleManager.sunLight.GetNormalizedIntensity()));
+    }
+
+    private void OnDestroy() {
+        battleManager.OnLightChange -= CheckOpacity;
     }
 }

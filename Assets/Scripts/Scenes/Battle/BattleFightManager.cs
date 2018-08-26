@@ -15,16 +15,16 @@ public class BattleFightManager {
         }
 
         set {
-            if (_selectedPlayerCharacter != null && _selectedPlayerCharacter.outline != null) {
-                _selectedPlayerCharacter.outline.enabled = false;
+            if (_selectedPlayerCharacter != null && _selectedPlayerCharacter.glow != null) {
+                _selectedPlayerCharacter.glow.Disable();
             }
 
             _selectedPlayerCharacter = value;
             battleManager.fightHUD.UpdateSelectedSquare();
 
             if (_selectedPlayerCharacter != null) {
-                if (_selectedPlayerCharacter.outline != null) {
-                    _selectedPlayerCharacter.outline.enabled = true;
+                if (_selectedPlayerCharacter.glow != null) {
+                    _selectedPlayerCharacter.glow.Enable();
                 }
 
                 battleManager.battleCamera.SetPosition(_selectedPlayerCharacter, true);
@@ -107,8 +107,8 @@ public class BattleFightManager {
 
     // Called by BattleManager
     public void LeaveBattleStepFight() {
-        if (selectedPlayerCharacter.outline != null) {
-            selectedPlayerCharacter.outline.enabled = false;
+        if (selectedPlayerCharacter.glow != null) {
+            selectedPlayerCharacter.glow.Disable();
         }
 
         battleManager.EventOnLeavingMarkStep();
@@ -203,8 +203,8 @@ public class BattleFightManager {
         // TODO [ALPHA] FlashMessage
         // TODO [ALPHA] Disable inputs
 
-        if (selectedPlayerCharacter.outline != null) {
-            selectedPlayerCharacter.outline.enabled = false;
+        if (selectedPlayerCharacter.glow != null) {
+            selectedPlayerCharacter.glow.Disable();
         }
 
         EnterTurnStepEnemy();
@@ -237,6 +237,7 @@ public class BattleFightManager {
             return;
         }
 
+        battleManager.sunLight.NewTurn();
         battleManager.turn++;
 
         foreach (BoardCharacter bc in battleManager.playerCharacters) {

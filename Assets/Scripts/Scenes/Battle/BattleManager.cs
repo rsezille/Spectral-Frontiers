@@ -101,6 +101,8 @@ public class BattleManager : MonoBehaviour {
     public PlayerCharacter testPlayerCharacter; // TODO [ALPHA] Find the correct character giving the name & job
     public FloatingText floatingText;
 
+    public SunLight sunLight;
+
     [Header("Options")]
     public bool waterReflection = true; // TODO [BETA] Implement it
     public bool waterDistortion = true; // TODO [BETA] Implement it
@@ -112,6 +114,7 @@ public class BattleManager : MonoBehaviour {
     public event GameManager.SFEvent OnScreenChange;
     public event GameManager.SFEvent OnSemiTransparentReset;
     public event GameManager.SFEvent OnCheckSemiTransparent;
+    public event GameManager.SFEvent OnLightChange;
 
     // Dedicated managers for each BattleStep
     public BattleCutsceneManager cutscene;
@@ -158,8 +161,7 @@ public class BattleManager : MonoBehaviour {
     }
 
     private void Start() {
-        mission = GameManager.instance.GetMissionToLoad();
-        board.LoadMap(mission);
+        LoadMission();
 
         battleCamera.ResetCameraSize();
         battleCamera.SetPosition(board.width / 2, board.height / 2);
@@ -170,8 +172,6 @@ public class BattleManager : MonoBehaviour {
         currentBattleStep = BattleStep.Cutscene;
 
         Time.timeScale = PlayerOptions.GetFloat(PlayerOptions.BattleSpeed);
-
-        background.Load(mission.background);
     }
 
     // Update is called once per frame
@@ -235,6 +235,17 @@ public class BattleManager : MonoBehaviour {
         markedSquareAnimations.Clear();
 
         OnLeavingMarkStep?.Invoke();
+    }
+
+    public void EventOnLightChange() {
+        OnLightChange?.Invoke();
+    }
+
+    public void LoadMission() {
+        mission = GameManager.instance.GetMissionToLoad();
+        board.LoadMap(mission);
+        background.Load(mission.background);
+        sunLight.Load(mission.lighting);
     }
 
     /**

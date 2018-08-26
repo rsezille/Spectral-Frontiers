@@ -65,7 +65,7 @@ public class BattlePlacingManager {
 
         // Disable outlines from the placing step
         if (GetCurrentPlacingChar().boardCharacter != null) {
-            GetCurrentPlacingChar().boardCharacter.outline.enabled = false;
+            GetCurrentPlacingChar().boardCharacter.glow.Disable();
         }
 
         battleManager.placingHUD.SetActiveWithAnimation(false);
@@ -114,15 +114,15 @@ public class BattlePlacingManager {
             return;
         }
 
-        if (GetCurrentPlacingChar().boardCharacter != null && GetCurrentPlacingChar().boardCharacter.outline != null) {
-            GetCurrentPlacingChar().boardCharacter.outline.enabled = false;
+        if (GetCurrentPlacingChar().boardCharacter != null && GetCurrentPlacingChar().boardCharacter.glow != null) {
+            GetCurrentPlacingChar().boardCharacter.glow.Disable();
         }
 
         placingCharIndex = index;
 
         if (GetCurrentPlacingChar().boardCharacter != null) {
-            if (GetCurrentPlacingChar().boardCharacter.outline != null) {
-                GetCurrentPlacingChar().boardCharacter.outline.enabled = true;
+            if (GetCurrentPlacingChar().boardCharacter.glow != null) {
+                GetCurrentPlacingChar().boardCharacter.glow.Enable();
             }
 
             battleManager.battleCamera.SetPosition(GetCurrentPlacingChar().boardCharacter, true);
@@ -209,7 +209,7 @@ public class BattlePlacingManager {
             if (square.IsNotBlocking()) {
                 if (GetCurrentPlacingChar().boardCharacter != null) {
                     GetCurrentPlacingChar().boardCharacter.SetSquare(square);
-                    GetCurrentPlacingChar().boardCharacter.outline.enabled = true;
+                    GetCurrentPlacingChar().boardCharacter.glow.Enable();
                     GetCurrentPlacingChar().boardCharacter.direction = square.startingDirection;
                 } else {
                     if (battleManager.playerCharacters.Count >= battleManager.mission.maxPlayerCharacters) {
@@ -225,8 +225,8 @@ public class BattlePlacingManager {
                     pc.boardCharacter.character.boardCharacter = pc.boardCharacter;
                     battleManager.playerCharacters.Add(pc.boardCharacter);
 
-                    if (pc.boardCharacter.outline != null) {
-                        pc.boardCharacter.outline.enabled = true;
+                    if (pc.boardCharacter.glow != null) {
+                        pc.boardCharacter.glow.Enable();
                     }
 
                     RefreshStartBattleText();

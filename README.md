@@ -4,6 +4,10 @@
 [Twitter](https://twitter.com/specfrontiers)  
 [Dev blog](https://forums.tigsource.com/index.php?topic=64909.0)
 
+## Misc
+
+[Complete list of Features](Documentation/Features.md)
+
 ## Documentation
 
 [Dialog box](Documentation/DialogBox.md)  
