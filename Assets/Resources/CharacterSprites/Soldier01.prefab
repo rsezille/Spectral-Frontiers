@@ -23,7 +23,6 @@ GameObject:
   - component: {fileID: 95481668620842874}
   - component: {fileID: 60227954618296632}
   - component: {fileID: 60935187836968706}
-  - component: {fileID: 114401048227726734}
   - component: {fileID: 114289021745954006}
   - component: {fileID: 114201483773831714}
   - component: {fileID: 114007478901278514}
@@ -244,13 +243,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   distortionShader: {fileID: 2100000, guid: 974aa3966879eb949b2085d4c5fa2def, type: 2}
+  offset: 0
 --- !u!114 &114289021745954006
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1633512145816250}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f239a0c988648624b9f6600a3fcaa8a8, type: 3}
   m_Name: 
@@ -258,23 +258,6 @@ MonoBehaviour:
   minBrightness: 1
   maxBrightness: 4.5
   time: 1
---- !u!114 &114401048227726734
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1633512145816250}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44c664165fb40744fba8fc2684d28cd2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _glowColor: {r: 1, g: 1, b: 1, a: 1}
-  _glowBrightness: 1
-  _outlineWidth: 1
-  _alphaThreshold: 0
-  _drawOutside: 1
-  _enableInstancing: 0
 --- !u!114 &114745763095533832
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -305,7 +288,7 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 45aba72c7e7775444be54414bd888a68, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

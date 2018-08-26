@@ -23,7 +23,6 @@ GameObject:
   - component: {fileID: 60317722787919470}
   - component: {fileID: 60854710477427274}
   - component: {fileID: 95823125600629026}
-  - component: {fileID: 114769327589938692}
   - component: {fileID: 114583737885074008}
   - component: {fileID: 114706372431421632}
   - component: {fileID: 114427534289433398}
@@ -246,23 +245,6 @@ MonoBehaviour:
   - {fileID: 60317722787919470}
   - {fileID: 60854710477427274}
   enabledColliderIndex: 0
---- !u!114 &114769327589938692
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1754958333634280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44c664165fb40744fba8fc2684d28cd2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _glowColor: {r: 1, g: 1, b: 1, a: 1}
-  _glowBrightness: 1
-  _outlineWidth: 1
-  _alphaThreshold: 0
-  _drawOutside: 1
-  _enableInstancing: 0
 --- !u!114 &114927453756017122
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -275,6 +257,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   distortionShader: {fileID: 2100000, guid: 974aa3966879eb949b2085d4c5fa2def, type: 2}
+  offset: 0
 --- !u!212 &212048418438309762
 SpriteRenderer:
   m_ObjectHideFlags: 1
