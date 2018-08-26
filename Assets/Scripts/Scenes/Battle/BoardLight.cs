@@ -16,10 +16,18 @@ public class BoardLight : MonoBehaviour {
         initialIntensity = light.intensity;
 
         BattleManager.instance.OnLightChange += CheckIntensity;
+
+        CheckIntensity();
     }
 
+    #if UNITY_EDITOR
+    private void Update() {
+        CheckIntensity();
+    }
+    #endif
+
     public void CheckIntensity() {
-        float sunIntensity = Mathf.Clamp(BattleManager.instance.sunLight.intensity, fullyVisibleIntensity, nonVisibleIntensity);
+        float sunIntensity = Mathf.Clamp(BattleManager.instance.sunLight.GetIntensity(), fullyVisibleIntensity, nonVisibleIntensity);
 
         light.intensity = Mathf.Lerp(5.76f, 0f, sunIntensity / nonVisibleIntensity);
     }

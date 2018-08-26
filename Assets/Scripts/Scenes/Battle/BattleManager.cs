@@ -101,7 +101,7 @@ public class BattleManager : MonoBehaviour {
     public PlayerCharacter testPlayerCharacter; // TODO [ALPHA] Find the correct character giving the name & job
     public FloatingText floatingText;
 
-    public Light sunLight;
+    public SunLight sunLight;
 
     [Header("Options")]
     public bool waterReflection = true; // TODO [BETA] Implement it
