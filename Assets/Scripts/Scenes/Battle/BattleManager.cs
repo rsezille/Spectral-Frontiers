@@ -161,8 +161,7 @@ public class BattleManager : MonoBehaviour {
     }
 
     private void Start() {
-        mission = GameManager.instance.GetMissionToLoad();
-        board.LoadMap(mission);
+        LoadMission();
 
         battleCamera.ResetCameraSize();
         battleCamera.SetPosition(board.width / 2, board.height / 2);
@@ -173,8 +172,6 @@ public class BattleManager : MonoBehaviour {
         currentBattleStep = BattleStep.Cutscene;
 
         Time.timeScale = PlayerOptions.GetFloat(PlayerOptions.BattleSpeed);
-
-        background.Load(mission.background);
     }
 
     // Update is called once per frame
@@ -242,6 +239,13 @@ public class BattleManager : MonoBehaviour {
 
     public void EventOnLightChange() {
         OnLightChange?.Invoke();
+    }
+
+    public void LoadMission() {
+        mission = GameManager.instance.GetMissionToLoad();
+        board.LoadMap(mission);
+        background.Load(mission.background);
+        sunLight.Load(mission.lighting);
     }
 
     /**
