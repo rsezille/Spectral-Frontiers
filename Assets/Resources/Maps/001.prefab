@@ -54,6 +54,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4629033337562572}
   - component: {fileID: 108025471572950312}
+  - component: {fileID: 114075920423093790}
   m_Layer: 0
   m_Name: Point Light
   m_TagString: Untagged
@@ -3671,6 +3672,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4766843310836812}
   - component: {fileID: 108480143978358950}
+  - component: {fileID: 114615248409450220}
   m_Layer: 0
   m_Name: Point Light
   m_TagString: Untagged
@@ -8709,6 +8711,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4847732187806888}
   - component: {fileID: 108982547127110054}
+  - component: {fileID: 114496632469490836}
   m_Layer: 0
   m_Name: Point Light
   m_TagString: Untagged
@@ -11797,6 +11800,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4865183140473088}
   - component: {fileID: 108678772123290952}
+  - component: {fileID: 114309846852655954}
   m_Layer: 0
   m_Name: Point Light
   m_TagString: Untagged
@@ -34852,6 +34856,19 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114075920423093790
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1002116030920270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c6fc7aaff03e5e46ab4dd9e2cee4c00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nonVisibleIntensity: 0.8
+  fullyVisibleIntensity: 0.1
 --- !u!114 &114076252908840604
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -37612,6 +37629,19 @@ MonoBehaviour:
   boardEntity: {fileID: 0}
   sortingGroup: {fileID: 0}
   tileSelector: {fileID: 212508295560391912}
+--- !u!114 &114309846852655954
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1927492252709354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c6fc7aaff03e5e46ab4dd9e2cee4c00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nonVisibleIntensity: 0.8
+  fullyVisibleIntensity: 0.1
 --- !u!114 &114312323510120302
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -39671,6 +39701,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 663f9c85538eff9458448f83c8b91dbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114496632469490836
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1696887955923524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c6fc7aaff03e5e46ab4dd9e2cee4c00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nonVisibleIntensity: 0.8
+  fullyVisibleIntensity: 0.1
 --- !u!114 &114498041896236136
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -40931,6 +40974,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   square: {fileID: 114452944433819602}
+--- !u!114 &114615248409450220
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1279856132303280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c6fc7aaff03e5e46ab4dd9e2cee4c00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nonVisibleIntensity: 0.8
+  fullyVisibleIntensity: 0.1
 --- !u!114 &114618315744004684
 MonoBehaviour:
   m_ObjectHideFlags: 1
