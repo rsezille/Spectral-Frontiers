@@ -11,6 +11,7 @@ public class SunLight : MonoBehaviour {
     private bool turnType = false;
     private float turnTime = 0f;
 
+    public float hardCapIntensity = 1.1f; // When the sun hurts really hard, in the desert during summer
     public float dayIntensity = 0.85f;
     public float nightIntensity = 0.1f;
 

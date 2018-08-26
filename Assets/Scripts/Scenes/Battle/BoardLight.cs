@@ -34,7 +34,7 @@ public class BoardLight : MonoBehaviour {
     public void CheckIntensity() {
         float sunIntensity = Mathf.Clamp(battleManager.sunLight.GetIntensity(), fullyVisibleIntensity, nonVisibleIntensity);
 
-        light.intensity = Mathf.Lerp(5.76f, 0f, sunIntensity / nonVisibleIntensity);
+        light.intensity = Mathf.Lerp(initialIntensity, 0f, (sunIntensity - battleManager.sunLight.nightIntensity) / (battleManager.sunLight.dayIntensity - battleManager.sunLight.nightIntensity));
     }
 
     private void OnDestroy() {
