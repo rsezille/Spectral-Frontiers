@@ -6,7 +6,7 @@ Can be used later to create a test sheet to check all points
 
 ### Board
 
-- BoardLight lights have their intensity and range randomly changing over time
+- BoardLight lights have their intensity randomly changing over time
 - BoardLight lights don't emit light during day, and do emit full light during night
 - Shadows under entities have their opacity changing according to the SunLight intensity (day/night)
 

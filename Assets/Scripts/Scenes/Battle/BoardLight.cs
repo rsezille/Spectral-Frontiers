@@ -2,7 +2,7 @@
 using UnityEngine;
 
 /**
- * The intensity of board lights (campfire, torch, etc.) depends on the sun light intensity: no light when day, full light when night
+ * The intensity of board lights (campfire, torch, etc.) depends on the sun light intensity: no light during the day, full light during the night
  */
 [RequireComponent(typeof(Light))]
 public class BoardLight : MonoBehaviour {
