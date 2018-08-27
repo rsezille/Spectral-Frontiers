@@ -2,13 +2,12 @@
 
 [RequireComponent(typeof(BoardEntity), typeof(BoardCharacter)), DisallowMultipleComponent]
 public class HealthBarHUD : MonoBehaviour {
-    public static float BaseOffset = 0.2f;
-
     private BoardCharacter boardCharacter;
     private Transform healthBar;
     private Transform instance;
 
     public Transform healthBarHUD;
+    public float offset = 0.2f;
 
     private void Awake() {
         boardCharacter = GetComponent<BoardCharacter>();
@@ -17,7 +16,7 @@ public class HealthBarHUD : MonoBehaviour {
     }
 
     private void Start() {
-        instance.position += new Vector3(0f, boardCharacter.sprite.bounds.size.y + BaseOffset);
+        instance.position += new Vector3(0f, boardCharacter.sprite.bounds.size.y + offset);
         
         healthBar = instance.Find("HealthBar").transform;
 

@@ -88,10 +88,11 @@ MonoBehaviour:
     type: 2}
   sprite: {fileID: 0}
   side: {fileID: 0}
-  outline: {fileID: 0}
+  glow: {fileID: 0}
   movable: {fileID: 0}
   actionable: {fileID: 0}
   AI: {fileID: 0}
+  shadow: {fileID: 0}
   isMoving: 0
 --- !u!114 &114273411749110004
 MonoBehaviour:
@@ -117,6 +118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthBarHUD: {fileID: 224636935849708732, guid: 6af272c7861df5c48844a40946d7e766,
     type: 2}
+  offset: -0.2
 --- !u!114 &114397406930246168
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -154,6 +156,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterNameHUD: {fileID: 224154610032487936, guid: 3faef16fbdf674744adc42e465718ed9,
     type: 2}
+  offset: -0.2
 --- !u!114 &114745535029489240
 MonoBehaviour:
   m_ObjectHideFlags: 1
