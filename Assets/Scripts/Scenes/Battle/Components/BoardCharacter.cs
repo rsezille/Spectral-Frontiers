@@ -297,7 +297,7 @@ public class BoardCharacter : MonoBehaviour {
                 movable.movementPoints--;
             }
 
-            Tween characterAnimation = transform.DOMove(path.steps[i].transform.position, duration).SetEase(Ease.Linear);
+            Tween characterAnimation = transform.DOMove(BoardUtil.CoordToWorldPosition(path.steps[i]), duration).SetEase(Ease.Linear);
 
             if (cameraFollow) {
                 battleManager.battleCamera.SetPosition(path.steps[i], true, duration, Ease.Linear);

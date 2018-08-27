@@ -240,6 +240,10 @@ public class Square : MonoBehaviour {
         }
     }
 
+    public float GetWorldHeight() {
+        return (float)Height / Globals.TileHeight;
+    }
+
     private void OnDestroy() {
         battleManager.OnEnterPlacing -= OnEnterPlacing;
         battleManager.OnLeavingMarkStep -= OnLeavingMarkStep;

@@ -70,8 +70,8 @@
 	],
 	"startingSquares": [
 		{
-			"posX": 5,
-			"posY": 9,
+			"posX": 0,
+			"posY": 5,
 			"direction": "East"
 		},
 		{
