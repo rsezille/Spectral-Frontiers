@@ -36,6 +36,8 @@ public class BoardCharacter : MonoBehaviour {
     public Actionable actionable;
     [HideInInspector]
     public AI AI;
+    [HideInInspector]
+    public Shadow shadow;
 
     [Tooltip("Do not touch this")]
     public bool isMoving = false;
@@ -84,6 +86,7 @@ public class BoardCharacter : MonoBehaviour {
         sprite = spriteContainer.GetComponent<SpriteRenderer>();
         sprite.sortingOrder = 1;
         glow = spriteContainer.GetComponent<CharacterGlow>();
+        shadow = spriteContainer.GetComponent<Shadow>();
 
         boardEntity = GetComponent<BoardEntity>();
         movable = GetComponent<Movable>();

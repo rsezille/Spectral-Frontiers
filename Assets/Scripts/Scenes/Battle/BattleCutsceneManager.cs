@@ -206,8 +206,12 @@ public class BattleCutsceneManager {
         BoardCharacter boardCharacter = Object.Instantiate(boardCharacterPrefab, BoardUtil.CoordToWorldPosition(fromX, fromY, battleManager.board.GetSquare(parsedX, parsedY).GetWorldHeight()), Quaternion.identity);
         boardCharacter.character = new Character(name);
         boardCharacter.direction = direction;
-        boardCharacter.sprite.color = new Color(boardCharacter.sprite.color.r, boardCharacter.sprite.color.g, boardCharacter.sprite.color.b, 0);
-        boardCharacter.sprite.DOColor(new Color(boardCharacter.sprite.color.r, boardCharacter.sprite.color.g, boardCharacter.sprite.color.b, 1), 1f);
+        boardCharacter.sprite.color = new Color(boardCharacter.sprite.color.r, boardCharacter.sprite.color.g, boardCharacter.sprite.color.b, 0f);
+        boardCharacter.sprite.DOColor(new Color(boardCharacter.sprite.color.r, boardCharacter.sprite.color.g, boardCharacter.sprite.color.b, 1f), 1f);
+
+        if (boardCharacter.shadow != null) {
+            boardCharacter.shadow.Show(1f);
+        }
 
         Tween move = boardCharacter.transform.DOMove(BoardUtil.CoordToWorldPosition(battleManager.board.GetSquare(parsedX, parsedY)), 1f).SetEase(Ease.Linear).OnComplete(() => {
             boardCharacter.SetSquare(battleManager.board.GetSquare(parsedX, parsedY));

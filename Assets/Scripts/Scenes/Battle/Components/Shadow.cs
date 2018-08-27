@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using DG.Tweening;
+using UnityEngine;
 
 public class Shadow : MonoBehaviour {
     private BattleManager battleManager;
+    private Tween showAnimation;
 
-    private SpriteRenderer instance;
+    public SpriteRenderer instance;
 
     public SpriteRenderer shadowPrefab;
     public float nightOpacity = 0.4f;
@@ -31,10 +33,18 @@ public class Shadow : MonoBehaviour {
     #endif
 
     private void CheckOpacity() {
-        instance.color = new Color(instance.color.r, instance.color.g, instance.color.b, Mathf.Lerp(nightOpacity, dayOpacity, battleManager.sunLight.GetNormalizedIntensity()));
+        if (showAnimation == null || (!showAnimation.IsActive() || showAnimation.IsComplete())) {
+            instance.color = new Color(instance.color.r, instance.color.g, instance.color.b, Mathf.Lerp(nightOpacity, dayOpacity, battleManager.sunLight.GetNormalizedIntensity()));
+        }
     }
 
     private void OnDestroy() {
         battleManager.OnLightChange -= CheckOpacity;
+    }
+
+    public void Show(float speed = 1f) {
+        instance.color = new Color(instance.color.r, instance.color.g, instance.color.b, 0f);
+
+        showAnimation = instance.DOColor(new Color(instance.color.r, instance.color.g, instance.color.b, Mathf.Lerp(nightOpacity, dayOpacity, battleManager.sunLight.GetNormalizedIntensity())), speed);
     }
 }
