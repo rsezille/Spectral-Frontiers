@@ -300,7 +300,18 @@ public class BoardCharacter : MonoBehaviour {
                 movable.movementPoints--;
             }
 
-            Tween characterAnimation = transform.DOMove(BoardUtil.CoordToWorldPosition(path.steps[i]), duration).SetEase(Ease.Linear);
+            Tween characterAnimation;
+            
+            float absoluteHeightDifference = Mathf.Abs(previousSquare.Height - path.steps[i].Height);
+
+            if (absoluteHeightDifference > 6) {
+                float clamped = Mathf.Clamp(absoluteHeightDifference, 0f, 50f);
+                float jumpPower = Mathf.Lerp(0f, 0.8f, clamped / 50f);
+
+                characterAnimation = transform.DOJump(BoardUtil.CoordToWorldPosition(path.steps[i]), jumpPower, 1, duration);
+            } else {
+                characterAnimation = transform.DOMove(BoardUtil.CoordToWorldPosition(path.steps[i]), duration).SetEase(Ease.Linear);
+            }
 
             if (cameraFollow) {
                 battleManager.battleCamera.SetPosition(path.steps[i], true, duration, Ease.Linear);
