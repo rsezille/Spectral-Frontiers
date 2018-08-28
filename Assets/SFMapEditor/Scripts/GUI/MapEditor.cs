@@ -35,7 +35,7 @@ namespace SF {
 
         public Color orange = new Color(1f, 0.5f, 0f);
 
-        public GameObject sunLight;
+        public Light sunLight;
         public bool lightingToolboxEnabled = false;
 
         public bool editorToolboxEnabled = true;

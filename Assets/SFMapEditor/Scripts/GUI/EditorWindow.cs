@@ -56,7 +56,13 @@ namespace SF {
         }
 
         private void LightingToolbox(int windowID) {
-            GUI.Label(new Rect(5, 20, 60, 20), "Pouet");
+            if (GUI.Button(new Rect(5, 20, 40, 20), "Day", normalButton)) {
+                mapEditor.sunLight.intensity = 0.8f;
+            } else if (GUI.Button(new Rect(45, 20, 50, 20), "Night", normalButton)) {
+                mapEditor.sunLight.intensity = 0.2f;
+            }
+
+            mapEditor.sunLight.intensity = GUI.HorizontalSlider(new Rect(5, 45, 100, 30), mapEditor.sunLight.intensity, 0.0f, 3.0f);
         }
 
         private void EditorToolbox(int windowID) {
