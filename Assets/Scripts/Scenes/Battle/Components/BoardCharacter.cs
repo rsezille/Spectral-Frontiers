@@ -18,6 +18,7 @@ public class BoardCharacter : MonoBehaviour {
     [Header("Dependencies")]
     public BattleState battleState;
     public BattleCharacters battleCharacters;
+    public Board board;
 
     public Character character;
     private GameObject spriteContainer;
@@ -235,7 +236,7 @@ public class BoardCharacter : MonoBehaviour {
     }
 
     public void MoveTo(Square target, bool cameraFollow = true) {
-        Path p = battleManager.board.pathFinder.FindPath(
+        Path p = board.pathFinder.FindPath(
             GetSquare().x,
             GetSquare().y,
             target.x,
@@ -249,7 +250,7 @@ public class BoardCharacter : MonoBehaviour {
     }
 
     public IEnumerator CutsceneMoveTo(Square target, bool cameraFollow = true) {
-        Path p = battleManager.board.pathFinder.FindPath(
+        Path p = board.pathFinder.FindPath(
             GetSquare().x,
             GetSquare().y,
             target.x,

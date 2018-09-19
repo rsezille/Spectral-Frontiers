@@ -16,9 +16,9 @@ public class BattleManager : MonoBehaviour {
     public BattleState battleState;
     public BattleCharacters battleCharacters;
     public MissionVariable missionToLoad;
+    public Board board;
 
     [Header("References")]
-    public Board board;
     public BattleCamera battleCamera;
     public Background background;
 

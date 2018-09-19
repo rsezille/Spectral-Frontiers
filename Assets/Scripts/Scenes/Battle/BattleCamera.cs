@@ -9,6 +9,7 @@ public class BattleCamera : MonoBehaviour {
 
     [Header("Dependencies")]
     public BattleState battleState;
+    public Board board;
 
     [Header("Data")]
     // Camera speed
@@ -77,7 +78,7 @@ public class BattleCamera : MonoBehaviour {
     }
 
     public Tween SetPosition(int squareX, int squareY, bool smooth = false, float duration = 1f, Ease ease = Ease.OutCubic) {
-        Square targetedSquare = BattleManager.instance.board.GetSquare(squareX, squareY);
+        Square targetedSquare = board.GetSquare(squareX, squareY);
         int height = targetedSquare != null ? targetedSquare.Height : 0;
 
         Vector3 target = new Vector3(

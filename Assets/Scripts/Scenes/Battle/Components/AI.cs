@@ -12,18 +12,17 @@ public class AI : MonoBehaviour {
         Aggressive, // Always try to be in range and attack
         Passive // Only attack when a player character is in range + movements
     }
-
-    private BattleManager battleManager;
+    
     private BoardCharacter boardCharacter;
 
     [Header("Dependencies")]
     public BattleCharacters battleCharacters;
+    public Board board;
 
     [Header("Data")]
     public Preset preset = Preset.Aggressive;
 
     private void Awake() {
-        battleManager = BattleManager.instance;
         boardCharacter = GetComponent<BoardCharacter>();
     }
 
@@ -101,7 +100,7 @@ public class AI : MonoBehaviour {
         int lowestCharHP = 0;
 
         foreach (BoardCharacter playerCharacter in battleCharacters.player) {
-            Path p = battleManager.board.pathFinder.FindPath(
+            Path p = board.pathFinder.FindPath(
                 boardCharacter.GetSquare().x,
                 boardCharacter.GetSquare().y,
                 playerCharacter.GetSquare().x,

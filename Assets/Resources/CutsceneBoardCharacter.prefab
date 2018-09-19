@@ -107,6 +107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   battleState: {fileID: 11400000, guid: 6f13aad577670964f9d877e5216305e0, type: 2}
   battleCharacters: {fileID: 11400000, guid: 6020ed34a2f75cb4f81732c57a2dc0cf, type: 2}
+  board: {fileID: 11400000, guid: 3c4c86e45c7cd1c4e9897b0930bad4cd, type: 2}
   enemyOrNeutralSpritePrefab: {fileID: 1633512145816250, guid: 3eaf92174d6d63e42a2f13747889d7a4,
     type: 2}
   sprite: {fileID: 0}
