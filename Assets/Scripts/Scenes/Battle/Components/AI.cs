@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using SF;
+using System.Collections;
 using UnityEngine;
 
 /**
@@ -15,6 +16,10 @@ public class AI : MonoBehaviour {
     private BattleManager battleManager;
     private BoardCharacter boardCharacter;
 
+    [Header("Dependencies")]
+    public BattleCharacters battleCharacters;
+
+    [Header("Data")]
     public Preset preset = Preset.Aggressive;
 
     private void Awake() {
@@ -68,7 +73,7 @@ public class AI : MonoBehaviour {
         while (boardCharacter.actionable.CanDoAction()) {
             BoardCharacter target = null;
 
-            foreach (BoardCharacter playerCharacter in battleManager.playerCharacters) {
+            foreach (BoardCharacter playerCharacter in battleCharacters.player) {
                 if (playerCharacter.GetSquare().GetManhattanDistance(boardCharacter.GetSquare()) == 1) {
                     if (target == null || target.character.GetCurrentHP() > playerCharacter.character.GetCurrentHP()) {
                         target = playerCharacter;
@@ -95,7 +100,7 @@ public class AI : MonoBehaviour {
         Path bestPath = null;
         int lowestCharHP = 0;
 
-        foreach (BoardCharacter playerCharacter in battleManager.playerCharacters) {
+        foreach (BoardCharacter playerCharacter in battleCharacters.player) {
             Path p = battleManager.board.pathFinder.FindPath(
                 boardCharacter.GetSquare().x,
                 boardCharacter.GetSquare().y,

@@ -29,7 +29,7 @@ public class BattlePlacingManager {
             if (battleManager.battleState.currentTurnStep == BattleState.TurnStep.Status) {
                 battleManager.statusHUD.Show(GetCurrentPlacingChar());
             }
-        } else if (InputManager.Special1.IsKeyDown && battleManager.playerCharacters.Count > 0) {
+        } else if (InputManager.Special1.IsKeyDown && battleManager.battleCharacters.player.Count > 0) {
             battleManager.battleState.currentBattleStep = BattleState.BattleStep.Fight;
         }
     }
@@ -46,7 +46,7 @@ public class BattlePlacingManager {
             enemyBC.side.value = Side.Type.Enemy;
             enemyBC.SetSquare(battleManager.board.GetSquare(enemy.posX, enemy.posY));
             enemyBC.direction = EnumUtil.ParseEnum(enemy.direction, Globals.DefaultDirection);
-            battleManager.enemyCharacters.Add(enemyBC);
+            battleManager.battleCharacters.enemy.Add(enemyBC);
         }
 
         foreach (RawMission.RawStartingSquare startingSquare in battleManager.mission.startingSquares) {
@@ -160,13 +160,13 @@ public class BattlePlacingManager {
 
         GetCurrentPlacingChar().boardCharacter.Remove();
         
-        if (battleManager.playerCharacters.Count <= 0) {
+        if (battleManager.battleCharacters.player.Count <= 0) {
             battleManager.placingHUD.startBattleText.gameObject.SetActive(false);
         }
     }
 
     public void RefreshStartBattleText() {
-        if (battleManager.playerCharacters.Count <= 0) {
+        if (battleManager.battleCharacters.player.Count <= 0) {
             battleManager.placingHUD.startBattleText.gameObject.SetActive(false);
         } else {
             battleManager.placingHUD.startBattleText.gameObject.SetActive(true);
@@ -212,7 +212,7 @@ public class BattlePlacingManager {
                     GetCurrentPlacingChar().boardCharacter.glow.Enable();
                     GetCurrentPlacingChar().boardCharacter.direction = square.startingDirection;
                 } else {
-                    if (battleManager.playerCharacters.Count >= battleManager.mission.maxPlayerCharacters) {
+                    if (battleManager.battleCharacters.player.Count >= battleManager.mission.maxPlayerCharacters) {
                         return;
                     }
 
@@ -223,7 +223,7 @@ public class BattlePlacingManager {
                     pc.boardCharacter.direction = square.startingDirection;
 
                     pc.boardCharacter.character.boardCharacter = pc.boardCharacter;
-                    battleManager.playerCharacters.Add(pc.boardCharacter);
+                    battleManager.battleCharacters.player.Add(pc.boardCharacter);
 
                     if (pc.boardCharacter.glow != null) {
                         pc.boardCharacter.glow.Enable();

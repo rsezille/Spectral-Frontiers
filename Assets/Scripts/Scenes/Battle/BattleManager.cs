@@ -14,15 +14,12 @@ public class BattleManager : MonoBehaviour {
 
     [Header("Dependencies")]
     public BattleState battleState;
+    public BattleCharacters battleCharacters;
 
     [Header("Data")]
     public int turn;
 
     public RawMission mission;
-
-    // Characters
-    public List<BoardCharacter> playerCharacters;
-    public List<BoardCharacter> enemyCharacters;
 
     [Header("References")]
     public Board board;
@@ -99,7 +96,8 @@ public class BattleManager : MonoBehaviour {
         previousScreenResolution = new Vector2Int(Screen.width, Screen.height);
 #endif
 
-        battleState.ResetBattle();
+        battleState.ResetData();
+        battleCharacters.ResetData();
     }
 
     private void Start() {
@@ -123,7 +121,7 @@ public class BattleManager : MonoBehaviour {
             }
 
             if (Input.GetKeyDown(KeyCode.L)) {
-                GameManager.instance.DialogBox.Show(playerCharacters[0], "prologue_01");
+                GameManager.instance.DialogBox.Show(battleCharacters.player[0], "prologue_01");
             }
         #endif
 
@@ -244,16 +242,16 @@ public class BattleManager : MonoBehaviour {
             return true;
         }
 
-        if (playerCharacters.Count > 0 && enemyCharacters.Count == 0) { // The player wins
+        if (battleCharacters.player.Count > 0 && battleCharacters.enemy.Count == 0) { // The player wins
             battleState.currentBattleStep = BattleState.BattleStep.Victory;
 
             return true;
-        } else if (playerCharacters.Count == 0 && enemyCharacters.Count > 0) { // The enemy wins
+        } else if (battleCharacters.player.Count == 0 && battleCharacters.enemy.Count > 0) { // The enemy wins
             goingGameOver = true;
             StartCoroutine(WaitGameOver());
 
             return true;
-        } else if (playerCharacters.Count == 0 && enemyCharacters.Count == 0) { // No allied and enemy chars alive, enemy wins
+        } else if (battleCharacters.player.Count == 0 && battleCharacters.enemy.Count == 0) { // No allied and enemy chars alive, enemy wins
             goingGameOver = true;
             StartCoroutine(WaitGameOver());
 

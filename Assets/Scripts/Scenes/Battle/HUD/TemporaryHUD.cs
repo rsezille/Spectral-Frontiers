@@ -7,6 +7,7 @@ public class TemporaryHUD : MonoBehaviour {
 
     [Header("Dependencies")]
     public BattleState battleState;
+    public BattleCharacters battleCharacters;
 
     [Header("References")]
     public Text text;
@@ -24,7 +25,7 @@ public class TemporaryHUD : MonoBehaviour {
             text.text += "Fight step: " + battleState.currentTurnStep + "\n";
             text.text += "Turn: " + battleManager.turn + "\n";
         } else if (battleState.currentBattleStep == BattleState.BattleStep.Placing) {
-            text.text += "Placed characters: " + battleManager.playerCharacters.Count + "/" + battleManager.mission.maxPlayerCharacters + "\n";
+            text.text += "Placed characters: " + battleCharacters.player.Count + "/" + battleManager.mission.maxPlayerCharacters + "\n";
         }
     }
 }

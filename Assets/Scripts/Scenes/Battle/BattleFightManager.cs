@@ -240,13 +240,13 @@ public class BattleFightManager {
         battleManager.sunLight.NewTurn();
         battleManager.turn++;
 
-        foreach (BoardCharacter bc in battleManager.playerCharacters) {
+        foreach (BoardCharacter bc in battleManager.battleCharacters.player) {
             bc.NewTurn();
         }
 
         battleManager.EnterTurnStepNone();
 
-        selectedPlayerCharacter = battleManager.playerCharacters[0];
+        selectedPlayerCharacter = battleManager.battleCharacters.player[0];
     }
 
     private void EnterTurnStepEnemy() {
@@ -259,7 +259,7 @@ public class BattleFightManager {
 
         battleManager.battleState.currentTurnStep = BattleState.TurnStep.Enemy;
 
-        foreach (BoardCharacter enemy in battleManager.enemyCharacters) {
+        foreach (BoardCharacter enemy in battleManager.battleCharacters.enemy) {
             enemy.NewTurn();
         }
 
@@ -272,7 +272,7 @@ public class BattleFightManager {
     private IEnumerator StartAI() {
         battleManager.fightHUD.SetActiveWithAnimation(false);
 
-        foreach (BoardCharacter enemy in battleManager.enemyCharacters) {
+        foreach (BoardCharacter enemy in battleManager.battleCharacters.enemy) {
             if (enemy.AI != null) {
                 yield return enemy.AI.Process();
             }
@@ -324,18 +324,18 @@ public class BattleFightManager {
     }
 
     private void SelectPreviousPlayerBoardCharacter() {
-        if (battleManager.playerCharacters.IndexOf(selectedPlayerCharacter) == 0) {
-            selectedPlayerCharacter = battleManager.playerCharacters[battleManager.playerCharacters.Count - 1];
+        if (battleManager.battleCharacters.player.IndexOf(selectedPlayerCharacter) == 0) {
+            selectedPlayerCharacter = battleManager.battleCharacters.player[battleManager.battleCharacters.player.Count - 1];
         } else {
-            selectedPlayerCharacter = battleManager.playerCharacters[battleManager.playerCharacters.IndexOf(selectedPlayerCharacter) - 1];
+            selectedPlayerCharacter = battleManager.battleCharacters.player[battleManager.battleCharacters.player.IndexOf(selectedPlayerCharacter) - 1];
         }
     }
 
     private void SelectNextPlayerBoardCharacter() {
-        if (battleManager.playerCharacters.IndexOf(selectedPlayerCharacter) >= battleManager.playerCharacters.Count - 1) {
-            selectedPlayerCharacter = battleManager.playerCharacters[0];
+        if (battleManager.battleCharacters.player.IndexOf(selectedPlayerCharacter) >= battleManager.battleCharacters.player.Count - 1) {
+            selectedPlayerCharacter = battleManager.battleCharacters.player[0];
         } else {
-            selectedPlayerCharacter = battleManager.playerCharacters[battleManager.playerCharacters.IndexOf(selectedPlayerCharacter) + 1];
+            selectedPlayerCharacter = battleManager.battleCharacters.player[battleManager.battleCharacters.player.IndexOf(selectedPlayerCharacter) + 1];
         }
     }
 }

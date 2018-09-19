@@ -17,6 +17,7 @@ public class BoardCharacter : MonoBehaviour {
 
     [Header("Dependencies")]
     public BattleState battleState;
+    public BattleCharacters battleCharacters;
 
     public Character character;
     private GameObject spriteContainer;
@@ -355,9 +356,9 @@ public class BoardCharacter : MonoBehaviour {
         StopAllCoroutines();
 
         if (side.value == Side.Type.Player && (battleState.currentBattleStep == BattleState.BattleStep.Placing || battleState.currentBattleStep == BattleState.BattleStep.Fight)) {
-            battleManager.playerCharacters.Remove(this);
+            battleCharacters.player.Remove(this);
         } else if (side.value == Side.Type.Enemy && battleState.currentBattleStep == BattleState.BattleStep.Fight) {
-            battleManager.enemyCharacters.Remove(this);
+            battleCharacters.enemy.Remove(this);
         }
 
         if (battleState.currentBattleStep == BattleState.BattleStep.Fight) {

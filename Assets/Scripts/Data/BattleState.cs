@@ -52,7 +52,7 @@ namespace SF {
             }
         }
 
-        public void ResetBattle() {
+        public void ResetData() {
             _currentBattleStep = BattleStep.None;
             _currentTurnStep = TurnStep.None;
         }

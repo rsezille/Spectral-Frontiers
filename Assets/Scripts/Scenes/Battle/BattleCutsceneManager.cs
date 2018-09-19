@@ -60,7 +60,7 @@ public class BattleCutsceneManager {
             transitionImage.color = new Color(Color.black.r, Color.black.g, Color.black.b, 0f);
 
             transitionImage.DOColor(Color.black, 0.5f).OnComplete(() => {
-                foreach (BoardCharacter playerCharacter in battleManager.playerCharacters) {
+                foreach (BoardCharacter playerCharacter in battleManager.battleCharacters.player) {
                     playerCharacter.Remove();
                 }
                 
