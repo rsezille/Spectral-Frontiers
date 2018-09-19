@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BattleFightManager {
-    private BattleManager battleManager; // Shortcut for BattleManager.instance
+    private BattleManager battleManager;
 
     private GameObject arrows;
 
@@ -33,15 +33,15 @@ public class BattleFightManager {
         }
     }
 
-    public BattleFightManager() {
-        battleManager = BattleManager.instance;
+    public BattleFightManager(BattleManager battleManager) {
+        this.battleManager = battleManager;
     }
 
     // Called by BattleManager
     public void Update() {
         if (InputManager.Previous.IsKeyDown) {
-            switch (battleManager.currentTurnStep) {
-                case BattleManager.TurnStep.Status:
+            switch (battleManager.battleState.currentTurnStep) {
+                case BattleState.TurnStep.Status:
                     Character characterToShow = battleManager.statusHUD.character;
 
                     if (GameManager.instance.player.characters.IndexOf(characterToShow) == 0) {
@@ -56,13 +56,13 @@ public class BattleFightManager {
 
                     battleManager.statusHUD.Show(characterToShow);
                     break;
-                case BattleManager.TurnStep.None:
+                case BattleState.TurnStep.None:
                     Previous();
                     break;
             }
         } else if (InputManager.Next.IsKeyDown) {
-            switch (battleManager.currentTurnStep) {
-                case BattleManager.TurnStep.Status:
+            switch (battleManager.battleState.currentTurnStep) {
+                case BattleState.TurnStep.Status:
                     Character characterToShow = battleManager.statusHUD.character;
 
                     if (GameManager.instance.player.characters.IndexOf(characterToShow) >= GameManager.instance.player.characters.Count - 1) {
@@ -77,13 +77,13 @@ public class BattleFightManager {
 
                     battleManager.statusHUD.Show(characterToShow);
                     break;
-                case BattleManager.TurnStep.None:
+                case BattleState.TurnStep.None:
                     Next();
                     break;
             }
         }
 
-        if (battleManager.currentTurnStep == BattleManager.TurnStep.Direction) {
+        if (battleManager.battleState.currentTurnStep == BattleState.TurnStep.Direction) {
             if (InputManager.Up.IsKeyDown) {
                 selectedPlayerCharacter.direction = BoardCharacter.Direction.North;
             } else if (InputManager.Down.IsKeyDown) {
@@ -128,13 +128,13 @@ public class BattleFightManager {
     }
 
     // Called by BattleManager
-    public void EnterTurnStepNone(BattleManager.TurnStep previousTurnStep) {
+    public void EnterTurnStepNone(BattleState.TurnStep previousTurnStep) {
         switch (previousTurnStep) {
-            case BattleManager.TurnStep.Move:
-            case BattleManager.TurnStep.Attack:
+            case BattleState.TurnStep.Move:
+            case BattleState.TurnStep.Attack:
                 battleManager.EventOnLeavingMarkStep();
                 break;
-            case BattleManager.TurnStep.Status:
+            case BattleState.TurnStep.Status:
                 battleManager.fightHUD.SetActiveWithAnimation(true);
                 break;
         }
@@ -145,10 +145,10 @@ public class BattleFightManager {
     }
 
     // Called by BattleManager
-    public void EnterTurnStepStatus(BattleManager.TurnStep previousTurnStep) {
+    public void EnterTurnStepStatus(BattleState.TurnStep previousTurnStep) {
         switch (previousTurnStep) {
-            case BattleManager.TurnStep.Move:
-            case BattleManager.TurnStep.Attack:
+            case BattleState.TurnStep.Move:
+            case BattleState.TurnStep.Attack:
                 battleManager.EventOnLeavingMarkStep();
                 break;
         }
@@ -160,7 +160,7 @@ public class BattleFightManager {
 
     // Called by FightHUD
     public void Move() {
-        if (battleManager.currentTurnStep == BattleManager.TurnStep.Move) {
+        if (battleManager.battleState.currentTurnStep == BattleState.TurnStep.Move) {
             battleManager.EnterTurnStepNone();
         } else {
             battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
@@ -221,7 +221,7 @@ public class BattleFightManager {
 
     // Called by ActionMenu
     public void Attack() {
-        if (battleManager.currentTurnStep == BattleManager.TurnStep.Attack) {
+        if (battleManager.battleState.currentTurnStep == BattleState.TurnStep.Attack) {
             battleManager.EnterTurnStepNone();
         } else {
             battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
@@ -250,14 +250,14 @@ public class BattleFightManager {
     }
 
     private void EnterTurnStepEnemy() {
-        switch (battleManager.currentTurnStep) {
-            case BattleManager.TurnStep.Move:
-            case BattleManager.TurnStep.Attack:
+        switch (battleManager.battleState.currentTurnStep) {
+            case BattleState.TurnStep.Move:
+            case BattleState.TurnStep.Attack:
                 battleManager.EventOnLeavingMarkStep();
                 break;
         }
 
-        battleManager.currentTurnStep = BattleManager.TurnStep.Enemy;
+        battleManager.battleState.currentTurnStep = BattleState.TurnStep.Enemy;
 
         foreach (BoardCharacter enemy in battleManager.enemyCharacters) {
             enemy.NewTurn();
@@ -300,7 +300,7 @@ public class BattleFightManager {
 
     // Mark all squares where the character can move
     private void EnterTurnStepMove() {
-        battleManager.currentTurnStep = BattleManager.TurnStep.Move;
+        battleManager.battleState.currentTurnStep = BattleState.TurnStep.Move;
 
         battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
 
@@ -309,13 +309,13 @@ public class BattleFightManager {
 
     // Mark all squares the character can attack
     private void EnterTurnStepAttack() {
-        battleManager.currentTurnStep = BattleManager.TurnStep.Attack;
+        battleManager.battleState.currentTurnStep = BattleState.TurnStep.Attack;
 
         MarkSquares(1, Square.MarkType.Attack, true); // TODO [ALPHA] weapon range
     }
 
     public void EnterTurnStepDirection() {
-        battleManager.currentTurnStep = BattleManager.TurnStep.Direction;
+        battleManager.battleState.currentTurnStep = BattleState.TurnStep.Direction;
         battleManager.fightHUD.SetActiveWithAnimation(false);
 
         GameObject arrowsPrefab = Resources.Load<GameObject>("Arrows");

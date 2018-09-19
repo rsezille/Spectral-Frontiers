@@ -1,10 +1,10 @@
 ﻿using SF;
 
 public class BattleVictoryManager {
-    private BattleManager battleManager; // Shortcut for BattleManager.instance
+    private BattleManager battleManager;
 
-    public BattleVictoryManager() {
-        battleManager = BattleManager.instance;
+    public BattleVictoryManager(BattleManager battleManager) {
+        this.battleManager = battleManager;
     }
 
     // Called by BattleManager
@@ -19,7 +19,7 @@ public class BattleVictoryManager {
     }
 
     // Called by BattleManager
-    public void EnterTurnStepNone(BattleManager.TurnStep previousTurnStep) {}
+    public void EnterTurnStepNone(BattleState.TurnStep previousTurnStep) {}
 
     // Called by BattleManager
     public void EnterBattleStepVictory() {

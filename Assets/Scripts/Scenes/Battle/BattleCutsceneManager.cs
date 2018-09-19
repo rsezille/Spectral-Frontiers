@@ -12,7 +12,7 @@ public class BattleCutsceneManager {
         Opening, Ending
     }
 
-    private BattleManager battleManager; // Shortcut for BattleManager.instance
+    private BattleManager battleManager;
 
     private RawMission.Action[] actions;
     private Type type;
@@ -22,8 +22,8 @@ public class BattleCutsceneManager {
 
     private bool skipping = false;
 
-    public BattleCutsceneManager() {
-        battleManager = BattleManager.instance;
+    public BattleCutsceneManager(BattleManager battleManager) {
+        this.battleManager = battleManager;
     }
 
     // Called by BattleManager

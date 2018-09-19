@@ -5,12 +5,12 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class BattlePlacingManager {
-    private BattleManager battleManager; // Shortcut for BattleManager.instance
+    private BattleManager battleManager;
 
     private int placingCharIndex;
 
-    public BattlePlacingManager() {
-        battleManager = BattleManager.instance;
+    public BattlePlacingManager(BattleManager battleManager) {
+        this.battleManager = battleManager;
 
         placingCharIndex = 0;
     }
@@ -20,13 +20,13 @@ public class BattlePlacingManager {
         if (InputManager.Previous.IsKeyDown) {
             PreviousPlacingChar();
 
-            if (battleManager.currentTurnStep == BattleManager.TurnStep.Status) {
+            if (battleManager.battleState.currentTurnStep == BattleState.TurnStep.Status) {
                 battleManager.statusHUD.Show(GetCurrentPlacingChar());
             }
         } else if (InputManager.Next.IsKeyDown) {
             NextPlacingChar();
 
-            if (battleManager.currentTurnStep == BattleManager.TurnStep.Status) {
+            if (battleManager.battleState.currentTurnStep == BattleState.TurnStep.Status) {
                 battleManager.statusHUD.Show(GetCurrentPlacingChar());
             }
         } else if (InputManager.Special1.IsKeyDown && battleManager.playerCharacters.Count > 0) {
@@ -72,14 +72,14 @@ public class BattlePlacingManager {
     }
 
     // Called by BattleManager
-    public void EnterTurnStepNone(BattleManager.TurnStep previousTurnStep) {
-        if (previousTurnStep == BattleManager.TurnStep.Status) {
+    public void EnterTurnStepNone(BattleState.TurnStep previousTurnStep) {
+        if (previousTurnStep == BattleState.TurnStep.Status) {
             battleManager.placingHUD.SetActiveWithAnimation(true);
         }
     }
 
     // Called by BattleManager
-    public void EnterTurnStepStatus(BattleManager.TurnStep previousTurnStep) {
+    public void EnterTurnStepStatus(BattleState.TurnStep previousTurnStep) {
         battleManager.placingHUD.SetActiveWithAnimation(false);
 
         battleManager.statusHUD.Show(GetCurrentPlacingChar());

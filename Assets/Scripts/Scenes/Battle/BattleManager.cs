@@ -12,14 +12,13 @@ using UnityEngine;
 public class BattleManager : MonoBehaviour {
     private static BattleManager _instance;
 
+    [Header("Dependencies")]
+    public BattleState battleState;
+
     public enum BattleStep {
         Cutscene, Placing, Fight, Victory
     };
-    public enum TurnStep { // Placing: None or Status - Fight: None, Move, Attack, Skill, Item, Enemy, Status, Direction - Victory: None
-        None, Move, Attack, Skill, Item, Enemy, Status, Direction
-    };
-
-    [Header("Information")]
+    
     private BattleStep _currentBattleStep;
     public BattleStep currentBattleStep {
         get { return _currentBattleStep; }
@@ -65,17 +64,7 @@ public class BattleManager : MonoBehaviour {
         }
     }
 
-    private TurnStep _currentTurnStep;
-    public TurnStep currentTurnStep {
-        get { return _currentTurnStep; }
-        set {
-            if (_currentTurnStep != value) {
-                _currentTurnStep = value;
-                turnHUD.Check();
-            }
-        }
-    }
-
+    [Header("Data")]
     public int turn;
 
     public RawMission mission;
@@ -84,7 +73,7 @@ public class BattleManager : MonoBehaviour {
     public List<BoardCharacter> playerCharacters;
     public List<BoardCharacter> enemyCharacters;
 
-    [Header("Direct references")]
+    [Header("References")]
     public Board board;
     public BattleCamera battleCamera;
     public Background background;
@@ -141,10 +130,10 @@ public class BattleManager : MonoBehaviour {
 
     // Initialization
     private void Awake() {
-        placing = new BattlePlacingManager();
-        fight = new BattleFightManager();
-        victory = new BattleVictoryManager();
-        cutscene = new BattleCutsceneManager();
+        placing = new BattlePlacingManager(this);
+        fight = new BattleFightManager(this);
+        victory = new BattleVictoryManager(this);
+        cutscene = new BattleCutsceneManager(this);
 
         // Disable all HUD by default
         cutsceneHUD.gameObject.SetActive(false);
@@ -166,7 +155,7 @@ public class BattleManager : MonoBehaviour {
         battleCamera.ResetCameraSize();
         battleCamera.SetPosition(board.width / 2, board.height / 2);
         
-        currentTurnStep = TurnStep.None;
+        battleState.currentTurnStep = BattleState.TurnStep.None;
         turn = 0;
 
         currentBattleStep = BattleStep.Cutscene;
@@ -252,10 +241,10 @@ public class BattleManager : MonoBehaviour {
      * Common to Placing and Fight steps
      */
     public void EnterTurnStepStatus() {
-        if (currentTurnStep != TurnStep.Status) {
-            TurnStep previousTurnStep = currentTurnStep;
+        if (battleState.currentTurnStep != BattleState.TurnStep.Status) {
+            BattleState.TurnStep previousTurnStep = battleState.currentTurnStep;
 
-            currentTurnStep = TurnStep.Status;
+            battleState.currentTurnStep = BattleState.TurnStep.Status;
 
             switch (currentBattleStep) {
                 case BattleStep.Placing:
@@ -272,10 +261,10 @@ public class BattleManager : MonoBehaviour {
      * Common to Placing, Fight and Victory steps
      */
     public void EnterTurnStepNone() {
-        if (currentTurnStep != TurnStep.None) {
-            TurnStep previousTurnStep = currentTurnStep;
+        if (battleState.currentTurnStep != BattleState.TurnStep.None) {
+            BattleState.TurnStep previousTurnStep = battleState.currentTurnStep;
 
-            currentTurnStep = TurnStep.None;
+            battleState.currentTurnStep = BattleState.TurnStep.None;
 
             switch (currentBattleStep) {
                 case BattleStep.Placing:
