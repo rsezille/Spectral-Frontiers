@@ -104,7 +104,7 @@ public class Square : MonoBehaviour {
      * Triggered by Board (TileSelector)
      */
     public void MouseEnter() {
-        if (battleManager.currentBattleStep == BattleManager.BattleStep.Cutscene) return;
+        if (battleState.currentBattleStep == BattleState.BattleStep.Cutscene) return;
 
         if (colorAnimation != null) {
             colorAnimation.Pause();
@@ -114,7 +114,7 @@ public class Square : MonoBehaviour {
         battleManager.fightHUD.SquareHovered(this);
         tileSelector.color = overingColor;
 
-        if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing && markType == MarkType.Placing) {
+        if (battleState.currentBattleStep == BattleState.BattleStep.Placing && markType == MarkType.Placing) {
             tileSelector.color = new Color(placingStartColor.r, placingStartColor.g, placingStartColor.b, placingStartColor.a + 0.2f);
         } else if (battleState.currentTurnStep == BattleState.TurnStep.Move && markType == MarkType.Movement) {
             tileSelector.color = new Color(movementColor.r, movementColor.g + 0.2f, movementColor.b, movementColor.a);
@@ -127,7 +127,7 @@ public class Square : MonoBehaviour {
      * Triggered by Board (TileSelector)
      */
     public void MouseLeave() {
-        if (battleManager.currentBattleStep == BattleManager.BattleStep.Cutscene) return;
+        if (battleState.currentBattleStep == BattleState.BattleStep.Cutscene) return;
 
         battleManager.fightHUD.SquareHovered(null);
 
@@ -142,14 +142,14 @@ public class Square : MonoBehaviour {
      * Triggered by Board (TileSelector)
      */
     public void Click() {
-        switch (battleManager.currentBattleStep) {
-            case BattleManager.BattleStep.Placing:
+        switch (battleState.currentBattleStep) {
+            case BattleState.BattleStep.Placing:
                 if (markType == MarkType.Placing && IsNotBlocking()) {
                     BattleManager.instance.placing.PlaceMapChar(this);
                 }
 
                 break;
-            case BattleManager.BattleStep.Fight:
+            case BattleState.BattleStep.Fight:
                 if (battleState.currentTurnStep == BattleState.TurnStep.Move && markType == MarkType.Movement) {
                     battleManager.fight.selectedPlayerCharacter.MoveTo(this);
                 } else if (battleState.currentTurnStep == BattleState.TurnStep.Attack && markType == MarkType.Attack) {

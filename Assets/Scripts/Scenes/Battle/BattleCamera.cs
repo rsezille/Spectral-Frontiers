@@ -22,7 +22,7 @@ public class BattleCamera : MonoBehaviour {
     }
 
     private void Update() {
-        if (BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Cutscene
+        if (battleState.currentBattleStep == BattleState.BattleStep.Cutscene
                 || battleState.currentTurnStep == BattleState.TurnStep.Enemy) {
             return;
         }

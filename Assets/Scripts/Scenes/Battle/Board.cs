@@ -34,7 +34,7 @@ public class Board : MonoBehaviour {
      */
     private void Update() {
         if (battleState.currentTurnStep != BattleState.TurnStep.Status &&
-                (BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Placing || BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Fight)) {
+                (battleState.currentBattleStep == BattleState.BattleStep.Placing || battleState.currentBattleStep == BattleState.BattleStep.Fight)) {
             Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             MouseReactive entityHit = null;

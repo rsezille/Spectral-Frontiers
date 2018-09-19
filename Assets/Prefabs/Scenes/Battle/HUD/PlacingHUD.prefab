@@ -550,6 +550,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cc391cc983fed9449fedd3bae33c0a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  battleState: {fileID: 11400000, guid: 6f13aad577670964f9d877e5216305e0, type: 2}
   previousCharText: {fileID: 114905378958727276}
   nextCharText: {fileID: 114605722976675836}
   currentCharText: {fileID: 114181154318541012}

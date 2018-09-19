@@ -36,7 +36,7 @@ public class Arrows : MonoBehaviour {
     }
 
     private void ChangeDirection(BoardCharacter.Direction direction) {
-        if (battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleState.currentTurnStep == BattleState.TurnStep.Direction) {
+        if (battleState.currentBattleStep == BattleState.BattleStep.Fight && battleState.currentTurnStep == BattleState.TurnStep.Direction) {
             battleManager.fight.selectedPlayerCharacter.direction = direction;
         }
     }

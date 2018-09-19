@@ -30,7 +30,7 @@ public class BattlePlacingManager {
                 battleManager.statusHUD.Show(GetCurrentPlacingChar());
             }
         } else if (InputManager.Special1.IsKeyDown && battleManager.playerCharacters.Count > 0) {
-            battleManager.currentBattleStep = BattleManager.BattleStep.Fight;
+            battleManager.battleState.currentBattleStep = BattleState.BattleStep.Fight;
         }
     }
 
@@ -152,7 +152,7 @@ public class BattlePlacingManager {
     }
 
     public void RemoveCurrentMapChar() {
-        if (battleManager.currentBattleStep != BattleManager.BattleStep.Placing) {
+        if (battleManager.battleState.currentBattleStep != BattleState.BattleStep.Placing) {
             return;
         }
 
@@ -205,7 +205,7 @@ public class BattlePlacingManager {
      * Place the current character on the specified tile
      */
     public void PlaceMapChar(Square square) {
-        if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing) {
+        if (battleManager.battleState.currentBattleStep == BattleState.BattleStep.Placing) {
             if (square.IsNotBlocking()) {
                 if (GetCurrentPlacingChar().boardCharacter != null) {
                     GetCurrentPlacingChar().boardCharacter.SetSquare(square);

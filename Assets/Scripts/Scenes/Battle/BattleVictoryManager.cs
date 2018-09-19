@@ -15,7 +15,7 @@ public class BattleVictoryManager {
     }
 
     public void Next() {
-        battleManager.currentBattleStep = BattleManager.BattleStep.Cutscene;
+        battleManager.battleState.currentBattleStep = BattleState.BattleStep.Cutscene;
     }
 
     // Called by BattleManager

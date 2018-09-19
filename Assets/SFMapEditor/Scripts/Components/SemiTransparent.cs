@@ -9,6 +9,10 @@ namespace SF {
         private BattleManager battleManager;
         private SpriteRenderer spriteRenderer;
 
+        [Header("Dependencies")]
+        public BattleState battleState;
+
+        [Header("Data")]
         // Because several objects can trigger the opacity change, we need to store the count of those objects
         public int transparentObjectsCount = 0;
         private bool hideCharacter = false;
@@ -32,7 +36,7 @@ namespace SF {
          * Triggered by Board and also by other objects (board character...)
          */
         public void MouseEnter() {
-            if (battleManager.currentBattleStep == BattleManager.BattleStep.Cutscene || Time.timeScale == 0) return;
+            if (battleState.currentBattleStep == BattleState.BattleStep.Cutscene || Time.timeScale == 0) return;
 
             spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 0.5f);
             
@@ -43,7 +47,7 @@ namespace SF {
          * Triggered by Board and also by other objects (board character...)
          */
         public void MouseLeave() {
-            if (battleManager.currentBattleStep == BattleManager.BattleStep.Cutscene) return;
+            if (battleState.currentBattleStep == BattleState.BattleStep.Cutscene) return;
 
             transparentObjectsCount = Mathf.Min(0, transparentObjectsCount - 1);
 

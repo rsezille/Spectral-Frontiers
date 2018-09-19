@@ -4,7 +4,7 @@ namespace SF {
     [CreateAssetMenu(menuName = "SF/Systems/BattleState")]
     public class BattleState : ScriptableObject {
         public enum BattleStep {
-            Cutscene, Placing, Fight, Victory
+            None, Cutscene, Placing, Fight, Victory
         };
         public enum TurnStep { // Placing: None or Status - Fight: None, Move, Attack, Skill, Item, Enemy, Status, Direction - Victory: None
             None, Move, Attack, Skill, Item, Enemy, Status, Direction
@@ -20,13 +20,23 @@ namespace SF {
         public BattleStep currentBattleStep {
             get { return _currentBattleStep; }
             set {
-                BattleStep previousBattleStep = _currentBattleStep;
-
                 LeaveBattleStepEvent.Raise(_currentBattleStep);
 
+                previousBattleStep = _currentBattleStep;
                 _currentBattleStep = value;
 
                 EnterBattleStepEvent.Raise(_currentBattleStep);
+            }
+        }
+
+        [SerializeField]
+        private BattleStep _previousBattleStep;
+        public BattleStep previousBattleStep {
+            private set {
+                _previousBattleStep = value;
+            }
+            get {
+                return _previousBattleStep;
             }
         }
 
@@ -40,6 +50,11 @@ namespace SF {
                     //turnHUD.Check();
                 }
             }
+        }
+
+        public void ResetBattle() {
+            _currentBattleStep = BattleStep.None;
+            _currentTurnStep = TurnStep.None;
         }
     }
 }

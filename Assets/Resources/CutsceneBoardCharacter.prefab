@@ -105,12 +105,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a93e00a7dade39346bacc1bd7ed95bc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  battleState: {fileID: 11400000, guid: 6f13aad577670964f9d877e5216305e0, type: 2}
   enemyOrNeutralSpritePrefab: {fileID: 1633512145816250, guid: 3eaf92174d6d63e42a2f13747889d7a4,
     type: 2}
   sprite: {fileID: 0}
   side: {fileID: 0}
-  outline: {fileID: 0}
+  glow: {fileID: 0}
   movable: {fileID: 0}
   actionable: {fileID: 0}
   AI: {fileID: 0}
+  shadow: {fileID: 0}
   isMoving: 0

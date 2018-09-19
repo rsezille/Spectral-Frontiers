@@ -7,6 +7,10 @@ using UnityEngine.UI;
 public class PlacingHUD : MonoBehaviour {
     private BattleManager battleManager;
 
+    [Header("Dependencies")]
+    public BattleState battleState;
+
+    [Header("References")]
     public Text previousCharText;
     public Text nextCharText;
     public Text currentCharText;
@@ -30,7 +34,7 @@ public class PlacingHUD : MonoBehaviour {
     }
 
     private void Update() {
-        if (battleManager.currentBattleStep != BattleManager.BattleStep.Placing) return;
+        if (battleState.currentBattleStep != BattleState.BattleStep.Placing) return;
 
         // Remove button
         if (battleManager.placing.GetCurrentPlacingChar().boardCharacter != null && !removeButton.activeSelf) {

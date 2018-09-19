@@ -18,12 +18,12 @@ public class TemporaryHUD : MonoBehaviour {
     private void Update() {
         text.text = "Version: " + Application.version + "\n";
         text.text += "-------------------\n";
-        text.text += "Battle step: " + battleManager.currentBattleStep + "\n";
+        text.text += "Battle step: " + battleState.currentBattleStep + "\n";
 
-        if (battleManager.currentBattleStep == BattleManager.BattleStep.Fight) {
+        if (battleState.currentBattleStep == BattleState.BattleStep.Fight) {
             text.text += "Fight step: " + battleState.currentTurnStep + "\n";
             text.text += "Turn: " + battleManager.turn + "\n";
-        } else if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing) {
+        } else if (battleState.currentBattleStep == BattleState.BattleStep.Placing) {
             text.text += "Placed characters: " + battleManager.playerCharacters.Count + "/" + battleManager.mission.maxPlayerCharacters + "\n";
         }
     }

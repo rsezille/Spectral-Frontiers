@@ -177,8 +177,8 @@ public class BoardCharacter : MonoBehaviour {
     public void MouseLeave() {
         battleManager.fightHUD.SquareHovered(null);
 
-        if ((battleManager.currentBattleStep == BattleManager.BattleStep.Placing && battleManager.placing.GetCurrentPlacingChar().boardCharacter != this
-                || battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleManager.fight.selectedPlayerCharacter != this) && glow != null) {
+        if ((battleState.currentBattleStep == BattleState.BattleStep.Placing && battleManager.placing.GetCurrentPlacingChar().boardCharacter != this
+                || battleState.currentBattleStep == BattleState.BattleStep.Fight && battleManager.fight.selectedPlayerCharacter != this) && glow != null) {
             glow.Disable();
         }
     }
@@ -188,15 +188,15 @@ public class BoardCharacter : MonoBehaviour {
      */
     public void Click() {
         if (side.value == Side.Type.Player) {
-            if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing) {
+            if (battleState.currentBattleStep == BattleState.BattleStep.Placing) {
                 // Focus the clicked character as the current one to place
                 battleManager.placing.SetCurrentPlacingChar(character);
-            } else if (battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleState.currentTurnStep == BattleState.TurnStep.None) {
+            } else if (battleState.currentBattleStep == BattleState.BattleStep.Fight && battleState.currentTurnStep == BattleState.TurnStep.None) {
                 battleManager.fight.selectedPlayerCharacter = this;
             }
         }
 
-        if (battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleState.currentTurnStep == BattleState.TurnStep.Attack) {
+        if (battleState.currentBattleStep == BattleState.BattleStep.Fight && battleState.currentTurnStep == BattleState.TurnStep.Attack) {
             if (GetSquare().markType == Square.MarkType.Attack) {
                 battleManager.fight.selectedPlayerCharacter.BasicAttack(this);
                 battleManager.EnterTurnStepNone();
@@ -354,13 +354,13 @@ public class BoardCharacter : MonoBehaviour {
 
         StopAllCoroutines();
 
-        if (side.value == Side.Type.Player && (battleManager.currentBattleStep == BattleManager.BattleStep.Placing || battleManager.currentBattleStep == BattleManager.BattleStep.Fight)) {
+        if (side.value == Side.Type.Player && (battleState.currentBattleStep == BattleState.BattleStep.Placing || battleState.currentBattleStep == BattleState.BattleStep.Fight)) {
             battleManager.playerCharacters.Remove(this);
-        } else if (side.value == Side.Type.Enemy && battleManager.currentBattleStep == BattleManager.BattleStep.Fight) {
+        } else if (side.value == Side.Type.Enemy && battleState.currentBattleStep == BattleState.BattleStep.Fight) {
             battleManager.enemyCharacters.Remove(this);
         }
 
-        if (battleManager.currentBattleStep == BattleManager.BattleStep.Fight) {
+        if (battleState.currentBattleStep == BattleState.BattleStep.Fight) {
             battleManager.CheckEndBattle();
         }
 

@@ -34,7 +34,7 @@ public class BattleCutsceneManager {
     }
 
     public void SkipCutscene() {
-        if (skipping || battleManager.currentBattleStep != BattleManager.BattleStep.Cutscene) return;
+        if (skipping || battleManager.battleState.currentBattleStep != BattleState.BattleStep.Cutscene) return;
 
         skipping = true;
 
@@ -115,7 +115,7 @@ public class BattleCutsceneManager {
             transitionImage.color = new Color(Color.black.r, Color.black.g, Color.black.b, 0f);
 
             transitionImage.DOColor(Color.black, 0.5f).OnComplete(() => {
-                battleManager.currentBattleStep = BattleManager.BattleStep.Placing;
+                battleManager.battleState.currentBattleStep = BattleState.BattleStep.Placing;
 
                 transitionImage.DOColor(new Color(Color.black.r, Color.black.g, Color.black.b, 0f), 0.5f).OnComplete(() => {
                     Object.Destroy(transition);

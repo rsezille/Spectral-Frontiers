@@ -15,55 +15,6 @@ public class BattleManager : MonoBehaviour {
     [Header("Dependencies")]
     public BattleState battleState;
 
-    public enum BattleStep {
-        Cutscene, Placing, Fight, Victory
-    };
-    
-    private BattleStep _currentBattleStep;
-    public BattleStep currentBattleStep {
-        get { return _currentBattleStep; }
-        set {
-            BattleStep previousBattleStep = _currentBattleStep;
-
-            switch (_currentBattleStep) {
-                case BattleStep.Placing:
-                    placing.LeaveBattleStepPlacing();
-                    break;
-                case BattleStep.Fight:
-                    fight.LeaveBattleStepFight();
-                    break;
-                case BattleStep.Victory:
-                    victory.LeaveBattleStepVictory();
-                    break;
-                case BattleStep.Cutscene:
-                    cutscene.LeaveBattleStepCutscene();
-                    break;
-            }
-
-            _currentBattleStep = value;
-
-            switch (value) {
-                case BattleStep.Placing:
-                    placing.EnterBattleStepPlacing();
-                    break;
-                case BattleStep.Fight:
-                    fight.EnterBattleStepFight();
-                    break;
-                case BattleStep.Victory:
-                    victory.EnterBattleStepVictory();
-                    break;
-                case BattleStep.Cutscene:
-                    if (previousBattleStep == BattleStep.Victory) {
-                        cutscene.EnterBattleStepCutscene(BattleCutsceneManager.Type.Ending);
-                    } else {
-                        cutscene.EnterBattleStepCutscene(BattleCutsceneManager.Type.Opening);
-                    }
-
-                    break;
-            }
-        }
-    }
-
     [Header("Data")]
     public int turn;
 
@@ -144,9 +95,11 @@ public class BattleManager : MonoBehaviour {
         pausedHUD.gameObject.SetActive(false);
         turnHUD.gameObject.SetActive(false);
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         previousScreenResolution = new Vector2Int(Screen.width, Screen.height);
-        #endif
+#endif
+
+        battleState.ResetBattle();
     }
 
     private void Start() {
@@ -155,10 +108,9 @@ public class BattleManager : MonoBehaviour {
         battleCamera.ResetCameraSize();
         battleCamera.SetPosition(board.width / 2, board.height / 2);
         
-        battleState.currentTurnStep = BattleState.TurnStep.None;
         turn = 0;
 
-        currentBattleStep = BattleStep.Cutscene;
+        battleState.currentBattleStep = BattleState.BattleStep.Cutscene;
 
         Time.timeScale = PlayerOptions.GetFloat(PlayerOptions.BattleSpeed);
     }
@@ -184,17 +136,17 @@ public class BattleManager : MonoBehaviour {
             }
         }
 
-        switch (currentBattleStep) {
-            case BattleStep.Cutscene:
+        switch (battleState.currentBattleStep) {
+            case BattleState.BattleStep.Cutscene:
                 cutscene.Update();
                 break;
-            case BattleStep.Placing:
+            case BattleState.BattleStep.Placing:
                 placing.Update();
                 break;
-            case BattleStep.Fight:
+            case BattleState.BattleStep.Fight:
                 fight.Update();
                 break;
-            case BattleStep.Victory:
+            case BattleState.BattleStep.Victory:
                 victory.Update();
                 break;
         }
@@ -246,11 +198,11 @@ public class BattleManager : MonoBehaviour {
 
             battleState.currentTurnStep = BattleState.TurnStep.Status;
 
-            switch (currentBattleStep) {
-                case BattleStep.Placing:
+            switch (battleState.currentBattleStep) {
+                case BattleState.BattleStep.Placing:
                     placing.EnterTurnStepStatus(previousTurnStep);
                     break;
-                case BattleStep.Fight:
+                case BattleState.BattleStep.Fight:
                     fight.EnterTurnStepStatus(previousTurnStep);
                     break;
             }
@@ -266,14 +218,14 @@ public class BattleManager : MonoBehaviour {
 
             battleState.currentTurnStep = BattleState.TurnStep.None;
 
-            switch (currentBattleStep) {
-                case BattleStep.Placing:
+            switch (battleState.currentBattleStep) {
+                case BattleState.BattleStep.Placing:
                     placing.EnterTurnStepNone(previousTurnStep);
                     break;
-                case BattleStep.Fight:
+                case BattleState.BattleStep.Fight:
                     fight.EnterTurnStepNone(previousTurnStep);
                     break;
-                case BattleStep.Victory:
+                case BattleState.BattleStep.Victory:
                     victory.EnterTurnStepNone(previousTurnStep);
                     break;
             }
@@ -284,7 +236,7 @@ public class BattleManager : MonoBehaviour {
      * Return true if the battle has ended
      */
     public bool CheckEndBattle() {
-        if (currentBattleStep != BattleStep.Fight) {
+        if (battleState.currentBattleStep != BattleState.BattleStep.Fight) {
             return false;
         }
 
@@ -293,7 +245,7 @@ public class BattleManager : MonoBehaviour {
         }
 
         if (playerCharacters.Count > 0 && enemyCharacters.Count == 0) { // The player wins
-            currentBattleStep = BattleStep.Victory;
+            battleState.currentBattleStep = BattleState.BattleStep.Victory;
 
             return true;
         } else if (playerCharacters.Count == 0 && enemyCharacters.Count > 0) { // The enemy wins
@@ -317,5 +269,44 @@ public class BattleManager : MonoBehaviour {
         yield return new WaitForSeconds(1f);
 
         GameManager.instance.LoadSceneAsync(Scenes.GameOver);
+    }
+
+    public void OnEnterBattleStepEvent(BattleState.BattleStep battleStep) {
+        switch (battleStep) {
+            case BattleState.BattleStep.Placing:
+                placing.EnterBattleStepPlacing();
+                break;
+            case BattleState.BattleStep.Fight:
+                fight.EnterBattleStepFight();
+                break;
+            case BattleState.BattleStep.Victory:
+                victory.EnterBattleStepVictory();
+                break;
+            case BattleState.BattleStep.Cutscene:
+                if (battleState.previousBattleStep == BattleState.BattleStep.Victory) {
+                    cutscene.EnterBattleStepCutscene(BattleCutsceneManager.Type.Ending);
+                } else {
+                    cutscene.EnterBattleStepCutscene(BattleCutsceneManager.Type.Opening);
+                }
+
+                break;
+        }
+    }
+
+    public void OnLeaveBattleStepEvent(BattleState.BattleStep battleStep) {
+        switch (battleStep) {
+            case BattleState.BattleStep.Placing:
+                placing.LeaveBattleStepPlacing();
+                break;
+            case BattleState.BattleStep.Fight:
+                fight.LeaveBattleStepFight();
+                break;
+            case BattleState.BattleStep.Victory:
+                victory.LeaveBattleStepVictory();
+                break;
+            case BattleState.BattleStep.Cutscene:
+                cutscene.LeaveBattleStepCutscene();
+                break;
+        }
     }
 }
