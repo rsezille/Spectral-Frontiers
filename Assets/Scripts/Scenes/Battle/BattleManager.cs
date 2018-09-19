@@ -15,11 +15,10 @@ public class BattleManager : MonoBehaviour {
     [Header("Dependencies")]
     public BattleState battleState;
     public BattleCharacters battleCharacters;
+    public MissionVariable missionToLoad;
 
     [Header("Data")]
     public int turn;
-
-    public RawMission mission;
 
     [Header("References")]
     public Board board;
@@ -181,10 +180,9 @@ public class BattleManager : MonoBehaviour {
     }
 
     public void LoadMission() {
-        mission = GameManager.instance.GetMissionToLoad();
-        board.LoadMap(mission);
-        background.Load(mission.background);
-        sunLight.Load(mission.lighting);
+        board.LoadMap(missionToLoad.value);
+        background.Load(missionToLoad.value.background);
+        sunLight.Load(missionToLoad.value.lighting);
     }
 
     /**

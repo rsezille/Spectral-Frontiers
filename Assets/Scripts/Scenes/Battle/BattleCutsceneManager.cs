@@ -86,7 +86,7 @@ public class BattleCutsceneManager {
         skipping = false;
         battleManager.cutsceneHUD.gameObject.SetActive(true);
 
-        actions = type == Type.Opening ? battleManager.mission.openingCutscene : battleManager.mission.endingCutscene;
+        actions = type == Type.Opening ? battleManager.missionToLoad.value.openingCutscene : battleManager.missionToLoad.value.endingCutscene;
 
         if (actions.Length > 0) {
             cutsceneCoroutine = battleManager.StartCoroutine(ProcessCutscene());

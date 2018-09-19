@@ -111,27 +111,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   battleState: {fileID: 11400000, guid: 6f13aad577670964f9d877e5216305e0, type: 2}
   battleCharacters: {fileID: 11400000, guid: 6020ed34a2f75cb4f81732c57a2dc0cf, type: 2}
+  missionToLoad: {fileID: 11400000, guid: 68f1ff2b65824f24a98b59c7eb37bead, type: 2}
   turn: 0
-  mission:
-    id: 
-    map: 
-    maxPlayerCharacters: 1
-    isStoryline: 0
-    background:
-      preset: 
-      mainColor: 
-      off1Color: 
-      off2Color: 
-      type: 
-    lighting: 
-    parents: []
-    children: []
-    enemies: []
-    openingCutscene: []
-    endingCutscene: []
-    startingSquares: []
-  playerCharacters: []
-  enemyCharacters: []
   board: {fileID: 0}
   battleCamera: {fileID: 0}
   background: {fileID: 0}

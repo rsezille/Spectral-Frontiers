@@ -9,7 +9,7 @@ public class InGameManager : MonoBehaviour {
     }
 
     private void TestMission() {
-        GameManager.instance.missionToLoad = "story_01";
+        //GameManager.instance.missionToLoad = "story_01";
         GameManager.instance.LoadSceneAsync(Scenes.Battle);
     }
 }

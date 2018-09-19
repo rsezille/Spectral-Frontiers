@@ -16,10 +16,7 @@ public class GameManager : MonoBehaviour {
 
     public Player player;
 
-    private Dictionary<string, RawMission> missions;
-
-    [HideInInspector]
-    public string missionToLoad;
+    public Dictionary<string, RawMission> missions;
 
     [SerializeField]
     private DialogBox dialogBoxPrefab;
@@ -74,17 +71,7 @@ public class GameManager : MonoBehaviour {
             missions.Add(mission.id, mission);
         }
     }
-
-    public RawMission GetMissionToLoad() {
-        if (missions.ContainsKey(missionToLoad)) {
-            return missions[missionToLoad];
-        } else {
-            Debug.LogError("MissionToLoad not found");
-
-            return null;
-        }
-    }
-
+    
     /**
      * TODO [BETA] Add a loading screen between scenes (or on purpose, for example when loading a mission (BattleScene)
      */

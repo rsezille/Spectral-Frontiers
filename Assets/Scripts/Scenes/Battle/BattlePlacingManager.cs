@@ -36,7 +36,7 @@ public class BattlePlacingManager {
 
     // Called by BattleManager
     public void EnterBattleStepPlacing() {
-        foreach (RawMission.RawEnemy enemy in battleManager.mission.enemies) {
+        foreach (RawMission.RawEnemy enemy in battleManager.missionToLoad.value.enemies) {
             Character enemyChar = new Character(enemy.key);
 
             BoardCharacter enemyTemplate = Resources.Load("Monsters/" + enemy.key, typeof(BoardCharacter)) as BoardCharacter;
@@ -49,12 +49,12 @@ public class BattlePlacingManager {
             battleManager.battleCharacters.enemy.Add(enemyBC);
         }
 
-        foreach (RawMission.RawStartingSquare startingSquare in battleManager.mission.startingSquares) {
+        foreach (RawMission.RawStartingSquare startingSquare in battleManager.missionToLoad.value.startingSquares) {
             battleManager.board.GetSquare(startingSquare.posX, startingSquare.posY).markType = Square.MarkType.Placing;
         }
         
         battleManager.placingHUD.SetActiveWithAnimation(true, HUD.Speed.Slow);
-        battleManager.battleCamera.SetPosition(battleManager.mission.startingSquares[0].posX, battleManager.mission.startingSquares[0].posY, true);
+        battleManager.battleCamera.SetPosition(battleManager.missionToLoad.value.startingSquares[0].posX, battleManager.missionToLoad.value.startingSquares[0].posY, true);
 
         battleManager.EventOnEnterPlacing();
     }
@@ -212,7 +212,7 @@ public class BattlePlacingManager {
                     GetCurrentPlacingChar().boardCharacter.glow.Enable();
                     GetCurrentPlacingChar().boardCharacter.direction = square.startingDirection;
                 } else {
-                    if (battleManager.battleCharacters.player.Count >= battleManager.mission.maxPlayerCharacters) {
+                    if (battleManager.battleCharacters.player.Count >= battleManager.missionToLoad.value.maxPlayerCharacters) {
                         return;
                     }
 
