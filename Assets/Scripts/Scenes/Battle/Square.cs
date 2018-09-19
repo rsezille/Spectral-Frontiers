@@ -5,12 +5,16 @@ using UnityEngine.Rendering;
 
 [RequireComponent(typeof(SortingGroup))]
 public class Square : MonoBehaviour {
-    private BattleManager battleManager;
-
     public enum MarkType {
         None, Movement, Attack, Skill, Item, Placing
     };
 
+    private BattleManager battleManager;
+
+    [Header("Dependencies")]
+    public BattleState battleState;
+
+    [Header("Data")]
     // Positionning
     public int x; // X coordinate of the tile inside the board
     public int y; // Y coordinate of the tile inside the board
@@ -112,9 +116,9 @@ public class Square : MonoBehaviour {
 
         if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing && markType == MarkType.Placing) {
             tileSelector.color = new Color(placingStartColor.r, placingStartColor.g, placingStartColor.b, placingStartColor.a + 0.2f);
-        } else if (battleManager.currentTurnStep == BattleManager.TurnStep.Move && markType == MarkType.Movement) {
+        } else if (battleState.currentTurnStep == BattleState.TurnStep.Move && markType == MarkType.Movement) {
             tileSelector.color = new Color(movementColor.r, movementColor.g + 0.2f, movementColor.b, movementColor.a);
-        } else if (battleManager.currentTurnStep == BattleManager.TurnStep.Attack && markType == MarkType.Attack) {
+        } else if (battleState.currentTurnStep == BattleState.TurnStep.Attack && markType == MarkType.Attack) {
             tileSelector.color = new Color(attackColor.r, attackColor.g, attackColor.b, attackColor.a + 0.2f);
         }
     }
@@ -146,9 +150,9 @@ public class Square : MonoBehaviour {
 
                 break;
             case BattleManager.BattleStep.Fight:
-                if (battleManager.currentTurnStep == BattleManager.TurnStep.Move && markType == MarkType.Movement) {
+                if (battleState.currentTurnStep == BattleState.TurnStep.Move && markType == MarkType.Movement) {
                     battleManager.fight.selectedPlayerCharacter.MoveTo(this);
-                } else if (battleManager.currentTurnStep == BattleManager.TurnStep.Attack && markType == MarkType.Attack) {
+                } else if (battleState.currentTurnStep == BattleState.TurnStep.Attack && markType == MarkType.Attack) {
                     battleManager.fight.selectedPlayerCharacter.BasicAttack(boardEntity.GetComponent<BoardCharacter>());
                     battleManager.EnterTurnStepNone();
                 }
