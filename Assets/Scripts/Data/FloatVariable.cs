@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(menuName = "SF/FloatVariable")]
-public class FloatVariable : ScriptableObject {
+namespace SF {
+    [CreateAssetMenu(menuName = "SF/FloatVariable")]
+    public class FloatVariable : ScriptableObject {
 #if UNITY_EDITOR
-    [Multiline]
-    public string internalNotes = "";
+        [Multiline]
+        public string internalNotes = "";
 #endif
-    public float value;
+
+        public float value;
+    }
 }
