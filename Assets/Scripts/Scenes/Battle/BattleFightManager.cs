@@ -238,7 +238,6 @@ public class BattleFightManager {
         }
 
         battleManager.sunLight.NewTurn();
-        battleManager.turn++;
 
         foreach (BoardCharacter bc in battleManager.battleCharacters.player) {
             bc.NewTurn();

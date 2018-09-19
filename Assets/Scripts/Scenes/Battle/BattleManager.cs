@@ -17,9 +17,6 @@ public class BattleManager : MonoBehaviour {
     public BattleCharacters battleCharacters;
     public MissionVariable missionToLoad;
 
-    [Header("Data")]
-    public int turn;
-
     [Header("References")]
     public Board board;
     public BattleCamera battleCamera;
@@ -104,8 +101,6 @@ public class BattleManager : MonoBehaviour {
 
         battleCamera.ResetCameraSize();
         battleCamera.SetPosition(board.width / 2, board.height / 2);
-        
-        turn = 0;
 
         battleState.currentBattleStep = BattleState.BattleStep.Cutscene;
 

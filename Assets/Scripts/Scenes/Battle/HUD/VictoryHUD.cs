@@ -15,7 +15,7 @@ public class VictoryHUD : MonoBehaviour {
         float fSpeed = (int)speed / 1000f;
 
         if (active) {
-            detailsText.SetText("Turns: " + BattleManager.instance.turn);
+            detailsText.SetText("Pouet");
 
             gameObject.transform.localScale = Vector3.zero;
             gameObject.SetActive(true);
