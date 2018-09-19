@@ -15,9 +15,13 @@ public class BoardCharacter : MonoBehaviour {
 
     private BattleManager battleManager;
 
+    [Header("Dependencies")]
+    public BattleState battleState;
+
     public Character character;
     private GameObject spriteContainer;
 
+    [Header("Data")]
     public GameObject enemyOrNeutralSpritePrefab;
 
     // Components
@@ -187,12 +191,12 @@ public class BoardCharacter : MonoBehaviour {
             if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing) {
                 // Focus the clicked character as the current one to place
                 battleManager.placing.SetCurrentPlacingChar(character);
-            } else if (battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleManager.currentTurnStep == BattleManager.TurnStep.None) {
+            } else if (battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleState.currentTurnStep == BattleState.TurnStep.None) {
                 battleManager.fight.selectedPlayerCharacter = this;
             }
         }
 
-        if (battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleManager.currentTurnStep == BattleManager.TurnStep.Attack) {
+        if (battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleState.currentTurnStep == BattleState.TurnStep.Attack) {
             if (GetSquare().markType == Square.MarkType.Attack) {
                 battleManager.fight.selectedPlayerCharacter.BasicAttack(this);
                 battleManager.EnterTurnStepNone();
@@ -271,7 +275,7 @@ public class BoardCharacter : MonoBehaviour {
         isMoving = true;
         float duration = 0.5f;
 
-        if (battleManager.currentTurnStep != BattleManager.TurnStep.Enemy && !inCutscene) {
+        if (battleState.currentTurnStep != BattleState.TurnStep.Enemy && !inCutscene) {
             battleManager.EventOnLeavingMarkStep();
         }
 
@@ -338,7 +342,7 @@ public class BoardCharacter : MonoBehaviour {
 
         isMoving = false;
 
-        if (battleManager.currentTurnStep != BattleManager.TurnStep.Enemy && !inCutscene) {
+        if (battleState.currentTurnStep != BattleState.TurnStep.Enemy && !inCutscene) {
             battleManager.fight.EnterTurnStepDirection();
             battleManager.EventOnSemiTransparentReset();
         }

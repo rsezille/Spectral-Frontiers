@@ -3,7 +3,10 @@ using TMPro;
 using UnityEngine;
 
 public class TurnHUD : MonoBehaviour {
-    [Header("Direct references")]
+    [Header("Dependencies")]
+    public BattleState battleState;
+
+    [Header("References")]
     public TextMeshProUGUI text;
 
     private void Start() {
@@ -11,7 +14,7 @@ public class TurnHUD : MonoBehaviour {
     }
 
     public void Check() {
-        if (BattleManager.instance.currentTurnStep == BattleManager.TurnStep.Enemy) {
+        if (battleState.currentTurnStep == BattleState.TurnStep.Enemy) {
             text.SetText(LanguageManager.instance.GetString("battle.hud.turn.enemy"));
         } else {
             text.SetText(LanguageManager.instance.GetString("battle.hud.turn.your"));

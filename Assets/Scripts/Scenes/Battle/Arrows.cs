@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using SF;
+using UnityEngine;
 using UnityEngine.Events;
 
 /**
@@ -7,6 +8,10 @@ using UnityEngine.Events;
 public class Arrows : MonoBehaviour {
     private BattleManager battleManager; // Shortcut
 
+    [Header("Dependencies")]
+    public BattleState battleState;
+
+    [Header("References")]
     public GameObject north;
     public GameObject west;
     public GameObject east;
@@ -31,7 +36,7 @@ public class Arrows : MonoBehaviour {
     }
 
     private void ChangeDirection(BoardCharacter.Direction direction) {
-        if (battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleManager.currentTurnStep == BattleManager.TurnStep.Direction) {
+        if (battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleState.currentTurnStep == BattleState.TurnStep.Direction) {
             battleManager.fight.selectedPlayerCharacter.direction = direction;
         }
     }

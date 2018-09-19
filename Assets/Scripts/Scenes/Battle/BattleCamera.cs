@@ -7,6 +7,10 @@ public class BattleCamera : MonoBehaviour {
     private BattleManager battleManager;
     private Camera battleCamera;
 
+    [Header("Dependencies")]
+    public BattleState battleState;
+
+    [Header("Data")]
     // Camera speed
     public float speed = 7f;
 
@@ -19,7 +23,7 @@ public class BattleCamera : MonoBehaviour {
 
     private void Update() {
         if (BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Cutscene
-                || BattleManager.instance.currentTurnStep == BattleManager.TurnStep.Enemy) {
+                || battleState.currentTurnStep == BattleState.TurnStep.Enemy) {
             return;
         }
 

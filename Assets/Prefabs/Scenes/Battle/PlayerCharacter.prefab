@@ -8,15 +8,15 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications: []
     m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 0}
+  m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1878317023255400}
-  m_IsPrefabParent: 1
+  m_IsPrefabAsset: 1
 --- !u!1 &1878317023255400
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 4888183289414972}
   - component: {fileID: 114098185219839834}
@@ -37,7 +37,7 @@ GameObject:
 --- !u!4 &4888183289414972
 Transform:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1878317023255400}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -50,7 +50,7 @@ Transform:
 --- !u!114 &114052589186591142
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1878317023255400}
   m_Enabled: 1
@@ -58,16 +58,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a93e00a7dade39346bacc1bd7ed95bc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  battleState: {fileID: 11400000, guid: 6f13aad577670964f9d877e5216305e0, type: 2}
+  enemyOrNeutralSpritePrefab: {fileID: 0}
+  sprite: {fileID: 0}
   side: {fileID: 0}
-  outline: {fileID: 0}
+  glow: {fileID: 0}
   movable: {fileID: 0}
   actionable: {fileID: 0}
   AI: {fileID: 0}
+  shadow: {fileID: 0}
   isMoving: 0
 --- !u!114 &114098185219839834
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1878317023255400}
   m_Enabled: 1
@@ -79,7 +83,7 @@ MonoBehaviour:
 --- !u!114 &114114744037974550
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1878317023255400}
   m_Enabled: 1
@@ -92,7 +96,7 @@ MonoBehaviour:
 --- !u!114 &114218011024368482
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1878317023255400}
   m_Enabled: 1
@@ -105,7 +109,7 @@ MonoBehaviour:
 --- !u!114 &114241991584310632
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1878317023255400}
   m_Enabled: 1
@@ -115,10 +119,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterNameHUD: {fileID: 224154610032487936, guid: 3faef16fbdf674744adc42e465718ed9,
     type: 2}
+  offset: 0.2
 --- !u!114 &114321648030043348
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1878317023255400}
   m_Enabled: 1
@@ -130,7 +135,7 @@ MonoBehaviour:
 --- !u!114 &114396361631682662
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1878317023255400}
   m_Enabled: 1
@@ -140,10 +145,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthBarHUD: {fileID: 224636935849708732, guid: 6af272c7861df5c48844a40946d7e766,
     type: 2}
+  offset: 0.2
 --- !u!114 &114515143091738508
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1878317023255400}
   m_Enabled: 1

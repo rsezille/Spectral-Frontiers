@@ -14,6 +14,9 @@ public class Board : MonoBehaviour {
     private List<SemiTransparent> previousSemiTransparents = new List<SemiTransparent>(); // Used to detect a mouse leave
     private MouseReactive previousMouseEntity = null; // Used to detect a mouse leave
 
+    [Header("Dependencies")]
+    public BattleState battleState;
+
     public PathFinder pathFinder;
     
     public int width { get; private set; }
@@ -30,7 +33,7 @@ public class Board : MonoBehaviour {
      * Compute the current mouse position and dispatch events to the first object hit
      */
     private void Update() {
-        if (BattleManager.instance.currentTurnStep != BattleManager.TurnStep.Status &&
+        if (battleState.currentTurnStep != BattleState.TurnStep.Status &&
                 (BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Placing || BattleManager.instance.currentBattleStep == BattleManager.BattleStep.Fight)) {
             Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
