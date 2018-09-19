@@ -22,6 +22,7 @@ namespace SF {
 
             EditorGUILayout.PropertyField(serializedObject.FindProperty("map"), new GUIContent("Map GameObject"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("sunLight"), new GUIContent("SunLight GameObject"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("squarePrefab"), new GUIContent("Square Prefab"));
 
             GUILayout.Label("Grid", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("size"), new GUIContent("Size"));

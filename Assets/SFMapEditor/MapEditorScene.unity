@@ -222,12 +222,12 @@ Prefab:
         type: 2}
       propertyPath: map
       value: 
-      objectReference: {fileID: 2146083763}
+      objectReference: {fileID: 1224808886}
     - target: {fileID: 114866135100429180, guid: 91d8ff2df07fd4945a48228f3cf9c2fc,
         type: 2}
       propertyPath: sunLight
       value: 
-      objectReference: {fileID: 228191662}
+      objectReference: {fileID: 228191663}
     - target: {fileID: 1547151299616552, guid: 91d8ff2df07fd4945a48228f3cf9c2fc, type: 2}
       propertyPath: m_Name
       value: SFMapEditor
@@ -235,15 +235,15 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 91d8ff2df07fd4945a48228f3cf9c2fc, type: 2}
   m_IsPrefabAsset: 0
---- !u!1 &2146083763
+--- !u!1 &1224808886
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2146083765}
-  - component: {fileID: 2146083764}
+  - component: {fileID: 1224808888}
+  - component: {fileID: 1224808887}
   m_Layer: 0
   m_Name: Map
   m_TagString: Untagged
@@ -251,23 +251,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2146083764
+--- !u!114 &1224808887
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2146083763}
+  m_GameObject: {fileID: 1224808886}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 80d6fbcff983fc440b127b5ce7e1c832, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &2146083765
+--- !u!4 &1224808888
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2146083763}
+  m_GameObject: {fileID: 1224808886}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
