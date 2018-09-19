@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(menuName = "SF/StringVariable")]
-public class StringVariable : ScriptableObject {
+namespace SF {
+    [CreateAssetMenu(menuName = "SF/StringVariable")]
+    public class StringVariable : ScriptableObject {
 #if UNITY_EDITOR
-    [Multiline]
-    public string internalNotes = "";
+        [Multiline]
+        public string internalNotes = "";
 #endif
-    public string value;
+
+        public string value;
+    }
 }
