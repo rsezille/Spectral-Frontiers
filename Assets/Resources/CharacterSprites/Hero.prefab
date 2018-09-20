@@ -20,15 +20,14 @@ GameObject:
   m_Component:
   - component: {fileID: 4949772287693578}
   - component: {fileID: 212048418438309762}
+  - component: {fileID: 95823125600629026}
   - component: {fileID: 60317722787919470}
   - component: {fileID: 60854710477427274}
-  - component: {fileID: 95823125600629026}
   - component: {fileID: 114583737885074008}
   - component: {fileID: 114706372431421632}
   - component: {fileID: 114427534289433398}
   - component: {fileID: 114927453756017122}
-  - component: {fileID: 114013202548270436}
-  - component: {fileID: 114166794576520152}
+  - component: {fileID: 114912522126958406}
   m_Layer: 0
   m_Name: Hero
   m_TagString: Untagged
@@ -178,52 +177,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &114013202548270436
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1754958333634280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa8bcffd534500847950c796020f2232, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sunIntensity: {fileID: 11400000, guid: b0709e55fba0576418830d6492ad8237, type: 2}
-  sunSettings: {fileID: 11400000, guid: b0e251d186ad3624a86e3808f2da34c9, type: 2}
-  instance: {fileID: 0}
-  shadowPrefab: {fileID: 212033615980946702, guid: 7b90bfb2b0bc74b4a9c1a04ea8362d8c,
-    type: 2}
-  nightOpacity: 0.4
-  dayOpacity: 0.7
---- !u!114 &114166794576520152
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1754958333634280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 448f24eaf2dc006419c634bd9b0313fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: e56a7e44f521454478bd791dd14181b9, type: 2}
-  response:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 114013202548270436}
-        m_MethodName: CheckOpacity
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114427534289433398
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -279,6 +232,19 @@ MonoBehaviour:
   - {fileID: 60317722787919470}
   - {fileID: 60854710477427274}
   enabledColliderIndex: 0
+--- !u!114 &114912522126958406
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1754958333634280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29c967da6ede5074aa89cb89be989031, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shadowPrefab: {fileID: 114546563547070850, guid: 7b90bfb2b0bc74b4a9c1a04ea8362d8c,
+    type: 2}
 --- !u!114 &114927453756017122
 MonoBehaviour:
   m_ObjectHideFlags: 1
