@@ -278,7 +278,7 @@ public class BoardCharacter : MonoBehaviour {
         float duration = 0.5f;
 
         if (battleState.currentTurnStep != BattleState.TurnStep.Enemy && !inCutscene) {
-            battleManager.EventOnLeavingMarkStep();
+            board.RemoveAllMarks();
         }
 
         if (cameraFollow) {
@@ -290,7 +290,6 @@ public class BoardCharacter : MonoBehaviour {
         }
 
         Square targetedSquare = null;
-
         Square previousSquare = GetSquare();
 
         // Check at 25% and 75% of each square the sorting order of the BoardChar to set the correct one

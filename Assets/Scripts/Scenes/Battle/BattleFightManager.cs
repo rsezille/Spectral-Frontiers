@@ -111,7 +111,7 @@ public class BattleFightManager {
             selectedPlayerCharacter.glow.Disable();
         }
 
-        battleManager.EventOnLeavingMarkStep();
+        battleManager.board.RemoveAllMarks();
         battleManager.statusHUD.Hide();
         battleManager.turnHUD.gameObject.SetActive(false);
         battleManager.fightHUD.SetActiveWithAnimation(false);
@@ -132,7 +132,7 @@ public class BattleFightManager {
         switch (previousTurnStep) {
             case BattleState.TurnStep.Move:
             case BattleState.TurnStep.Attack:
-                battleManager.EventOnLeavingMarkStep();
+                battleManager.board.RemoveAllMarks();
                 break;
             case BattleState.TurnStep.Status:
                 battleManager.fightHUD.SetActiveWithAnimation(true);
@@ -149,7 +149,7 @@ public class BattleFightManager {
         switch (previousTurnStep) {
             case BattleState.TurnStep.Move:
             case BattleState.TurnStep.Attack:
-                battleManager.EventOnLeavingMarkStep();
+                battleManager.board.RemoveAllMarks();
                 break;
         }
 
@@ -252,7 +252,7 @@ public class BattleFightManager {
         switch (battleManager.battleState.currentTurnStep) {
             case BattleState.TurnStep.Move:
             case BattleState.TurnStep.Attack:
-                battleManager.EventOnLeavingMarkStep();
+                battleManager.board.RemoveAllMarks();
                 break;
         }
 
@@ -286,7 +286,7 @@ public class BattleFightManager {
     }
 
     private void MarkSquares(int distance, Square.MarkType markType, bool ignoreBlocking = false) {
-        battleManager.EventOnLeavingMarkStep();
+        battleManager.board.RemoveAllMarks();
 
         List<Square> squaresHit = battleManager.board.PropagateLinear(selectedPlayerCharacter.GetSquare(), distance, selectedPlayerCharacter.side.value, ignoreBlocking);
 

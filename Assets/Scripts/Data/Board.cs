@@ -28,6 +28,14 @@ namespace SF {
             markedSquareAnimations = new List<Sequence>();
         }
 
+        public void RemoveAllMarks() {
+            markedSquareAnimations.Clear();
+
+            foreach (Square s in squares) {
+                s.RemoveMark();
+            }
+        }
+
         public void LoadMap(RawMission mission) {
             GameObject mapGameObject = Resources.Load("Maps/" + mission.map) as GameObject;
 

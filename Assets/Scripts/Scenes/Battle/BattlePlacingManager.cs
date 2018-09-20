@@ -63,7 +63,7 @@ public class BattlePlacingManager {
 
     // Called by BattleManager
     public void LeaveBattleStepPlacing() {
-        battleManager.EventOnLeavingMarkStep();
+        battleManager.board.RemoveAllMarks();
 
         // Disable outlines from the placing step
         if (GetCurrentPlacingChar().boardCharacter != null) {

@@ -79,8 +79,6 @@ public class Square : MonoBehaviour {
         sortingGroup = GetComponent<SortingGroup>();
 
         tileSelector.color = defaultColor;
-        
-        battleManager.OnLeavingMarkStep += OnLeavingMarkStep;
     }
 
     public void RefreshMark() {
@@ -89,7 +87,7 @@ public class Square : MonoBehaviour {
         }
     }
 
-    private void OnLeavingMarkStep() {
+    public void RemoveMark() {
         if (colorAnimation != null) {
             colorAnimation.Kill();
             colorAnimation = null;
@@ -246,9 +244,5 @@ public class Square : MonoBehaviour {
 
     public float GetWorldHeight() {
         return (float)Height / Globals.TileHeight;
-    }
-
-    private void OnDestroy() {
-        battleManager.OnLeavingMarkStep -= OnLeavingMarkStep;
     }
 }

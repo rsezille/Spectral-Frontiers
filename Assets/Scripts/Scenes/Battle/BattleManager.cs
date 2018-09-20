@@ -41,7 +41,6 @@ public class BattleManager : MonoBehaviour {
     public bool waterDistortion = true; // TODO [BETA] Implement it
 
     // Events
-    public event GameManager.SFEvent OnLeavingMarkStep;
     public event GameManager.SFEvent OnZoomChange;
     public event GameManager.SFEvent OnScreenChange;
     public event GameManager.SFEvent OnSemiTransparentReset;
@@ -155,12 +154,6 @@ public class BattleManager : MonoBehaviour {
     public void EventOnSemiTransparentReset() {
         OnSemiTransparentReset?.Invoke();
         OnCheckSemiTransparent?.Invoke();
-    }
-
-    public void EventOnLeavingMarkStep() {
-        board.markedSquareAnimations.Clear();
-
-        OnLeavingMarkStep?.Invoke();
     }
 
     public void EventOnLightChange() {
