@@ -4,21 +4,20 @@ using SF;
 
 [RequireComponent(typeof(Camera))]
 public class BattleCamera : MonoBehaviour {
-    private BattleManager battleManager;
     private Camera battleCamera;
+    private float positionYOffset = 0.7f;
 
     [Header("Dependencies")]
     public BattleState battleState;
     public Board board;
 
-    [Header("Data")]
-    // Camera speed
-    public float speed = 7f;
+    [Header("Events")]
+    public GameEvent zoomChange;
 
-    private float positionYOffset = 0.7f;
+    [Header("Data")]
+    public float speed = 7f; // Camera speed
 
     private void Awake() {
-        battleManager = BattleManager.instance;
         battleCamera = GetComponent<Camera>();
     }
 
@@ -41,7 +40,7 @@ public class BattleCamera : MonoBehaviour {
         if (Input.GetAxis(InputManager.Axis.Zoom) != 0 && Time.timeScale > 0) {
             Zoom(Input.GetAxis(InputManager.Axis.Zoom));
 
-            battleManager.EventOnZoomChange();
+            zoomChange.Raise();
         }
         #endif
         

@@ -113,6 +113,7 @@ MonoBehaviour:
   battleCharacters: {fileID: 11400000, guid: 6020ed34a2f75cb4f81732c57a2dc0cf, type: 2}
   missionToLoad: {fileID: 11400000, guid: 68f1ff2b65824f24a98b59c7eb37bead, type: 2}
   board: {fileID: 11400000, guid: 3c4c86e45c7cd1c4e9897b0930bad4cd, type: 2}
+  screenChange: {fileID: 11400000, guid: b2d389744d8b9574da53bdc635ee0562, type: 2}
   battleCamera: {fileID: 0}
   background: {fileID: 0}
   cutsceneHUD: {fileID: 0}

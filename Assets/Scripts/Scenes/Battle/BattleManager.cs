@@ -1,7 +1,5 @@
-﻿using DG.Tweening;
-using SF;
+﻿using SF;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /**
@@ -17,6 +15,9 @@ public class BattleManager : MonoBehaviour {
     public BattleCharacters battleCharacters;
     public MissionVariable missionToLoad;
     public Board board;
+
+    [Header("Events")]
+    public GameEvent screenChange;
 
     [Header("References")]
     public BattleCamera battleCamera;
@@ -41,8 +42,6 @@ public class BattleManager : MonoBehaviour {
     public bool waterDistortion = true; // TODO [BETA] Implement it
 
     // Events
-    public event GameManager.SFEvent OnZoomChange;
-    public event GameManager.SFEvent OnScreenChange;
     public event GameManager.SFEvent OnSemiTransparentReset;
     public event GameManager.SFEvent OnCheckSemiTransparent;
     public event GameManager.SFEvent OnLightChange;
@@ -139,16 +138,12 @@ public class BattleManager : MonoBehaviour {
                 break;
         }
 
-        #if UNITY_EDITOR
-            if (previousScreenResolution.x != Screen.width || previousScreenResolution.y != Screen.height) {
-                OnScreenChange?.Invoke();
-                previousScreenResolution = new Vector2Int(Screen.width, Screen.height);
-            }
-        #endif
-    }
-
-    public void EventOnZoomChange() {
-        OnZoomChange?.Invoke();
+#if UNITY_EDITOR
+        if (previousScreenResolution.x != Screen.width || previousScreenResolution.y != Screen.height) {
+            screenChange.Raise();
+            previousScreenResolution = new Vector2Int(Screen.width, Screen.height);
+        }
+#endif
     }
 
     public void EventOnSemiTransparentReset() {
