@@ -6,7 +6,6 @@ namespace SF {
      */
     [RequireComponent(typeof(Collider2D), typeof(SpriteRenderer))]
     public class SemiTransparent : MonoBehaviour {
-        private BattleManager battleManager;
         private SpriteRenderer spriteRenderer;
 
         [Header("Dependencies")]
@@ -18,13 +17,11 @@ namespace SF {
         private bool hideCharacter = false;
 
         private void Awake() {
-            battleManager = BattleManager.instance;
-            battleManager.OnSemiTransparentReset += OnSemiTransparentReset;
+            spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
         private void Start() {
             gameObject.layer = LayerMask.NameToLayer("SemiTransparent");
-            spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
         public void CharacterHiding() {
@@ -56,16 +53,12 @@ namespace SF {
             }
         }
 
-        private void OnSemiTransparentReset() {
+        public void CheckSemiTransparent() {
             hideCharacter = false;
 
             if (transparentObjectsCount == 0) {
                 spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 1f);
             }
-        }
-
-        private void OnDestroy() {
-            battleManager.OnSemiTransparentReset -= OnSemiTransparentReset;
         }
     }
 }

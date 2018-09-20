@@ -18,6 +18,7 @@ public class BattleManager : MonoBehaviour {
 
     [Header("Events")]
     public GameEvent screenChange;
+    public GameEvent checkSemiTransparent;
 
     [Header("References")]
     public BattleCamera battleCamera;
@@ -42,8 +43,6 @@ public class BattleManager : MonoBehaviour {
     public bool waterDistortion = true; // TODO [BETA] Implement it
 
     // Events
-    public event GameManager.SFEvent OnSemiTransparentReset;
-    public event GameManager.SFEvent OnCheckSemiTransparent;
     public event GameManager.SFEvent OnLightChange;
 
     // Dedicated managers for each BattleStep
@@ -144,11 +143,6 @@ public class BattleManager : MonoBehaviour {
             previousScreenResolution = new Vector2Int(Screen.width, Screen.height);
         }
 #endif
-    }
-
-    public void EventOnSemiTransparentReset() {
-        OnSemiTransparentReset?.Invoke();
-        OnCheckSemiTransparent?.Invoke();
     }
 
     public void EventOnLightChange() {

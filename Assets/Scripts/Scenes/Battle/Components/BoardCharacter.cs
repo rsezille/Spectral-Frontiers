@@ -20,6 +20,9 @@ public class BoardCharacter : MonoBehaviour {
     public BattleCharacters battleCharacters;
     public Board board;
 
+    [Header("Events")]
+    public GameEvent checkSemiTransparent;
+
     public Character character;
     private GameObject spriteContainer;
 
@@ -76,7 +79,6 @@ public class BoardCharacter : MonoBehaviour {
 
     private void Awake() {
         battleManager = BattleManager.instance;
-        battleManager.OnCheckSemiTransparent += OnCheckSemiTransparent;
 
         side = GetComponent<Side>();
 
@@ -130,7 +132,7 @@ public class BoardCharacter : MonoBehaviour {
         transform.localPosition = Vector3.zero;
     }
 
-    private void OnCheckSemiTransparent() {
+    public void CheckSemiTransparent() {
         // A sprite can have several colliders depending on its animations
         Collider2D[] spriteColliders = spriteContainer.GetComponents<Collider2D>();
 
@@ -345,7 +347,7 @@ public class BoardCharacter : MonoBehaviour {
 
         if (battleState.currentTurnStep != BattleState.TurnStep.Enemy && !inCutscene) {
             battleManager.fight.EnterTurnStepDirection();
-            battleManager.EventOnSemiTransparentReset();
+            checkSemiTransparent.Raise();
         }
     }
 
@@ -366,9 +368,5 @@ public class BoardCharacter : MonoBehaviour {
         }
 
         Destroy(gameObject);
-    }
-
-    private void OnDestroy() {
-        battleManager.OnCheckSemiTransparent -= OnCheckSemiTransparent;
     }
 }

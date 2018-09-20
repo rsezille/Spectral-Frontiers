@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 114108910211524700}
   - component: {fileID: 114651946931930836}
   - component: {fileID: 114999575844902102}
+  - component: {fileID: 114447685587237884}
   m_Layer: 0
   m_Name: CutsceneBoardCharacter
   m_TagString: Untagged
@@ -69,6 +70,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementPoints: 0
   movementTokens: 0
+--- !u!114 &114447685587237884
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1844573641897740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 448f24eaf2dc006419c634bd9b0313fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: c45e411927eb18443b3f316fee5dd116, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114999575844902102}
+        m_MethodName: CheckSemiTransparent
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114651946931930836
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -108,6 +137,8 @@ MonoBehaviour:
   battleState: {fileID: 11400000, guid: 6f13aad577670964f9d877e5216305e0, type: 2}
   battleCharacters: {fileID: 11400000, guid: 6020ed34a2f75cb4f81732c57a2dc0cf, type: 2}
   board: {fileID: 11400000, guid: 3c4c86e45c7cd1c4e9897b0930bad4cd, type: 2}
+  checkSemiTransparent: {fileID: 11400000, guid: c45e411927eb18443b3f316fee5dd116,
+    type: 2}
   enemyOrNeutralSpritePrefab: {fileID: 1633512145816250, guid: 3eaf92174d6d63e42a2f13747889d7a4,
     type: 2}
   sprite: {fileID: 0}

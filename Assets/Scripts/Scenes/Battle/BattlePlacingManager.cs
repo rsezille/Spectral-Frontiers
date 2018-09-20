@@ -234,7 +234,7 @@ public class BattlePlacingManager {
                     RefreshStartBattleText();
                 }
 
-                battleManager.EventOnSemiTransparentReset();
+                battleManager.checkSemiTransparent.Raise();
             }
         }
     }

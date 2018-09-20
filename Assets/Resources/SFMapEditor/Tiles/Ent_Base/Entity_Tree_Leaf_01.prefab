@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 114469546932475542}
   - component: {fileID: 114242701527307914}
   - component: {fileID: 114265511732155870}
+  - component: {fileID: 114584018834256246}
   m_Layer: 0
   m_Name: Entity_Tree_Leaf_01
   m_TagString: Untagged
@@ -374,6 +375,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   battleState: {fileID: 11400000, guid: 6f13aad577670964f9d877e5216305e0, type: 2}
   transparentObjectsCount: 0
+--- !u!114 &114584018834256246
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1740853501873868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 448f24eaf2dc006419c634bd9b0313fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: c45e411927eb18443b3f316fee5dd116, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114469546932475542}
+        m_MethodName: CheckSemiTransparent
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!212 &212558339555044296
 SpriteRenderer:
   m_ObjectHideFlags: 1
