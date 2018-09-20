@@ -126,6 +126,10 @@ public class BattleManager : MonoBehaviour {
                 Time.timeScale = 0;
             }
         }
+        
+        if (InputManager.Special1.IsKeyDown) {
+            SkipCutscene();
+        }
 
         switch (battleState.currentBattleStep) {
             case BattleState.BattleStep.Cutscene:
@@ -185,6 +189,10 @@ public class BattleManager : MonoBehaviour {
         }
 
         lightChange.Raise();
+    }
+
+    public void SkipCutscene() {
+        cutscene.SkipCutscene();
     }
 
     /**

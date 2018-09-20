@@ -27,11 +27,7 @@ public class BattleCutsceneManager {
     }
 
     // Called by BattleManager
-    public void Update() {
-        if (InputManager.Special1.IsKeyDown) {
-            SkipCutscene();
-        }
-    }
+    public void Update() { }
 
     public void SkipCutscene() {
         if (skipping || battleManager.battleState.currentBattleStep != BattleState.BattleStep.Cutscene) return;
