@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using DG.Tweening;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace SF {
@@ -17,11 +18,14 @@ namespace SF {
 
         public string mapName { get; private set; } = "";
 
+        public List<Sequence> markedSquareAnimations = new List<Sequence>();
+
         public void ResetData() {
             squares = null;
             width = 0;
             height = 0;
             mapName = "";
+            markedSquareAnimations = new List<Sequence>();
         }
 
         public void LoadMap(RawMission mission) {

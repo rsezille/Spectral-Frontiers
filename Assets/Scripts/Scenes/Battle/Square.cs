@@ -13,6 +13,7 @@ public class Square : MonoBehaviour {
 
     [Header("Dependencies")]
     public BattleState battleState;
+    public Board board;
 
     [Header("Data")]
     // Positionning
@@ -55,7 +56,7 @@ public class Square : MonoBehaviour {
                     .Append(tileSelector.DOFade(0.55f, 0.8f).SetEase(Ease.Linear))
                     .Append(tileSelector.DOFade(maxAlpha, 0.8f).SetEase(Ease.Linear))
                     .SetLoops(-1);
-                battleManager.markedSquareAnimations.Add(colorAnimation);
+                board.markedSquareAnimations.Add(colorAnimation);
             } else {
                 if (colorAnimation != null) {
                     colorAnimation.Kill();
@@ -107,7 +108,7 @@ public class Square : MonoBehaviour {
 
         if (colorAnimation != null) {
             colorAnimation.Pause();
-            battleManager.markedSquareAnimations.Remove(colorAnimation);
+            board.markedSquareAnimations.Remove(colorAnimation);
         }
 
         battleManager.fightHUD.SquareHovered(this);
@@ -164,16 +165,16 @@ public class Square : MonoBehaviour {
         if (colorAnimation == null) return;
 
         // We're doing this to keep the current animation frame when leaving an hovering and marked square (which change the color)
-        if (battleManager.markedSquareAnimations.Count > 0) {
-            float elapsed = battleManager.markedSquareAnimations[0].Elapsed(false);
+        if (board.markedSquareAnimations.Count > 0) {
+            float elapsed = board.markedSquareAnimations[0].Elapsed(false);
 
             colorAnimation.Goto(elapsed);
         }
 
         colorAnimation.Play();
 
-        if (!battleManager.markedSquareAnimations.Contains(colorAnimation)) {
-            battleManager.markedSquareAnimations.Add(colorAnimation);
+        if (!board.markedSquareAnimations.Contains(colorAnimation)) {
+            board.markedSquareAnimations.Add(colorAnimation);
         }
     }
 

@@ -53,8 +53,6 @@ public class BattleManager : MonoBehaviour {
     public BattlePlacingManager placing;
     public BattleFightManager fight;
     public BattleVictoryManager victory;
-    
-    public List<Sequence> markedSquareAnimations = new List<Sequence>();
 
     private bool goingGameOver = false;
 
@@ -160,7 +158,7 @@ public class BattleManager : MonoBehaviour {
     }
 
     public void EventOnLeavingMarkStep() {
-        markedSquareAnimations.Clear();
+        board.markedSquareAnimations.Clear();
 
         OnLeavingMarkStep?.Invoke();
     }
@@ -250,7 +248,7 @@ public class BattleManager : MonoBehaviour {
     }
 
     private IEnumerator WaitGameOver() {
-        markedSquareAnimations.Clear();
+        board.markedSquareAnimations.Clear();
 
         yield return new WaitForSeconds(1f);
 
