@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using SF;
 using UnityEngine;
 
 /**
@@ -6,21 +7,19 @@ using UnityEngine;
  */
 [RequireComponent(typeof(Light))]
 public class BoardLight : MonoBehaviour {
-    private BattleManager battleManager;
     private Light light;
     private float initialIntensity;
     private Tween glowAnimation;
+
+    [Header("Dependencies")]
+    public FloatVariable sunIntensity;
 
     public float nonVisibleIntensity = 0.8f;
     public float fullyVisibleIntensity = 0.1f;
 
     private void Awake() {
-        battleManager = BattleManager.instance;
-
         light = GetComponent<Light>();
         initialIntensity = light.intensity;
-
-        battleManager.OnLightChange += CheckIntensity;
     }
 
     private void Start() {
@@ -30,20 +29,16 @@ public class BoardLight : MonoBehaviour {
     }
     
     public void CheckIntensity() {
-        float sunIntensity = Mathf.Clamp(battleManager.sunLight.GetIntensity(), fullyVisibleIntensity, nonVisibleIntensity);
+        float sunNormalizedIntensity = Mathf.Clamp(sunIntensity.value, fullyVisibleIntensity, nonVisibleIntensity);
 
         glowAnimation.Kill();
         glowAnimation = null;
 
-        light.intensity = Mathf.Lerp(initialIntensity, 0f, (sunIntensity - fullyVisibleIntensity) / (nonVisibleIntensity - fullyVisibleIntensity));
+        light.intensity = Mathf.Lerp(initialIntensity, 0f, (sunNormalizedIntensity - fullyVisibleIntensity) / (nonVisibleIntensity - fullyVisibleIntensity));
 
         if (light.intensity > 0) {
             light.intensity -= 0.5f;
             glowAnimation = light.DOIntensity(light.intensity + 0.5f, 0.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear);
         }
-    }
-
-    private void OnDestroy() {
-        battleManager.OnLightChange -= CheckIntensity;
     }
 }

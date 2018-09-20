@@ -1,4 +1,5 @@
-﻿using SF;
+﻿using DG.Tweening;
+using SF;
 using System.Collections;
 using UnityEngine;
 
@@ -8,6 +9,10 @@ using UnityEngine;
  * and dispatch events and tasks to them
  */
 public class BattleManager : MonoBehaviour {
+    private enum LightingType {
+        Day, Night, Turn, Auto
+    };
+
     private static BattleManager _instance;
 
     [Header("Dependencies")]
@@ -15,10 +20,13 @@ public class BattleManager : MonoBehaviour {
     public BattleCharacters battleCharacters;
     public MissionVariable missionToLoad;
     public Board board;
+    public FloatVariable sunIntensity;
+    public SunSettings sunSettings;
 
     [Header("Events")]
     public GameEvent screenChange;
     public GameEvent checkSemiTransparent;
+    public GameEvent lightChange;
 
     [Header("References")]
     public BattleCamera battleCamera;
@@ -36,14 +44,11 @@ public class BattleManager : MonoBehaviour {
     public PlayerCharacter testPlayerCharacter; // TODO [ALPHA] Find the correct character giving the name & job
     public FloatingText floatingText;
 
-    public SunLight sunLight;
+    //public SunLight sunLight;
 
     [Header("Options")]
     public bool waterReflection = true; // TODO [BETA] Implement it
     public bool waterDistortion = true; // TODO [BETA] Implement it
-
-    // Events
-    public event GameManager.SFEvent OnLightChange;
 
     // Dedicated managers for each BattleStep
     public BattleCutsceneManager cutscene;
@@ -145,14 +150,41 @@ public class BattleManager : MonoBehaviour {
 #endif
     }
 
-    public void EventOnLightChange() {
-        OnLightChange?.Invoke();
-    }
-
     public void LoadMission() {
         board.LoadMap(missionToLoad.value);
         background.Load(missionToLoad.value.background);
-        sunLight.Load(missionToLoad.value.lighting);
+
+        // TODO: Move this to SunController?
+        LightingType lightingType = EnumUtil.ParseEnum(missionToLoad.value.lighting, LightingType.Day);
+
+        sunSettings.turnType = false;
+
+        switch (lightingType) {
+            case LightingType.Day:
+                sunIntensity.value = sunSettings.dayIntensity;
+                break;
+            case LightingType.Night:
+                sunIntensity.value = sunSettings.nightIntensity;
+                break;
+            case LightingType.Turn:
+                sunIntensity.value = sunSettings.dayIntensity;
+                sunSettings.turnType = true;
+                break;
+            case LightingType.Auto: // Mainly for testing purpose
+                sunIntensity.value = sunSettings.nightIntensity;
+
+                float speed = 1f;
+                DOTween
+                    .Sequence()
+                    .Append(DOTween.To(() => sunIntensity.value, x => sunIntensity.value = x, sunSettings.dayIntensity, speed).SetEase(Ease.Linear).OnUpdate(lightChange.Raise))
+                    .AppendInterval(speed * 4f)
+                    .Append(DOTween.To(() => sunIntensity.value, x => sunIntensity.value = x, sunSettings.nightIntensity, speed).SetEase(Ease.Linear).OnUpdate(lightChange.Raise))
+                    .AppendInterval(speed * 4f)
+                    .SetLoops(-1);
+                break;
+        }
+
+        lightChange.Raise();
     }
 
     /**

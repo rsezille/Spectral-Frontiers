@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 114242701527307914}
   - component: {fileID: 114265511732155870}
   - component: {fileID: 114584018834256246}
+  - component: {fileID: 114218576786791096}
   m_Layer: 0
   m_Name: Entity_Tree_Leaf_01
   m_TagString: Untagged
@@ -333,6 +334,34 @@ PolygonCollider2D:
       - {x: 0.45640898, y: -0.877965}
       - {x: 0.690784, y: -0.690465}
       - {x: 0.940784, y: -0.627965}
+--- !u!114 &114218576786791096
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1740853501873868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 448f24eaf2dc006419c634bd9b0313fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: e56a7e44f521454478bd791dd14181b9, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114265511732155870}
+        m_MethodName: CheckOpacity
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114242701527307914
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -357,6 +386,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa8bcffd534500847950c796020f2232, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sunIntensity: {fileID: 11400000, guid: b0709e55fba0576418830d6492ad8237, type: 2}
+  sunSettings: {fileID: 11400000, guid: b0e251d186ad3624a86e3808f2da34c9, type: 2}
   instance: {fileID: 0}
   shadowPrefab: {fileID: 212915731210649666, guid: f2e857abfd773bd4089fffc9daf85202,
     type: 2}

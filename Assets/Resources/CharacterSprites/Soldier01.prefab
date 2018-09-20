@@ -28,6 +28,7 @@ GameObject:
   - component: {fileID: 114007478901278514}
   - component: {fileID: 114134337053867782}
   - component: {fileID: 114745763095533832}
+  - component: {fileID: 114860383782626714}
   m_Layer: 0
   m_Name: Soldier01
   m_TagString: Untagged
@@ -229,8 +230,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa8bcffd534500847950c796020f2232, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sunIntensity: {fileID: 11400000, guid: b0709e55fba0576418830d6492ad8237, type: 2}
+  sunSettings: {fileID: 11400000, guid: b0e251d186ad3624a86e3808f2da34c9, type: 2}
+  instance: {fileID: 0}
   shadowPrefab: {fileID: 212033615980946702, guid: 7b90bfb2b0bc74b4a9c1a04ea8362d8c,
     type: 2}
+  nightOpacity: 0.4
+  dayOpacity: 0.7
 --- !u!114 &114201483773831714
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -273,6 +279,34 @@ MonoBehaviour:
   - {fileID: 60227954618296632}
   - {fileID: 60935187836968706}
   enabledColliderIndex: 0
+--- !u!114 &114860383782626714
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1633512145816250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 448f24eaf2dc006419c634bd9b0313fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: e56a7e44f521454478bd791dd14181b9, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114134337053867782}
+        m_MethodName: CheckOpacity
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!212 &212660717856818408
 SpriteRenderer:
   m_ObjectHideFlags: 1

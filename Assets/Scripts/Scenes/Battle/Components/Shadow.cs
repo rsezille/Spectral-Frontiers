@@ -1,9 +1,13 @@
 ﻿using DG.Tweening;
+using SF;
 using UnityEngine;
 
 public class Shadow : MonoBehaviour {
-    private BattleManager battleManager;
     private Tween showAnimation;
+
+    [Header("Dependencies")]
+    public FloatVariable sunIntensity;
+    public SunSettings sunSettings;
 
     public SpriteRenderer instance;
 
@@ -12,11 +16,7 @@ public class Shadow : MonoBehaviour {
     public float dayOpacity = 0.7f;
 
     private void Awake() {
-        battleManager = BattleManager.instance;
-
         instance = Instantiate(shadowPrefab, transform);
-
-        battleManager.OnLightChange += CheckOpacity;
     }
 
     private void Start() {
@@ -32,19 +32,15 @@ public class Shadow : MonoBehaviour {
     }
     #endif
 
-    private void CheckOpacity() {
+    public void CheckOpacity() {
         if (showAnimation == null || (!showAnimation.IsActive() || showAnimation.IsComplete())) {
-            instance.color = new Color(instance.color.r, instance.color.g, instance.color.b, Mathf.Lerp(nightOpacity, dayOpacity, battleManager.sunLight.GetNormalizedIntensity()));
+            instance.color = new Color(instance.color.r, instance.color.g, instance.color.b, Mathf.Lerp(nightOpacity, dayOpacity, sunSettings.GetNormalizedIntensity(sunIntensity.value)));
         }
-    }
-
-    private void OnDestroy() {
-        battleManager.OnLightChange -= CheckOpacity;
     }
 
     public void Show(float speed = 1f) {
         instance.color = new Color(instance.color.r, instance.color.g, instance.color.b, 0f);
 
-        showAnimation = instance.DOColor(new Color(instance.color.r, instance.color.g, instance.color.b, Mathf.Lerp(nightOpacity, dayOpacity, battleManager.sunLight.GetNormalizedIntensity())), speed);
+        showAnimation = instance.DOColor(new Color(instance.color.r, instance.color.g, instance.color.b, Mathf.Lerp(nightOpacity, dayOpacity, sunSettings.GetNormalizedIntensity(sunIntensity.value))), speed);
     }
 }
