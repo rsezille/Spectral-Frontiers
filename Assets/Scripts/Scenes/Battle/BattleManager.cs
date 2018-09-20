@@ -41,7 +41,6 @@ public class BattleManager : MonoBehaviour {
     public bool waterDistortion = true; // TODO [BETA] Implement it
 
     // Events
-    public event GameManager.SFEvent OnEnterPlacing;
     public event GameManager.SFEvent OnLeavingMarkStep;
     public event GameManager.SFEvent OnZoomChange;
     public event GameManager.SFEvent OnScreenChange;
@@ -149,10 +148,6 @@ public class BattleManager : MonoBehaviour {
                 previousScreenResolution = new Vector2Int(Screen.width, Screen.height);
             }
         #endif
-    }
-
-    public void EventOnEnterPlacing() {
-        OnEnterPlacing?.Invoke();
     }
 
     public void EventOnZoomChange() {

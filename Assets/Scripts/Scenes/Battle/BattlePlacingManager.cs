@@ -56,7 +56,9 @@ public class BattlePlacingManager {
         battleManager.placingHUD.SetActiveWithAnimation(true, HUD.Speed.Slow);
         battleManager.battleCamera.SetPosition(battleManager.missionToLoad.value.startingSquares[0].posX, battleManager.missionToLoad.value.startingSquares[0].posY, true);
 
-        battleManager.EventOnEnterPlacing();
+        foreach (Square s in battleManager.board.GetSquares()) {
+            s.RefreshMark();
+        }
     }
 
     // Called by BattleManager

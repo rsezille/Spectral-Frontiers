@@ -78,12 +78,11 @@ public class Square : MonoBehaviour {
         sortingGroup = GetComponent<SortingGroup>();
 
         tileSelector.color = defaultColor;
-
-        battleManager.OnEnterPlacing += OnEnterPlacing;
+        
         battleManager.OnLeavingMarkStep += OnLeavingMarkStep;
     }
 
-    private void OnEnterPlacing() {
+    public void RefreshMark() {
         if (markType != MarkType.None) {
             PlayColorAnimation();
         }
@@ -249,7 +248,6 @@ public class Square : MonoBehaviour {
     }
 
     private void OnDestroy() {
-        battleManager.OnEnterPlacing -= OnEnterPlacing;
         battleManager.OnLeavingMarkStep -= OnLeavingMarkStep;
     }
 }

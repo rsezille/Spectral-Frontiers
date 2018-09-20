@@ -63,6 +63,10 @@ namespace SF {
             }
         }
 
+        public Square[] GetSquares() {
+            return squares;
+        }
+
         /**
          * Return the square according to x and y coordinates ; null if coordinates are outside the board
          */
