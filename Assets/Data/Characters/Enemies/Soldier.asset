@@ -9,22 +9,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3d0b0e88ff5d2b24789819dc8ad0dd16, type: 3}
-  m_Name: Char2
+  m_Name: Soldier
   m_EditorClassIdentifier: 
   boardCharacter: {fileID: 0}
   characterName:
     useConstant: 1
-    constantValue: Mewt
+    constantValue: Soldier
     variable: {fileID: 0}
   hp:
     statType: {fileID: 11400000, guid: 46657856a51747c4387336340c7f41c2, type: 2}
     currentValue: 50
-  currentHp: 10
+  currentHp: 50
   atk:
     statType: {fileID: 11400000, guid: a365f769bd7804546a709d38d8ad9a6e, type: 2}
-    currentValue: 10
+    currentValue: 5
   spd:
     statType: {fileID: 11400000, guid: 277f3408faf7bb746b7116485e035ba6, type: 2}
     currentValue: 100
-  spritePrefab: {fileID: 0}
+  spritePrefab: {fileID: 1633512145816250, guid: 3eaf92174d6d63e42a2f13747889d7a4,
+    type: 2}
   shadowSize: 0

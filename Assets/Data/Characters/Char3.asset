@@ -11,9 +11,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d0b0e88ff5d2b24789819dc8ad0dd16, type: 3}
   m_Name: Char3
   m_EditorClassIdentifier: 
-  playerName:
+  boardCharacter: {fileID: 0}
+  characterName:
     useConstant: 1
-    constantValue: Mewt
+    constantValue: Kupo
     variable: {fileID: 0}
   hp:
     statType: {fileID: 11400000, guid: 46657856a51747c4387336340c7f41c2, type: 2}
@@ -25,3 +26,5 @@ MonoBehaviour:
   spd:
     statType: {fileID: 11400000, guid: 277f3408faf7bb746b7116485e035ba6, type: 2}
     currentValue: 100
+  spritePrefab: {fileID: 0}
+  shadowSize: 0
