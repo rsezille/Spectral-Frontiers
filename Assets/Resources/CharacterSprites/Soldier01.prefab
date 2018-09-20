@@ -23,10 +23,10 @@ GameObject:
   - component: {fileID: 95481668620842874}
   - component: {fileID: 60227954618296632}
   - component: {fileID: 60935187836968706}
+  - component: {fileID: 114745763095533832}
+  - component: {fileID: 114007478901278514}
   - component: {fileID: 114289021745954006}
   - component: {fileID: 114201483773831714}
-  - component: {fileID: 114007478901278514}
-  - component: {fileID: 114745763095533832}
   - component: {fileID: 114806968254336358}
   m_Layer: 0
   m_Name: Soldier01
