@@ -8,5 +8,9 @@ namespace SF {
 #endif
 
         public T value;
+
+        public static implicit operator T(SOVariable<T> variable) {
+            return variable.value;
+        }
     }
 }
