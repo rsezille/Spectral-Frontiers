@@ -13,18 +13,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardCharacter: {fileID: 0}
   characterName:
-    useConstant: 0
-    constantValue: 
+    useConstant: 1
+    constantValue: Guard
     variable: {fileID: 0}
-  hp:
-    statType: {fileID: 0}
-    currentValue: 0
-  currentHp: 0
+  maxHP:
+    statType: {fileID: 11400000, guid: 46657856a51747c4387336340c7f41c2, type: 2}
+    currentValue: 50
+  currentHp: 30
   atk:
-    statType: {fileID: 0}
-    currentValue: 0
+    statType: {fileID: 11400000, guid: a365f769bd7804546a709d38d8ad9a6e, type: 2}
+    currentValue: 5
   spd:
-    statType: {fileID: 0}
-    currentValue: 0
-  spritePrefab: {fileID: 0}
+    statType: {fileID: 11400000, guid: 277f3408faf7bb746b7116485e035ba6, type: 2}
+    currentValue: 100
+  spritePrefab: {fileID: 1633512145816250, guid: 3eaf92174d6d63e42a2f13747889d7a4,
+    type: 2}
   shadowSize: 0
+  defaultAI: 1

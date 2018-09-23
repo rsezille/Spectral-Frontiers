@@ -16,7 +16,7 @@ MonoBehaviour:
     useConstant: 1
     constantValue: Soldier
     variable: {fileID: 0}
-  hp:
+  maxHP:
     statType: {fileID: 11400000, guid: 46657856a51747c4387336340c7f41c2, type: 2}
     currentValue: 50
   currentHp: 50
@@ -29,3 +29,4 @@ MonoBehaviour:
   spritePrefab: {fileID: 1633512145816250, guid: 3eaf92174d6d63e42a2f13747889d7a4,
     type: 2}
   shadowSize: 0
+  defaultAI: 1

@@ -25,5 +25,9 @@ namespace SF {
         [Header("Display")]
         public GameObject spritePrefab;
         public int shadowSize;
+
+        [Header("Battle")]
+        [Tooltip("Can be overloaded in missions ; used when the character is played by the computer")]
+        public AI.Preset defaultAI = AI.Preset.Aggressive;
     }
 }

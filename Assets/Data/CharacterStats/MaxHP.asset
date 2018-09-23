@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19e97ddac0b57d94e829b51bbe3f2a2b, type: 3}
-  m_Name: HP
+  m_Name: MaxHP
   m_EditorClassIdentifier: 
   name: hp
   maxValue: 0
