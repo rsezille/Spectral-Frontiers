@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3291196c499a7a249bcce132dd33f9cc, type: 3}
+  m_Name: Story001
+  m_EditorClassIdentifier: 
+  map: {fileID: 114607180998243876, guid: 4c77d744164633c439ab886b28c6a857, type: 2}
+  maxPlayerCharacters: 3
+  startingSquares:
+  - posX: 0
+    posY: 5
+    direction: 1
+  - posX: 7
+    posY: 8
+    direction: 1
+  - posX: 7
+    posY: 6
+    direction: 1
+  - posX: 9
+    posY: 8
+    direction: 1
+  - posX: 8
+    posY: 9
+    direction: 1
+  background:
+    preset: 
+    mainColor: {r: 0, g: 0, b: 0, a: 0}
+    off1Color: {r: 0, g: 0, b: 0, a: 0}
+    off2Color: {r: 0, g: 0, b: 0, a: 0}
+    type: 
+  lighting: auto
+  parents: []
+  children: []
+  enemies:
+  - character: {fileID: 11400000, guid: 7291ed5c61e95d6479829e8dee9be169, type: 2}
+    level: 1
+    posX: 4
+    posY: 0
+    direction: 3
+  - character: {fileID: 11400000, guid: 6d3b807868e491f45975d6b019db05db, type: 2}
+    level: 1
+    posX: 4
+    posY: 3
+    direction: 1
+  openingCutscene:
+  - type: wait
+    args:
+    - time:0.5
+  - type: camera
+    args:
+    - target:square
+    - x:0
+    - y:5
+  endingCutscene:
+  - type: wait
+    args:
+    - time:1.0
+  - type: dialogbox
+    args:
+    - target:global
+    - id:prologue_01
+  - type: camera
+    args:
+    - target:square
+    - x:10
+    - y:7
