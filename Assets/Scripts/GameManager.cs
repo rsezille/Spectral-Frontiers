@@ -14,8 +14,6 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour {
     public static GameManager instance = null;
 
-    public Player player;
-
     public Dictionary<string, RawMission> missions;
 
     [SerializeField]
@@ -41,11 +39,6 @@ public class GameManager : MonoBehaviour {
             instance = this;
         } else if (instance != this) {
             Destroy(gameObject);
-        }
-
-        // TODO [BETA] do it when starting a new game (don't when loading a previously saved game)
-        if (player == null) {
-            player = new Player();
         }
 
         DontDestroyOnLoad(gameObject);
