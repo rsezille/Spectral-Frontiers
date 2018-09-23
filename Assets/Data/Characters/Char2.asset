@@ -26,5 +26,6 @@ MonoBehaviour:
   spd:
     statType: {fileID: 11400000, guid: 277f3408faf7bb746b7116485e035ba6, type: 2}
     currentValue: 100
-  spritePrefab: {fileID: 0}
+  spritePrefab: {fileID: 1754958333634280, guid: b7c8478939e725e4d928ad2bddca96ca,
+    type: 2}
   shadowSize: 0
