@@ -74,7 +74,7 @@ public class AI : MonoBehaviour {
 
             foreach (BoardCharacter playerCharacter in battleCharacters.player) {
                 if (playerCharacter.GetSquare().GetManhattanDistance(boardCharacter.GetSquare()) == 1) {
-                    if (target == null || target.character.GetCurrentHP() > playerCharacter.character.GetCurrentHP()) {
+                    if (target == null || target.character.currentHp > playerCharacter.character.currentHp) {
                         target = playerCharacter;
                     }
                 }
@@ -112,21 +112,21 @@ public class AI : MonoBehaviour {
             if (p != null) {
                 if (bestPath == null) {
                     bestPath = p;
-                    lowestCharHP = playerCharacter.character.GetCurrentHP();
+                    lowestCharHP = playerCharacter.character.currentHp;
                 } else {
                     if (p.GetLength() > boardCharacter.character.movementPoints + 1) {
                         if (p.GetLength() < bestPath.GetLength()) {
                             bestPath = p;
-                            lowestCharHP = playerCharacter.character.GetCurrentHP();
+                            lowestCharHP = playerCharacter.character.currentHp;
                         }
                     } else {
                         if (bestPath.GetLength() > boardCharacter.character.movementPoints + 1) {
                             bestPath = p;
-                            lowestCharHP = playerCharacter.character.GetCurrentHP();
+                            lowestCharHP = playerCharacter.character.currentHp;
                         } else {
-                            if (playerCharacter.character.GetCurrentHP() < lowestCharHP) {
+                            if (playerCharacter.character.currentHp < lowestCharHP) {
                                 bestPath = p;
-                                lowestCharHP = playerCharacter.character.GetCurrentHP();
+                                lowestCharHP = playerCharacter.character.currentHp;
                             }
                         }
                     }

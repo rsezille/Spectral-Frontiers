@@ -184,7 +184,7 @@ public class DialogBox : MonoBehaviour, IWaitForCustom {
             return null;
         }
 
-        PreShow(dialogId, presetIndex, boardCharacter.character.name);
+        PreShow(dialogId, presetIndex, boardCharacter.character.characterName);
         attachedCharacter = boardCharacter;
         dialogStyle = style;
 
