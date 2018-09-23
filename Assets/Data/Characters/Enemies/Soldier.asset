@@ -29,4 +29,7 @@ MonoBehaviour:
   spritePrefab: {fileID: 1633512145816250, guid: 3eaf92174d6d63e42a2f13747889d7a4,
     type: 2}
   shadowSize: 0
+  actionTokens: 1
+  movementTokens: 1
+  movementPoints: 3
   defaultAI: 1
