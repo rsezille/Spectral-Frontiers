@@ -10,11 +10,20 @@ namespace SF {
             public int currentValue;
         }
 
-        public StringReference playerName;
+        [HideInInspector]
+        public BoardCharacter boardCharacter;
 
+        [Header("Basic")]
+        public StringReference characterName;
+
+        [Header("Stats")]
         public CharacterStat hp;
         public int currentHp;
         public CharacterStat atk;
         public CharacterStat spd;
+
+        [Header("Display")]
+        public GameObject spritePrefab;
+        public int shadowSize;
     }
 }
