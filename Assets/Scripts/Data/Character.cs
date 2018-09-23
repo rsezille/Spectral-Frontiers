@@ -17,7 +17,7 @@ namespace SF {
         public StringReference characterName;
 
         [Header("Stats")]
-        public CharacterStat hp;
+        public CharacterStat maxHP;
         public int currentHp;
         public CharacterStat atk;
         public CharacterStat spd;
