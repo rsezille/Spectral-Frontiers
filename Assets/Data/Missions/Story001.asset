@@ -31,20 +31,22 @@ MonoBehaviour:
     direction: 1
   background:
     preset: 
-    mainColor: {r: 0, g: 0, b: 0, a: 0}
-    off1Color: {r: 0, g: 0, b: 0, a: 0}
-    off2Color: {r: 0, g: 0, b: 0, a: 0}
-    type: 
-  lighting: auto
+    mainColor: {r: 0.43137255, g: 0.6784314, b: 0.83137256, a: 1}
+    off1Color: {r: 0.21960784, g: 0.36078432, b: 0.8784314, a: 1}
+    off2Color: {r: 1, g: 1, b: 1, a: 1}
+    type: 1
+  lighting: 0
   parents: []
   children: []
   enemies:
   - character: {fileID: 11400000, guid: 7291ed5c61e95d6479829e8dee9be169, type: 2}
+    overloadedName: 
     level: 1
     posX: 4
     posY: 0
     direction: 3
-  - character: {fileID: 11400000, guid: 6d3b807868e491f45975d6b019db05db, type: 2}
+  - character: {fileID: 11400000, guid: 7291ed5c61e95d6479829e8dee9be169, type: 2}
+    overloadedName: PouetTrololo
     level: 1
     posX: 4
     posY: 3

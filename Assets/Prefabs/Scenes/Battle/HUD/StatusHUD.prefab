@@ -233,6 +233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a0ee8ea2e7f7f143976e407dd70b08c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  key: 
 --- !u!114 &114373582304839050
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -314,6 +315,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7267be164d618474b8e4f1e753b5b50a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  party: {fileID: 11400000, guid: 3f49d2433b01f0944817be5fef7f341e, type: 2}
+  currentPartyCharacter: {fileID: 11400000, guid: da4745e45b390774b9af81380f76adc2,
+    type: 2}
   blockMiddle: {fileID: 224056509987915980}
   blockTop: {fileID: 224912461181694154}
   blockBottom: {fileID: 224154319897807700}
@@ -331,6 +335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a0ee8ea2e7f7f143976e407dd70b08c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  key: 
 --- !u!114 &114579578328250538
 MonoBehaviour:
   m_ObjectHideFlags: 1

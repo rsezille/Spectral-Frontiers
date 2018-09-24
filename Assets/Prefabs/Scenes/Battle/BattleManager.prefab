@@ -116,6 +116,11 @@ MonoBehaviour:
   board: {fileID: 11400000, guid: 3c4c86e45c7cd1c4e9897b0930bad4cd, type: 2}
   sunIntensity: {fileID: 11400000, guid: b0709e55fba0576418830d6492ad8237, type: 2}
   sunSettings: {fileID: 11400000, guid: b0e251d186ad3624a86e3808f2da34c9, type: 2}
+  currentPartyCharacter: {fileID: 11400000, guid: da4745e45b390774b9af81380f76adc2,
+    type: 2}
+  party: {fileID: 11400000, guid: 3f49d2433b01f0944817be5fef7f341e, type: 2}
+  currentFightBoardCharacter: {fileID: 11400000, guid: 9f9983d124106594bb7a73ee18100538,
+    type: 2}
   screenChange: {fileID: 11400000, guid: b2d389744d8b9574da53bdc635ee0562, type: 2}
   checkSemiTransparent: {fileID: 11400000, guid: c45e411927eb18443b3f316fee5dd116,
     type: 2}
@@ -133,8 +138,6 @@ MonoBehaviour:
     type: 2}
   floatingText: {fileID: 114009705672458500, guid: ca4dee2cbfd42694d929853e9e9553a4,
     type: 2}
-  waterReflection: 1
-  waterDistortion: 1
 --- !u!114 &114835322847127898
 MonoBehaviour:
   m_ObjectHideFlags: 1

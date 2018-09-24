@@ -12,6 +12,19 @@ MonoBehaviour:
   m_Name: Party
   m_EditorClassIdentifier: 
   characters:
-  - {fileID: 11400000, guid: 9ecfdf837ff8b6042803e282824eab22, type: 2}
-  - {fileID: 11400000, guid: 5136b9d84a9966c4880707f0022efed7, type: 2}
-  - {fileID: 11400000, guid: 4f154db35a4f49a4e860726d9dd5dcb5, type: 2}
+  - template: {fileID: 11400000, guid: 9ecfdf837ff8b6042803e282824eab22, type: 2}
+    level: 1
+    boardCharacter: {fileID: 0}
+    overloadedName: 
+    maxHP: 50
+    currentHp: 30
+    atk: 10
+    spd: 100
+  - template: {fileID: 11400000, guid: 4f154db35a4f49a4e860726d9dd5dcb5, type: 2}
+    level: 1
+    boardCharacter: {fileID: 0}
+    overloadedName: 
+    maxHP: 50
+    currentHp: 30
+    atk: 10
+    spd: 100

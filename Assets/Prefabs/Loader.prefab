@@ -54,3 +54,4 @@ MonoBehaviour:
   gameManager: {fileID: 1985753394244862, guid: da6405cbb6f2420409d7a589e4ae083b,
     type: 2}
   missionToLoad: {fileID: 11400000, guid: 68f1ff2b65824f24a98b59c7eb37bead, type: 2}
+  testingMission: {fileID: 11400000, guid: 70a11399e5d76f144b24cd383b3a93b6, type: 2}
