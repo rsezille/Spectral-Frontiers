@@ -26,8 +26,6 @@ public class DialogBox : MonoBehaviour, IWaitForCustom {
         Top, Bottom
     };
 
-    private GameManager gameManager; // Shortcut
-
     private DialogPreset[] presets; // 0 is the default one
     private BoardCharacter attachedCharacter;
     private DialogStyle dialogStyle;
@@ -46,8 +44,6 @@ public class DialogBox : MonoBehaviour, IWaitForCustom {
     private string parsedText = "";
 
     private void Awake() {
-        gameManager = GameManager.instance;
-
         textSpeed = EnumUtil.ParseEnum(PlayerOptions.GetString(PlayerOptions.TextSpeed), TextSpeed.Fast);
 
         presets = GetComponentsInChildren<DialogPreset>();
