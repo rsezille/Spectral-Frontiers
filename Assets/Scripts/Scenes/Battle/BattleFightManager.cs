@@ -85,7 +85,6 @@ public class BattleFightManager {
     // Called by BattleManager
     public void EnterBattleStepFight() {
         battleManager.fightHUD.SetActiveWithAnimation(true);
-        battleManager.turnHUD.gameObject.SetActive(true);
         NewPlayerTurn();
     }
 
@@ -97,7 +96,6 @@ public class BattleFightManager {
 
         battleManager.board.RemoveAllMarks();
         battleManager.statusHUD.Hide();
-        battleManager.turnHUD.gameObject.SetActive(false);
         battleManager.fightHUD.SetActiveWithAnimation(false);
     }
 
