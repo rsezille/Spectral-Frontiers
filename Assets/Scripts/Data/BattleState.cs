@@ -13,6 +13,8 @@ namespace SF {
         [Header("Events")]
         public BattleStepEvent LeaveBattleStepEvent;
         public BattleStepEvent EnterBattleStepEvent;
+        public TurnStepEvent LeaveTurnStepEvent;
+        public TurnStepEvent EnterTurnStepEvent;
 
         [Header("Data")]
         [SerializeField]
@@ -46,9 +48,24 @@ namespace SF {
             get { return _currentTurnStep; }
             set {
                 if (_currentTurnStep != value) {
+                    LeaveTurnStepEvent.Raise(_currentTurnStep);
+
+                    previousTurnStep = _currentTurnStep;
                     _currentTurnStep = value;
-                    //turnHUD.Check();
+
+                    EnterTurnStepEvent.Raise(_currentTurnStep);
                 }
+            }
+        }
+
+        [SerializeField]
+        private TurnStep _previousTurnStep;
+        public TurnStep previousTurnStep {
+            private set {
+                _previousTurnStep = value;
+            }
+            get {
+                return _previousTurnStep;
             }
         }
 
