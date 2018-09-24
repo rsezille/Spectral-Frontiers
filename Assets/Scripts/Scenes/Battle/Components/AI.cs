@@ -106,7 +106,7 @@ public class AI : MonoBehaviour {
                 playerCharacter.GetSquare().x,
                 playerCharacter.GetSquare().y,
                 boardCharacter.side.value,
-                boardCharacter.character.movementPoints
+                boardCharacter.movable.movementPoints
             );
 
             if (p != null) {
@@ -114,13 +114,13 @@ public class AI : MonoBehaviour {
                     bestPath = p;
                     lowestCharHP = playerCharacter.character.currentHp;
                 } else {
-                    if (p.GetLength() > boardCharacter.character.movementPoints + 1) {
+                    if (p.GetLength() > boardCharacter.movable.movementPoints + 1) {
                         if (p.GetLength() < bestPath.GetLength()) {
                             bestPath = p;
                             lowestCharHP = playerCharacter.character.currentHp;
                         }
                     } else {
-                        if (bestPath.GetLength() > boardCharacter.character.movementPoints + 1) {
+                        if (bestPath.GetLength() > boardCharacter.movable.movementPoints + 1) {
                             bestPath = p;
                             lowestCharHP = playerCharacter.character.currentHp;
                         } else {
