@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3291196c499a7a249bcce132dd33f9cc, type: 3}
   m_Name: Story001
   m_EditorClassIdentifier: 
-  map: {fileID: 114607180998243876, guid: 4c77d744164633c439ab886b28c6a857, type: 2}
+  map: {fileID: 114708578184141894, guid: e5492951208d706418219092ad77f6d0, type: 2}
   maxPlayerCharacters: 3
   startingSquares:
   - posX: 0

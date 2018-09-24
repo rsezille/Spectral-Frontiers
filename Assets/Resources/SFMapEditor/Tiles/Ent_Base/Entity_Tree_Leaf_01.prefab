@@ -23,9 +23,9 @@ GameObject:
   - component: {fileID: 60409476625455946}
   - component: {fileID: 114469546932475542}
   - component: {fileID: 114242701527307914}
-  - component: {fileID: 114265511732155870}
   - component: {fileID: 114584018834256246}
   - component: {fileID: 114218576786791096}
+  - component: {fileID: 114115343550393636}
   m_Layer: 0
   m_Name: Entity_Tree_Leaf_01
   m_TagString: Untagged
@@ -334,6 +334,19 @@ PolygonCollider2D:
       - {x: 0.45640898, y: -0.877965}
       - {x: 0.690784, y: -0.690465}
       - {x: 0.940784, y: -0.627965}
+--- !u!114 &114115343550393636
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1740853501873868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29c967da6ede5074aa89cb89be989031, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shadowPrefab: {fileID: 114963259735609644, guid: f2e857abfd773bd4089fffc9daf85202,
+    type: 2}
 --- !u!114 &114218576786791096
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -349,7 +362,7 @@ MonoBehaviour:
   response:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114265511732155870}
+      - m_Target: {fileID: 0}
         m_MethodName: CheckOpacity
         m_Mode: 1
         m_Arguments:
@@ -375,24 +388,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   distortionShader: {fileID: 2100000, guid: 974aa3966879eb949b2085d4c5fa2def, type: 2}
   offset: 0
---- !u!114 &114265511732155870
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1740853501873868}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa8bcffd534500847950c796020f2232, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sunIntensity: {fileID: 11400000, guid: b0709e55fba0576418830d6492ad8237, type: 2}
-  sunSettings: {fileID: 11400000, guid: b0e251d186ad3624a86e3808f2da34c9, type: 2}
-  instance: {fileID: 0}
-  shadowPrefab: {fileID: 212915731210649666, guid: f2e857abfd773bd4089fffc9daf85202,
-    type: 2}
-  nightOpacity: 0.4
-  dayOpacity: 0.7
 --- !u!114 &114469546932475542
 MonoBehaviour:
   m_ObjectHideFlags: 1

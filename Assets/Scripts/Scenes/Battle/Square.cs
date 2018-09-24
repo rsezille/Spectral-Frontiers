@@ -152,7 +152,10 @@ public class Square : MonoBehaviour {
                 if (battleState.currentTurnStep == BattleState.TurnStep.Move && markType == MarkType.Movement) {
                     currentFightBoardCharacter.value.MoveTo(this);
                 } else if (battleState.currentTurnStep == BattleState.TurnStep.Attack && markType == MarkType.Attack) {
-                    currentFightBoardCharacter.value.BasicAttack(boardEntity.GetComponent<BoardCharacter>());
+                    if (boardEntity != null) {
+                        currentFightBoardCharacter.value.BasicAttack(boardEntity.GetComponent<BoardCharacter>());
+                    }
+
                     battleManager.EnterTurnStepNone();
                 }
 
