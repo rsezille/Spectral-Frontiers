@@ -14,6 +14,7 @@ public class Square : MonoBehaviour {
     [Header("Dependencies")]
     public BattleState battleState;
     public Board board;
+    public BoardCharacterVariable currentFightBoardCharacter;
 
     [Header("Data")]
     // Positionning
@@ -149,9 +150,9 @@ public class Square : MonoBehaviour {
                 break;
             case BattleState.BattleStep.Fight:
                 if (battleState.currentTurnStep == BattleState.TurnStep.Move && markType == MarkType.Movement) {
-                    battleManager.fight.selectedPlayerCharacter.MoveTo(this);
+                    currentFightBoardCharacter.value.MoveTo(this);
                 } else if (battleState.currentTurnStep == BattleState.TurnStep.Attack && markType == MarkType.Attack) {
-                    battleManager.fight.selectedPlayerCharacter.BasicAttack(boardEntity.GetComponent<BoardCharacter>());
+                    currentFightBoardCharacter.value.BasicAttack(boardEntity.GetComponent<BoardCharacter>());
                     battleManager.EnterTurnStepNone();
                 }
 

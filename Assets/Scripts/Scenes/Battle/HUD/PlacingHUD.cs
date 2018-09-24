@@ -9,6 +9,9 @@ public class PlacingHUD : MonoBehaviour {
 
     [Header("Dependencies")]
     public BattleState battleState;
+    public Party party;
+    public CharacterVariable currentPartyCharacter;
+    public BattleCharacters battleCharacters;
 
     [Header("References")]
     public Text previousCharText;
@@ -36,24 +39,25 @@ public class PlacingHUD : MonoBehaviour {
     private void Update() {
         if (battleState.currentBattleStep != BattleState.BattleStep.Placing) return;
 
-        // Remove button
-        if (battleManager.placing.GetCurrentPlacingChar().boardCharacter != null && !removeButton.activeSelf) {
-            removeButton.SetActive(true);
-        } else if (battleManager.placing.GetCurrentPlacingChar().boardCharacter == null && removeButton.activeSelf) {
-            removeButton.SetActive(false);
-        }
-
         // Current character text
-        if (battleManager.placing.GetCurrentPlacingChar().boardCharacter != null) {
+        if (currentPartyCharacter.value.boardCharacter != null) {
             currentCharText.color = Color.gray;
+
+            if (!removeButton.activeSelf) {
+                removeButton.SetActive(true);
+            }
         } else {
             currentCharText.color = Color.white;
+
+            if (removeButton.activeSelf) {
+                removeButton.SetActive(false);
+            }
         }
 
-        currentCharText.text = battleManager.placing.GetCurrentPlacingChar().name;
+        currentCharText.text = currentPartyCharacter.value.characterName;
 
         // Previous character text
-        Character previousCharacter = battleManager.placing.GetPreviousPlacingChar();
+        Character previousCharacter = party.GetPreviousCharacter(currentPartyCharacter.value);
 
         if (previousCharacter.boardCharacter != null) {
             previousCharText.color = Color.gray;
@@ -61,10 +65,10 @@ public class PlacingHUD : MonoBehaviour {
             previousCharText.color = Color.white;
         }
 
-        previousCharText.text = "Previous [" + InputManager.Previous.bindedKey + "]\n" + previousCharacter.name; //TODO [BETA] LanguageManager with a multi key translation
+        previousCharText.text = "Previous [" + InputManager.Previous.bindedKey + "]\n" + previousCharacter.characterName; //TODO [BETA] LanguageManager with a multi key translation
 
         // Next character text
-        Character nextCharacter = battleManager.placing.GetNextPlacingChar();
+        Character nextCharacter = party.GetNextCharacter(currentPartyCharacter.value);
 
         if (nextCharacter.boardCharacter != null) {
             nextCharText.color = Color.gray;
@@ -72,7 +76,7 @@ public class PlacingHUD : MonoBehaviour {
             nextCharText.color = Color.white;
         }
 
-        nextCharText.text = "Next [" + InputManager.Next.bindedKey + "]\n" + nextCharacter.name; //TODO [BETA] LanguageManager with a multi key translation
+        nextCharText.text = "Next [" + InputManager.Next.bindedKey + "]\n" + nextCharacter.characterName; //TODO [BETA] LanguageManager with a multi key translation
     }
 
     public void SetActiveWithAnimation(bool active, HUD.Speed speed = HUD.Speed.Normal) {

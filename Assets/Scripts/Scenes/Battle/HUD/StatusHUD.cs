@@ -5,6 +5,11 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class StatusHUD : MonoBehaviour {
+    [Header("Dependencies")]
+    public Party party;
+    public CharacterVariable currentPartyCharacter;
+
+    [Header("Data")]
     public RectTransform blockMiddle;
     public RectTransform blockTop;
     public RectTransform blockBottom;
@@ -22,6 +27,12 @@ public class StatusHUD : MonoBehaviour {
 
     private void Start() {
         backButton.AddListener(EventTriggerType.PointerClick, () => Hide());
+    }
+
+    private void Update() {
+        if (character != currentPartyCharacter.value) {
+            Show(currentPartyCharacter.value);
+        }
     }
 
     public void Show(BoardCharacter bc, HUD.Speed speed = HUD.Speed.Normal) {
@@ -84,13 +95,13 @@ public class StatusHUD : MonoBehaviour {
 
     private void UpdateText() {
         statusText.SetText(
-            character.name + "\n" +
-            "HP: " + character.GetCurrentHP() + "/" + character.GetMaxHP() + "\n" +
-            "SP: " + character.GetCurrentMP() + "/" + character.GetMaxMP() + "\n" +
-            "PhyAtk: " + character.GetPhysicalAttack() + "\n" +
-            "PhyDef: " + character.GetPhysicalDefense() + "\n" +
-            "MagPow: " + character.GetMagicalPower() + "\n" +
-            "MagRes: " + character.GetMagicalResistance()
+            character.characterName + "\n" +
+            "HP: " + character.currentHp + "/" + character.maxHP + "\n" +
+            //"SP: " + character.GetCurrentMP() + "/" + character.GetMaxMP() + "\n" +
+            "PhyAtk: " + character.atk + "\n" +
+            //"Spd: " + character.spd.currentValue + "\n" +
+            //"MagPow: " + character.GetMagicalPower() + "\n" +
+            "Spd: " + character.spd
         );
     }
 

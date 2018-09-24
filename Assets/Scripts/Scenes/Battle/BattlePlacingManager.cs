@@ -1,34 +1,21 @@
 ﻿using SF;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class BattlePlacingManager {
     private BattleManager battleManager;
 
-    private int placingCharIndex;
-
     public BattlePlacingManager(BattleManager battleManager) {
         this.battleManager = battleManager;
-
-        placingCharIndex = 0;
     }
 
     // Called by BattleManager
     public void Update() {
         if (InputManager.Previous.IsKeyDown) {
-            PreviousPlacingChar();
-
-            if (battleManager.battleState.currentTurnStep == BattleState.TurnStep.Status) {
-                battleManager.statusHUD.Show(GetCurrentPlacingChar());
-            }
+            battleManager.currentPartyCharacter.value = battleManager.party.GetPreviousCharacter(battleManager.currentPartyCharacter);
         } else if (InputManager.Next.IsKeyDown) {
-            NextPlacingChar();
-
-            if (battleManager.battleState.currentTurnStep == BattleState.TurnStep.Status) {
-                battleManager.statusHUD.Show(GetCurrentPlacingChar());
-            }
+            battleManager.currentPartyCharacter.value = battleManager.party.GetNextCharacter(battleManager.currentPartyCharacter);
         } else if (InputManager.Special1.IsKeyDown && battleManager.battleCharacters.player.Count > 0) {
             battleManager.battleState.currentBattleStep = BattleState.BattleStep.Fight;
         }
@@ -36,20 +23,18 @@ public class BattlePlacingManager {
 
     // Called by BattleManager
     public void EnterBattleStepPlacing() {
-        foreach (RawMission.RawEnemy enemy in battleManager.missionToLoad.value.enemies) {
-            Character enemyChar = new Character(enemy.key);
+        battleManager.currentPartyCharacter.value = battleManager.party.characters[0];
 
-            BoardCharacter enemyTemplate = Resources.Load("Monsters/" + enemy.key, typeof(BoardCharacter)) as BoardCharacter;
+        foreach (Mission.Enemy enemy in battleManager.missionToLoad.value.enemies) {
+            BoardCharacter enemyTemplate = Resources.Load<BoardCharacter>("NewBoardCharacter");
 
-            BoardCharacter enemyBC = Object.Instantiate(enemyTemplate, battleManager.board.GetSquare(enemy.posX, enemy.posY).transform.position, Quaternion.identity);
-            enemyBC.character = enemyChar;
-            enemyBC.side.value = Side.Type.Enemy;
-            enemyBC.SetSquare(battleManager.board.GetSquare(enemy.posX, enemy.posY));
-            enemyBC.direction = EnumUtil.ParseEnum(enemy.direction, Globals.DefaultDirection);
-            battleManager.battleCharacters.enemy.Add(enemyBC);
+            BoardCharacter enemyBoardCharacter = Object.Instantiate(enemyTemplate, battleManager.board.GetSquare(enemy.posX, enemy.posY).transform.position, Quaternion.identity);
+            enemyBoardCharacter.Init(new Character(enemy), Side.Type.Enemy, enemy.direction);
+            enemyBoardCharacter.SetSquare(battleManager.board.GetSquare(enemy.posX, enemy.posY));
+            battleManager.battleCharacters.enemy.Add(enemyBoardCharacter);
         }
 
-        foreach (RawMission.RawStartingSquare startingSquare in battleManager.missionToLoad.value.startingSquares) {
+        foreach (Mission.StartingSquare startingSquare in battleManager.missionToLoad.value.startingSquares) {
             battleManager.board.GetSquare(startingSquare.posX, startingSquare.posY).markType = Square.MarkType.Placing;
         }
         
@@ -66,8 +51,8 @@ public class BattlePlacingManager {
         battleManager.board.RemoveAllMarks();
 
         // Disable outlines from the placing step
-        if (GetCurrentPlacingChar().boardCharacter != null) {
-            GetCurrentPlacingChar().boardCharacter.glow.Disable();
+        if (battleManager.currentPartyCharacter.value.boardCharacter != null) {
+            battleManager.currentPartyCharacter.value.boardCharacter.glow.Disable();
         }
 
         battleManager.placingHUD.SetActiveWithAnimation(false);
@@ -84,72 +69,26 @@ public class BattlePlacingManager {
     public void EnterTurnStepStatus(BattleState.TurnStep previousTurnStep) {
         battleManager.placingHUD.SetActiveWithAnimation(false);
 
-        battleManager.statusHUD.Show(GetCurrentPlacingChar());
+        battleManager.statusHUD.Show(battleManager.currentPartyCharacter.value);
     }
-
-    private void PreviousPlacingChar() {
-        if (placingCharIndex == 0) {
-            SetCurrentPlacingChar(GameManager.instance.player.characters.Count - 1);
-        } else {
-            SetCurrentPlacingChar(placingCharIndex - 1);
-        }
-    }
-
-    private void NextPlacingChar() {
-        if (placingCharIndex >= GameManager.instance.player.characters.Count - 1) {
-            SetCurrentPlacingChar(0);
-        } else {
-            SetCurrentPlacingChar(placingCharIndex + 1);
-        }
-    }
-
+    
     public void SetCurrentPlacingChar(Character character) {
-        if (!GameManager.instance.player.characters.Contains(character)) {
+        if (!battleManager.party.characters.Contains(character)) {
             return;
         }
 
-        SetCurrentPlacingChar(GameManager.instance.player.characters.IndexOf(character));
-    }
-
-    public void SetCurrentPlacingChar(int index) {
-        if (index < 0 || index > GameManager.instance.player.characters.Count - 1) {
-            return;
+        if (battleManager.currentPartyCharacter.value.boardCharacter != null && battleManager.currentPartyCharacter.value.boardCharacter.glow != null) {
+            battleManager.currentPartyCharacter.value.boardCharacter.glow.Disable();
         }
 
-        if (GetCurrentPlacingChar().boardCharacter != null && GetCurrentPlacingChar().boardCharacter.glow != null) {
-            GetCurrentPlacingChar().boardCharacter.glow.Disable();
-        }
+        battleManager.currentPartyCharacter.value = character;
 
-        placingCharIndex = index;
-
-        if (GetCurrentPlacingChar().boardCharacter != null) {
-            if (GetCurrentPlacingChar().boardCharacter.glow != null) {
-                GetCurrentPlacingChar().boardCharacter.glow.Enable();
+        if (battleManager.currentPartyCharacter.value.boardCharacter != null) {
+            if (battleManager.currentPartyCharacter.value.boardCharacter.glow != null) {
+                battleManager.currentPartyCharacter.value.boardCharacter.glow.Enable();
             }
 
-            battleManager.battleCamera.SetPosition(GetCurrentPlacingChar().boardCharacter, true);
-        }
-    }
-
-    public Character GetCurrentPlacingChar() {
-        return GameManager.instance.player.characters[placingCharIndex];
-    }
-
-    // Used by the placing HUD to display the next character data
-    public Character GetPreviousPlacingChar() {
-        if (placingCharIndex <= 0) {
-            return GameManager.instance.player.characters[GameManager.instance.player.characters.Count - 1];
-        } else {
-            return GameManager.instance.player.characters[placingCharIndex - 1];
-        }
-    }
-
-    // Used by the placing HUD to display the next character data
-    public Character GetNextPlacingChar() {
-        if (placingCharIndex >= GameManager.instance.player.characters.Count - 1) {
-            return GameManager.instance.player.characters[0];
-        } else {
-            return GameManager.instance.player.characters[placingCharIndex + 1];
+            battleManager.battleCamera.SetPosition(battleManager.currentPartyCharacter.value.boardCharacter, true);
         }
     }
 
@@ -158,9 +97,9 @@ public class BattlePlacingManager {
             return;
         }
 
-        if (GetCurrentPlacingChar().boardCharacter == null) return;
+        if (battleManager.currentPartyCharacter.value.boardCharacter == null) return;
 
-        GetCurrentPlacingChar().boardCharacter.Remove();
+        battleManager.currentPartyCharacter.value.boardCharacter.Remove();
         
         if (battleManager.battleCharacters.player.Count <= 0) {
             battleManager.placingHUD.startBattleText.gameObject.SetActive(false);
@@ -209,26 +148,25 @@ public class BattlePlacingManager {
     public void PlaceMapChar(Square square) {
         if (battleManager.battleState.currentBattleStep == BattleState.BattleStep.Placing) {
             if (square.IsNotBlocking()) {
-                if (GetCurrentPlacingChar().boardCharacter != null) {
-                    GetCurrentPlacingChar().boardCharacter.SetSquare(square);
-                    GetCurrentPlacingChar().boardCharacter.glow.Enable();
-                    GetCurrentPlacingChar().boardCharacter.direction = square.startingDirection;
+                if (battleManager.currentPartyCharacter.value.boardCharacter != null) {
+                    battleManager.currentPartyCharacter.value.boardCharacter.SetSquare(square);
+                    battleManager.currentPartyCharacter.value.boardCharacter.glow.Enable();
+                    battleManager.currentPartyCharacter.value.boardCharacter.direction = square.startingDirection;
                 } else {
                     if (battleManager.battleCharacters.player.Count >= battleManager.missionToLoad.value.maxPlayerCharacters) {
                         return;
                     }
 
-                    PlayerCharacter pc = Object.Instantiate(battleManager.testPlayerCharacter, square.transform.position, Quaternion.identity) as PlayerCharacter;
-                    pc.boardCharacter.character = GetCurrentPlacingChar();
-                    pc.GetComponent<Side>().value = Side.Type.Player;
-                    pc.boardCharacter.SetSquare(square);
-                    pc.boardCharacter.direction = square.startingDirection;
+                    BoardCharacter playerTemplate = Resources.Load<BoardCharacter>("NewBoardCharacter");
 
-                    pc.boardCharacter.character.boardCharacter = pc.boardCharacter;
-                    battleManager.battleCharacters.player.Add(pc.boardCharacter);
+                    BoardCharacter playerBoardCharacter = Object.Instantiate(playerTemplate, square.transform.position, Quaternion.identity);
+                    playerBoardCharacter.Init(battleManager.currentPartyCharacter.value, Side.Type.Player, square.startingDirection);
+                    playerBoardCharacter.SetSquare(square);
+                    playerBoardCharacter.character.boardCharacter = playerBoardCharacter;
+                    battleManager.battleCharacters.player.Add(playerBoardCharacter);
 
-                    if (pc.boardCharacter.glow != null) {
-                        pc.boardCharacter.glow.Enable();
+                    if (playerBoardCharacter.glow != null) {
+                        playerBoardCharacter.glow.Enable();
                     }
 
                     RefreshStartBattleText();

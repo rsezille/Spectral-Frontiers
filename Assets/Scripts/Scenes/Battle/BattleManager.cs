@@ -9,7 +9,7 @@ using UnityEngine;
  * and dispatch events and tasks to them
  */
 public class BattleManager : MonoBehaviour {
-    private enum LightingType {
+    public enum LightingType {
         Day, Night, Turn, Auto
     };
 
@@ -22,6 +22,9 @@ public class BattleManager : MonoBehaviour {
     public Board board;
     public FloatVariable sunIntensity;
     public SunSettings sunSettings;
+    public CharacterVariable currentPartyCharacter;
+    public Party party;
+    public BoardCharacterVariable currentFightBoardCharacter;
 
     [Header("Events")]
     public GameEvent screenChange;
@@ -43,12 +46,6 @@ public class BattleManager : MonoBehaviour {
 
     public PlayerCharacter testPlayerCharacter; // TODO [ALPHA] Find the correct character giving the name & job
     public FloatingText floatingText;
-
-    //public SunLight sunLight;
-
-    [Header("Options")]
-    public bool waterReflection = true; // TODO [BETA] Implement it
-    public bool waterDistortion = true; // TODO [BETA] Implement it
 
     // Dedicated managers for each BattleStep
     public BattleCutsceneManager cutscene;
@@ -93,6 +90,8 @@ public class BattleManager : MonoBehaviour {
 
         battleState.ResetData();
         battleCharacters.ResetData();
+        currentPartyCharacter.value = null;
+        currentFightBoardCharacter.value = null;
     }
 
     private void Start() {
@@ -155,15 +154,13 @@ public class BattleManager : MonoBehaviour {
     }
 
     public void LoadMission() {
-        board.LoadMap(missionToLoad.value);
+        board.LoadMap(missionToLoad);
         background.Load(missionToLoad.value.background);
 
         // TODO: Move this to SunController?
-        LightingType lightingType = EnumUtil.ParseEnum(missionToLoad.value.lighting, LightingType.Day);
-
         sunSettings.turnType = false;
 
-        switch (lightingType) {
+        switch (missionToLoad.value.lighting) {
             case LightingType.Day:
                 sunIntensity.value = sunSettings.dayIntensity;
                 break;

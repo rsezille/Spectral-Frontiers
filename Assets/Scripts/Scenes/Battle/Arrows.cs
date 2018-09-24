@@ -10,6 +10,7 @@ public class Arrows : MonoBehaviour {
 
     [Header("Dependencies")]
     public BattleState battleState;
+    public BoardCharacterVariable currentFightBoardCharacter;
 
     [Header("References")]
     public GameObject north;
@@ -37,7 +38,7 @@ public class Arrows : MonoBehaviour {
 
     private void ChangeDirection(BoardCharacter.Direction direction) {
         if (battleState.currentBattleStep == BattleState.BattleStep.Fight && battleState.currentTurnStep == BattleState.TurnStep.Direction) {
-            battleManager.fight.selectedPlayerCharacter.direction = direction;
+            currentFightBoardCharacter.value.direction = direction;
         }
     }
 }

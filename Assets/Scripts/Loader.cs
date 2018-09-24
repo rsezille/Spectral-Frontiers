@@ -11,6 +11,7 @@ public class Loader : MonoBehaviour {
 
     [Header("Dependencies")]
     public MissionVariable missionToLoad;
+    public Mission testingMission;
 
     // Initialization
     private void Awake() {
@@ -36,7 +37,7 @@ public class Loader : MonoBehaviour {
                     break;
                 case Scenes.Battle:
                     Debug.Log("First scene: Battle");
-                    missionToLoad.value = GameManager.instance.missions["story_01"];
+                    missionToLoad.value = testingMission;
                     break;
             }
 #endif

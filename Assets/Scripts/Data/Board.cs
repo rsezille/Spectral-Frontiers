@@ -36,43 +36,37 @@ namespace SF {
             }
         }
 
-        public void LoadMap(RawMission mission) {
-            GameObject mapGameObject = Resources.Load("Maps/" + mission.map) as GameObject;
+        public void LoadMap(Mission mission) {
+            GameObject map = Instantiate(mission.map, Vector3.zero, Quaternion.identity).gameObject;
 
-            if (mapGameObject != null) {
-                GameObject map = Instantiate(mapGameObject, Vector3.zero, Quaternion.identity) as GameObject;
+            Square[] mapSquares = map.GetComponentsInChildren<Square>();
 
-                Square[] mapSquares = map.GetComponentsInChildren<Square>();
+            width = 0;
+            height = 0;
 
-                width = 0;
-                height = 0;
-
-                foreach (Square mapSquare in mapSquares) {
-                    if (mapSquare.x > width) width = mapSquare.x;
-                    if (mapSquare.y > height) height = mapSquare.y;
-                }
-
-                width++; // Squares start from index 0
-                height++; // Squares start from index 0
-
-                squares = new Square[width * height];
-
-                foreach (Square mapSquare in mapSquares) {
-                    int squareIndex = mapSquare.x + (mapSquare.y * width);
-
-                    squares[squareIndex] = mapSquare;
-                }
-
-                foreach (RawMission.RawStartingSquare startingSquare in mission.startingSquares) {
-                    squares[PositionToIndexSquare(startingSquare.posX, startingSquare.posY)].startingDirection = EnumUtil.ParseEnum<BoardCharacter.Direction>(startingSquare.direction, BoardCharacter.Direction.North);
-                }
-
-                pathFinder = new PathFinder(this, this.width + this.height);
-
-                mapName = LanguageManager.instance.GetString("map." + mission.map + ".name");
-            } else {
-                Debug.LogError("Map not found! " + mission.map);
+            foreach (Square mapSquare in mapSquares) {
+                if (mapSquare.x > width) width = mapSquare.x;
+                if (mapSquare.y > height) height = mapSquare.y;
             }
+
+            width++; // Squares start from index 0
+            height++; // Squares start from index 0
+
+            squares = new Square[width * height];
+
+            foreach (Square mapSquare in mapSquares) {
+                int squareIndex = mapSquare.x + (mapSquare.y * width);
+
+                squares[squareIndex] = mapSquare;
+            }
+
+            foreach (Mission.StartingSquare startingSquare in mission.startingSquares) {
+                squares[PositionToIndexSquare(startingSquare.posX, startingSquare.posY)].startingDirection = startingSquare.direction;
+            }
+
+            pathFinder = new PathFinder(this, width + height);
+
+            mapName = LanguageManager.instance.GetString("map." + mission.map.gameObject.name + ".name");
         }
 
         public Square[] GetSquares() {

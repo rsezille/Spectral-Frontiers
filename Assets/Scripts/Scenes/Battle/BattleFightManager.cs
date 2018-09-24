@@ -8,7 +8,7 @@ public class BattleFightManager {
 
     private GameObject arrows;
 
-    private BoardCharacter _selectedPlayerCharacter;
+    /*private BoardCharacter _selectedPlayerCharacter;
     public BoardCharacter selectedPlayerCharacter {
         get {
             return _selectedPlayerCharacter;
@@ -16,22 +16,22 @@ public class BattleFightManager {
 
         set {
             if (_selectedPlayerCharacter != null && _selectedPlayerCharacter.glow != null) {
-                _selectedPlayerCharacter.glow.Disable();
+                _selectedPlayerCharacter.glow.Disable(); // Into new character turn
             }
 
             _selectedPlayerCharacter = value;
-            battleManager.fightHUD.UpdateSelectedSquare();
+            battleManager.fightHUD.UpdateSelectedSquare(); // Into new character turn
 
             if (_selectedPlayerCharacter != null) {
                 if (_selectedPlayerCharacter.glow != null) {
-                    _selectedPlayerCharacter.glow.Enable();
+                    _selectedPlayerCharacter.glow.Enable(); // Into new character turn
                 }
 
-                battleManager.battleCamera.SetPosition(_selectedPlayerCharacter, true);
-                battleManager.fightHUD.Refresh();
+                battleManager.battleCamera.SetPosition(_selectedPlayerCharacter, true); // Into new character turn
+                battleManager.fightHUD.Refresh(); // Into new character turn
             }
         }
-    }
+    }*/
 
     public BattleFightManager(BattleManager battleManager) {
         this.battleManager = battleManager;
@@ -42,19 +42,11 @@ public class BattleFightManager {
         if (InputManager.Previous.IsKeyDown) {
             switch (battleManager.battleState.currentTurnStep) {
                 case BattleState.TurnStep.Status:
-                    Character characterToShow = battleManager.statusHUD.character;
+                    battleManager.currentPartyCharacter.value = battleManager.party.GetPreviousCharacter(battleManager.currentPartyCharacter);
 
-                    if (GameManager.instance.player.characters.IndexOf(characterToShow) == 0) {
-                        characterToShow = GameManager.instance.player.characters[GameManager.instance.player.characters.Count - 1];
-                    } else {
-                        characterToShow = GameManager.instance.player.characters[GameManager.instance.player.characters.IndexOf(characterToShow) - 1];
+                    if (battleManager.currentPartyCharacter.value.boardCharacter != null) {
+                        battleManager.currentFightBoardCharacter.value = battleManager.currentPartyCharacter.value.boardCharacter;
                     }
-
-                    if (characterToShow.boardCharacter != null) {
-                        selectedPlayerCharacter = characterToShow.boardCharacter;
-                    }
-
-                    battleManager.statusHUD.Show(characterToShow);
                     break;
                 case BattleState.TurnStep.None:
                     Previous();
@@ -63,19 +55,11 @@ public class BattleFightManager {
         } else if (InputManager.Next.IsKeyDown) {
             switch (battleManager.battleState.currentTurnStep) {
                 case BattleState.TurnStep.Status:
-                    Character characterToShow = battleManager.statusHUD.character;
+                    battleManager.currentPartyCharacter.value = battleManager.party.GetNextCharacter(battleManager.currentPartyCharacter);
 
-                    if (GameManager.instance.player.characters.IndexOf(characterToShow) >= GameManager.instance.player.characters.Count - 1) {
-                        characterToShow = GameManager.instance.player.characters[0];
-                    } else {
-                        characterToShow = GameManager.instance.player.characters[GameManager.instance.player.characters.IndexOf(characterToShow) + 1];
+                    if (battleManager.currentPartyCharacter.value.boardCharacter != null) {
+                        battleManager.currentFightBoardCharacter.value = battleManager.currentPartyCharacter.value.boardCharacter;
                     }
-
-                    if (characterToShow.boardCharacter != null) {
-                        selectedPlayerCharacter = characterToShow.boardCharacter;
-                    }
-
-                    battleManager.statusHUD.Show(characterToShow);
                     break;
                 case BattleState.TurnStep.None:
                     Next();
@@ -85,13 +69,13 @@ public class BattleFightManager {
 
         if (battleManager.battleState.currentTurnStep == BattleState.TurnStep.Direction) {
             if (InputManager.Up.IsKeyDown) {
-                selectedPlayerCharacter.direction = BoardCharacter.Direction.North;
+                battleManager.currentFightBoardCharacter.value.direction = BoardCharacter.Direction.North;
             } else if (InputManager.Down.IsKeyDown) {
-                selectedPlayerCharacter.direction = BoardCharacter.Direction.South;
+                battleManager.currentFightBoardCharacter.value.direction = BoardCharacter.Direction.South;
             } else if (InputManager.Left.IsKeyDown) {
-                selectedPlayerCharacter.direction = BoardCharacter.Direction.West;
+                battleManager.currentFightBoardCharacter.value.direction = BoardCharacter.Direction.West;
             } else if (InputManager.Right.IsKeyDown) {
-                selectedPlayerCharacter.direction = BoardCharacter.Direction.East;
+                battleManager.currentFightBoardCharacter.value.direction = BoardCharacter.Direction.East;
             } else if (InputManager.Confirm.IsKeyDown) {
                 EndTurnStepDirection();
             }
@@ -107,8 +91,8 @@ public class BattleFightManager {
 
     // Called by BattleManager
     public void LeaveBattleStepFight() {
-        if (selectedPlayerCharacter.glow != null) {
-            selectedPlayerCharacter.glow.Disable();
+        if (battleManager.currentFightBoardCharacter.value.glow != null) {
+            battleManager.currentFightBoardCharacter.value.glow.Disable();
         }
 
         battleManager.board.RemoveAllMarks();
@@ -155,7 +139,7 @@ public class BattleFightManager {
 
         battleManager.fightHUD.SetActiveWithAnimation(false);
 
-        battleManager.statusHUD.Show(selectedPlayerCharacter);
+        battleManager.statusHUD.Show(battleManager.currentFightBoardCharacter.value);
     }
 
     // Called by FightHUD
@@ -165,7 +149,7 @@ public class BattleFightManager {
         } else {
             battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
 
-            if (selectedPlayerCharacter.movable != null && selectedPlayerCharacter.movable.CanMove()) {
+            if (battleManager.currentFightBoardCharacter.value.movable != null && battleManager.currentFightBoardCharacter.value.movable.CanMove()) {
                 EnterTurnStepMove();
             }
         }
@@ -203,8 +187,8 @@ public class BattleFightManager {
         // TODO [ALPHA] FlashMessage
         // TODO [ALPHA] Disable inputs
 
-        if (selectedPlayerCharacter.glow != null) {
-            selectedPlayerCharacter.glow.Disable();
+        if (battleManager.currentFightBoardCharacter.value.glow != null) {
+            battleManager.currentFightBoardCharacter.value.glow.Disable();
         }
 
         EnterTurnStepEnemy();
@@ -214,7 +198,7 @@ public class BattleFightManager {
     public void Action() {
         battleManager.EnterTurnStepNone();
 
-        if (selectedPlayerCharacter.actionable.CanDoAction()) {
+        if (battleManager.currentFightBoardCharacter.value.actionable.CanDoAction()) {
             battleManager.fightHUD.actionMenu.Toggle();
         }
     }
@@ -226,7 +210,7 @@ public class BattleFightManager {
         } else {
             battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
 
-            if (selectedPlayerCharacter.actionable != null && selectedPlayerCharacter.actionable.CanDoAction()) {
+            if (battleManager.currentFightBoardCharacter.value.actionable != null && battleManager.currentFightBoardCharacter.value.actionable.CanDoAction()) {
                 EnterTurnStepAttack();
             }
         }
@@ -245,7 +229,7 @@ public class BattleFightManager {
 
         battleManager.EnterTurnStepNone();
 
-        selectedPlayerCharacter = battleManager.battleCharacters.player[0];
+        battleManager.currentFightBoardCharacter.value = battleManager.battleCharacters.player[0];
     }
 
     private void EnterTurnStepEnemy() {
@@ -288,7 +272,7 @@ public class BattleFightManager {
     private void MarkSquares(int distance, Square.MarkType markType, bool ignoreBlocking = false) {
         battleManager.board.RemoveAllMarks();
 
-        List<Square> squaresHit = battleManager.board.PropagateLinear(selectedPlayerCharacter.GetSquare(), distance, selectedPlayerCharacter.side.value, ignoreBlocking);
+        List<Square> squaresHit = battleManager.board.PropagateLinear(battleManager.currentFightBoardCharacter.value.GetSquare(), distance, battleManager.currentFightBoardCharacter.value.side.value, ignoreBlocking);
 
         foreach (Square squareHit in squaresHit) {
             if (squareHit.IsNotBlocking() || ignoreBlocking) {
@@ -303,7 +287,7 @@ public class BattleFightManager {
 
         battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
 
-        MarkSquares(selectedPlayerCharacter.movable.movementPoints, Square.MarkType.Movement);
+        MarkSquares(battleManager.currentFightBoardCharacter.value.movable.movementPoints, Square.MarkType.Movement);
     }
 
     // Mark all squares the character can attack
@@ -319,22 +303,22 @@ public class BattleFightManager {
 
         GameObject arrowsPrefab = Resources.Load<GameObject>("Arrows");
 
-        arrows = Object.Instantiate(arrowsPrefab, selectedPlayerCharacter.transform.position + new Vector3(arrowsPrefab.transform.position.x, arrowsPrefab.transform.position.y), Quaternion.identity);
+        arrows = Object.Instantiate(arrowsPrefab, battleManager.currentFightBoardCharacter.value.transform.position + new Vector3(arrowsPrefab.transform.position.x, arrowsPrefab.transform.position.y), Quaternion.identity);
     }
 
     private void SelectPreviousPlayerBoardCharacter() {
-        if (battleManager.battleCharacters.player.IndexOf(selectedPlayerCharacter) == 0) {
-            selectedPlayerCharacter = battleManager.battleCharacters.player[battleManager.battleCharacters.player.Count - 1];
+        if (battleManager.battleCharacters.player.IndexOf(battleManager.currentFightBoardCharacter.value) == 0) {
+            battleManager.currentFightBoardCharacter.value = battleManager.battleCharacters.player[battleManager.battleCharacters.player.Count - 1];
         } else {
-            selectedPlayerCharacter = battleManager.battleCharacters.player[battleManager.battleCharacters.player.IndexOf(selectedPlayerCharacter) - 1];
+            battleManager.currentFightBoardCharacter.value = battleManager.battleCharacters.player[battleManager.battleCharacters.player.IndexOf(battleManager.currentFightBoardCharacter.value) - 1];
         }
     }
 
     private void SelectNextPlayerBoardCharacter() {
-        if (battleManager.battleCharacters.player.IndexOf(selectedPlayerCharacter) >= battleManager.battleCharacters.player.Count - 1) {
-            selectedPlayerCharacter = battleManager.battleCharacters.player[0];
+        if (battleManager.battleCharacters.player.IndexOf(battleManager.currentFightBoardCharacter.value) >= battleManager.battleCharacters.player.Count - 1) {
+            battleManager.currentFightBoardCharacter.value = battleManager.battleCharacters.player[0];
         } else {
-            selectedPlayerCharacter = battleManager.battleCharacters.player[battleManager.battleCharacters.player.IndexOf(selectedPlayerCharacter) + 1];
+            battleManager.currentFightBoardCharacter.value = battleManager.battleCharacters.player[battleManager.battleCharacters.player.IndexOf(battleManager.currentFightBoardCharacter.value) + 1];
         }
     }
 }

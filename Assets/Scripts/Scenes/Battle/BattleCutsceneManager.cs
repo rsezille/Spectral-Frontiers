@@ -14,7 +14,7 @@ public class BattleCutsceneManager {
 
     private BattleManager battleManager;
 
-    private RawMission.Action[] actions;
+    private Mission.CutsceneAction[] actions;
     private Type type;
     private List<BoardCharacter> instanciatedCharacters = new List<BoardCharacter>();
 
@@ -92,7 +92,7 @@ public class BattleCutsceneManager {
     }
 
     private IEnumerator ProcessCutscene() {
-        foreach (RawMission.Action action in actions) {
+        foreach (Mission.CutsceneAction action in actions) {
             yield return ProcessAction(action);
         }
 
@@ -122,7 +122,7 @@ public class BattleCutsceneManager {
         }
     }
 
-    private IEnumerator ProcessAction(RawMission.Action action) {
+    private IEnumerator ProcessAction(Mission.CutsceneAction action) {
         NameValueCollection args = new NameValueCollection();
 
         foreach (string arg in action.args) {
@@ -194,19 +194,19 @@ public class BattleCutsceneManager {
                 break;
         }
 
-        BoardCharacter boardCharacterPrefab = Resources.Load<BoardCharacter>("CutsceneBoardCharacter");
-        boardCharacterPrefab.enemyOrNeutralSpritePrefab = Resources.Load<GameObject>("CharacterSprites/" + sprite);
+        BoardCharacter boardCharacterPrefab = Resources.Load<BoardCharacter>("NewBoardCharacter");
+        //boardCharacterPrefab.enemyOrNeutralSpritePrefab = Resources.Load<GameObject>("CharacterSprites/" + sprite);
 
         float squareHeight = (float)battleManager.board.GetSquare(parsedX, parsedY).Height / Globals.TileHeight;
 
         BoardCharacter boardCharacter = Object.Instantiate(boardCharacterPrefab, BoardUtil.CoordToWorldPosition(fromX, fromY, battleManager.board.GetSquare(parsedX, parsedY).GetWorldHeight()), Quaternion.identity);
-        boardCharacter.character = new Character(name);
+        //boardCharacter.character = new CharacterPouet(name);
         boardCharacter.direction = direction;
         boardCharacter.sprite.color = new Color(boardCharacter.sprite.color.r, boardCharacter.sprite.color.g, boardCharacter.sprite.color.b, 0f);
         boardCharacter.sprite.DOColor(new Color(boardCharacter.sprite.color.r, boardCharacter.sprite.color.g, boardCharacter.sprite.color.b, 1f), 1f);
 
         if (boardCharacter.shadow != null) {
-            boardCharacter.shadow.Show(1f);
+            boardCharacter.shadow.ShowCutscene(1f);
         }
 
         Tween move = boardCharacter.transform.DOMove(BoardUtil.CoordToWorldPosition(battleManager.board.GetSquare(parsedX, parsedY)), 1f).SetEase(Ease.Linear).OnComplete(() => {

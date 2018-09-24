@@ -19,6 +19,8 @@ public class BoardCharacter : MonoBehaviour {
     public BattleState battleState;
     public BattleCharacters battleCharacters;
     public Board board;
+    public CharacterVariable currentPartyCharacter;
+    public BoardCharacterVariable currentFightBoardCharacter;
 
     [Header("Events")]
     public GameEvent checkSemiTransparent;
@@ -26,8 +28,10 @@ public class BoardCharacter : MonoBehaviour {
     public Character character;
     private GameObject spriteContainer;
 
-    [Header("Data")]
-    public GameObject enemyOrNeutralSpritePrefab;
+    [Header("Prefabs")]
+    public HealthBarHUDController healthBarHUD;
+    public CharacterNameHUDController characterNameHUD;
+    public float offset = 0.2f; // TODO: Do it in Character SO instead?
 
     // Components
     private BoardEntity boardEntity;
@@ -38,7 +42,7 @@ public class BoardCharacter : MonoBehaviour {
     public Side side;
     // Components which can be null
     [HideInInspector]
-    public CharacterGlow glow;
+    public Glow glow;
     [HideInInspector]
     public Movable movable;
     [HideInInspector]
@@ -46,7 +50,7 @@ public class BoardCharacter : MonoBehaviour {
     [HideInInspector]
     public AI AI;
     [HideInInspector]
-    public Shadow shadow;
+    public ShadowController shadow;
 
     [Tooltip("Do not touch this")]
     public bool isMoving = false;
@@ -81,21 +85,6 @@ public class BoardCharacter : MonoBehaviour {
         battleManager = BattleManager.instance;
 
         side = GetComponent<Side>();
-
-        // Enemies and neutrals have their spriteContainer already linked to the GameObject
-        if (side.value == Side.Type.Player) {
-            // TODO [ALPHA] Replace "Hero" by the main character or the job
-            spriteContainer = Instantiate(Resources.Load<GameObject>("CharacterSprites/Hero"), transform);
-        } else {
-            spriteContainer = Instantiate(enemyOrNeutralSpritePrefab, transform);
-        }
-
-        animator = spriteContainer.GetComponent<Animator>();
-        sprite = spriteContainer.GetComponent<SpriteRenderer>();
-        sprite.sortingOrder = 1;
-        glow = spriteContainer.GetComponent<CharacterGlow>();
-        shadow = spriteContainer.GetComponent<Shadow>();
-
         boardEntity = GetComponent<BoardEntity>();
         movable = GetComponent<Movable>();
         actionable = GetComponent<Actionable>();
@@ -103,11 +92,40 @@ public class BoardCharacter : MonoBehaviour {
     }
 
     private void Start() {
-        gameObject.name = character.name; // To find it inside the editor
+        HealthBarHUDController healthBarHUDInstance = Instantiate(healthBarHUD, transform);
+        healthBarHUDInstance.character = character;
+        healthBarHUDInstance.transform.position += new Vector3(0f, sprite.bounds.size.y + offset);
+
+        CharacterNameHUDController characterNameHUDInstance = Instantiate(characterNameHUD, transform);
+        characterNameHUDInstance.character = character;
+        float offsetName = offset;
+        
+        //if (healthBarHUD) {
+            offsetName = 0.3f + offset;
+        //}
+
+        characterNameHUDInstance.transform.position += new Vector3(0f, sprite.bounds.size.y + offsetName);
+    }
+
+    public void Init(Character character, Side.Type side, Direction direction) {
+        this.character = character;
+
+        spriteContainer = Instantiate(character.template.spritePrefab, transform);
+
+        animator = spriteContainer.GetComponent<Animator>();
+        sprite = spriteContainer.GetComponent<SpriteRenderer>();
+        sprite.sortingOrder = 1;
+        glow = spriteContainer.GetComponent<Glow>();
+        shadow = spriteContainer.GetComponentInChildren<ShadowController>();
+
+        gameObject.name = character.characterName;
 
         if (glow) {
             glow.Disable();
         }
+
+        this.side.value = side;
+        this.direction = direction;
     }
 
     public Square GetSquare() {
@@ -181,8 +199,8 @@ public class BoardCharacter : MonoBehaviour {
     public void MouseLeave() {
         battleManager.fightHUD.SquareHovered(null);
 
-        if ((battleState.currentBattleStep == BattleState.BattleStep.Placing && battleManager.placing.GetCurrentPlacingChar().boardCharacter != this
-                || battleState.currentBattleStep == BattleState.BattleStep.Fight && battleManager.fight.selectedPlayerCharacter != this) && glow != null) {
+        if ((battleState.currentBattleStep == BattleState.BattleStep.Placing && currentPartyCharacter.value.boardCharacter != this
+                || battleState.currentBattleStep == BattleState.BattleStep.Fight && currentFightBoardCharacter.value != this) && glow != null) {
             glow.Disable();
         }
     }
@@ -196,13 +214,13 @@ public class BoardCharacter : MonoBehaviour {
                 // Focus the clicked character as the current one to place
                 battleManager.placing.SetCurrentPlacingChar(character);
             } else if (battleState.currentBattleStep == BattleState.BattleStep.Fight && battleState.currentTurnStep == BattleState.TurnStep.None) {
-                battleManager.fight.selectedPlayerCharacter = this;
+                currentFightBoardCharacter.value = this;
             }
         }
 
         if (battleState.currentBattleStep == BattleState.BattleStep.Fight && battleState.currentTurnStep == BattleState.TurnStep.Attack) {
             if (GetSquare().markType == Square.MarkType.Attack) {
-                battleManager.fight.selectedPlayerCharacter.BasicAttack(this);
+                currentFightBoardCharacter.value.BasicAttack(this);
                 battleManager.EnterTurnStepNone();
             }
         }
@@ -210,17 +228,17 @@ public class BoardCharacter : MonoBehaviour {
 
     public void NewTurn() {
         if (actionable != null) {
-            actionable.actionTokens = character.actionTokens;
+            actionable.actionTokens = character.template.actionTokens;
         }
 
         if (movable != null) {
-            movable.movementTokens = character.movementTokens;
-            movable.movementPoints = character.movementPoints;
+            movable.movementTokens = character.template.movementTokens;
+            movable.movementPoints = character.template.movementPoints;
         }
     }
 
     private bool IsDead() {
-        return character.GetCurrentHP() <= 0;
+        return character.currentHp <= 0;
     }
 
     public void BasicAttack(BoardCharacter target) {

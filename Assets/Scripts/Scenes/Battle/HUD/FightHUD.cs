@@ -7,6 +7,10 @@ using UnityEngine.UI;
 public class FightHUD : MonoBehaviour {
     private BattleManager battleManager;
 
+    [Header("Dependencies")]
+    public BoardCharacterVariable currentFightBoardCharacter;
+
+    [Header("References")]
     public GameObject moveButton;
     public GameObject actionButton;
     public GameObject previousButton;
@@ -39,12 +43,12 @@ public class FightHUD : MonoBehaviour {
 
     // Compute all checks on buttons availability
     public void Refresh() {
-        if (battleManager.fight.selectedPlayerCharacter == null) return;
+        if (currentFightBoardCharacter.value == null) return;
 
-        Movable movable = battleManager.fight.selectedPlayerCharacter.GetComponent<Movable>();
+        Movable movable = currentFightBoardCharacter.value.GetComponent<Movable>();
         moveButton.GetComponent<Button>().interactable = movable != null && movable.CanMove();
 
-        Actionable actionable = battleManager.fight.selectedPlayerCharacter.GetComponent<Actionable>();
+        Actionable actionable = currentFightBoardCharacter.value.GetComponent<Actionable>();
         actionButton.GetComponent<Button>().interactable = actionable != null && actionable.CanDoAction();
         actionMenu.Refresh();
 
@@ -103,7 +107,7 @@ public class FightHUD : MonoBehaviour {
                 BoardCharacter boardCharacter = square.boardEntity.GetComponent<BoardCharacter>();
 
                 if (boardCharacter != null) {
-                    selectedSquareText.text += "\nCharacter: " + boardCharacter.character.name + " (" + boardCharacter.character.GetCurrentHP() + "/" + boardCharacter.character.GetMaxHP() + ")";
+                    selectedSquareText.text += "\nCharacter: " + boardCharacter.character.characterName + " (" + boardCharacter.character.currentHp + "/" + boardCharacter.character.maxHP + ")";
                 } else {
                     selectedSquareText.text += "\nCharacter: none";
                 }
@@ -116,10 +120,10 @@ public class FightHUD : MonoBehaviour {
     public void UpdateSelectedSquare() {
         Text currentSquareText = currentSquare.GetComponentInChildren<Text>();
 
-        if (battleManager.fight.selectedPlayerCharacter != null) {
+        if (currentFightBoardCharacter.value != null) {
             currentSquareText.text =
-                battleManager.fight.selectedPlayerCharacter.character.name +
-                "\n" + battleManager.fight.selectedPlayerCharacter.character.GetCurrentHP() + "/" + battleManager.fight.selectedPlayerCharacter.character.GetMaxHP() + " HP";
+                currentFightBoardCharacter.value.character.characterName +
+                "\n" + currentFightBoardCharacter.value.character.currentHp + "/" + currentFightBoardCharacter.value.character.maxHP + " HP";
         } else {
             currentSquareText.text = "No currently selected character";
         }

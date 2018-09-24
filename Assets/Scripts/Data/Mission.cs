@@ -7,22 +7,23 @@ namespace SF {
         [Serializable]
         public class Background {
             public string preset;
-            public Color mainColor;
-            public Color off1Color;
-            public Color off2Color;
-            public string type;
+            public Color mainColor = new Vector4(0.43f, 0.68f, 0.83f, 1f);
+            public Color off1Color = new Vector4(0.22f, 0.36f, 0.88f, 1f);
+            public Color off2Color = new Vector4(1f, 1f, 1f, 1f);
+            public SF.Background.Type type = SF.Background.Type.Gradient;
         }
 
         [Serializable]
-        public class StartingSquare {
+        public struct StartingSquare {
             public int posX;
             public int posY;
             public BoardCharacter.Direction direction;
         }
 
         [Serializable]
-        public class Enemy {
-            public Character character;
+        public struct Enemy {
+            public CharacterTemplate character;
+            public string overloadedName;
             public int level;
             public int posX;
             public int posY;
@@ -30,7 +31,7 @@ namespace SF {
         }
 
         [Serializable]
-        public class CutsceneAction {
+        public struct CutsceneAction {
             public string type;
             public string[] args;
         }
@@ -40,7 +41,7 @@ namespace SF {
         public int maxPlayerCharacters = 1;
         public StartingSquare[] startingSquares;
         public Background background;
-        public string lighting;
+        public BattleManager.LightingType lighting = BattleManager.LightingType.Day;
 
         // Missions tree
         public Mission[] parents;
