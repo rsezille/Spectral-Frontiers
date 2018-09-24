@@ -11,21 +11,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d0b0e88ff5d2b24789819dc8ad0dd16, type: 3}
   m_Name: Char2
   m_EditorClassIdentifier: 
-  boardCharacter: {fileID: 0}
   characterName:
     useConstant: 1
     constantValue: Mewt
     variable: {fileID: 0}
   maxHP:
     statType: {fileID: 11400000, guid: 46657856a51747c4387336340c7f41c2, type: 2}
-    currentValue: 50
-  currentHp: 10
+    baseValue: 50
+    perLevelValue: 0
   atk:
     statType: {fileID: 11400000, guid: a365f769bd7804546a709d38d8ad9a6e, type: 2}
-    currentValue: 10
+    baseValue: 0
+    perLevelValue: 0
   spd:
     statType: {fileID: 11400000, guid: 277f3408faf7bb746b7116485e035ba6, type: 2}
-    currentValue: 100
+    baseValue: 0
+    perLevelValue: 0
   spritePrefab: {fileID: 1754958333634280, guid: b7c8478939e725e4d928ad2bddca96ca,
     type: 2}
   shadowSize: 0
