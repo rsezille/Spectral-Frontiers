@@ -3,22 +3,19 @@ using UnityEngine;
 
 namespace SF {
     [CreateAssetMenu(menuName = "SF/Character")]
-    public class Character : ScriptableObject {
+    public class CharacterTemplate : ScriptableObject {
         [Serializable]
         public struct CharacterStat {
             public Stat statType;
-            public int currentValue;
+            public int baseValue;
+            public int perLevelValue;
         }
-
-        [HideInInspector]
-        public BoardCharacter boardCharacter;
 
         [Header("Basic")]
         public StringReference characterName;
 
         [Header("Stats")]
         public CharacterStat maxHP;
-        public int currentHp;
         public CharacterStat atk;
         public CharacterStat spd;
 
@@ -35,19 +32,5 @@ namespace SF {
         public int movementPoints = 3;
         [Tooltip("Can be overloaded in missions ; used when the character is played by the computer")]
         public AI.Preset defaultAI = AI.Preset.Aggressive;
-
-        /**
-         * Do a basic attack against the defender
-         * @param defender The defender
-         * @return Return the number of damages done
-         */
-        public int BasicAttack(Character defender) {
-            //int damagesDone = atk.currentValue - defender.def.currentValue;
-            int damagesDone = atk.currentValue;
-
-            defender.currentHp = defender.currentHp - damagesDone;
-
-            return damagesDone;
-        }
     }
 }
