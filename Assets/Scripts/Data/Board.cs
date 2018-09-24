@@ -135,5 +135,17 @@ namespace SF {
 
             return squaresHit;
         }
+
+        public void MarkSquares(Square epicenter, int distance, Square.MarkType markType, Side.Type side, bool ignoreBlocking = false) {
+            RemoveAllMarks();
+
+            List<Square> squaresHit = PropagateLinear(epicenter, distance, side, ignoreBlocking);
+
+            foreach (Square squareHit in squaresHit) {
+                if (squareHit.IsNotBlocking() || ignoreBlocking) {
+                    squareHit.markType = markType;
+                }
+            }
+        }
     }
 }

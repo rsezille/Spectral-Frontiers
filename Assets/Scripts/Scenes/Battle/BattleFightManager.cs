@@ -267,32 +267,31 @@ public class BattleFightManager {
         yield return null;
     }
 
-    private void MarkSquares(int distance, Square.MarkType markType, bool ignoreBlocking = false) {
-        battleManager.board.RemoveAllMarks();
-
-        List<Square> squaresHit = battleManager.board.PropagateLinear(battleManager.currentFightBoardCharacter.value.GetSquare(), distance, battleManager.currentFightBoardCharacter.value.side.value, ignoreBlocking);
-
-        foreach (Square squareHit in squaresHit) {
-            if (squareHit.IsNotBlocking() || ignoreBlocking) {
-                squareHit.markType = markType;
-            }
-        }
-    }
-
     // Mark all squares where the character can move
     private void EnterTurnStepMove() {
         battleManager.battleState.currentTurnStep = BattleState.TurnStep.Move;
 
         battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
 
-        MarkSquares(battleManager.currentFightBoardCharacter.value.movementPoints, Square.MarkType.Movement);
+        battleManager.board.MarkSquares(
+            battleManager.currentFightBoardCharacter.value.GetSquare(),
+            battleManager.currentFightBoardCharacter.value.movementPoints,
+            Square.MarkType.Movement,
+            battleManager.currentFightBoardCharacter.value.side.value
+        );
     }
 
     // Mark all squares the character can attack
     private void EnterTurnStepAttack() {
         battleManager.battleState.currentTurnStep = BattleState.TurnStep.Attack;
 
-        MarkSquares(1, Square.MarkType.Attack, true); // TODO [ALPHA] weapon range
+        battleManager.board.MarkSquares(
+            battleManager.currentFightBoardCharacter.value.GetSquare(),
+            1,
+            Square.MarkType.Attack,
+            battleManager.currentFightBoardCharacter.value.side.value,
+            true
+        ); // TODO [ALPHA] weapon range
     }
 
     public void EnterTurnStepDirection() {
