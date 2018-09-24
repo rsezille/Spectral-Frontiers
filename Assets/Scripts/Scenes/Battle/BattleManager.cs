@@ -43,8 +43,7 @@ public class BattleManager : MonoBehaviour {
     public VictoryHUD victoryHUD;
     public PausedHUD pausedHUD;
     public TurnHUD turnHUD;
-
-    public PlayerCharacter testPlayerCharacter; // TODO [ALPHA] Find the correct character giving the name & job
+    
     public FloatingText floatingText;
 
     // Dedicated managers for each BattleStep
