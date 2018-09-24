@@ -32,7 +32,7 @@ public class PlacingHUD : MonoBehaviour {
     }
 
     private void Start() {
-        removeButton.AddListener(EventTriggerType.PointerClick, battleManager.placing.RemoveCurrentMapChar);
+        removeButton.AddListener(EventTriggerType.PointerClick, RemoveCurrentMapChar);
         statusButton.AddListener(EventTriggerType.PointerClick, battleManager.EnterTurnStepStatus);
     }
 
@@ -77,6 +77,20 @@ public class PlacingHUD : MonoBehaviour {
         }
 
         nextCharText.text = "Next [" + InputManager.Next.bindedKey + "]\n" + nextCharacter.characterName; //TODO [BETA] LanguageManager with a multi key translation
+    }
+
+    private void RemoveCurrentMapChar() {
+        if (battleState.currentBattleStep != BattleState.BattleStep.Placing) {
+            return;
+        }
+
+        if (currentPartyCharacter.value.boardCharacter == null) return;
+
+        currentPartyCharacter.value.boardCharacter.Remove();
+
+        if (battleCharacters.player.Count <= 0) {
+            startBattleText.gameObject.SetActive(false);
+        }
     }
 
     public void SetActiveWithAnimation(bool active, HUD.Speed speed = HUD.Speed.Normal) {

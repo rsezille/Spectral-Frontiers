@@ -92,20 +92,6 @@ public class BattlePlacingManager {
         }
     }
 
-    public void RemoveCurrentMapChar() {
-        if (battleManager.battleState.currentBattleStep != BattleState.BattleStep.Placing) {
-            return;
-        }
-
-        if (battleManager.currentPartyCharacter.value.boardCharacter == null) return;
-
-        battleManager.currentPartyCharacter.value.boardCharacter.Remove();
-        
-        if (battleManager.battleCharacters.player.Count <= 0) {
-            battleManager.placingHUD.startBattleText.gameObject.SetActive(false);
-        }
-    }
-
     public void RefreshStartBattleText() {
         if (battleManager.battleCharacters.player.Count <= 0) {
             battleManager.placingHUD.startBattleText.gameObject.SetActive(false);
