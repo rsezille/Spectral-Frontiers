@@ -33,6 +33,11 @@ public class BoardCharacter : MonoBehaviour {
     public CharacterNameHUDController characterNameHUD;
     public float offset = 0.2f; // TODO: Do it in Character SO instead?
 
+    [Header("Data")]
+    public int movementPoints; // At the beginning of each turn, movementPoints = character.movementPoints
+    public int movementTokens; // At the beginning of each turn, movementTokens = character.movementTokens
+    public int actionTokens; // At the beginning of each turn, actionTokens = character.actionTokens
+
     // Components
     private BoardEntity boardEntity;
     [HideInInspector]
@@ -43,10 +48,6 @@ public class BoardCharacter : MonoBehaviour {
     // Components which can be null
     [HideInInspector]
     public Glow glow;
-    [HideInInspector]
-    public Movable movable;
-    [HideInInspector]
-    public Actionable actionable;
     [HideInInspector]
     public AI AI;
     [HideInInspector]
@@ -86,8 +87,6 @@ public class BoardCharacter : MonoBehaviour {
 
         side = GetComponent<Side>();
         boardEntity = GetComponent<BoardEntity>();
-        movable = GetComponent<Movable>();
-        actionable = GetComponent<Actionable>();
         AI = GetComponent<AI>();
     }
 
@@ -143,6 +142,14 @@ public class BoardCharacter : MonoBehaviour {
             targetedSquare.boardEntity = boardEntity;
             SetSortingParent(targetedSquare);
         }
+    }
+
+    public bool CanMove() {
+        return movementTokens > 0;
+    }
+
+    public bool CanDoAction() {
+        return actionTokens > 0;
     }
 
     public void SetSortingParent(Square square) {
@@ -227,14 +234,10 @@ public class BoardCharacter : MonoBehaviour {
     }
 
     public void NewTurn() {
-        if (actionable != null) {
-            actionable.actionTokens = character.template.actionTokens;
-        }
-
-        if (movable != null) {
-            movable.movementTokens = character.template.movementTokens;
-            movable.movementPoints = character.template.movementPoints;
-        }
+        actionTokens = character.template.actionTokens;
+        
+        movementTokens = character.template.movementTokens;
+        movementPoints = character.template.movementPoints;
     }
 
     private bool IsDead() {
@@ -242,13 +245,13 @@ public class BoardCharacter : MonoBehaviour {
     }
 
     public void BasicAttack(BoardCharacter target) {
-        if (actionable.CanDoAction()) {
+        if (CanDoAction()) {
             int dmgDone = character.BasicAttack(target.character);
 
             FloatingText floatingText = Instantiate(battleManager.floatingText, target.transform.position, Quaternion.identity);
             floatingText.text = "-" + dmgDone;
             
-            actionable.actionTokens--;
+            actionTokens--;
 
             if (target.IsDead()) target.Remove();
             if (IsDead()) Remove();
@@ -286,10 +289,10 @@ public class BoardCharacter : MonoBehaviour {
     }
     
     public void MoveThroughPath(Path p, bool cameraFollow = true) {
-        if (movable != null && movable.CanMove()) {
+        if (CanMove()) {
             StartCoroutine(MoveCoroutine(p, false, cameraFollow));
             
-            movable.movementTokens--;
+            movementTokens--;
         }
     }
 
@@ -314,7 +317,7 @@ public class BoardCharacter : MonoBehaviour {
 
         // Check at 25% and 75% of each square the sorting order of the BoardChar to set the correct one
         for (int i = 0; i < path.steps.Count; i++) {
-            if (movable.movementPoints <= 0 && !inCutscene) break;
+            if (movementPoints <= 0 && !inCutscene) break;
             //if (!path.steps[i].IsNotBlocking()) break;
 
             if (i > 0) {
@@ -322,7 +325,7 @@ public class BoardCharacter : MonoBehaviour {
             }
 
             if (!inCutscene) {
-                movable.movementPoints--;
+                movementPoints--;
             }
 
             Tween characterAnimation;

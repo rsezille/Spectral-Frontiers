@@ -149,7 +149,7 @@ public class BattleFightManager {
         } else {
             battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
 
-            if (battleManager.currentFightBoardCharacter.value.movable != null && battleManager.currentFightBoardCharacter.value.movable.CanMove()) {
+            if (battleManager.currentFightBoardCharacter.value.CanMove()) {
                 EnterTurnStepMove();
             }
         }
@@ -197,8 +197,8 @@ public class BattleFightManager {
     // Called by FightHUD
     public void Action() {
         battleManager.EnterTurnStepNone();
-
-        if (battleManager.currentFightBoardCharacter.value.actionable.CanDoAction()) {
+        
+        if (battleManager.currentFightBoardCharacter.value.CanDoAction()) {
             battleManager.fightHUD.actionMenu.Toggle();
         }
     }
@@ -210,7 +210,7 @@ public class BattleFightManager {
         } else {
             battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
 
-            if (battleManager.currentFightBoardCharacter.value.actionable != null && battleManager.currentFightBoardCharacter.value.actionable.CanDoAction()) {
+            if (battleManager.currentFightBoardCharacter.value.CanDoAction()) {
                 EnterTurnStepAttack();
             }
         }
@@ -287,7 +287,7 @@ public class BattleFightManager {
 
         battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
 
-        MarkSquares(battleManager.currentFightBoardCharacter.value.movable.movementPoints, Square.MarkType.Movement);
+        MarkSquares(battleManager.currentFightBoardCharacter.value.movementPoints, Square.MarkType.Movement);
     }
 
     // Mark all squares the character can attack

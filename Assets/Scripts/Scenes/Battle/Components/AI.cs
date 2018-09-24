@@ -69,7 +69,7 @@ public class AI : MonoBehaviour {
     private bool Action() {
         bool attacked = false;
 
-        while (boardCharacter.actionable.CanDoAction()) {
+        while (boardCharacter.CanDoAction()) {
             BoardCharacter target = null;
 
             foreach (BoardCharacter playerCharacter in battleCharacters.player) {
@@ -106,7 +106,7 @@ public class AI : MonoBehaviour {
                 playerCharacter.GetSquare().x,
                 playerCharacter.GetSquare().y,
                 boardCharacter.side.value,
-                boardCharacter.movable.movementPoints
+                boardCharacter.movementPoints
             );
 
             if (p != null) {
@@ -114,13 +114,13 @@ public class AI : MonoBehaviour {
                     bestPath = p;
                     lowestCharHP = playerCharacter.character.currentHp;
                 } else {
-                    if (p.GetLength() > boardCharacter.movable.movementPoints + 1) {
+                    if (p.GetLength() > boardCharacter.movementPoints + 1) {
                         if (p.GetLength() < bestPath.GetLength()) {
                             bestPath = p;
                             lowestCharHP = playerCharacter.character.currentHp;
                         }
                     } else {
-                        if (bestPath.GetLength() > boardCharacter.movable.movementPoints + 1) {
+                        if (bestPath.GetLength() > boardCharacter.movementPoints + 1) {
                             bestPath = p;
                             lowestCharHP = playerCharacter.character.currentHp;
                         } else {

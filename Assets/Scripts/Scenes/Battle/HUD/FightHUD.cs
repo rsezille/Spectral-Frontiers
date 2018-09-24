@@ -44,12 +44,10 @@ public class FightHUD : MonoBehaviour {
     // Compute all checks on buttons availability
     public void Refresh() {
         if (currentFightBoardCharacter.value == null) return;
-
-        Movable movable = currentFightBoardCharacter.value.GetComponent<Movable>();
-        moveButton.GetComponent<Button>().interactable = movable != null && movable.CanMove();
-
-        Actionable actionable = currentFightBoardCharacter.value.GetComponent<Actionable>();
-        actionButton.GetComponent<Button>().interactable = actionable != null && actionable.CanDoAction();
+        
+        moveButton.GetComponent<Button>().interactable = currentFightBoardCharacter.value.CanMove();
+        
+        actionButton.GetComponent<Button>().interactable = currentFightBoardCharacter.value.CanDoAction();
         actionMenu.Refresh();
 
         previousButton.GetComponent<Button>().interactable = true; //TODO [ALPHA] if no other character available, disable it
