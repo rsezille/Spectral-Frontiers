@@ -6,8 +6,6 @@ using UnityEngine.Events;
  * TODO [FINAL] May have a leak, remove listeners OnDestroy
  */
 public class Arrows : MonoBehaviour {
-    private BattleManager battleManager; // Shortcut
-
     [Header("Dependencies")]
     public BattleState battleState;
     public BoardCharacterVariable currentFightBoardCharacter;
@@ -19,8 +17,6 @@ public class Arrows : MonoBehaviour {
     public GameObject south;
 
     private void Awake() {
-        battleManager = BattleManager.instance;
-
         AddMouseReactive(north, BoardCharacter.Direction.North);
         AddMouseReactive(west, BoardCharacter.Direction.West);
         AddMouseReactive(east, BoardCharacter.Direction.East);
@@ -33,7 +29,7 @@ public class Arrows : MonoBehaviour {
         reactive.Click = new UnityEvent();
 
         reactive.MouseEnter.AddListener(() => ChangeDirection(direction));
-        reactive.Click.AddListener(battleManager.fight.EndTurnStepDirection);
+        reactive.Click.AddListener(() => battleState.currentTurnStep = BattleState.TurnStep.None);
     }
 
     private void ChangeDirection(BoardCharacter.Direction direction) {

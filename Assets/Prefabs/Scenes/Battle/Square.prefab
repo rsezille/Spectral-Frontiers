@@ -56,6 +56,13 @@ MonoBehaviour:
   board: {fileID: 11400000, guid: 3c4c86e45c7cd1c4e9897b0930bad4cd, type: 2}
   currentFightBoardCharacter: {fileID: 11400000, guid: 9f9983d124106594bb7a73ee18100538,
     type: 2}
+  currentPartyCharacter: {fileID: 11400000, guid: da4745e45b390774b9af81380f76adc2,
+    type: 2}
+  battleCharacters: {fileID: 11400000, guid: 6020ed34a2f75cb4f81732c57a2dc0cf, type: 2}
+  missionToLoad: {fileID: 11400000, guid: 68f1ff2b65824f24a98b59c7eb37bead, type: 2}
+  hoverSquare: {fileID: 11400000, guid: e786d7e77cecd784c81e062930c4ae15, type: 2}
+  checkSemiTransparent: {fileID: 11400000, guid: c45e411927eb18443b3f316fee5dd116,
+    type: 2}
   x: 0
   y: 0
   height: 0

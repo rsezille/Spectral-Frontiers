@@ -6,7 +6,7 @@ using UnityEngine;
 public class BattleFightManager {
     private BattleManager battleManager;
 
-    private GameObject arrows;
+    public GameObject arrows;
 
     /*private BoardCharacter _selectedPlayerCharacter;
     public BoardCharacter selectedPlayerCharacter {
@@ -48,9 +48,6 @@ public class BattleFightManager {
                         battleManager.currentFightBoardCharacter.value = battleManager.currentPartyCharacter.value.boardCharacter;
                     }
                     break;
-                case BattleState.TurnStep.None:
-                    Previous();
-                    break;
             }
         } else if (InputManager.Next.IsKeyDown) {
             switch (battleManager.battleState.currentTurnStep) {
@@ -60,9 +57,6 @@ public class BattleFightManager {
                     if (battleManager.currentPartyCharacter.value.boardCharacter != null) {
                         battleManager.currentFightBoardCharacter.value = battleManager.currentPartyCharacter.value.boardCharacter;
                     }
-                    break;
-                case BattleState.TurnStep.None:
-                    Next();
                     break;
             }
         }
@@ -77,7 +71,7 @@ public class BattleFightManager {
             } else if (InputManager.Right.IsKeyDown) {
                 battleManager.currentFightBoardCharacter.value.direction = BoardCharacter.Direction.East;
             } else if (InputManager.Confirm.IsKeyDown) {
-                EndTurnStepDirection();
+                battleManager.battleState.currentTurnStep = BattleState.TurnStep.None;
             }
         }
     }
@@ -99,125 +93,10 @@ public class BattleFightManager {
         battleManager.fightHUD.SetActiveWithAnimation(false);
     }
 
-    public void EndTurnStepDirection() {
-        if (arrows != null) {
-            Object.Destroy(arrows);
-            arrows = null;
-        }
-
-        battleManager.fightHUD.SetActiveWithAnimation(true);
-        battleManager.EnterTurnStepNone();
-    }
-
-    // Called by BattleManager
-    public void EnterTurnStepNone(BattleState.TurnStep previousTurnStep) {
-        switch (previousTurnStep) {
-            case BattleState.TurnStep.Move:
-            case BattleState.TurnStep.Attack:
-                battleManager.board.RemoveAllMarks();
-                break;
-            case BattleState.TurnStep.Status:
-                battleManager.fightHUD.SetActiveWithAnimation(true);
-                break;
-        }
-
-        battleManager.fightHUD.Refresh();
-
-        //battleManager.battleCamera.SetPosition(battleManager.GetSelectedPlayerBoardCharacter(), true);
-    }
-
-    // Called by BattleManager
-    public void EnterTurnStepStatus(BattleState.TurnStep previousTurnStep) {
-        switch (previousTurnStep) {
-            case BattleState.TurnStep.Move:
-            case BattleState.TurnStep.Attack:
-                battleManager.board.RemoveAllMarks();
-                break;
-        }
-
-        battleManager.fightHUD.SetActiveWithAnimation(false);
-
-        battleManager.statusHUD.Show(battleManager.currentFightBoardCharacter.value);
-    }
-
-    // Called by FightHUD
-    public void Move() {
-        if (battleManager.battleState.currentTurnStep == BattleState.TurnStep.Move) {
-            battleManager.EnterTurnStepNone();
-        } else {
-            battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
-
-            if (battleManager.currentFightBoardCharacter.value.CanMove()) {
-                EnterTurnStepMove();
-            }
-        }
-    }
-
-    // Called by FightHUD
-    public void Previous() {
-        battleManager.EnterTurnStepNone();
-        battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
-
-        SelectPreviousPlayerBoardCharacter();
-    }
-
-    // Called by FightHUD
-    public void Next() {
-        battleManager.EnterTurnStepNone();
-        battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
-
-        SelectNextPlayerBoardCharacter();
-    }
-
-    // Called by FightHUD
-    public void Status() {
-        battleManager.EnterTurnStepStatus();
-    }
-
-    // Called by FightHUD
-    public void Direction() {
-        EnterTurnStepDirection();
-    }
-
-    // Called by FightHUD
-    public void EndTurn() {
-        battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
-        // TODO [ALPHA] FlashMessage
-        // TODO [ALPHA] Disable inputs
-
-        if (battleManager.currentFightBoardCharacter.value.glow != null) {
-            battleManager.currentFightBoardCharacter.value.glow.Disable();
-        }
-
-        EnterTurnStepEnemy();
-    }
-
-    // Called by FightHUD
-    public void Action() {
-        battleManager.EnterTurnStepNone();
-        
-        if (battleManager.currentFightBoardCharacter.value.CanDoAction()) {
-            battleManager.fightHUD.actionMenu.Toggle();
-        }
-    }
-
-    // Called by ActionMenu
-    public void Attack() {
-        if (battleManager.battleState.currentTurnStep == BattleState.TurnStep.Attack) {
-            battleManager.EnterTurnStepNone();
-        } else {
-            battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
-
-            if (battleManager.currentFightBoardCharacter.value.CanDoAction()) {
-                EnterTurnStepAttack();
-            }
-        }
-    }
-
     private void NewPlayerTurn() {
-        if (battleManager.CheckEndBattle()) {
+        /*if (battleManager.CheckEndBattle()) {
             return;
-        }
+        }*/
 
         //battleManager.sunLight.NewTurn();
 
@@ -225,7 +104,7 @@ public class BattleFightManager {
             bc.NewTurn();
         }
 
-        battleManager.EnterTurnStepNone();
+        battleManager.battleState.currentTurnStep = BattleState.TurnStep.None;
 
         battleManager.currentFightBoardCharacter.value = battleManager.battleCharacters.player[0];
     }
@@ -268,54 +147,12 @@ public class BattleFightManager {
     }
 
     // Mark all squares where the character can move
-    private void EnterTurnStepMove() {
-        battleManager.battleState.currentTurnStep = BattleState.TurnStep.Move;
-
-        battleManager.fightHUD.actionMenu.SetActiveWithAnimation(false);
-
+    public void EnterTurnStepMove() {
         battleManager.board.MarkSquares(
             battleManager.currentFightBoardCharacter.value.GetSquare(),
             battleManager.currentFightBoardCharacter.value.movementPoints,
             Square.MarkType.Movement,
             battleManager.currentFightBoardCharacter.value.side.value
         );
-    }
-
-    // Mark all squares the character can attack
-    private void EnterTurnStepAttack() {
-        battleManager.battleState.currentTurnStep = BattleState.TurnStep.Attack;
-
-        battleManager.board.MarkSquares(
-            battleManager.currentFightBoardCharacter.value.GetSquare(),
-            1,
-            Square.MarkType.Attack,
-            battleManager.currentFightBoardCharacter.value.side.value,
-            true
-        ); // TODO [ALPHA] weapon range
-    }
-
-    public void EnterTurnStepDirection() {
-        battleManager.battleState.currentTurnStep = BattleState.TurnStep.Direction;
-        battleManager.fightHUD.SetActiveWithAnimation(false);
-
-        GameObject arrowsPrefab = Resources.Load<GameObject>("Arrows");
-
-        arrows = Object.Instantiate(arrowsPrefab, battleManager.currentFightBoardCharacter.value.transform.position + new Vector3(arrowsPrefab.transform.position.x, arrowsPrefab.transform.position.y), Quaternion.identity);
-    }
-
-    private void SelectPreviousPlayerBoardCharacter() {
-        if (battleManager.battleCharacters.player.IndexOf(battleManager.currentFightBoardCharacter.value) == 0) {
-            battleManager.currentFightBoardCharacter.value = battleManager.battleCharacters.player[battleManager.battleCharacters.player.Count - 1];
-        } else {
-            battleManager.currentFightBoardCharacter.value = battleManager.battleCharacters.player[battleManager.battleCharacters.player.IndexOf(battleManager.currentFightBoardCharacter.value) - 1];
-        }
-    }
-
-    private void SelectNextPlayerBoardCharacter() {
-        if (battleManager.battleCharacters.player.IndexOf(battleManager.currentFightBoardCharacter.value) >= battleManager.battleCharacters.player.Count - 1) {
-            battleManager.currentFightBoardCharacter.value = battleManager.battleCharacters.player[0];
-        } else {
-            battleManager.currentFightBoardCharacter.value = battleManager.battleCharacters.player[battleManager.battleCharacters.player.IndexOf(battleManager.currentFightBoardCharacter.value) + 1];
-        }
     }
 }

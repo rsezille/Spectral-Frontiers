@@ -254,6 +254,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   battleState: {fileID: 11400000, guid: 6f13aad577670964f9d877e5216305e0, type: 2}
   board: {fileID: 11400000, guid: 3c4c86e45c7cd1c4e9897b0930bad4cd, type: 2}
+  mainCameraPosition: {fileID: 11400000, guid: 7779d43f6d6407847ad460569311f9d6, type: 2}
   zoomChange: {fileID: 11400000, guid: 712636d941c2a594083ed1d6b4b97f4b, type: 2}
   speed: 7
 --- !u!114 &114742812827374008

@@ -5,7 +5,8 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class PlacingHUD : MonoBehaviour {
-    private BattleManager battleManager;
+    private Tween startBattleTextAnimation;
+    private bool isGoingEnabled = false;
 
     [Header("Dependencies")]
     public BattleState battleState;
@@ -25,15 +26,9 @@ public class PlacingHUD : MonoBehaviour {
 
     public RectTransform placingHUDRect;
 
-    private bool isGoingEnabled = false;
-
-    private void Awake() {
-        battleManager = BattleManager.instance;
-    }
-
     private void Start() {
         removeButton.AddListener(EventTriggerType.PointerClick, RemoveCurrentMapChar);
-        statusButton.AddListener(EventTriggerType.PointerClick, battleManager.EnterTurnStepStatus);
+        statusButton.AddListener(EventTriggerType.PointerClick, Status);
     }
 
     private void Update() {
@@ -77,6 +72,28 @@ public class PlacingHUD : MonoBehaviour {
         }
 
         nextCharText.text = "Next [" + InputManager.Next.bindedKey + "]\n" + nextCharacter.characterName; //TODO [BETA] LanguageManager with a multi key translation
+
+        // Start battle text
+        if (battleCharacters.player.Count <= 0 && startBattleText.gameObject.activeSelf) {
+            if (startBattleTextAnimation != null) {
+                startBattleTextAnimation.Pause();
+            }
+
+            startBattleText.gameObject.SetActive(false);
+        } else if (battleCharacters.player.Count > 0 && !startBattleText.gameObject.activeSelf) {
+            startBattleText.gameObject.SetActive(true);
+            startBattleText.color = new Color(startBattleText.color.r, startBattleText.color.g, startBattleText.color.b, 0.3f);
+
+            if (startBattleTextAnimation == null) {
+                startBattleTextAnimation = startBattleText.DOColor(new Color(startBattleText.color.r, startBattleText.color.g, startBattleText.color.b, 1f), 1f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear);
+            } else {
+                startBattleTextAnimation.Play();
+            }
+        }
+    }
+
+    private void Status() {
+        battleState.currentTurnStep = BattleState.TurnStep.Status;
     }
 
     private void RemoveCurrentMapChar() {
@@ -102,8 +119,6 @@ public class PlacingHUD : MonoBehaviour {
 
             placingHUDRect.anchoredPosition3D = new Vector3(0f, -250f, 0f);
             placingHUDRect.DOAnchorPos3D(new Vector3(0f, 0f, 0f), fSpeed).SetEase(Ease.OutCubic);
-            
-            BattleManager.instance.placing.RefreshStartBattleText();
         } else {
             if (!gameObject.activeSelf) return;
             
@@ -114,7 +129,7 @@ public class PlacingHUD : MonoBehaviour {
         }
     }
 
-    void DisableGameObject() {
+    private void DisableGameObject() {
         if (isGoingEnabled) return;
         
         gameObject.SetActive(false);

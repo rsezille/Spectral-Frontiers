@@ -5,10 +5,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class FightHUD : MonoBehaviour {
-    private BattleManager battleManager;
-
     [Header("Dependencies")]
     public BoardCharacterVariable currentFightBoardCharacter;
+    public BattleState battleState;
 
     [Header("References")]
     public GameObject moveButton;
@@ -27,18 +26,52 @@ public class FightHUD : MonoBehaviour {
 
     private bool isGoingEnabled = false;
 
-    private void Awake() {
-        battleManager = BattleManager.instance;
+    private void Start() {
+        moveButton.AddListener(EventTriggerType.PointerClick, Move);
+        actionButton.AddListener(EventTriggerType.PointerClick, Action);
+        statusButton.AddListener(EventTriggerType.PointerClick, Status);
+        directionButton.AddListener(EventTriggerType.PointerClick, Direction);
+        endTurnButton.AddListener(EventTriggerType.PointerClick, EndTurn);
+    }
+    
+    private void Move() {
+        if (battleState.currentTurnStep == BattleState.TurnStep.Move) {
+            battleState.currentTurnStep = BattleState.TurnStep.None;
+        } else {
+            if (currentFightBoardCharacter.value.CanMove()) {
+                battleState.currentTurnStep = BattleState.TurnStep.Move;
+            }
+
+            actionMenu.SetActiveWithAnimation(false);
+        }
     }
 
-    private void Start() {
-        moveButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Move);
-        actionButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Action);
-        previousButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Previous);
-        nextButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Next);
-        statusButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Status);
-        directionButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Direction);
-        endTurnButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.EndTurn);
+    private void Action() {
+        battleState.currentTurnStep = BattleState.TurnStep.None;
+
+        if (currentFightBoardCharacter.value.CanDoAction()) {
+            actionMenu.Toggle();
+        }
+    }
+
+    private void Status() {
+        battleState.currentTurnStep = BattleState.TurnStep.Status;
+    }
+
+    private void Direction() {
+        battleState.currentTurnStep = BattleState.TurnStep.Direction;
+    }
+    
+    public void EndTurn() {
+        actionMenu.SetActiveWithAnimation(false);
+        // TODO [ALPHA] FlashMessage
+        // TODO [ALPHA] Disable inputs
+
+        /*if (currentFightBoardCharacter.value.glow != null) {
+            currentFightBoardCharacter.value.glow.Disable();
+        }*/
+
+        //EnterTurnStepEnemy();
     }
 
     // Compute all checks on buttons availability

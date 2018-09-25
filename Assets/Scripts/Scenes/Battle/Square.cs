@@ -9,12 +9,17 @@ public class Square : MonoBehaviour {
         None, Movement, Attack, Skill, Item, Placing
     };
 
-    private BattleManager battleManager;
-
     [Header("Dependencies")]
     public BattleState battleState;
     public Board board;
     public BoardCharacterVariable currentFightBoardCharacter;
+    public CharacterVariable currentPartyCharacter;
+    public BattleCharacters battleCharacters;
+    public MissionVariable missionToLoad;
+
+    [Header("Events")]
+    public SquareEvent hoverSquare;
+    public GameEvent checkSemiTransparent;
 
     [Header("Data")]
     // Positionning
@@ -75,8 +80,6 @@ public class Square : MonoBehaviour {
     private EntityContainer _entityContainer;
 
     private void Awake() {
-        battleManager = BattleManager.instance;
-
         sortingGroup = GetComponent<SortingGroup>();
 
         tileSelector.color = defaultColor;
@@ -110,7 +113,7 @@ public class Square : MonoBehaviour {
             board.markedSquareAnimations.Remove(colorAnimation);
         }
 
-        battleManager.fightHUD.SquareHovered(this);
+        hoverSquare.Raise(this);
         tileSelector.color = overingColor;
 
         if (battleState.currentBattleStep == BattleState.BattleStep.Placing && markType == MarkType.Placing) {
@@ -128,7 +131,7 @@ public class Square : MonoBehaviour {
     public void MouseLeave() {
         if (battleState.currentBattleStep == BattleState.BattleStep.Cutscene) return;
 
-        battleManager.fightHUD.SquareHovered(null);
+        hoverSquare.Raise(null);
 
         RefreshColor();
 
@@ -144,7 +147,7 @@ public class Square : MonoBehaviour {
         switch (battleState.currentBattleStep) {
             case BattleState.BattleStep.Placing:
                 if (markType == MarkType.Placing && IsNotBlocking()) {
-                    BattleManager.instance.placing.PlaceMapChar(this);
+                    PlaceMapChar();
                 }
 
                 break;
@@ -156,10 +159,40 @@ public class Square : MonoBehaviour {
                         currentFightBoardCharacter.value.BasicAttack(boardEntity.GetComponent<BoardCharacter>());
                     }
 
-                    battleManager.EnterTurnStepNone();
+                    battleState.currentTurnStep = BattleState.TurnStep.None;
                 }
 
                 break;
+        }
+    }
+    
+    private void PlaceMapChar() {
+        if (battleState.currentBattleStep == BattleState.BattleStep.Placing) {
+            if (IsNotBlocking()) {
+                if (currentPartyCharacter.value.boardCharacter != null) {
+                    currentPartyCharacter.value.boardCharacter.SetSquare(this);
+                    currentPartyCharacter.value.boardCharacter.glow.Enable();
+                    currentPartyCharacter.value.boardCharacter.direction = startingDirection;
+                } else {
+                    if (battleCharacters.player.Count >= missionToLoad.value.maxPlayerCharacters) {
+                        return;
+                    }
+
+                    BoardCharacter playerTemplate = Resources.Load<BoardCharacter>("NewBoardCharacter");
+
+                    BoardCharacter playerBoardCharacter = Object.Instantiate(playerTemplate, transform.position, Quaternion.identity);
+                    playerBoardCharacter.Init(currentPartyCharacter.value, Side.Type.Player, startingDirection);
+                    playerBoardCharacter.SetSquare(this);
+                    playerBoardCharacter.character.boardCharacter = playerBoardCharacter;
+                    battleCharacters.player.Add(playerBoardCharacter);
+
+                    if (playerBoardCharacter.glow != null) {
+                        playerBoardCharacter.glow.Enable();
+                    }
+                }
+
+                checkSemiTransparent.Raise();
+            }
         }
     }
 

@@ -259,10 +259,10 @@ public class BattleCutsceneManager {
         string characterIndex = args["charIndex"] ?? "0";
 
         if (target == "square") {
-            yield return battleManager.battleCamera.SetPosition(int.Parse(x), int.Parse(y), true).WaitForCompletion();
+            yield return battleManager.mainCameraPosition.SetPosition(battleManager.board.GetSquare(int.Parse(x), int.Parse(y)), true).WaitForCompletion();
         } else if (target == "character") {
             if (int.Parse(characterIndex) < instanciatedCharacters.Count) {
-                yield return battleManager.battleCamera.SetPosition(instanciatedCharacters[int.Parse(characterIndex)], true).WaitForCompletion();
+                yield return battleManager.mainCameraPosition.SetPosition(instanciatedCharacters[int.Parse(characterIndex)], true).WaitForCompletion();
             }
         }
 

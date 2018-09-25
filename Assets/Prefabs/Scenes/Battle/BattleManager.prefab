@@ -23,6 +23,9 @@ GameObject:
   - component: {fileID: 114242277877115884}
   - component: {fileID: 114083148701819952}
   - component: {fileID: 114835322847127898}
+  - component: {fileID: 114468348043559624}
+  - component: {fileID: 114706368435620052}
+  - component: {fileID: 114798650317668734}
   m_Layer: 0
   m_Name: BattleManager
   m_TagString: Untagged
@@ -99,6 +102,34 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: SF.BattleStepEventListener+BattleStepUnityEvent, Assembly-CSharp,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &114468348043559624
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1173687616258416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63934d0c16ff33d4fa4b9e515e448918, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turnStepEvent: {fileID: 11400000, guid: 52a796abbf67bfa43b628bde414885f2, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114542653793058942}
+        m_MethodName: OnEnterTurnStepEvent
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: SF.TurnStepEventListener+TurnStepUnityEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114542653793058942
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -121,9 +152,8 @@ MonoBehaviour:
   party: {fileID: 11400000, guid: 3f49d2433b01f0944817be5fef7f341e, type: 2}
   currentFightBoardCharacter: {fileID: 11400000, guid: 9f9983d124106594bb7a73ee18100538,
     type: 2}
+  mainCameraPosition: {fileID: 11400000, guid: 7779d43f6d6407847ad460569311f9d6, type: 2}
   screenChange: {fileID: 11400000, guid: b2d389744d8b9574da53bdc635ee0562, type: 2}
-  checkSemiTransparent: {fileID: 11400000, guid: c45e411927eb18443b3f316fee5dd116,
-    type: 2}
   lightChange: {fileID: 11400000, guid: e56a7e44f521454478bd791dd14181b9, type: 2}
   battleCamera: {fileID: 0}
   background: {fileID: 0}
@@ -133,11 +163,62 @@ MonoBehaviour:
   fightHUD: {fileID: 0}
   victoryHUD: {fileID: 0}
   pausedHUD: {fileID: 0}
-  turnHUD: {fileID: 0}
-  testPlayerCharacter: {fileID: 114098185219839834, guid: 5b54b037a1a820242bdf8e21d98b6fad,
-    type: 2}
-  floatingText: {fileID: 114009705672458500, guid: ca4dee2cbfd42694d929853e9e9553a4,
-    type: 2}
+--- !u!114 &114706368435620052
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1173687616258416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63934d0c16ff33d4fa4b9e515e448918, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turnStepEvent: {fileID: 11400000, guid: f61664b49e565c646ab9d767bdfa39a9, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114542653793058942}
+        m_MethodName: OnLeaveTurnStepEvent
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: SF.TurnStepEventListener+TurnStepUnityEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!114 &114798650317668734
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1173687616258416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 448f24eaf2dc006419c634bd9b0313fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: bb6f887834df024429c7db70727667df, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114542653793058942}
+        m_MethodName: CheckEndBattle
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114835322847127898
 MonoBehaviour:
   m_ObjectHideFlags: 1

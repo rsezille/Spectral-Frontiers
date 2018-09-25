@@ -10,12 +10,8 @@ public class BattleVictoryManager {
     // Called by BattleManager
     public void Update() {
         if (InputManager.Special1.IsKeyDown) {
-            Next();
+            battleManager.battleState.currentBattleStep = BattleState.BattleStep.Cutscene;
         }
-    }
-
-    public void Next() {
-        battleManager.battleState.currentBattleStep = BattleState.BattleStep.Cutscene;
     }
 
     // Called by BattleManager

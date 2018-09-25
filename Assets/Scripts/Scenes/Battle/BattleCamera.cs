@@ -5,11 +5,11 @@ using SF;
 [RequireComponent(typeof(Camera))]
 public class BattleCamera : MonoBehaviour {
     private Camera battleCamera;
-    private float positionYOffset = 0.7f;
 
     [Header("Dependencies")]
     public BattleState battleState;
     public Board board;
+    public CameraPosition mainCameraPosition;
 
     [Header("Events")]
     public GameEvent zoomChange;
@@ -22,10 +22,10 @@ public class BattleCamera : MonoBehaviour {
     }
 
     private void Update() {
-        if (battleState.currentBattleStep == BattleState.BattleStep.Cutscene
+        /*if (battleState.currentBattleStep == BattleState.BattleStep.Cutscene
                 || battleState.currentTurnStep == BattleState.TurnStep.Enemy) {
             return;
-        }
+        }*/
 
         #if UNITY_EDITOR
         // Do not use InputBinds as this code is for editor only
@@ -34,7 +34,7 @@ public class BattleCamera : MonoBehaviour {
         }
         
         if (Input.GetKeyDown(KeyCode.P)) {
-            SetPosition(0, 0, true);
+            mainCameraPosition.SetPosition(board.GetSquare(0, 0), true);
         }
 
         if (Input.GetAxis(InputManager.Axis.Zoom) != 0 && Time.timeScale > 0) {
@@ -52,8 +52,10 @@ public class BattleCamera : MonoBehaviour {
                 tmpSpeed = speed / Mathf.Sqrt(2f);
             }
 
-            transform.position += new Vector3(tmpSpeed * Time.deltaTime * InputManager.CameraHorizontalAxis(), tmpSpeed * Time.deltaTime * InputManager.CameraVerticalAxis());
+            mainCameraPosition.position += new Vector3(tmpSpeed * Time.deltaTime * InputManager.CameraHorizontalAxis(), tmpSpeed * Time.deltaTime * InputManager.CameraVerticalAxis());
         }
+
+        transform.position = mainCameraPosition.position;
     }
     
     public void Zoom(float axis) {
@@ -66,44 +68,5 @@ public class BattleCamera : MonoBehaviour {
 
     public void ResetCameraSize() {
         battleCamera.orthographicSize = Screen.height / (Globals.TileHeight * 2f);
-    }
-
-    public Tween SetPosition(BoardCharacter boardCharacter, bool smooth = false, float duration = 1f, Ease ease = Ease.OutCubic) {
-        return SetPosition(boardCharacter.GetSquare(), smooth, duration, ease);
-    }
-
-    public Tween SetPosition(Square square, bool smooth = false, float duration = 1f, Ease ease = Ease.OutCubic) {
-        return SetPosition(square.x, square.y, smooth, duration, ease);
-    }
-
-    public Tween SetPosition(int squareX, int squareY, bool smooth = false, float duration = 1f, Ease ease = Ease.OutCubic) {
-        Square targetedSquare = board.GetSquare(squareX, squareY);
-        int height = targetedSquare != null ? targetedSquare.Height : 0;
-
-        Vector3 target = new Vector3(
-            squareX - squareY,
-            (squareY + squareX) / 2f + (height / Globals.PixelsPerUnit) + positionYOffset,
-            transform.position.z
-        );
-
-        if (!smooth) {
-            return transform.DOMove(target, 0f);
-        } else {
-            if (transform.position == target) {
-                return transform.DOMove(target, 0f);
-            }
-
-            return transform.DOMove(target, duration).SetEase(ease);
-        }
-    }
-
-    public bool IsOnSquare(Square square) {
-        Vector3 squarePosition = new Vector3(
-            square.x - square.y,
-            (square.y + square.x) / 2f + (square.Height / Globals.PixelsPerUnit) + positionYOffset,
-            transform.position.z
-        );
-
-        return transform.position == squarePosition;
     }
 }

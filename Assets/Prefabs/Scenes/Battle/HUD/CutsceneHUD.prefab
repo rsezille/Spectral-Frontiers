@@ -182,7 +182,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e78a86faaea1a84bb5842eec47e5ffe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skipButton: {fileID: 1587763785149910}
 --- !u!114 &114836638721472750
 MonoBehaviour:
   m_ObjectHideFlags: 1

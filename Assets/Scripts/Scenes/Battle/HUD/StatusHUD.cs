@@ -8,6 +8,7 @@ public class StatusHUD : MonoBehaviour {
     [Header("Dependencies")]
     public Party party;
     public CharacterVariable currentPartyCharacter;
+    public BattleState battleState;
 
     [Header("Data")]
     public RectTransform blockMiddle;
@@ -90,7 +91,7 @@ public class StatusHUD : MonoBehaviour {
         blockBottom.DOAnchorPos3D(new Vector3(blockBottom.anchoredPosition3D.x, -blockBottom.sizeDelta.y, blockBottom.anchoredPosition3D.z), fSpeed).SetEase(Ease.OutCubic)
         .OnComplete(DisableGameObject);
 
-        BattleManager.instance.EnterTurnStepNone();
+        battleState.currentTurnStep = BattleState.TurnStep.None;
     }
 
     private void UpdateText() {

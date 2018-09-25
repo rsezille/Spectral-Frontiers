@@ -12,8 +12,9 @@ public class BoardCharacter : MonoBehaviour {
     public enum Direction {
         North, East, South, West // Rotate a 2D plan by 90 degrees clockwise
     };
-
-    private BattleManager battleManager;
+    
+    public Character character;
+    private GameObject spriteContainer;
 
     [Header("Dependencies")]
     public BattleState battleState;
@@ -21,18 +22,19 @@ public class BoardCharacter : MonoBehaviour {
     public Board board;
     public CharacterVariable currentPartyCharacter;
     public BoardCharacterVariable currentFightBoardCharacter;
+    public CameraPosition mainCameraPosition;
+    public Party party;
 
     [Header("Events")]
     public GameEvent checkSemiTransparent;
     public SquareEvent hoverSquare;
-
-    public Character character;
-    private GameObject spriteContainer;
+    public GameEvent killCharacter;
 
     [Header("Prefabs")]
     public HealthBarHUDController healthBarHUD;
     public CharacterNameHUDController characterNameHUD;
     public float offset = 0.2f; // TODO: Do it in Character SO instead?
+    public FloatingText floatingText;
 
     [Header("Data")]
     public int movementPoints; // At the beginning of each turn, movementPoints = character.movementPoints
@@ -84,8 +86,6 @@ public class BoardCharacter : MonoBehaviour {
     }
 
     private void Awake() {
-        battleManager = BattleManager.instance;
-
         side = GetComponent<Side>();
         boardEntity = GetComponent<BoardEntity>();
         AI = GetComponent<AI>();
@@ -220,7 +220,7 @@ public class BoardCharacter : MonoBehaviour {
         if (side.value == Side.Type.Player) {
             if (battleState.currentBattleStep == BattleState.BattleStep.Placing) {
                 // Focus the clicked character as the current one to place
-                battleManager.placing.SetCurrentPlacingChar(character);
+                SetCurrentPlacingChar();
             } else if (battleState.currentBattleStep == BattleState.BattleStep.Fight && battleState.currentTurnStep == BattleState.TurnStep.None) {
                 currentFightBoardCharacter.value = this;
             }
@@ -231,6 +231,26 @@ public class BoardCharacter : MonoBehaviour {
                 currentFightBoardCharacter.value.BasicAttack(this);
                 battleState.currentTurnStep = BattleState.TurnStep.None;
             }
+        }
+    }
+
+    private void SetCurrentPlacingChar() {
+        if (!party.characters.Contains(character)) {
+            return;
+        }
+
+        if (currentPartyCharacter.value.boardCharacter != null && currentPartyCharacter.value.boardCharacter.glow != null) {
+            currentPartyCharacter.value.boardCharacter.glow.Disable();
+        }
+
+        currentPartyCharacter.value = character;
+
+        if (currentPartyCharacter.value.boardCharacter != null) {
+            if (currentPartyCharacter.value.boardCharacter.glow != null) {
+                currentPartyCharacter.value.boardCharacter.glow.Enable();
+            }
+
+            mainCameraPosition.SetPosition(currentPartyCharacter.value.boardCharacter, true);
         }
     }
 
@@ -249,8 +269,8 @@ public class BoardCharacter : MonoBehaviour {
         if (CanDoAction()) {
             int dmgDone = character.BasicAttack(target.character);
 
-            FloatingText floatingText = Instantiate(battleManager.floatingText, target.transform.position, Quaternion.identity);
-            floatingText.text = "-" + dmgDone;
+            FloatingText floatingTextInstance = Instantiate(floatingText, target.transform.position, Quaternion.identity);
+            floatingTextInstance.text = "-" + dmgDone;
             
             actionTokens--;
 
@@ -306,8 +326,8 @@ public class BoardCharacter : MonoBehaviour {
         }
 
         if (cameraFollow) {
-            if (!battleManager.battleCamera.IsOnSquare(GetSquare())) {
-                Tween cameraAnimation = battleManager.battleCamera.SetPosition(this, true, duration);
+            if (!mainCameraPosition.IsOnSquare(GetSquare())) {
+                Tween cameraAnimation = mainCameraPosition.SetPosition(this, true, duration);
 
                 yield return cameraAnimation.WaitForCompletion();
             }
@@ -343,7 +363,7 @@ public class BoardCharacter : MonoBehaviour {
             }
 
             if (cameraFollow) {
-                battleManager.battleCamera.SetPosition(path.steps[i], true, duration, Ease.Linear);
+                mainCameraPosition.SetPosition(path.steps[i], true, duration, Ease.Linear);
             }
 
             yield return characterAnimation.WaitForPosition(duration / 4);
@@ -386,7 +406,7 @@ public class BoardCharacter : MonoBehaviour {
         }
 
         if (battleState.currentBattleStep == BattleState.BattleStep.Fight) {
-            battleManager.CheckEndBattle();
+            killCharacter.Raise();
         }
 
         Destroy(gameObject);

@@ -4,11 +4,19 @@ using TMPro;
 using UnityEngine;
 
 public class VictoryHUD : MonoBehaviour {
+    [Header("Dependencies")]
+    public BattleState battleState;
+
+    [Header("Direct references")]
     public TextMeshProUGUI detailsText;
     public GameObject nextButton;
 
     private void Start() {
-        nextButton.AddListener(UnityEngine.EventSystems.EventTriggerType.PointerClick, BattleManager.instance.victory.Next);
+        nextButton.AddListener(UnityEngine.EventSystems.EventTriggerType.PointerClick, Next);
+    }
+
+    private void Next() {
+        battleState.currentBattleStep = BattleState.BattleStep.Cutscene;
     }
 
     public void SetActiveWithAnimation(bool active, HUD.Speed speed = HUD.Speed.Fast) {

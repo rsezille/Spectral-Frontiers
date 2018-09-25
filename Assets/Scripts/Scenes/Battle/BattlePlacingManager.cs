@@ -1,7 +1,5 @@
 ﻿using SF;
-using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class BattlePlacingManager {
     private BattleManager battleManager;
@@ -39,7 +37,10 @@ public class BattlePlacingManager {
         }
         
         battleManager.placingHUD.SetActiveWithAnimation(true, HUD.Speed.Slow);
-        battleManager.battleCamera.SetPosition(battleManager.missionToLoad.value.startingSquares[0].posX, battleManager.missionToLoad.value.startingSquares[0].posY, true);
+        battleManager.mainCameraPosition.SetPosition(
+            battleManager.board.GetSquare(battleManager.missionToLoad.value.startingSquares[0].posX, battleManager.missionToLoad.value.startingSquares[0].posY),
+            true
+        );
 
         foreach (Square s in battleManager.board.GetSquares()) {
             s.RefreshMark();
@@ -70,96 +71,5 @@ public class BattlePlacingManager {
         battleManager.placingHUD.SetActiveWithAnimation(false);
 
         battleManager.statusHUD.Show(battleManager.currentPartyCharacter.value);
-    }
-    
-    public void SetCurrentPlacingChar(Character character) {
-        if (!battleManager.party.characters.Contains(character)) {
-            return;
-        }
-
-        if (battleManager.currentPartyCharacter.value.boardCharacter != null && battleManager.currentPartyCharacter.value.boardCharacter.glow != null) {
-            battleManager.currentPartyCharacter.value.boardCharacter.glow.Disable();
-        }
-
-        battleManager.currentPartyCharacter.value = character;
-
-        if (battleManager.currentPartyCharacter.value.boardCharacter != null) {
-            if (battleManager.currentPartyCharacter.value.boardCharacter.glow != null) {
-                battleManager.currentPartyCharacter.value.boardCharacter.glow.Enable();
-            }
-
-            battleManager.battleCamera.SetPosition(battleManager.currentPartyCharacter.value.boardCharacter, true);
-        }
-    }
-
-    public void RefreshStartBattleText() {
-        if (battleManager.battleCharacters.player.Count <= 0) {
-            battleManager.placingHUD.startBattleText.gameObject.SetActive(false);
-        } else {
-            battleManager.placingHUD.startBattleText.gameObject.SetActive(true);
-            battleManager.StartCoroutine(ShowStartBattleTextFade());
-        }
-    }
-
-    public IEnumerator ShowStartBattleTextFade() {
-        Text startBattleText = battleManager.placingHUD.startBattleText;
-
-        Color start = new Color(startBattleText.color.r, startBattleText.color.g, startBattleText.color.b, 0f);
-        Color target = new Color(startBattleText.color.r, startBattleText.color.g, startBattleText.color.b, 1f);
-
-        float minFade = 0.3f;
-        float maxFade = 1f;
-
-        float smoothness = 0.01f;
-        float duration = 0.7f;
-        float progress = 0f;
-        float increment = smoothness / duration;
-
-        while (startBattleText.isActiveAndEnabled) {
-            startBattleText.color = Color.Lerp(start, target, progress);
-
-            if (progress > maxFade || (progress < minFade && increment < 0f)) {
-                increment = -increment;
-            }
-
-            progress += increment;
-
-            yield return new WaitForSeconds(smoothness);
-        }
-    }
-
-    /**
-     * Place the current character on the specified tile
-     */
-    public void PlaceMapChar(Square square) {
-        if (battleManager.battleState.currentBattleStep == BattleState.BattleStep.Placing) {
-            if (square.IsNotBlocking()) {
-                if (battleManager.currentPartyCharacter.value.boardCharacter != null) {
-                    battleManager.currentPartyCharacter.value.boardCharacter.SetSquare(square);
-                    battleManager.currentPartyCharacter.value.boardCharacter.glow.Enable();
-                    battleManager.currentPartyCharacter.value.boardCharacter.direction = square.startingDirection;
-                } else {
-                    if (battleManager.battleCharacters.player.Count >= battleManager.missionToLoad.value.maxPlayerCharacters) {
-                        return;
-                    }
-
-                    BoardCharacter playerTemplate = Resources.Load<BoardCharacter>("NewBoardCharacter");
-
-                    BoardCharacter playerBoardCharacter = Object.Instantiate(playerTemplate, square.transform.position, Quaternion.identity);
-                    playerBoardCharacter.Init(battleManager.currentPartyCharacter.value, Side.Type.Player, square.startingDirection);
-                    playerBoardCharacter.SetSquare(square);
-                    playerBoardCharacter.character.boardCharacter = playerBoardCharacter;
-                    battleManager.battleCharacters.player.Add(playerBoardCharacter);
-
-                    if (playerBoardCharacter.glow != null) {
-                        playerBoardCharacter.glow.Enable();
-                    }
-
-                    RefreshStartBattleText();
-                }
-
-                battleManager.checkSemiTransparent.Raise();
-            }
-        }
     }
 }

@@ -1,23 +1,40 @@
 ﻿using DG.Tweening;
+using SF;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ActionMenu : MonoBehaviour {
-    private BattleManager battleManager;
+    private FightHUD fightHUD;
 
+    [Header("Dependencies")]
+    public BattleState battleState;
+    public BoardCharacterVariable currentFightBoardCharacter;
+
+    [Header("Direct references")]
     public GameObject attackButton;
     public GameObject skillButton;
     public GameObject itemButton;
 
     private void Awake() {
-        battleManager = BattleManager.instance;
-
+        fightHUD = GetComponentInParent<FightHUD>();
         gameObject.SetActive(false);
     }
 
     private void Start() {
-        attackButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Attack);
+        attackButton.AddListener(EventTriggerType.PointerClick, Attack);
+    }
+
+    private void Attack() {
+        if (battleState.currentTurnStep == BattleState.TurnStep.Attack) {
+            battleState.currentTurnStep = BattleState.TurnStep.None;
+        } else {
+            fightHUD.actionMenu.SetActiveWithAnimation(false);
+
+            if (currentFightBoardCharacter.value.CanDoAction()) {
+                battleState.currentTurnStep = BattleState.TurnStep.Attack;
+            }
+        }
     }
 
     // Compute all checks on buttons availability
