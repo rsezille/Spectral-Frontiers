@@ -197,7 +197,7 @@ public class BattleCutsceneManager {
         BoardCharacter boardCharacterPrefab = Resources.Load<BoardCharacter>("NewBoardCharacter");
         //boardCharacterPrefab.enemyOrNeutralSpritePrefab = Resources.Load<GameObject>("CharacterSprites/" + sprite);
 
-        float squareHeight = (float)battleManager.board.GetSquare(parsedX, parsedY).Height / Globals.TileHeight;
+        //float squareHeight = (float)battleManager.board.GetSquare(parsedX, parsedY).Height / Globals.TileHeight;
 
         BoardCharacter boardCharacter = Object.Instantiate(boardCharacterPrefab, BoardUtil.CoordToWorldPosition(fromX, fromY, battleManager.board.GetSquare(parsedX, parsedY).GetWorldHeight()), Quaternion.identity);
         //boardCharacter.character = new CharacterPouet(name);

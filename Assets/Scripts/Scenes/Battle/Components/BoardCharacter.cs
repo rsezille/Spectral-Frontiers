@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine;
 
 /**
- * Represent a board character on the board
+ * Represent a character on the board
  * The GameObject is placed in the attached Square inside the EntityContainer
  */
 [RequireComponent(typeof(BoardEntity), typeof(Side))]
@@ -56,7 +56,7 @@ public class BoardCharacter : MonoBehaviour {
     [HideInInspector]
     public ShadowController shadow;
 
-    [Tooltip("Do not touch this")]
+    [HideInInspector]
     public bool isMoving = false;
 
     private Direction _direction = Direction.South;
