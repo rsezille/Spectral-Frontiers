@@ -61,7 +61,7 @@ namespace SF {
             }
 
             foreach (Mission.StartingSquare startingSquare in mission.startingSquares) {
-                squares[PositionToIndexSquare(startingSquare.posX, startingSquare.posY)].startingDirection = startingSquare.direction;
+                squares[SquarePositionToIndex(startingSquare.posX, startingSquare.posY)].startingDirection = startingSquare.direction;
             }
 
             pathFinder = new PathFinder(this, width + height);
@@ -81,11 +81,15 @@ namespace SF {
                 return null;
             }
 
-            return squares[PositionToIndexSquare(x, y)];
+            return squares[SquarePositionToIndex(x, y)];
         }
 
-        public int PositionToIndexSquare(int x, int y) {
+        public int SquarePositionToIndex(int x, int y) {
             return x + (y * width);
+        }
+
+        public int SquarePositionToIndex(Square square) {
+            return SquarePositionToIndex(square.x, square.y);
         }
 
         /**
