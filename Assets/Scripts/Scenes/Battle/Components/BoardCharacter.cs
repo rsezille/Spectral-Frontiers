@@ -24,6 +24,7 @@ public class BoardCharacter : MonoBehaviour {
 
     [Header("Events")]
     public GameEvent checkSemiTransparent;
+    public SquareEvent hoverSquare;
 
     public Character character;
     private GameObject spriteContainer;
@@ -193,7 +194,7 @@ public class BoardCharacter : MonoBehaviour {
      * Triggered by Board (SpriteManager)
      */
     public void MouseEnter() {
-        battleManager.fightHUD.SquareHovered(GetSquare());
+        hoverSquare.Raise(GetSquare());
 
         if (glow != null) {
             glow.Enable();
@@ -204,7 +205,7 @@ public class BoardCharacter : MonoBehaviour {
      * Triggered by Board (SpriteManager)
      */
     public void MouseLeave() {
-        battleManager.fightHUD.SquareHovered(null);
+        hoverSquare.Raise(null);
 
         if ((battleState.currentBattleStep == BattleState.BattleStep.Placing && currentPartyCharacter.value.boardCharacter != this
                 || battleState.currentBattleStep == BattleState.BattleStep.Fight && currentFightBoardCharacter.value != this) && glow != null) {
@@ -228,7 +229,7 @@ public class BoardCharacter : MonoBehaviour {
         if (battleState.currentBattleStep == BattleState.BattleStep.Fight && battleState.currentTurnStep == BattleState.TurnStep.Attack) {
             if (GetSquare().markType == Square.MarkType.Attack) {
                 currentFightBoardCharacter.value.BasicAttack(this);
-                battleManager.EnterTurnStepNone();
+                battleState.currentTurnStep = BattleState.TurnStep.None;
             }
         }
     }
@@ -367,7 +368,7 @@ public class BoardCharacter : MonoBehaviour {
         isMoving = false;
 
         if (battleState.currentTurnStep != BattleState.TurnStep.Enemy && !inCutscene) {
-            battleManager.fight.EnterTurnStepDirection();
+            battleState.currentTurnStep = BattleState.TurnStep.Direction;
             checkSemiTransparent.Raise();
         }
     }
