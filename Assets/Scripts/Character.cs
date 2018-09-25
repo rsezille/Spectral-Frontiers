@@ -31,11 +31,16 @@ namespace SF {
             template = enemy.character;
             level = enemy.level;
             overloadedName = enemy.overloadedName;
+
+            this.spd = template.spd.baseValue;
         }
 
         public Character(CharacterTemplate template, int level = 1) {
             this.template = template;
             this.level = level;
+
+            Debug.Log("template   " + template.spd.baseValue);
+            this.spd = template.spd.baseValue;
         }
 
         /**

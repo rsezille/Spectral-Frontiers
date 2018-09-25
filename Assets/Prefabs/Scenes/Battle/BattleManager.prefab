@@ -26,6 +26,7 @@ GameObject:
   - component: {fileID: 114468348043559624}
   - component: {fileID: 114706368435620052}
   - component: {fileID: 114798650317668734}
+  - component: {fileID: 114211722979316830}
   m_Layer: 0
   m_Name: BattleManager
   m_TagString: Untagged
@@ -74,6 +75,34 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: SF.BattleStepEventListener+BattleStepUnityEvent, Assembly-CSharp,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &114211722979316830
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1173687616258416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 448f24eaf2dc006419c634bd9b0313fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: bb88182f833ca6c4ebd3feb0e0941e8c, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114542653793058942}
+        m_MethodName: EndTurn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114242277877115884
 MonoBehaviour:
   m_ObjectHideFlags: 1

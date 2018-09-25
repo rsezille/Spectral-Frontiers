@@ -21,11 +21,11 @@ MonoBehaviour:
     perLevelValue: 10
   atk:
     statType: {fileID: 11400000, guid: a365f769bd7804546a709d38d8ad9a6e, type: 2}
-    baseValue: 0
+    baseValue: 10
     perLevelValue: 0
   spd:
     statType: {fileID: 11400000, guid: 277f3408faf7bb746b7116485e035ba6, type: 2}
-    baseValue: 0
+    baseValue: 102
     perLevelValue: 0
   spritePrefab: {fileID: 1754958333634280, guid: b7c8478939e725e4d928ad2bddca96ca,
     type: 2}

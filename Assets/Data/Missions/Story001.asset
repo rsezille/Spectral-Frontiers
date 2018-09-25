@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3291196c499a7a249bcce132dd33f9cc, type: 3}
   m_Name: Story001
   m_EditorClassIdentifier: 
-  map: {fileID: 114708578184141894, guid: e5492951208d706418219092ad77f6d0, type: 2}
+  map: {fileID: 114406665022987872, guid: e8d499273679c8946b04864be7d84260, type: 2}
   maxPlayerCharacters: 3
   startingSquares:
   - posX: 0
@@ -39,7 +39,7 @@ MonoBehaviour:
   parents: []
   children: []
   enemies:
-  - character: {fileID: 11400000, guid: 7291ed5c61e95d6479829e8dee9be169, type: 2}
+  - character: {fileID: 11400000, guid: 6d3b807868e491f45975d6b019db05db, type: 2}
     overloadedName: 
     level: 1
     posX: 4

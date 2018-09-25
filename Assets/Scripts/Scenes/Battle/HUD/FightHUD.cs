@@ -9,6 +9,9 @@ public class FightHUD : MonoBehaviour {
     public BoardCharacterVariable currentFightBoardCharacter;
     public BattleState battleState;
 
+    [Header("Events")]
+    public GameEvent endTurn;
+
     [Header("References")]
     public GameObject moveButton;
     public GameObject actionButton;
@@ -72,6 +75,7 @@ public class FightHUD : MonoBehaviour {
         }*/
 
         //EnterTurnStepEnemy();
+        endTurn.Raise();
     }
 
     // Compute all checks on buttons availability

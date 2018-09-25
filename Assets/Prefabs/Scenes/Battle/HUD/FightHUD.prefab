@@ -823,6 +823,7 @@ MonoBehaviour:
   currentFightBoardCharacter: {fileID: 11400000, guid: 9f9983d124106594bb7a73ee18100538,
     type: 2}
   battleState: {fileID: 11400000, guid: 6f13aad577670964f9d877e5216305e0, type: 2}
+  endTurn: {fileID: 11400000, guid: bb88182f833ca6c4ebd3feb0e0941e8c, type: 2}
   moveButton: {fileID: 1613841934877412}
   actionButton: {fileID: 1746458637269728}
   previousButton: {fileID: 1481788281385398}

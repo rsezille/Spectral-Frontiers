@@ -172,6 +172,10 @@ public class BattleManager : MonoBehaviour {
         lightChange.Raise();
     }
 
+    public void EndTurn() {
+        fight.NewTurn();
+    }
+
     public void SkipCutscene() {
         cutscene.SkipCutscene();
     }

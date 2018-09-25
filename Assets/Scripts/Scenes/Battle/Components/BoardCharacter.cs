@@ -16,6 +16,8 @@ public class BoardCharacter : MonoBehaviour {
     public Character character;
     private GameObject spriteContainer;
 
+    public int tick;
+
     [Header("Dependencies")]
     public BattleState battleState;
     public BattleCharacters battleCharacters;
@@ -29,6 +31,7 @@ public class BoardCharacter : MonoBehaviour {
     public GameEvent checkSemiTransparent;
     public SquareEvent hoverSquare;
     public GameEvent killCharacter;
+    public GameEvent endTurn;
 
     [Header("Prefabs")]
     public HealthBarHUDController healthBarHUD;
@@ -255,10 +258,35 @@ public class BoardCharacter : MonoBehaviour {
     }
 
     public void NewTurn() {
+        Debug.Log("NEWTURN!!   " + name + "    " + character.spd);
         actionTokens = character.template.actionTokens;
         
         movementTokens = character.template.movementTokens;
         movementPoints = character.template.movementPoints;
+
+        if (side.value == Side.Type.Player) {
+            currentFightBoardCharacter.value = this;
+            mainCameraPosition.SetPosition(this, true);
+        } else {
+            StartCoroutine(StartAI());
+        }
+    }
+
+    private IEnumerator StartAI() {
+        //battleManager.fightHUD.SetActiveWithAnimation(false);
+
+        if (AI != null) {
+            yield return AI.Process();
+        }
+
+        yield return new WaitForSeconds(0.5f);
+
+        //battleManager.fightHUD.SetActiveWithAnimation(true);
+        //NewPlayerTurn();
+
+        endTurn.Raise();
+
+        yield return null;
     }
 
     private bool IsDead() {
@@ -387,7 +415,7 @@ public class BoardCharacter : MonoBehaviour {
 
         isMoving = false;
 
-        if (battleState.currentTurnStep != BattleState.TurnStep.Enemy && !inCutscene) {
+        if (side.value == Side.Type.Player && !inCutscene) {
             battleState.currentTurnStep = BattleState.TurnStep.Direction;
             checkSemiTransparent.Raise();
         }

@@ -1,4 +1,5 @@
 ﻿using SF;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -79,7 +80,70 @@ public class BattleFightManager {
     // Called by BattleManager
     public void EnterBattleStepFight() {
         battleManager.fightHUD.SetActiveWithAnimation(true);
-        NewPlayerTurn();
+        //NewPlayerTurn();
+
+        Action<BoardCharacter> InitializeWaitingTime = (BoardCharacter c) => {
+            c.tick = 0;
+        };
+
+        battleManager.battleCharacters.player.ForEach(InitializeWaitingTime);
+        battleManager.battleCharacters.enemy.ForEach(InitializeWaitingTime);
+
+        NewTurn();
+    }
+
+    public void NewTurn() {
+        while (!CharacterReady()) {
+            battleManager.battleCharacters.player.ForEach(c => c.tick += 1);
+            battleManager.battleCharacters.enemy.ForEach(c => c.tick += 1);
+        }
+
+        BoardCharacter characterToPlay = GetCharacterToPlay();
+        characterToPlay.tick = 0;
+
+        characterToPlay.NewTurn();
+    }
+
+    private bool CharacterReady() {
+        foreach (BoardCharacter boardCharacter in battleManager.battleCharacters.player) {
+            if (boardCharacter.tick >= 300 - boardCharacter.character.spd) {
+                return true;
+            }
+        }
+
+        foreach (BoardCharacter boardCharacter in battleManager.battleCharacters.enemy) {
+            if (boardCharacter.tick >= 300 - boardCharacter.character.spd) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private BoardCharacter GetCharacterToPlay() {
+        BoardCharacter characterToPlay = null;
+
+        foreach (BoardCharacter boardCharacter in battleManager.battleCharacters.player) {
+            if (boardCharacter.tick >= 300 - boardCharacter.character.spd) {
+                if (characterToPlay == null) {
+                    characterToPlay = boardCharacter;
+                } else if (battleManager.board.SquarePositionToIndex(boardCharacter.GetSquare()) < battleManager.board.SquarePositionToIndex(characterToPlay.GetSquare())) {
+                    characterToPlay = boardCharacter;
+                }
+            }
+        }
+
+        foreach (BoardCharacter boardCharacter in battleManager.battleCharacters.enemy) {
+            if (boardCharacter.tick >= 300 - boardCharacter.character.spd) {
+                if (characterToPlay == null) {
+                    characterToPlay = boardCharacter;
+                } else if (battleManager.board.SquarePositionToIndex(boardCharacter.GetSquare()) < battleManager.board.SquarePositionToIndex(characterToPlay.GetSquare())) {
+                    characterToPlay = boardCharacter;
+                }
+            }
+        }
+
+        return characterToPlay;
     }
 
     // Called by BattleManager

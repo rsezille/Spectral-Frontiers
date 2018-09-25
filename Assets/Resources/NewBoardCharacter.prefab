@@ -1,0 +1,135 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1352120189132898}
+  m_IsPrefabAsset: 1
+--- !u!1 &1352120189132898
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4802866544749340}
+  - component: {fileID: 114397745024502600}
+  - component: {fileID: 114248609948640624}
+  - component: {fileID: 114492630024012760}
+  - component: {fileID: 114703712462177770}
+  m_Layer: 0
+  m_Name: NewBoardCharacter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4802866544749340
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1352120189132898}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114248609948640624
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1352120189132898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ef9e01027bf6d544af3773541851950, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  value: 0
+--- !u!114 &114397745024502600
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1352120189132898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfeeaa4852a508d41859c79ee1f78f2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  size: 1
+  square: {fileID: 0}
+--- !u!114 &114492630024012760
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1352120189132898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a93e00a7dade39346bacc1bd7ed95bc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  character:
+    template: {fileID: 0}
+    level: 0
+    boardCharacter: {fileID: 0}
+    overloadedName: 
+    maxHP: 0
+    currentHp: 0
+    atk: 0
+    spd: 0
+  tick: 0
+  battleState: {fileID: 11400000, guid: 6f13aad577670964f9d877e5216305e0, type: 2}
+  battleCharacters: {fileID: 11400000, guid: 6020ed34a2f75cb4f81732c57a2dc0cf, type: 2}
+  board: {fileID: 11400000, guid: 3c4c86e45c7cd1c4e9897b0930bad4cd, type: 2}
+  currentPartyCharacter: {fileID: 11400000, guid: da4745e45b390774b9af81380f76adc2,
+    type: 2}
+  currentFightBoardCharacter: {fileID: 11400000, guid: 9f9983d124106594bb7a73ee18100538,
+    type: 2}
+  mainCameraPosition: {fileID: 11400000, guid: 7779d43f6d6407847ad460569311f9d6, type: 2}
+  party: {fileID: 11400000, guid: 3f49d2433b01f0944817be5fef7f341e, type: 2}
+  checkSemiTransparent: {fileID: 11400000, guid: c45e411927eb18443b3f316fee5dd116,
+    type: 2}
+  hoverSquare: {fileID: 11400000, guid: e786d7e77cecd784c81e062930c4ae15, type: 2}
+  killCharacter: {fileID: 11400000, guid: bb6f887834df024429c7db70727667df, type: 2}
+  endTurn: {fileID: 11400000, guid: bb88182f833ca6c4ebd3feb0e0941e8c, type: 2}
+  healthBarHUD: {fileID: 114393464276788646, guid: 6af272c7861df5c48844a40946d7e766,
+    type: 2}
+  characterNameHUD: {fileID: 114406642282447272, guid: 3faef16fbdf674744adc42e465718ed9,
+    type: 2}
+  offset: 0.2
+  floatingText: {fileID: 114009705672458500, guid: ca4dee2cbfd42694d929853e9e9553a4,
+    type: 2}
+  movementPoints: 0
+  movementTokens: 0
+  actionTokens: 0
+  sprite: {fileID: 0}
+  side: {fileID: 0}
+  glow: {fileID: 0}
+  AI: {fileID: 0}
+  shadow: {fileID: 0}
+  isMoving: 0
+--- !u!114 &114703712462177770
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1352120189132898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89c9badc573a289438f70ce37456b315, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  battleCharacters: {fileID: 11400000, guid: 6020ed34a2f75cb4f81732c57a2dc0cf, type: 2}
+  board: {fileID: 11400000, guid: 3c4c86e45c7cd1c4e9897b0930bad4cd, type: 2}
+  preset: 1
