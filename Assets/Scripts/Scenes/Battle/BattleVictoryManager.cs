@@ -13,15 +13,4 @@ public class BattleVictoryManager {
             battleManager.battleState.currentBattleStep = BattleState.BattleStep.Cutscene;
         }
     }
-
-    // Called by BattleManager
-    public void EnterTurnStepNone(BattleState.TurnStep previousTurnStep) {}
-
-    // Called by BattleManager
-    public void EnterBattleStepVictory() {
-    }
-
-    // Called by BattleManager
-    public void LeaveBattleStepVictory() {
-    }
 }

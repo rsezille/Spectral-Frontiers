@@ -282,16 +282,11 @@ public class BoardCharacter : MonoBehaviour {
     }
 
     private IEnumerator StartAI() {
-        //battleManager.fightHUD.SetActiveWithAnimation(false);
-
         if (AI != null) {
             yield return AI.Process();
         }
 
         yield return new WaitForSeconds(0.5f);
-
-        //battleManager.fightHUD.SetActiveWithAnimation(true);
-        //NewPlayerTurn();
 
         endTurn.Raise();
 

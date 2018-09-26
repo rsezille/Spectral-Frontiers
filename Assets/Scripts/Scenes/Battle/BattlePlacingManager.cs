@@ -45,22 +45,4 @@ public class BattlePlacingManager {
             s.RefreshMark();
         }
     }
-
-    // Called by BattleManager
-    public void LeaveBattleStepPlacing() {
-        battleManager.board.RemoveAllMarks();
-
-        // Disable outlines from the placing step
-        if (battleManager.currentPartyCharacter.value.boardCharacter != null) {
-            battleManager.currentPartyCharacter.value.boardCharacter.glow.Disable();
-        }
-    }
-
-    // Called by BattleManager
-    public void EnterTurnStepNone(BattleState.TurnStep previousTurnStep) {
-    }
-
-    // Called by BattleManager
-    public void EnterTurnStepStatus(BattleState.TurnStep previousTurnStep) {
-    }
 }

@@ -1,7 +1,5 @@
 ﻿using SF;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BattleFightManager {
@@ -54,8 +52,6 @@ public class BattleFightManager {
 
     // Called by BattleManager
     public void EnterBattleStepFight() {
-        //NewPlayerTurn();
-
         Action<BoardCharacter> InitializeWaitingTime = (BoardCharacter c) => {
             c.tick = 0;
         };
@@ -122,15 +118,6 @@ public class BattleFightManager {
         }
 
         return characterToPlay;
-    }
-
-    // Called by BattleManager
-    public void LeaveBattleStepFight() {
-        if (battleManager.currentFightBoardCharacter.value.glow != null) {
-            battleManager.currentFightBoardCharacter.value.glow.Disable();
-        }
-
-        battleManager.board.RemoveAllMarks();
     }
 
     // Mark all squares where the character can move

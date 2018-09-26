@@ -205,7 +205,6 @@ public class BattleManager : MonoBehaviour {
                 fight.EnterBattleStepFight();
                 break;
             case BattleState.BattleStep.Victory:
-                victory.EnterBattleStepVictory();
                 break;
             case BattleState.BattleStep.Cutscene:
                 if (battleState.previousBattleStep == BattleState.BattleStep.Victory) {
@@ -221,13 +220,21 @@ public class BattleManager : MonoBehaviour {
     public void OnLeaveBattleStepEvent(BattleState.BattleStep battleStep) {
         switch (battleStep) {
             case BattleState.BattleStep.Placing:
-                placing.LeaveBattleStepPlacing();
+                board.RemoveAllMarks();
+
+                // Disable outlines from the placing step
+                if (currentPartyCharacter.value.boardCharacter != null) {
+                    currentPartyCharacter.value.boardCharacter.glow.Disable();
+                }
                 break;
             case BattleState.BattleStep.Fight:
-                fight.LeaveBattleStepFight();
+                if (currentFightBoardCharacter.value.glow != null) {
+                    currentFightBoardCharacter.value.glow.Disable();
+                }
+
+                board.RemoveAllMarks();
                 break;
             case BattleState.BattleStep.Victory:
-                victory.LeaveBattleStepVictory();
                 break;
             case BattleState.BattleStep.Cutscene:
                 cutscene.LeaveBattleStepCutscene();
@@ -237,23 +244,6 @@ public class BattleManager : MonoBehaviour {
 
     public void OnEnterTurnStepEvent(BattleState.TurnStep turnStep) {
         switch (turnStep) {
-            case BattleState.TurnStep.None:
-                switch (battleState.currentBattleStep) {
-                    case BattleState.BattleStep.Placing:
-                        placing.EnterTurnStepNone(battleState.previousTurnStep);
-                        break;
-                    case BattleState.BattleStep.Victory:
-                        victory.EnterTurnStepNone(battleState.previousTurnStep);
-                        break;
-                }
-                break;
-            case BattleState.TurnStep.Status:
-                switch (battleState.currentBattleStep) {
-                    case BattleState.BattleStep.Placing:
-                        placing.EnterTurnStepStatus(battleState.previousTurnStep);
-                        break;
-                }
-                break;
             case BattleState.TurnStep.Move:
                 board.MarkSquares(
                     currentFightBoardCharacter.value.GetSquare(),
