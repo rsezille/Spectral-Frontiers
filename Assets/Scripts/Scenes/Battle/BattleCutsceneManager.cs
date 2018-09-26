@@ -55,12 +55,12 @@ public class BattleCutsceneManager {
             Image transitionImage = transition.AddComponent<Image>();
             transitionImage.color = new Color(Color.black.r, Color.black.g, Color.black.b, 0f);
 
-            transitionImage.DOColor(Color.black, 0.5f).OnComplete(() => {
+            transitionImage.DOColor(Color.black, Globals.ShadeInOutCutsceneTime).OnComplete(() => {
                 foreach (BoardCharacter playerCharacter in battleManager.battleCharacters.player) {
                     playerCharacter.Remove();
                 }
                 
-                transitionImage.DOColor(new Color(Color.black.r, Color.black.g, Color.black.b, 0f), 0.5f).OnComplete(ProcessEnterCutscene);
+                transitionImage.DOColor(new Color(Color.black.r, Color.black.g, Color.black.b, 0f), Globals.ShadeInOutCutsceneTime).OnComplete(ProcessEnterCutscene);
             });
         } else {
             ProcessEnterCutscene();
@@ -74,13 +74,10 @@ public class BattleCutsceneManager {
         }
 
         instanciatedCharacters.Clear();
-
-        battleManager.cutsceneHUD.gameObject.SetActive(false);
     }
 
     private void ProcessEnterCutscene() {
         skipping = false;
-        battleManager.cutsceneHUD.gameObject.SetActive(true);
 
         actions = type == Type.Opening ? battleManager.missionToLoad.value.openingCutscene : battleManager.missionToLoad.value.endingCutscene;
 

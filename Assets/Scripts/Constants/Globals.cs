@@ -16,4 +16,7 @@
     public const int MinPlayerNameLength = 3;
     public const int MaxPlayerNameLength = 10;
     public const string FallbackSpritePrefab = "Hero";
+
+    // Battle
+    public const float ShadeInOutCutsceneTime = 0.5f;
 }

@@ -36,7 +36,6 @@ public class BattleManager : MonoBehaviour {
     public Background background;
 
     // HUD
-    public CutsceneHUD cutsceneHUD;
     public PlacingHUD placingHUD;
     public StatusHUD statusHUD;
     public FightHUD fightHUD;
@@ -63,7 +62,6 @@ public class BattleManager : MonoBehaviour {
         cutscene = new BattleCutsceneManager(this);
 
         // Disable all HUD by default
-        cutsceneHUD.gameObject.SetActive(false);
         placingHUD.gameObject.SetActive(false);
         statusHUD.gameObject.SetActive(false);
         fightHUD.gameObject.SetActive(false);

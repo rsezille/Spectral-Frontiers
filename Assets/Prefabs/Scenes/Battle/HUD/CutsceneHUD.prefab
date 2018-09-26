@@ -20,13 +20,15 @@ GameObject:
   m_Component:
   - component: {fileID: 4197243207661218}
   - component: {fileID: 114693744474923058}
+  - component: {fileID: 114360678527130998}
+  - component: {fileID: 114518234948141664}
   m_Layer: 0
   m_Name: CutsceneHUD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1587763785149910
 GameObject:
   m_ObjectHideFlags: 1
@@ -159,6 +161,34 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114360678527130998
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1314819689623032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4e55d59df1d72c479bdc64a2fdf32f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  battleStepEvent: {fileID: 11400000, guid: 94db551fba820b34698904de5790ff72, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114693744474923058}
+        m_MethodName: OnEnterBattleStepEvent
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: SF.BattleStepEventListener+BattleStepUnityEvent, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
 --- !u!114 &114427963969740626
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -171,6 +201,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: 
+--- !u!114 &114518234948141664
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1314819689623032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4e55d59df1d72c479bdc64a2fdf32f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  battleStepEvent: {fileID: 11400000, guid: df0cb1bc652e4004a9cab67b8aaa49fb, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114693744474923058}
+        m_MethodName: OnLeaveBattleStepEvent
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: SF.BattleStepEventListener+BattleStepUnityEvent, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
 --- !u!114 &114693744474923058
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -182,6 +240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e78a86faaea1a84bb5842eec47e5ffe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvas: {fileID: 223611961378430230}
 --- !u!114 &114836638721472750
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -277,11 +336,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 1
+  m_isInputParsingRequired: 0
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
