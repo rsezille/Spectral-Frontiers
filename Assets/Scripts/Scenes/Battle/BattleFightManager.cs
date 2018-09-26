@@ -80,7 +80,6 @@ public class BattleFightManager {
     // Called by BattleManager
     public void EnterBattleStepFight() {
         battleManager.fightHUD.SetActiveWithAnimation(true);
-        battleManager.turnHUD.gameObject.SetActive(true);
         //NewPlayerTurn();
 
         Action<BoardCharacter> InitializeWaitingTime = (BoardCharacter c) => {

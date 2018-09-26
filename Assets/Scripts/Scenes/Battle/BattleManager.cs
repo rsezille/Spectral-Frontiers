@@ -42,7 +42,6 @@ public class BattleManager : MonoBehaviour {
     public FightHUD fightHUD;
     public VictoryHUD victoryHUD;
     public PausedHUD pausedHUD;
-    public TurnHUD turnHUD;
 
     // Dedicated managers for each BattleStep
     public BattleCutsceneManager cutscene;
@@ -64,7 +63,6 @@ public class BattleManager : MonoBehaviour {
         cutscene = new BattleCutsceneManager(this);
 
         // Disable all HUD by default
-        turnHUD.gameObject.SetActive(false);
         cutsceneHUD.gameObject.SetActive(false);
         placingHUD.gameObject.SetActive(false);
         statusHUD.gameObject.SetActive(false);

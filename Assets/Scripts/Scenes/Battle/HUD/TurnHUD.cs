@@ -20,10 +20,27 @@ namespace SF {
         public Board board;
 
         [Header("Direct references")]
+        public Canvas canvas;
         public TextMeshProUGUI text;
 
         [Header("Data")]
         public int simulationTurns = 10;
+
+        private void Awake() {
+            canvas.gameObject.SetActive(false);
+        }
+
+        public void OnEnterBattleStepEvent(BattleState.BattleStep battleStep) {
+            if (battleStep == BattleState.BattleStep.Fight) {
+                canvas.gameObject.SetActive(true);
+            }
+        }
+
+        public void OnLeaveBattleStepEvent(BattleState.BattleStep battleStep) {
+            if (battleStep == BattleState.BattleStep.Fight) {
+                canvas.gameObject.SetActive(false);
+            }
+        }
 
         /**
          * /!\ Also update the turn algo to reflect changes, in BattleFightManager

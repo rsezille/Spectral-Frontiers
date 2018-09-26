@@ -38,6 +38,8 @@ GameObject:
   - component: {fileID: 4448091618144860}
   - component: {fileID: 114594906239260952}
   - component: {fileID: 114820870293856684}
+  - component: {fileID: 114753472969664080}
+  - component: {fileID: 114709881503333750}
   m_Layer: 0
   m_Name: TurnHUD
   m_TagString: Untagged
@@ -128,8 +130,65 @@ MonoBehaviour:
   battleCharacters: {fileID: 11400000, guid: 6020ed34a2f75cb4f81732c57a2dc0cf, type: 2}
   turnSpeed: {fileID: 11400000, guid: 4b590f7bc1b2cb74594c2693b53595c3, type: 2}
   board: {fileID: 11400000, guid: 3c4c86e45c7cd1c4e9897b0930bad4cd, type: 2}
+  canvas: {fileID: 223290468578030890}
   text: {fileID: 114756949233416202}
   simulationTurns: 10
+--- !u!114 &114709881503333750
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1308061775190030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4e55d59df1d72c479bdc64a2fdf32f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  battleStepEvent: {fileID: 11400000, guid: df0cb1bc652e4004a9cab67b8aaa49fb, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114594906239260952}
+        m_MethodName: OnLeaveBattleStepEvent
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: SF.BattleStepEventListener+BattleStepUnityEvent, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &114753472969664080
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1308061775190030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4e55d59df1d72c479bdc64a2fdf32f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  battleStepEvent: {fileID: 11400000, guid: 94db551fba820b34698904de5790ff72, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114594906239260952}
+        m_MethodName: OnEnterBattleStepEvent
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: SF.BattleStepEventListener+BattleStepUnityEvent, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
 --- !u!114 &114756949233416202
 MonoBehaviour:
   m_ObjectHideFlags: 1
