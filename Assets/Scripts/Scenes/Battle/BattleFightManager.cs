@@ -9,31 +9,6 @@ public class BattleFightManager {
 
     public GameObject arrows;
 
-    /*private BoardCharacter _selectedPlayerCharacter;
-    public BoardCharacter selectedPlayerCharacter {
-        get {
-            return _selectedPlayerCharacter;
-        }
-
-        set {
-            if (_selectedPlayerCharacter != null && _selectedPlayerCharacter.glow != null) {
-                _selectedPlayerCharacter.glow.Disable(); // Into new character turn
-            }
-
-            _selectedPlayerCharacter = value;
-            battleManager.fightHUD.UpdateSelectedSquare(); // Into new character turn
-
-            if (_selectedPlayerCharacter != null) {
-                if (_selectedPlayerCharacter.glow != null) {
-                    _selectedPlayerCharacter.glow.Enable(); // Into new character turn
-                }
-
-                battleManager.battleCamera.SetPosition(_selectedPlayerCharacter, true); // Into new character turn
-                battleManager.fightHUD.Refresh(); // Into new character turn
-            }
-        }
-    }*/
-
     public BattleFightManager(BattleManager battleManager) {
         this.battleManager = battleManager;
     }
@@ -79,7 +54,6 @@ public class BattleFightManager {
 
     // Called by BattleManager
     public void EnterBattleStepFight() {
-        battleManager.fightHUD.SetActiveWithAnimation(true);
         //NewPlayerTurn();
 
         Action<BoardCharacter> InitializeWaitingTime = (BoardCharacter c) => {
@@ -93,6 +67,8 @@ public class BattleFightManager {
     }
 
     public void NewTurn() {
+        battleManager.board.RemoveAllMarks();
+
         battleManager.newCharacterTurn.Raise();
 
         while (!CharacterReady()) {
@@ -155,61 +131,6 @@ public class BattleFightManager {
         }
 
         battleManager.board.RemoveAllMarks();
-        battleManager.statusHUD.Hide();
-        battleManager.fightHUD.SetActiveWithAnimation(false);
-    }
-
-    private void NewPlayerTurn() {
-        /*if (battleManager.CheckEndBattle()) {
-            return;
-        }*/
-
-        //battleManager.sunLight.NewTurn();
-
-        foreach (BoardCharacter bc in battleManager.battleCharacters.player) {
-            bc.NewTurn();
-        }
-
-        battleManager.battleState.currentTurnStep = BattleState.TurnStep.None;
-
-        battleManager.currentFightBoardCharacter.value = battleManager.battleCharacters.player[0];
-    }
-
-    private void EnterTurnStepEnemy() {
-        switch (battleManager.battleState.currentTurnStep) {
-            case BattleState.TurnStep.Move:
-            case BattleState.TurnStep.Attack:
-                battleManager.board.RemoveAllMarks();
-                break;
-        }
-
-        battleManager.battleState.currentTurnStep = BattleState.TurnStep.Enemy;
-
-        foreach (BoardCharacter enemy in battleManager.battleCharacters.enemy) {
-            enemy.NewTurn();
-        }
-
-        battleManager.StartCoroutine(StartAI());
-    }
-
-    /**
-     * Process each enemy AI then start a new player turn
-     */
-    private IEnumerator StartAI() {
-        battleManager.fightHUD.SetActiveWithAnimation(false);
-
-        foreach (BoardCharacter enemy in battleManager.battleCharacters.enemy) {
-            if (enemy.AI != null) {
-                yield return enemy.AI.Process();
-            }
-
-            yield return new WaitForSeconds(0.5f);
-        }
-
-        battleManager.fightHUD.SetActiveWithAnimation(true);
-        NewPlayerTurn();
-
-        yield return null;
     }
 
     // Mark all squares where the character can move

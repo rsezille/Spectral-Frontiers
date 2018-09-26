@@ -188,13 +188,8 @@ MonoBehaviour:
   newCharacterTurn: {fileID: 11400000, guid: 037cecf5ea212904291e6d6864ae30ea, type: 2}
   battleCamera: {fileID: 0}
   background: {fileID: 0}
-  cutsceneHUD: {fileID: 0}
-  placingHUD: {fileID: 0}
-  statusHUD: {fileID: 0}
-  fightHUD: {fileID: 0}
   victoryHUD: {fileID: 0}
   pausedHUD: {fileID: 0}
-  turnHUD: {fileID: 0}
 --- !u!114 &114706368435620052
 MonoBehaviour:
   m_ObjectHideFlags: 1

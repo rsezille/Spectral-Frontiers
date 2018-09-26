@@ -7,7 +7,7 @@ namespace SF {
             None, Cutscene, Placing, Fight, Victory
         };
         public enum TurnStep { // Placing: None or Status - Fight: None, Move, Attack, Skill, Item, Enemy, Status, Direction - Victory: None
-            None, Move, Attack, Skill, Item, Enemy, Status, Direction
+            None, Move, Attack, Skill, Item, Status, Direction
         };
 
         [Header("Events")]

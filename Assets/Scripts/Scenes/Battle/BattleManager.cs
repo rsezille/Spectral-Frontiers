@@ -36,8 +36,6 @@ public class BattleManager : MonoBehaviour {
     public Background background;
 
     // HUD
-    public StatusHUD statusHUD;
-    public FightHUD fightHUD;
     public VictoryHUD victoryHUD;
     public PausedHUD pausedHUD;
 
@@ -61,8 +59,6 @@ public class BattleManager : MonoBehaviour {
         cutscene = new BattleCutsceneManager(this);
 
         // Disable all HUD by default
-        statusHUD.gameObject.SetActive(false);
-        fightHUD.gameObject.SetActive(false);
         victoryHUD.gameObject.SetActive(false);
         pausedHUD.gameObject.SetActive(false);
 
@@ -263,9 +259,6 @@ public class BattleManager : MonoBehaviour {
                     case BattleState.BattleStep.Placing:
                         placing.EnterTurnStepNone(battleState.previousTurnStep);
                         break;
-                    case BattleState.BattleStep.Fight:
-                        fightHUD.Refresh();
-                        break;
                     case BattleState.BattleStep.Victory:
                         victory.EnterTurnStepNone(battleState.previousTurnStep);
                         break;
@@ -275,10 +268,6 @@ public class BattleManager : MonoBehaviour {
                 switch (battleState.currentBattleStep) {
                     case BattleState.BattleStep.Placing:
                         placing.EnterTurnStepStatus(battleState.previousTurnStep);
-                        break;
-                    case BattleState.BattleStep.Fight:
-                        fightHUD.SetActiveWithAnimation(false);
-                        statusHUD.Show(currentFightBoardCharacter.value);
                         break;
                 }
                 break;
@@ -300,8 +289,6 @@ public class BattleManager : MonoBehaviour {
                 ); // TODO [ALPHA] weapon range
                 break;
             case BattleState.TurnStep.Direction:
-                fightHUD.SetActiveWithAnimation(false);
-
                 GameObject arrowsPrefab = Resources.Load<GameObject>("Arrows");
 
                 fight.arrows = Object.Instantiate(arrowsPrefab, currentFightBoardCharacter.value.transform.position + new Vector3(arrowsPrefab.transform.position.x, arrowsPrefab.transform.position.y), Quaternion.identity);
@@ -315,16 +302,12 @@ public class BattleManager : MonoBehaviour {
             case BattleState.TurnStep.Attack:
                 board.RemoveAllMarks();
                 break;
-            case BattleState.TurnStep.Status:
-                fightHUD.SetActiveWithAnimation(true);
-                break;
             case BattleState.TurnStep.Direction:
                 if (fight.arrows != null) {
                     Object.Destroy(fight.arrows);
                     fight.arrows = null;
                 }
 
-                fightHUD.SetActiveWithAnimation(true);
                 break;
         }
     }

@@ -62,6 +62,5 @@ public class BattlePlacingManager {
 
     // Called by BattleManager
     public void EnterTurnStepStatus(BattleState.TurnStep previousTurnStep) {
-        battleManager.statusHUD.Show(battleManager.currentPartyCharacter.value);
     }
 }

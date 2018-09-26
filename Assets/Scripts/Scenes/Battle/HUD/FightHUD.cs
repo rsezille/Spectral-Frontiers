@@ -5,6 +5,8 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class FightHUD : MonoBehaviour {
+    private Text currentSquareText;
+
     [Header("Dependencies")]
     public BoardCharacterVariable currentFightBoardCharacter;
     public BattleState battleState;
@@ -13,10 +15,9 @@ public class FightHUD : MonoBehaviour {
     public GameEvent endTurn;
 
     [Header("References")]
+    public Canvas canvas;
     public GameObject moveButton;
     public GameObject actionButton;
-    public GameObject previousButton;
-    public GameObject nextButton;
     public GameObject statusButton;
     public GameObject directionButton;
     public GameObject endTurnButton;
@@ -29,6 +30,12 @@ public class FightHUD : MonoBehaviour {
 
     private bool isGoingEnabled = false;
 
+    private void Awake() {
+        currentSquareText = currentSquare.GetComponentInChildren<Text>();
+
+        canvas.gameObject.SetActive(false);
+    }
+
     private void Start() {
         moveButton.AddListener(EventTriggerType.PointerClick, Move);
         actionButton.AddListener(EventTriggerType.PointerClick, Action);
@@ -36,7 +43,53 @@ public class FightHUD : MonoBehaviour {
         directionButton.AddListener(EventTriggerType.PointerClick, Direction);
         endTurnButton.AddListener(EventTriggerType.PointerClick, EndTurn);
     }
-    
+
+    private void Update() {
+        if (currentFightBoardCharacter.value != null) {
+            currentSquareText.text =
+                currentFightBoardCharacter.value.character.characterName +
+                "\n" + currentFightBoardCharacter.value.character.currentHp + "/" + currentFightBoardCharacter.value.character.maxHP + " HP";
+
+            moveButton.GetComponent<Button>().interactable = currentFightBoardCharacter.value.CanMove();
+
+            actionButton.GetComponent<Button>().interactable = currentFightBoardCharacter.value.CanDoAction();
+            actionMenu.Refresh();
+
+            statusButton.GetComponent<Button>().interactable = true;
+            endTurnButton.GetComponent<Button>().interactable = true;
+        } else {
+            currentSquareText.text = "No currently selected character";
+        }
+    }
+
+    public void OnEnterBattleStepEvent(BattleState.BattleStep battleStep) {
+        if (battleStep == BattleState.BattleStep.Fight) {
+            SetActiveWithAnimation(true);
+        }
+    }
+
+    public void OnLeaveBattleStepEvent(BattleState.BattleStep battleStep) {
+        if (battleStep == BattleState.BattleStep.Fight) {
+            SetActiveWithAnimation(false);
+        }
+    }
+
+    public void OnEnterTurnStepEvent(BattleState.TurnStep turnStep) {
+        if (battleState.currentBattleStep == BattleState.BattleStep.Fight) {
+            if (turnStep == BattleState.TurnStep.Status || turnStep == BattleState.TurnStep.Direction) {
+                SetActiveWithAnimation(false);
+            }
+        }
+    }
+
+    public void OnLeaveTurnStepEvent(BattleState.TurnStep turnStep) {
+        if (battleState.currentBattleStep == BattleState.BattleStep.Fight) {
+            if (turnStep == BattleState.TurnStep.Status || turnStep == BattleState.TurnStep.Direction) {
+                SetActiveWithAnimation(true);
+            }
+        }
+    }
+
     private void Move() {
         if (battleState.currentTurnStep == BattleState.TurnStep.Move) {
             battleState.currentTurnStep = BattleState.TurnStep.None;
@@ -78,27 +131,12 @@ public class FightHUD : MonoBehaviour {
         endTurn.Raise();
     }
 
-    // Compute all checks on buttons availability
-    public void Refresh() {
-        if (currentFightBoardCharacter.value == null) return;
-        
-        moveButton.GetComponent<Button>().interactable = currentFightBoardCharacter.value.CanMove();
-        
-        actionButton.GetComponent<Button>().interactable = currentFightBoardCharacter.value.CanDoAction();
-        actionMenu.Refresh();
-
-        previousButton.GetComponent<Button>().interactable = true; //TODO [ALPHA] if no other character available, disable it
-        nextButton.GetComponent<Button>().interactable = true; //TODO [ALPHA] if no other character available, disable it
-        statusButton.GetComponent<Button>().interactable = true;
-        endTurnButton.GetComponent<Button>().interactable = true;
-    }
-
     public void SetActiveWithAnimation(bool active, HUD.Speed speed = HUD.Speed.Normal) {
         float fSpeed = (int)speed / 1000f;
 
         if (active) {
             isGoingEnabled = true;
-            gameObject.SetActive(true);
+            canvas.gameObject.SetActive(true);
 
             fightMenu.anchoredPosition3D = new Vector3(fightMenu.anchoredPosition3D.x, -120f, fightMenu.anchoredPosition3D.z);
             fightMenu.DOAnchorPos3D(new Vector3(fightMenu.anchoredPosition3D.x, fightMenu.sizeDelta.y / 2f, fightMenu.anchoredPosition3D.z), fSpeed).SetEase(Ease.OutCubic);
@@ -109,7 +147,7 @@ public class FightHUD : MonoBehaviour {
             selectedSquare.anchoredPosition3D = new Vector3(selectedSquare.anchoredPosition3D.x, -120f, selectedSquare.anchoredPosition3D.z);
             selectedSquare.DOAnchorPos3D(new Vector3(selectedSquare.anchoredPosition3D.x, selectedSquare.sizeDelta.y / 2f, selectedSquare.anchoredPosition3D.z), fSpeed).SetEase(Ease.OutCubic);
         } else {
-            if (!gameObject.activeSelf) return;
+            if (!canvas.gameObject.activeSelf) return;
 
             actionMenu.SetActiveWithAnimation(false);
 
@@ -124,7 +162,7 @@ public class FightHUD : MonoBehaviour {
     private void DisableGameObject() {
         if (isGoingEnabled) return;
 
-        gameObject.SetActive(false);
+        canvas.gameObject.SetActive(false);
     }
 
     public void SquareHovered(Square square) {
@@ -149,18 +187,6 @@ public class FightHUD : MonoBehaviour {
             } else {
                 selectedSquareText.text += "\nCharacter: none";
             }
-        }
-    }
-
-    public void UpdateSelectedSquare() {
-        Text currentSquareText = currentSquare.GetComponentInChildren<Text>();
-
-        if (currentFightBoardCharacter.value != null) {
-            currentSquareText.text =
-                currentFightBoardCharacter.value.character.characterName +
-                "\n" + currentFightBoardCharacter.value.character.currentHp + "/" + currentFightBoardCharacter.value.character.maxHP + " HP";
-        } else {
-            currentSquareText.text = "No currently selected character";
         }
     }
 }

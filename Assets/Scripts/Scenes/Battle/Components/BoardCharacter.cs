@@ -264,9 +264,19 @@ public class BoardCharacter : MonoBehaviour {
         movementPoints = character.template.movementPoints;
 
         if (side.value == Side.Type.Player) {
+            if (currentFightBoardCharacter.value != null && currentFightBoardCharacter.value.glow != null) {
+                currentFightBoardCharacter.value.glow.Disable();
+            }
+
             currentFightBoardCharacter.value = this;
+            
+            if (glow != null) {
+                glow.Enable();
+            }
+            
             mainCameraPosition.SetPosition(this, true);
         } else {
+            currentFightBoardCharacter.value = null;
             StartCoroutine(StartAI());
         }
     }
@@ -348,7 +358,7 @@ public class BoardCharacter : MonoBehaviour {
         isMoving = true;
         float duration = 0.5f;
 
-        if (battleState.currentTurnStep != BattleState.TurnStep.Enemy && !inCutscene) {
+        if (side.value == Side.Type.Player && !inCutscene) {
             board.RemoveAllMarks();
         }
 
