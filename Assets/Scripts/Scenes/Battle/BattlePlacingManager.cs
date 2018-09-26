@@ -36,7 +36,6 @@ public class BattlePlacingManager {
             battleManager.board.GetSquare(startingSquare.posX, startingSquare.posY).markType = Square.MarkType.Placing;
         }
         
-        battleManager.placingHUD.SetActiveWithAnimation(true, HUD.Speed.Slow);
         battleManager.mainCameraPosition.SetPosition(
             battleManager.board.GetSquare(battleManager.missionToLoad.value.startingSquares[0].posX, battleManager.missionToLoad.value.startingSquares[0].posY),
             true
@@ -55,21 +54,14 @@ public class BattlePlacingManager {
         if (battleManager.currentPartyCharacter.value.boardCharacter != null) {
             battleManager.currentPartyCharacter.value.boardCharacter.glow.Disable();
         }
-
-        battleManager.placingHUD.SetActiveWithAnimation(false);
     }
 
     // Called by BattleManager
     public void EnterTurnStepNone(BattleState.TurnStep previousTurnStep) {
-        if (previousTurnStep == BattleState.TurnStep.Status) {
-            battleManager.placingHUD.SetActiveWithAnimation(true);
-        }
     }
 
     // Called by BattleManager
     public void EnterTurnStepStatus(BattleState.TurnStep previousTurnStep) {
-        battleManager.placingHUD.SetActiveWithAnimation(false);
-
         battleManager.statusHUD.Show(battleManager.currentPartyCharacter.value);
     }
 }

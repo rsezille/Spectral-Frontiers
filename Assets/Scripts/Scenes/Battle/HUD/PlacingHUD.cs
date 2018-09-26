@@ -14,21 +14,19 @@ public class PlacingHUD : MonoBehaviour {
     public CharacterVariable currentPartyCharacter;
     public BattleCharacters battleCharacters;
 
-    [Header("References")]
+    [Header("Direct references")]
+    public Canvas canvas;
     public Text previousCharText;
     public Text nextCharText;
     public Text currentCharText;
-
     public Text startBattleText;
 
     public GameObject removeButton;
-    public GameObject statusButton;
 
     public RectTransform placingHUDRect;
 
-    private void Start() {
-        removeButton.AddListener(EventTriggerType.PointerClick, RemoveCurrentMapChar);
-        statusButton.AddListener(EventTriggerType.PointerClick, Status);
+    private void Awake() {
+        canvas.gameObject.SetActive(false);
     }
 
     private void Update() {
@@ -92,11 +90,33 @@ public class PlacingHUD : MonoBehaviour {
         }
     }
 
-    private void Status() {
+    public void OnEnterBattleStepEvent(BattleState.BattleStep battleStep) {
+        if (battleStep == BattleState.BattleStep.Placing) {
+            SetActiveWithAnimation(true, HUD.Speed.Slow);
+        }
+    }
+
+    public void OnLeaveBattleStepEvent(BattleState.BattleStep battleStep) {
+        if (battleStep == BattleState.BattleStep.Placing) {
+            canvas.gameObject.SetActive(false);
+        }
+    }
+
+    public void OnEnterTurnStepEvent(BattleState.TurnStep turnStep) {
+        if (battleState.currentBattleStep == BattleState.BattleStep.Placing) {
+            if (turnStep == BattleState.TurnStep.None) {
+                SetActiveWithAnimation(true);
+            } else if (turnStep == BattleState.TurnStep.Status) {
+                SetActiveWithAnimation(false);
+            }
+        }
+    }
+
+    public void Status() {
         battleState.currentTurnStep = BattleState.TurnStep.Status;
     }
 
-    private void RemoveCurrentMapChar() {
+    public void RemoveCurrentMapChar() {
         if (battleState.currentBattleStep != BattleState.BattleStep.Placing) {
             return;
         }
@@ -115,7 +135,7 @@ public class PlacingHUD : MonoBehaviour {
 
         if (active) {
             isGoingEnabled = true;
-            gameObject.SetActive(true);
+            canvas.gameObject.SetActive(true);
 
             placingHUDRect.anchoredPosition3D = new Vector3(0f, -250f, 0f);
             placingHUDRect.DOAnchorPos3D(new Vector3(0f, 0f, 0f), fSpeed).SetEase(Ease.OutCubic);
@@ -132,6 +152,6 @@ public class PlacingHUD : MonoBehaviour {
     private void DisableGameObject() {
         if (isGoingEnabled) return;
         
-        gameObject.SetActive(false);
+        canvas.gameObject.SetActive(false);
     }
 }

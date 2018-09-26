@@ -101,7 +101,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1671862169798908
 GameObject:
   m_ObjectHideFlags: 1
@@ -198,13 +198,16 @@ GameObject:
   m_Component:
   - component: {fileID: 4852075202462568}
   - component: {fileID: 114779742025163876}
+  - component: {fileID: 114269585873209414}
+  - component: {fileID: 114867865710914260}
+  - component: {fileID: 114873589285672482}
   m_Layer: 0
   m_Name: PlacingHUD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1992849058947250
 GameObject:
   m_ObjectHideFlags: 1
@@ -269,6 +272,34 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: CurrentCharName
+--- !u!114 &114269585873209414
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1918543627743264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4e55d59df1d72c479bdc64a2fdf32f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  battleStepEvent: {fileID: 11400000, guid: 94db551fba820b34698904de5790ff72, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114779742025163876}
+        m_MethodName: OnEnterBattleStepEvent
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: SF.BattleStepEventListener+BattleStepUnityEvent, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
 --- !u!114 &114291179619601002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -307,7 +338,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114807357268640470}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114779742025163876}
+        m_MethodName: Status
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114357762181641242
@@ -537,12 +579,12 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: 
+      - m_Target: {fileID: 114779742025163876}
+        m_MethodName: RemoveCurrentMapChar
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -566,12 +608,12 @@ MonoBehaviour:
   currentPartyCharacter: {fileID: 11400000, guid: da4745e45b390774b9af81380f76adc2,
     type: 2}
   battleCharacters: {fileID: 11400000, guid: 6020ed34a2f75cb4f81732c57a2dc0cf, type: 2}
+  canvas: {fileID: 223054441482088112}
   previousCharText: {fileID: 114905378958727276}
   nextCharText: {fileID: 114605722976675836}
   currentCharText: {fileID: 114181154318541012}
   startBattleText: {fileID: 114870191386188544}
   removeButton: {fileID: 1701947058419180}
-  statusButton: {fileID: 1388497802460816}
   placingHUDRect: {fileID: 224361135426694898}
 --- !u!114 &114786552696407756
 MonoBehaviour:
@@ -650,6 +692,34 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114867865710914260
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1918543627743264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4e55d59df1d72c479bdc64a2fdf32f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  battleStepEvent: {fileID: 11400000, guid: df0cb1bc652e4004a9cab67b8aaa49fb, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114779742025163876}
+        m_MethodName: OnLeaveBattleStepEvent
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: SF.BattleStepEventListener+BattleStepUnityEvent, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
 --- !u!114 &114870191386188544
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -695,6 +765,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: 
+--- !u!114 &114873589285672482
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1918543627743264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63934d0c16ff33d4fa4b9e515e448918, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turnStepEvent: {fileID: 11400000, guid: 52a796abbf67bfa43b628bde414885f2, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114779742025163876}
+        m_MethodName: OnEnterTurnStepEvent
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: SF.TurnStepEventListener+TurnStepUnityEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114905378958727276
 MonoBehaviour:
   m_ObjectHideFlags: 1
