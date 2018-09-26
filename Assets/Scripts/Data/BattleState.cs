@@ -22,12 +22,14 @@ namespace SF {
         public BattleStep currentBattleStep {
             get { return _currentBattleStep; }
             set {
-                LeaveBattleStepEvent.Raise(_currentBattleStep);
+                if (_currentBattleStep != value) {
+                    LeaveBattleStepEvent.Raise(_currentBattleStep);
 
-                previousBattleStep = _currentBattleStep;
-                _currentBattleStep = value;
+                    previousBattleStep = _currentBattleStep;
+                    _currentBattleStep = value;
 
-                EnterBattleStepEvent.Raise(_currentBattleStep);
+                    EnterBattleStepEvent.Raise(_currentBattleStep);
+                }
             }
         }
 
