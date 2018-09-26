@@ -26,7 +26,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1170246215511214
 GameObject:
   m_ObjectHideFlags: 1
@@ -170,7 +170,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1775301026320534
 GameObject:
   m_ObjectHideFlags: 1
@@ -258,6 +258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a0ee8ea2e7f7f143976e407dd70b08c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  key: 
 --- !u!114 &114092688443256932
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -285,7 +286,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43190cd96a1104d49bd59e5744d9ece9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resumeButton: {fileID: 1331073081603038}
+  canvas: {fileID: 223765055376597432}
   optionsButton: {fileID: 1343179896965948}
   quitButton: {fileID: 1210032009299338}
 --- !u!114 &114334664541166358
@@ -439,6 +440,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a0ee8ea2e7f7f143976e407dd70b08c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  key: 
 --- !u!114 &114420772558006224
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -649,7 +651,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114353917144229536}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114332325935929736}
+        m_MethodName: Resume
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114660988419642974
@@ -844,6 +857,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a0ee8ea2e7f7f143976e407dd70b08c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  key: 
 --- !u!114 &114783297055809716
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -855,6 +869,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a0ee8ea2e7f7f143976e407dd70b08c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  key: 
 --- !u!114 &114855594978191060
 MonoBehaviour:
   m_ObjectHideFlags: 1

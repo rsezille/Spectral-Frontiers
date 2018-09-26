@@ -35,9 +35,6 @@ public class BattleManager : MonoBehaviour {
     public BattleCamera battleCamera;
     public Background background;
 
-    // HUD
-    public PausedHUD pausedHUD;
-
     // Dedicated managers for each BattleStep
     public BattleCutsceneManager cutscene;
     public BattlePlacingManager placing;
@@ -56,9 +53,6 @@ public class BattleManager : MonoBehaviour {
         fight = new BattleFightManager(this);
         victory = new BattleVictoryManager(this);
         cutscene = new BattleCutsceneManager(this);
-
-        // Disable all HUD by default
-        pausedHUD.gameObject.SetActive(false);
 
 #if UNITY_EDITOR
         previousScreenResolution = new Vector2Int(Screen.width, Screen.height);
@@ -92,15 +86,6 @@ public class BattleManager : MonoBehaviour {
                 GameManager.instance.DialogBox.Show(battleCharacters.player[0], "prologue_01");
             }
         #endif
-
-        if (InputManager.Pause.IsKeyDown) {
-            if (pausedHUD.gameObject.activeSelf) {
-                pausedHUD.Resume();
-            } else {
-                pausedHUD.gameObject.SetActive(true);
-                Time.timeScale = 0;
-            }
-        }
         
         if (InputManager.Special1.IsKeyDown) {
             SkipCutscene();
