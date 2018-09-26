@@ -41,7 +41,7 @@ namespace SF {
         public int maxPlayerCharacters = 1;
         public StartingSquare[] startingSquares;
         public Background background;
-        public BattleManager.LightingType lighting = BattleManager.LightingType.Day;
+        public SunSettings.LightingType lighting = SunSettings.LightingType.Day;
 
         // Missions tree
         public Mission[] parents;

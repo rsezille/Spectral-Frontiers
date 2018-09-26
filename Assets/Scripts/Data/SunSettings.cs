@@ -3,6 +3,10 @@
 namespace SF {
     [CreateAssetMenu(menuName = "SF/Settings/Sun")]
     public class SunSettings : ScriptableObject {
+        public enum LightingType {
+            Day, Night, Turn, Auto
+        };
+
         [SerializeField, Tooltip("When the sun hurts really hard, in the desert during summer")]
         private float _hardCapIntensity = 1.1f;
         public float hardCapIntensity { private set { _hardCapIntensity = value; } get { return _hardCapIntensity; } }

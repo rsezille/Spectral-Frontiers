@@ -21,6 +21,10 @@ public class BattleCamera : MonoBehaviour {
         battleCamera = GetComponent<Camera>();
     }
 
+    private void Start() {
+        ResetCameraSize();
+    }
+
     private void Update() {
         /*if (battleState.currentBattleStep == BattleState.BattleStep.Cutscene
                 || battleState.currentTurnStep == BattleState.TurnStep.Enemy) {

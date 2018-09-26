@@ -1,5 +1,4 @@
-﻿using DG.Tweening;
-using SF;
+﻿using SF;
 using System.Collections;
 using UnityEngine;
 
@@ -9,17 +8,11 @@ using UnityEngine;
  * and dispatch events and tasks to them
  */
 public class BattleManager : MonoBehaviour {
-    public enum LightingType {
-        Day, Night, Turn, Auto
-    };
-
     [Header("Dependencies")]
     public BattleState battleState;
     public BattleCharacters battleCharacters;
     public MissionVariable missionToLoad;
     public Board board;
-    public FloatVariable sunIntensity;
-    public SunSettings sunSettings;
     public CharacterVariable currentPartyCharacter;
     public Party party;
     public BoardCharacterVariable currentFightBoardCharacter;
@@ -28,12 +21,8 @@ public class BattleManager : MonoBehaviour {
 
     [Header("Events")]
     public GameEvent screenChange;
-    public GameEvent lightChange;
     public GameEvent newCharacterTurn;
-
-    [Header("References")]
-    public BattleCamera battleCamera;
-    public Background background;
+    public GameEvent loadMission;
 
     // Dedicated managers for each BattleStep
     public BattleCutsceneManager cutscene;
@@ -67,7 +56,6 @@ public class BattleManager : MonoBehaviour {
     private void Start() {
         LoadMission();
 
-        battleCamera.ResetCameraSize();
         mainCameraPosition.SetPosition(board.GetSquare(board.width / 2, board.height / 2));
 
         battleState.currentBattleStep = BattleState.BattleStep.Cutscene;
@@ -116,37 +104,7 @@ public class BattleManager : MonoBehaviour {
 
     public void LoadMission() {
         board.LoadMap(missionToLoad);
-        background.Load(missionToLoad.value.background);
-
-        // TODO: Move this to SunController?
-        sunSettings.turnType = false;
-
-        switch (missionToLoad.value.lighting) {
-            case LightingType.Day:
-                sunIntensity.value = sunSettings.dayIntensity;
-                break;
-            case LightingType.Night:
-                sunIntensity.value = sunSettings.nightIntensity;
-                break;
-            case LightingType.Turn:
-                sunIntensity.value = sunSettings.dayIntensity;
-                sunSettings.turnType = true;
-                break;
-            case LightingType.Auto: // Mainly for testing purpose
-                sunIntensity.value = sunSettings.nightIntensity;
-
-                float speed = 1f;
-                DOTween
-                    .Sequence()
-                    .Append(DOTween.To(() => sunIntensity.value, x => sunIntensity.value = x, sunSettings.dayIntensity, speed).SetEase(Ease.Linear).OnUpdate(lightChange.Raise))
-                    .AppendInterval(speed * 4f)
-                    .Append(DOTween.To(() => sunIntensity.value, x => sunIntensity.value = x, sunSettings.nightIntensity, speed).SetEase(Ease.Linear).OnUpdate(lightChange.Raise))
-                    .AppendInterval(speed * 4f)
-                    .SetLoops(-1);
-                break;
-        }
-
-        lightChange.Raise();
+        loadMission.Raise();
     }
 
     public void EndTurn() {

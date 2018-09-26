@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 108145216073050488}
   - component: {fileID: 114899608927079990}
   - component: {fileID: 114161620976863790}
+  - component: {fileID: 114299724967654274}
   m_Layer: 0
   m_Name: SunLight
   m_TagString: Untagged
@@ -107,6 +108,34 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114299724967654274
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1918714462683116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 448f24eaf2dc006419c634bd9b0313fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 54ddfc61d0065cb4dace1090db7f2f53, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114899608927079990}
+        m_MethodName: LoadMission
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114899608927079990
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -118,5 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7705b3bfb0f22d45918feb0c80ed780, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lightIntensity: {fileID: 11400000, guid: b0709e55fba0576418830d6492ad8237, type: 2}
+  sunIntensity: {fileID: 11400000, guid: b0709e55fba0576418830d6492ad8237, type: 2}
   sunSettings: {fileID: 11400000, guid: b0e251d186ad3624a86e3808f2da34c9, type: 2}
+  missionToLoad: {fileID: 11400000, guid: 68f1ff2b65824f24a98b59c7eb37bead, type: 2}
+  lightChange: {fileID: 11400000, guid: e56a7e44f521454478bd791dd14181b9, type: 2}

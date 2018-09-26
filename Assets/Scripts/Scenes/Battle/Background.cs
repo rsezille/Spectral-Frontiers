@@ -18,6 +18,9 @@ namespace SF {
 
         public List<Preset> presets;
 
+        [Header("Dependencies")]
+        public MissionVariable missionToLoad;
+
         [Header("Material static links")]
         public Material gradientMaterial;
         public Material horizontalGradientMaterial;
@@ -26,9 +29,9 @@ namespace SF {
             RenderSettings.skybox = null;
         }
 
-        public void Load(Mission.Background background) {
-            if (!string.IsNullOrEmpty(background.preset)) {
-                Preset preset = presets.Find(x => x.name == background.preset);
+        public void LoadMission() {
+            if (!string.IsNullOrEmpty(missionToLoad.value.background.preset)) {
+                Preset preset = presets.Find(x => x.name == missionToLoad.value.background.preset);
 
                 if (preset != null) {
                     switch (preset.type) {
@@ -54,22 +57,22 @@ namespace SF {
                 }
             }
 
-            switch (background.type) {
+            switch (missionToLoad.value.background.type) {
                 case Type.Color:
                     RenderSettings.skybox = gradientMaterial;
-                    RenderSettings.skybox.SetVector("_Color1", background.mainColor);
-                    RenderSettings.skybox.SetVector("_Color2", background.mainColor);
+                    RenderSettings.skybox.SetVector("_Color1", missionToLoad.value.background.mainColor);
+                    RenderSettings.skybox.SetVector("_Color2", missionToLoad.value.background.mainColor);
                     break;
                 case Type.Gradient:
                     RenderSettings.skybox = gradientMaterial;
-                    RenderSettings.skybox.SetVector("_Color1", background.mainColor);
-                    RenderSettings.skybox.SetVector("_Color2", background.off1Color);
+                    RenderSettings.skybox.SetVector("_Color1", missionToLoad.value.background.mainColor);
+                    RenderSettings.skybox.SetVector("_Color2", missionToLoad.value.background.off1Color);
                     break;
                 case Type.HorizontalGradient:
                     RenderSettings.skybox = horizontalGradientMaterial;
-                    RenderSettings.skybox.SetVector("_Color1", background.mainColor);
-                    RenderSettings.skybox.SetVector("_Color2", background.off1Color);
-                    RenderSettings.skybox.SetVector("_Color2", background.off2Color);
+                    RenderSettings.skybox.SetVector("_Color1", missionToLoad.value.background.mainColor);
+                    RenderSettings.skybox.SetVector("_Color2", missionToLoad.value.background.off1Color);
+                    RenderSettings.skybox.SetVector("_Color2", missionToLoad.value.background.off2Color);
                     break;
             }
         }

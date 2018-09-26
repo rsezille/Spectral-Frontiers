@@ -151,11 +151,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4207580639165070, guid: d54262301a7a7fa47b24455538affec2, type: 2}
       propertyPath: m_RootOrder
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 1426263688442036, guid: d54262301a7a7fa47b24455538affec2, type: 2}
-      propertyPath: m_IsActive
-      value: 1
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d54262301a7a7fa47b24455538affec2, type: 2}
@@ -197,7 +193,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4448091618144860, guid: 1af61bf8c7ae1c441aea286622d8ae4c, type: 2}
       propertyPath: m_RootOrder
-      value: 14
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 223290468578030890, guid: 1af61bf8c7ae1c441aea286622d8ae4c,
         type: 2}
@@ -264,12 +260,6 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bf013b8ddd04bfd4fab02c5a1117b26b, type: 2}
   m_IsPrefabAsset: 0
---- !u!114 &519420030 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114665639739974132, guid: e6cc4424971f21d479098b2035ba00d7,
-    type: 2}
-  m_PrefabInternal: {fileID: 976598580}
-  m_Script: {fileID: 11500000, guid: f52f0c211d313184197db25c5795b86b, type: 3}
 --- !u!20 &519420031 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 20374203324466692, guid: e6cc4424971f21d479098b2035ba00d7,
@@ -520,12 +510,6 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1dedf6d962671594e8f441977f810969, type: 2}
   m_IsPrefabAsset: 0
---- !u!114 &1155449811 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114114936206647602, guid: f6d5f88353c776f4e8e2b6dcf38e075e,
-    type: 2}
-  m_PrefabInternal: {fileID: 1677038164}
-  m_Script: {fileID: 11500000, guid: d9374d5dfe58b6d49bdac0946a02de15, type: 3}
 --- !u!84 &1484499620
 RenderTexture:
   m_ObjectHideFlags: 0
@@ -642,26 +626,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 114542653793058942, guid: 43fb4b378fca8f94a9de412da769869f,
-        type: 2}
-      propertyPath: battleCamera
-      value: 
-      objectReference: {fileID: 519420030}
-    - target: {fileID: 114542653793058942, guid: 43fb4b378fca8f94a9de412da769869f,
-        type: 2}
-      propertyPath: background
-      value: 
-      objectReference: {fileID: 1698558121}
-    - target: {fileID: 114542653793058942, guid: 43fb4b378fca8f94a9de412da769869f,
-        type: 2}
-      propertyPath: victoryHUD
-      value: 
-      objectReference: {fileID: 1155449811}
-    - target: {fileID: 114542653793058942, guid: 43fb4b378fca8f94a9de412da769869f,
-        type: 2}
-      propertyPath: pausedHUD
-      value: 
-      objectReference: {fileID: 1866078748}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43fb4b378fca8f94a9de412da769869f, type: 2}
   m_IsPrefabAsset: 0
@@ -801,12 +765,6 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f6d5f88353c776f4e8e2b6dcf38e075e, type: 2}
   m_IsPrefabAsset: 0
---- !u!114 &1698558121 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114943292076673702, guid: d54262301a7a7fa47b24455538affec2,
-    type: 2}
-  m_PrefabInternal: {fileID: 80197608}
-  m_Script: {fileID: 11500000, guid: 77be07afe9870c244a5fc29a99083453, type: 3}
 --- !u!1001 &1842727969
 Prefab:
   m_ObjectHideFlags: 0
@@ -864,12 +822,6 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ccca6b60c5a1a7d4c950f98f9fc6358c, type: 2}
   m_IsPrefabAsset: 0
---- !u!114 &1866078748 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114332325935929736, guid: 989ee2fe244493a4a9c68b28c9bc76c3,
-    type: 2}
-  m_PrefabInternal: {fileID: 548825975}
-  m_Script: {fileID: 11500000, guid: 43190cd96a1104d49bd59e5744d9ece9, type: 3}
 --- !u!1001 &2062133225
 Prefab:
   m_ObjectHideFlags: 0
