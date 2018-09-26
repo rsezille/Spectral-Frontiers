@@ -258,7 +258,6 @@ public class BoardCharacter : MonoBehaviour {
     }
 
     public void NewTurn() {
-        Debug.Log("NEWTURN!!   " + name + "    " + character.spd);
         actionTokens = character.template.actionTokens;
         
         movementTokens = character.template.movementTokens;

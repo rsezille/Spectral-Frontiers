@@ -8,8 +8,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 870ffe567108d7d4fbddf30876e26ec8, type: 3}
-  m_Name: PlayerName
+  m_Script: {fileID: 11500000, guid: 4d76a28884c79134eb28bf378da03533, type: 3}
+  m_Name: TurnSpeed
   m_EditorClassIdentifier: 
-  internalNotes: 
-  value: SFName
+  internalNotes: Substract from this the character speed
+  value: 350

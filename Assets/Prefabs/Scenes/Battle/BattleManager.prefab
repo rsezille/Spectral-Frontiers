@@ -182,8 +182,10 @@ MonoBehaviour:
   currentFightBoardCharacter: {fileID: 11400000, guid: 9f9983d124106594bb7a73ee18100538,
     type: 2}
   mainCameraPosition: {fileID: 11400000, guid: 7779d43f6d6407847ad460569311f9d6, type: 2}
+  turnSpeed: {fileID: 11400000, guid: 4b590f7bc1b2cb74594c2693b53595c3, type: 2}
   screenChange: {fileID: 11400000, guid: b2d389744d8b9574da53bdc635ee0562, type: 2}
   lightChange: {fileID: 11400000, guid: e56a7e44f521454478bd791dd14181b9, type: 2}
+  newCharacterTurn: {fileID: 11400000, guid: 037cecf5ea212904291e6d6864ae30ea, type: 2}
   battleCamera: {fileID: 0}
   background: {fileID: 0}
   cutsceneHUD: {fileID: 0}
@@ -192,6 +194,7 @@ MonoBehaviour:
   fightHUD: {fileID: 0}
   victoryHUD: {fileID: 0}
   pausedHUD: {fileID: 0}
+  turnHUD: {fileID: 0}
 --- !u!114 &114706368435620052
 MonoBehaviour:
   m_ObjectHideFlags: 1

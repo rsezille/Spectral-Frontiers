@@ -19,7 +19,7 @@ MonoBehaviour:
     maxHP: 50
     currentHp: 30
     atk: 10
-    spd: 112
+    spd: 200
   - template: {fileID: 11400000, guid: 4f154db35a4f49a4e860726d9dd5dcb5, type: 2}
     level: 1
     boardCharacter: {fileID: 0}

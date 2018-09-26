@@ -25,7 +25,7 @@ MonoBehaviour:
     perLevelValue: 0
   spd:
     statType: {fileID: 11400000, guid: 277f3408faf7bb746b7116485e035ba6, type: 2}
-    baseValue: 117
+    baseValue: 150
     perLevelValue: 0
   spritePrefab: {fileID: 1633512145816250, guid: 3eaf92174d6d63e42a2f13747889d7a4,
     type: 2}

@@ -21,5 +21,13 @@ public class TemporaryHUD : MonoBehaviour {
         } else if (battleState.currentBattleStep == BattleState.BattleStep.Placing) {
             text.text += "Placed characters: " + battleCharacters.player.Count + "/" + missionToLoad.value.maxPlayerCharacters + "\n";
         }
+
+        battleCharacters.player.ForEach(boardCharacter => {
+            text.text += boardCharacter.character.characterName + "   : " + boardCharacter.tick + "\n";
+        });
+
+        battleCharacters.enemy.ForEach(boardCharacter => {
+            text.text += boardCharacter.character.characterName + "   : " + boardCharacter.tick + "\n";
+        });
     }
 }
