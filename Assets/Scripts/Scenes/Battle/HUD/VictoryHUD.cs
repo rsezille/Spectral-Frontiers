@@ -8,14 +8,26 @@ public class VictoryHUD : MonoBehaviour {
     public BattleState battleState;
 
     [Header("Direct references")]
+    public Canvas canvas;
     public TextMeshProUGUI detailsText;
-    public GameObject nextButton;
 
-    private void Start() {
-        nextButton.AddListener(UnityEngine.EventSystems.EventTriggerType.PointerClick, Next);
+    private void Awake() {
+        canvas.gameObject.SetActive(false);
     }
 
-    private void Next() {
+    public void OnEnterBattleStepEvent(BattleState.BattleStep battleStep) {
+        if (battleStep == BattleState.BattleStep.Victory) {
+            SetActiveWithAnimation(true);
+        }
+    }
+
+    public void OnLeaveBattleStepEvent(BattleState.BattleStep battleStep) {
+        if (battleStep == BattleState.BattleStep.Victory) {
+            SetActiveWithAnimation(false);
+        }
+    }
+
+    public void Next() {
         battleState.currentBattleStep = BattleState.BattleStep.Cutscene;
     }
 
@@ -25,16 +37,16 @@ public class VictoryHUD : MonoBehaviour {
         if (active) {
             detailsText.SetText("Pouet");
 
-            gameObject.transform.localScale = Vector3.zero;
-            gameObject.SetActive(true);
+            canvas.gameObject.transform.localScale = Vector3.zero;
+            canvas.gameObject.SetActive(true);
 
-            gameObject.transform.DOScale(Vector3.one, fSpeed);
+            canvas.gameObject.transform.DOScale(Vector3.one, fSpeed);
         } else {
-            if (!gameObject.activeSelf) return;
+            if (!canvas.gameObject.activeSelf) return;
 
-            gameObject.transform.localScale = Vector3.one;
+            canvas.gameObject.transform.localScale = Vector3.one;
 
-            gameObject.transform.DOScale(Vector3.zero, fSpeed).OnComplete(() => gameObject.SetActive(false));
+            canvas.gameObject.transform.DOScale(Vector3.zero, fSpeed).OnComplete(() => canvas.gameObject.SetActive(false));
         }
     }
 }

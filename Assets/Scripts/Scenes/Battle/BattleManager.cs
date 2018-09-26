@@ -36,7 +36,6 @@ public class BattleManager : MonoBehaviour {
     public Background background;
 
     // HUD
-    public VictoryHUD victoryHUD;
     public PausedHUD pausedHUD;
 
     // Dedicated managers for each BattleStep
@@ -59,7 +58,6 @@ public class BattleManager : MonoBehaviour {
         cutscene = new BattleCutsceneManager(this);
 
         // Disable all HUD by default
-        victoryHUD.gameObject.SetActive(false);
         pausedHUD.gameObject.SetActive(false);
 
 #if UNITY_EDITOR

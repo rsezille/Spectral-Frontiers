@@ -19,11 +19,9 @@ public class BattleVictoryManager {
 
     // Called by BattleManager
     public void EnterBattleStepVictory() {
-        battleManager.victoryHUD.SetActiveWithAnimation(true);
     }
 
     // Called by BattleManager
     public void LeaveBattleStepVictory() {
-        battleManager.victoryHUD.SetActiveWithAnimation(false);
     }
 }
