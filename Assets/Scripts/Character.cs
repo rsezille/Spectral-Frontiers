@@ -14,7 +14,7 @@ namespace SF {
         private string overloadedName;
         public string characterName {
             get {
-                if (String.IsNullOrEmpty(overloadedName)) {
+                if (string.IsNullOrEmpty(overloadedName)) {
                     return template.characterName;
                 }
 
