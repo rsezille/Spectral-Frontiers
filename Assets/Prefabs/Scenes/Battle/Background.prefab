@@ -86,7 +86,7 @@ MonoBehaviour:
     off1: {r: 0.8469425, g: 0.8584906, b: 0.10123708, a: 0}
     off2: {r: 0, g: 0, b: 0, a: 0}
     type: 1
-  missionToLoad: {fileID: 0}
+  missionToLoad: {fileID: 11400000, guid: 68f1ff2b65824f24a98b59c7eb37bead, type: 2}
   gradientMaterial: {fileID: 2100000, guid: bf580572eafe9814aa08b1faecacfbe8, type: 2}
   horizontalGradientMaterial: {fileID: 2100000, guid: d82fadc873af33549963de42f545d349,
     type: 2}

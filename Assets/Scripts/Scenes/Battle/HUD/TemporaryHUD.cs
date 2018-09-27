@@ -9,7 +9,12 @@ public class TemporaryHUD : MonoBehaviour {
     public MissionVariable missionToLoad;
 
     [Header("References")]
+    public Canvas canvas;
     public Text text;
+
+    private void Awake() {
+        canvas.gameObject.SetActive(true);
+    }
 
     private void Update() {
         text.text = "Version: " + Application.version + "\n";

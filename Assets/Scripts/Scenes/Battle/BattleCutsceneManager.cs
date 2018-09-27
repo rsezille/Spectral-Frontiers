@@ -47,12 +47,13 @@ public class BattleCutsceneManager {
         this.type = type;
         instanciatedCharacters.Clear();
 
-        if (type == Type.Ending) {
-            GameObject transition = new GameObject("CutsceneTransition");
-            transition.transform.SetParent(GameManager.instance.transform);
-            transition.AddComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+        GameObject transition = new GameObject("CutsceneTransition");
+        transition.transform.SetParent(GameManager.instance.transform);
+        transition.AddComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
 
-            Image transitionImage = transition.AddComponent<Image>();
+        Image transitionImage = transition.AddComponent<Image>();
+
+        if (type == Type.Ending) {
             transitionImage.color = new Color(Color.black.r, Color.black.g, Color.black.b, 0f);
 
             transitionImage.DOColor(Color.black, Globals.ShadeInOutCutsceneTime).OnComplete(() => {
@@ -63,7 +64,11 @@ public class BattleCutsceneManager {
                 transitionImage.DOColor(new Color(Color.black.r, Color.black.g, Color.black.b, 0f), Globals.ShadeInOutCutsceneTime).OnComplete(ProcessEnterCutscene);
             });
         } else {
-            ProcessEnterCutscene();
+            skipping = true;
+
+            transitionImage.color = new Color(Color.black.r, Color.black.g, Color.black.b, 1f);
+
+            transitionImage.DOColor(new Color(Color.black.r, Color.black.g, Color.black.b, 0f), 1f).OnComplete(ProcessEnterCutscene);
         }
     }
 

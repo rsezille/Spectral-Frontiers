@@ -1663,8 +1663,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 208e7ddd9eacba842a3098bed202fe4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  battleState: {fileID: 0}
-  currentFightBoardCharacter: {fileID: 0}
+  battleState: {fileID: 11400000, guid: 6f13aad577670964f9d877e5216305e0, type: 2}
+  currentFightBoardCharacter: {fileID: 11400000, guid: 9f9983d124106594bb7a73ee18100538,
+    type: 2}
   attackButton: {fileID: 1158727103934356}
   skillButton: {fileID: 1974181161813456}
   itemButton: {fileID: 1550181711399624}

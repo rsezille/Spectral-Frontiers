@@ -37,7 +37,7 @@ public class StatusHUD : MonoBehaviour {
     }
 
     private void Update() {
-        if (character != currentPartyCharacter.value) {
+        if (character != currentPartyCharacter.value && battleState.currentTurnStep == BattleState.TurnStep.Status) {
             Show(currentPartyCharacter.value);
         }
     }
