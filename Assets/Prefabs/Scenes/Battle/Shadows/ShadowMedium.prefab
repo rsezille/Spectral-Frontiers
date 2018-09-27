@@ -20,6 +20,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4655122247756686}
   - component: {fileID: 212033615980946702}
+  - component: {fileID: 114546563547070850}
+  - component: {fileID: 114098029863717314}
   m_Layer: 0
   m_Name: ShadowMedium
   m_TagString: Untagged
@@ -40,6 +42,49 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114098029863717314
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1825670107059654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 448f24eaf2dc006419c634bd9b0313fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: e56a7e44f521454478bd791dd14181b9, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114546563547070850}
+        m_MethodName: CheckOpacity
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!114 &114546563547070850
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1825670107059654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89361471573d7d04fa22923aa68c000a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sunSettings: {fileID: 11400000, guid: b0e251d186ad3624a86e3808f2da34c9, type: 2}
+  sunIntensity: {fileID: 11400000, guid: b0709e55fba0576418830d6492ad8237, type: 2}
+  nightOpacity: 0.4
+  dayOpacity: 0.7
 --- !u!212 &212033615980946702
 SpriteRenderer:
   m_ObjectHideFlags: 1

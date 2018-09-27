@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec608633dd458e848a1ceda76b027821, type: 3}
+  m_Name: Party
+  m_EditorClassIdentifier: 
+  characters:
+  - template: {fileID: 11400000, guid: 9ecfdf837ff8b6042803e282824eab22, type: 2}
+    level: 1
+    boardCharacter: {fileID: 0}
+    overloadedName: 
+    maxHP: 50
+    currentHp: 30
+    atk: 10
+    spd: 200
+  - template: {fileID: 11400000, guid: 4f154db35a4f49a4e860726d9dd5dcb5, type: 2}
+    level: 1
+    boardCharacter: {fileID: 0}
+    overloadedName: 
+    maxHP: 50
+    currentHp: 30
+    atk: 10
+    spd: 102

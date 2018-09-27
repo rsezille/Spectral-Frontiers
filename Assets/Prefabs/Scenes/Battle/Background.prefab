@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4207580639165070}
   - component: {fileID: 114943292076673702}
+  - component: {fileID: 114310838704513888}
   m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
@@ -40,6 +41,34 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114310838704513888
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1426263688442036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 448f24eaf2dc006419c634bd9b0313fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 54ddfc61d0065cb4dace1090db7f2f53, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114943292076673702}
+        m_MethodName: LoadMission
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114943292076673702
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -57,10 +86,7 @@ MonoBehaviour:
     off1: {r: 0.8469425, g: 0.8584906, b: 0.10123708, a: 0}
     off2: {r: 0, g: 0, b: 0, a: 0}
     type: 1
+  missionToLoad: {fileID: 11400000, guid: 68f1ff2b65824f24a98b59c7eb37bead, type: 2}
   gradientMaterial: {fileID: 2100000, guid: bf580572eafe9814aa08b1faecacfbe8, type: 2}
   horizontalGradientMaterial: {fileID: 2100000, guid: d82fadc873af33549963de42f545d349,
     type: 2}
-  defaultType: 1
-  defaultMain: {r: 0.43, g: 0.68, b: 0.83, a: 0}
-  defaultOff1: {r: 0.22, g: 0.36, b: 0.88, a: 0}
-  defaultOff2: {r: 1, g: 1, b: 1, a: 0}

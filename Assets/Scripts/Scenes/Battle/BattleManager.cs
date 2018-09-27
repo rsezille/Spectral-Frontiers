@@ -1,7 +1,5 @@
-﻿using DG.Tweening;
-using SF;
+﻿using SF;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /**
@@ -10,119 +8,27 @@ using UnityEngine;
  * and dispatch events and tasks to them
  */
 public class BattleManager : MonoBehaviour {
-    private static BattleManager _instance;
-
-    public enum BattleStep {
-        Cutscene, Placing, Fight, Victory
-    };
-    public enum TurnStep { // Placing: None or Status - Fight: None, Move, Attack, Skill, Item, Enemy, Status, Direction - Victory: None
-        None, Move, Attack, Skill, Item, Enemy, Status, Direction
-    };
-
-    [Header("Information")]
-    private BattleStep _currentBattleStep;
-    public BattleStep currentBattleStep {
-        get { return _currentBattleStep; }
-        set {
-            BattleStep previousBattleStep = _currentBattleStep;
-
-            switch (_currentBattleStep) {
-                case BattleStep.Placing:
-                    placing.LeaveBattleStepPlacing();
-                    break;
-                case BattleStep.Fight:
-                    fight.LeaveBattleStepFight();
-                    break;
-                case BattleStep.Victory:
-                    victory.LeaveBattleStepVictory();
-                    break;
-                case BattleStep.Cutscene:
-                    cutscene.LeaveBattleStepCutscene();
-                    break;
-            }
-
-            _currentBattleStep = value;
-
-            switch (value) {
-                case BattleStep.Placing:
-                    placing.EnterBattleStepPlacing();
-                    break;
-                case BattleStep.Fight:
-                    fight.EnterBattleStepFight();
-                    break;
-                case BattleStep.Victory:
-                    victory.EnterBattleStepVictory();
-                    break;
-                case BattleStep.Cutscene:
-                    if (previousBattleStep == BattleStep.Victory) {
-                        cutscene.EnterBattleStepCutscene(BattleCutsceneManager.Type.Ending);
-                    } else {
-                        cutscene.EnterBattleStepCutscene(BattleCutsceneManager.Type.Opening);
-                    }
-
-                    break;
-            }
-        }
-    }
-
-    private TurnStep _currentTurnStep;
-    public TurnStep currentTurnStep {
-        get { return _currentTurnStep; }
-        set {
-            if (_currentTurnStep != value) {
-                _currentTurnStep = value;
-                turnHUD.Check();
-            }
-        }
-    }
-
-    public int turn;
-
-    public RawMission mission;
-
-    // Characters
-    public List<BoardCharacter> playerCharacters;
-    public List<BoardCharacter> enemyCharacters;
-
-    [Header("Direct references")]
+    [Header("Dependencies")]
+    public BattleState battleState;
+    public BattleCharacters battleCharacters;
+    public MissionVariable missionToLoad;
     public Board board;
-    public BattleCamera battleCamera;
-    public Background background;
+    public CharacterVariable currentPartyCharacter;
+    public Party party;
+    public BoardCharacterVariable currentFightBoardCharacter;
+    public CameraPosition mainCameraPosition;
+    public IntVariable turnSpeed;
 
-    // HUD
-    public CutsceneHUD cutsceneHUD;
-    public PlacingHUD placingHUD;
-    public StatusHUD statusHUD;
-    public FightHUD fightHUD;
-    public VictoryHUD victoryHUD;
-    public PausedHUD pausedHUD;
-    public TurnHUD turnHUD;
-
-    public PlayerCharacter testPlayerCharacter; // TODO [ALPHA] Find the correct character giving the name & job
-    public FloatingText floatingText;
-
-    public SunLight sunLight;
-
-    [Header("Options")]
-    public bool waterReflection = true; // TODO [BETA] Implement it
-    public bool waterDistortion = true; // TODO [BETA] Implement it
-
-    // Events
-    public event GameManager.SFEvent OnEnterPlacing;
-    public event GameManager.SFEvent OnLeavingMarkStep;
-    public event GameManager.SFEvent OnZoomChange;
-    public event GameManager.SFEvent OnScreenChange;
-    public event GameManager.SFEvent OnSemiTransparentReset;
-    public event GameManager.SFEvent OnCheckSemiTransparent;
-    public event GameManager.SFEvent OnLightChange;
+    [Header("Events")]
+    public GameEvent screenChange;
+    public GameEvent newCharacterTurn;
+    public GameEvent loadMission;
 
     // Dedicated managers for each BattleStep
     public BattleCutsceneManager cutscene;
     public BattlePlacingManager placing;
     public BattleFightManager fight;
     public BattleVictoryManager victory;
-    
-    public List<Sequence> markedSquareAnimations = new List<Sequence>();
 
     private bool goingGameOver = false;
 
@@ -130,46 +36,29 @@ public class BattleManager : MonoBehaviour {
     private Vector2Int previousScreenResolution;
     #endif
 
-    public static BattleManager instance {
-        get {
-            if (_instance == null)
-                _instance = FindObjectOfType<BattleManager>();
-
-            return _instance;
-        }
-    }
-
     // Initialization
     private void Awake() {
-        placing = new BattlePlacingManager();
-        fight = new BattleFightManager();
-        victory = new BattleVictoryManager();
-        cutscene = new BattleCutsceneManager();
+        placing = new BattlePlacingManager(this);
+        fight = new BattleFightManager(this);
+        victory = new BattleVictoryManager(this);
+        cutscene = new BattleCutsceneManager(this);
 
-        // Disable all HUD by default
-        cutsceneHUD.gameObject.SetActive(false);
-        placingHUD.gameObject.SetActive(false);
-        statusHUD.gameObject.SetActive(false);
-        fightHUD.gameObject.SetActive(false);
-        victoryHUD.gameObject.SetActive(false);
-        pausedHUD.gameObject.SetActive(false);
-        turnHUD.gameObject.SetActive(false);
-
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         previousScreenResolution = new Vector2Int(Screen.width, Screen.height);
-        #endif
+#endif
+
+        battleState.ResetData();
+        battleCharacters.ResetData();
+        currentPartyCharacter.value = null;
+        currentFightBoardCharacter.value = null;
     }
 
     private void Start() {
         LoadMission();
 
-        battleCamera.ResetCameraSize();
-        battleCamera.SetPosition(board.width / 2, board.height / 2);
-        
-        currentTurnStep = TurnStep.None;
-        turn = 0;
+        mainCameraPosition.SetPosition(board.GetSquare(board.width / 2, board.height / 2));
 
-        currentBattleStep = BattleStep.Cutscene;
+        battleState.currentBattleStep = BattleState.BattleStep.Cutscene;
 
         Time.timeScale = PlayerOptions.GetFloat(PlayerOptions.BattleSpeed);
     }
@@ -182,151 +71,175 @@ public class BattleManager : MonoBehaviour {
             }
 
             if (Input.GetKeyDown(KeyCode.L)) {
-                GameManager.instance.DialogBox.Show(playerCharacters[0], "prologue_01");
+                GameManager.instance.DialogBox.Show(battleCharacters.player[0], "prologue_01");
             }
         #endif
-
-        if (InputManager.Pause.IsKeyDown) {
-            if (pausedHUD.gameObject.activeSelf) {
-                pausedHUD.Resume();
-            } else {
-                pausedHUD.gameObject.SetActive(true);
-                Time.timeScale = 0;
-            }
+        
+        if (InputManager.Special1.IsKeyDown) {
+            SkipCutscene();
         }
 
-        switch (currentBattleStep) {
-            case BattleStep.Cutscene:
+        switch (battleState.currentBattleStep) {
+            case BattleState.BattleStep.Cutscene:
                 cutscene.Update();
                 break;
-            case BattleStep.Placing:
+            case BattleState.BattleStep.Placing:
                 placing.Update();
                 break;
-            case BattleStep.Fight:
+            case BattleState.BattleStep.Fight:
                 fight.Update();
                 break;
-            case BattleStep.Victory:
+            case BattleState.BattleStep.Victory:
                 victory.Update();
                 break;
         }
 
-        #if UNITY_EDITOR
-            if (previousScreenResolution.x != Screen.width || previousScreenResolution.y != Screen.height) {
-                OnScreenChange?.Invoke();
-                previousScreenResolution = new Vector2Int(Screen.width, Screen.height);
-            }
-        #endif
-    }
-
-    public void EventOnEnterPlacing() {
-        OnEnterPlacing?.Invoke();
-    }
-
-    public void EventOnZoomChange() {
-        OnZoomChange?.Invoke();
-    }
-
-    public void EventOnSemiTransparentReset() {
-        OnSemiTransparentReset?.Invoke();
-        OnCheckSemiTransparent?.Invoke();
-    }
-
-    public void EventOnLeavingMarkStep() {
-        markedSquareAnimations.Clear();
-
-        OnLeavingMarkStep?.Invoke();
-    }
-
-    public void EventOnLightChange() {
-        OnLightChange?.Invoke();
+#if UNITY_EDITOR
+        if (previousScreenResolution.x != Screen.width || previousScreenResolution.y != Screen.height) {
+            screenChange.Raise();
+            previousScreenResolution = new Vector2Int(Screen.width, Screen.height);
+        }
+#endif
     }
 
     public void LoadMission() {
-        mission = GameManager.instance.GetMissionToLoad();
-        board.LoadMap(mission);
-        background.Load(mission.background);
-        sunLight.Load(mission.lighting);
+        board.LoadMap(missionToLoad);
+        loadMission.Raise();
     }
 
-    /**
-     * Common to Placing and Fight steps
-     */
-    public void EnterTurnStepStatus() {
-        if (currentTurnStep != TurnStep.Status) {
-            TurnStep previousTurnStep = currentTurnStep;
-
-            currentTurnStep = TurnStep.Status;
-
-            switch (currentBattleStep) {
-                case BattleStep.Placing:
-                    placing.EnterTurnStepStatus(previousTurnStep);
-                    break;
-                case BattleStep.Fight:
-                    fight.EnterTurnStepStatus(previousTurnStep);
-                    break;
-            }
-        }
+    public void EndTurn() {
+        fight.NewTurn();
     }
 
-    /**
-     * Common to Placing, Fight and Victory steps
-     */
-    public void EnterTurnStepNone() {
-        if (currentTurnStep != TurnStep.None) {
-            TurnStep previousTurnStep = currentTurnStep;
-
-            currentTurnStep = TurnStep.None;
-
-            switch (currentBattleStep) {
-                case BattleStep.Placing:
-                    placing.EnterTurnStepNone(previousTurnStep);
-                    break;
-                case BattleStep.Fight:
-                    fight.EnterTurnStepNone(previousTurnStep);
-                    break;
-                case BattleStep.Victory:
-                    victory.EnterTurnStepNone(previousTurnStep);
-                    break;
-            }
-        }
+    public void SkipCutscene() {
+        cutscene.SkipCutscene();
     }
 
     /**
      * Return true if the battle has ended
      */
-    public bool CheckEndBattle() {
-        if (currentBattleStep != BattleStep.Fight) {
-            return false;
+    public void CheckEndBattle() {
+        if (battleState.currentBattleStep != BattleState.BattleStep.Fight) {
+            //return false;
         }
 
         if (goingGameOver) {
-            return true;
+            //return true;
         }
 
-        if (playerCharacters.Count > 0 && enemyCharacters.Count == 0) { // The player wins
-            currentBattleStep = BattleStep.Victory;
+        if (battleCharacters.player.Count > 0 && battleCharacters.enemy.Count == 0) { // The player wins
+            battleState.currentBattleStep = BattleState.BattleStep.Victory;
 
-            return true;
-        } else if (playerCharacters.Count == 0 && enemyCharacters.Count > 0) { // The enemy wins
+            //return true;
+        } else if (battleCharacters.player.Count == 0 && battleCharacters.enemy.Count > 0) { // The enemy wins
             goingGameOver = true;
             StartCoroutine(WaitGameOver());
 
-            return true;
-        } else if (playerCharacters.Count == 0 && enemyCharacters.Count == 0) { // No allied and enemy chars alive, enemy wins
+            //return true;
+        } else if (battleCharacters.player.Count == 0 && battleCharacters.enemy.Count == 0) { // No allied and enemy chars alive, enemy wins
             goingGameOver = true;
             StartCoroutine(WaitGameOver());
 
-            return true;
+            //return true;
         }
 
-        return false;
+        //return false;
     }
 
     private IEnumerator WaitGameOver() {
-        markedSquareAnimations.Clear();
+        board.markedSquareAnimations.Clear();
 
         yield return new WaitForSeconds(1f);
 
         GameManager.instance.LoadSceneAsync(Scenes.GameOver);
+    }
+
+    public void OnEnterBattleStepEvent(BattleState.BattleStep battleStep) {
+        switch (battleStep) {
+            case BattleState.BattleStep.Placing:
+                placing.EnterBattleStepPlacing();
+                break;
+            case BattleState.BattleStep.Fight:
+                fight.EnterBattleStepFight();
+                break;
+            case BattleState.BattleStep.Victory:
+                break;
+            case BattleState.BattleStep.Cutscene:
+                if (battleState.previousBattleStep == BattleState.BattleStep.Victory) {
+                    cutscene.EnterBattleStepCutscene(BattleCutsceneManager.Type.Ending);
+                } else {
+                    cutscene.EnterBattleStepCutscene(BattleCutsceneManager.Type.Opening);
+                }
+
+                break;
+        }
+    }
+
+    public void OnLeaveBattleStepEvent(BattleState.BattleStep battleStep) {
+        switch (battleStep) {
+            case BattleState.BattleStep.Placing:
+                board.RemoveAllMarks();
+
+                // Disable outlines from the placing step
+                if (currentPartyCharacter.value.boardCharacter != null) {
+                    currentPartyCharacter.value.boardCharacter.glow.Disable();
+                }
+                break;
+            case BattleState.BattleStep.Fight:
+                if (currentFightBoardCharacter.value.glow != null) {
+                    currentFightBoardCharacter.value.glow.Disable();
+                }
+
+                board.RemoveAllMarks();
+                break;
+            case BattleState.BattleStep.Victory:
+                break;
+            case BattleState.BattleStep.Cutscene:
+                cutscene.LeaveBattleStepCutscene();
+                break;
+        }
+    }
+
+    public void OnEnterTurnStepEvent(BattleState.TurnStep turnStep) {
+        switch (turnStep) {
+            case BattleState.TurnStep.Move:
+                board.MarkSquares(
+                    currentFightBoardCharacter.value.GetSquare(),
+                    currentFightBoardCharacter.value.movementPoints,
+                    Square.MarkType.Movement,
+                    currentFightBoardCharacter.value.side.value
+                );
+                break;
+            case BattleState.TurnStep.Attack:
+                board.MarkSquares(
+                    currentFightBoardCharacter.value.GetSquare(),
+                    1,
+                    Square.MarkType.Attack,
+                    currentFightBoardCharacter.value.side.value,
+                    true
+                ); // TODO [ALPHA] weapon range
+                break;
+            case BattleState.TurnStep.Direction:
+                GameObject arrowsPrefab = Resources.Load<GameObject>("Arrows");
+
+                fight.arrows = Object.Instantiate(arrowsPrefab, currentFightBoardCharacter.value.transform.position + new Vector3(arrowsPrefab.transform.position.x, arrowsPrefab.transform.position.y), Quaternion.identity);
+                break;
+        }
+    }
+
+    public void OnLeaveTurnStepEvent(BattleState.TurnStep turnStep) {
+        switch (turnStep) {
+            case BattleState.TurnStep.Move:
+            case BattleState.TurnStep.Attack:
+                board.RemoveAllMarks();
+                break;
+            case BattleState.TurnStep.Direction:
+                if (fight.arrows != null) {
+                    Object.Destroy(fight.arrows);
+                    fight.arrows = null;
+                }
+
+                break;
+        }
     }
 }

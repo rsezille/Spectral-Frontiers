@@ -9,6 +9,10 @@ using UnityEngine.SceneManagement;
 public class Loader : MonoBehaviour {
     public GameObject gameManager;
 
+    [Header("Dependencies")]
+    public MissionVariable missionToLoad;
+    public Mission testingMission;
+
     // Initialization
     private void Awake() {
         if (GameManager.instance == null) {
@@ -33,7 +37,7 @@ public class Loader : MonoBehaviour {
                     break;
                 case Scenes.Battle:
                     Debug.Log("First scene: Battle");
-                    GameManager.instance.missionToLoad = "story_01";
+                    missionToLoad.value = testingMission;
                     break;
             }
 #endif

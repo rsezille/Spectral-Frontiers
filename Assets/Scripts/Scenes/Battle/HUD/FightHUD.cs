@@ -5,12 +5,19 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class FightHUD : MonoBehaviour {
-    private BattleManager battleManager;
+    private Text currentSquareText;
 
+    [Header("Dependencies")]
+    public BoardCharacterVariable currentFightBoardCharacter;
+    public BattleState battleState;
+
+    [Header("Events")]
+    public GameEvent endTurn;
+
+    [Header("References")]
+    public Canvas canvas;
     public GameObject moveButton;
     public GameObject actionButton;
-    public GameObject previousButton;
-    public GameObject nextButton;
     public GameObject statusButton;
     public GameObject directionButton;
     public GameObject endTurnButton;
@@ -24,34 +31,104 @@ public class FightHUD : MonoBehaviour {
     private bool isGoingEnabled = false;
 
     private void Awake() {
-        battleManager = BattleManager.instance;
+        currentSquareText = currentSquare.GetComponentInChildren<Text>();
+
+        canvas.gameObject.SetActive(false);
     }
 
     private void Start() {
-        moveButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Move);
-        actionButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Action);
-        previousButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Previous);
-        nextButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Next);
-        statusButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Status);
-        directionButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.Direction);
-        endTurnButton.AddListener(EventTriggerType.PointerClick, battleManager.fight.EndTurn);
+        moveButton.AddListener(EventTriggerType.PointerClick, Move);
+        actionButton.AddListener(EventTriggerType.PointerClick, Action);
+        statusButton.AddListener(EventTriggerType.PointerClick, Status);
+        directionButton.AddListener(EventTriggerType.PointerClick, Direction);
+        endTurnButton.AddListener(EventTriggerType.PointerClick, EndTurn);
     }
 
-    // Compute all checks on buttons availability
-    public void Refresh() {
-        if (battleManager.fight.selectedPlayerCharacter == null) return;
+    private void Update() {
+        if (currentFightBoardCharacter.value != null) {
+            currentSquareText.text =
+                currentFightBoardCharacter.value.character.characterName +
+                "\n" + currentFightBoardCharacter.value.character.currentHp + "/" + currentFightBoardCharacter.value.character.maxHP + " HP";
 
-        Movable movable = battleManager.fight.selectedPlayerCharacter.GetComponent<Movable>();
-        moveButton.GetComponent<Button>().interactable = movable != null && movable.CanMove();
+            moveButton.GetComponent<Button>().interactable = currentFightBoardCharacter.value.CanMove();
 
-        Actionable actionable = battleManager.fight.selectedPlayerCharacter.GetComponent<Actionable>();
-        actionButton.GetComponent<Button>().interactable = actionable != null && actionable.CanDoAction();
-        actionMenu.Refresh();
+            actionButton.GetComponent<Button>().interactable = currentFightBoardCharacter.value.CanDoAction();
+            actionMenu.Refresh();
 
-        previousButton.GetComponent<Button>().interactable = true; //TODO [ALPHA] if no other character available, disable it
-        nextButton.GetComponent<Button>().interactable = true; //TODO [ALPHA] if no other character available, disable it
-        statusButton.GetComponent<Button>().interactable = true;
-        endTurnButton.GetComponent<Button>().interactable = true;
+            statusButton.GetComponent<Button>().interactable = true;
+            endTurnButton.GetComponent<Button>().interactable = true;
+        } else {
+            currentSquareText.text = "No currently selected character";
+        }
+    }
+
+    public void OnEnterBattleStepEvent(BattleState.BattleStep battleStep) {
+        if (battleStep == BattleState.BattleStep.Fight) {
+            SetActiveWithAnimation(true);
+        }
+    }
+
+    public void OnLeaveBattleStepEvent(BattleState.BattleStep battleStep) {
+        if (battleStep == BattleState.BattleStep.Fight) {
+            SetActiveWithAnimation(false);
+        }
+    }
+
+    public void OnEnterTurnStepEvent(BattleState.TurnStep turnStep) {
+        if (battleState.currentBattleStep == BattleState.BattleStep.Fight) {
+            if (turnStep == BattleState.TurnStep.Status || turnStep == BattleState.TurnStep.Direction) {
+                SetActiveWithAnimation(false);
+            }
+        }
+    }
+
+    public void OnLeaveTurnStepEvent(BattleState.TurnStep turnStep) {
+        if (battleState.currentBattleStep == BattleState.BattleStep.Fight) {
+            if (turnStep == BattleState.TurnStep.Status || turnStep == BattleState.TurnStep.Direction) {
+                SetActiveWithAnimation(true);
+            }
+        }
+    }
+
+    private void Move() {
+        if (battleState.currentTurnStep == BattleState.TurnStep.Move) {
+            battleState.currentTurnStep = BattleState.TurnStep.None;
+        } else {
+            if (currentFightBoardCharacter.value.CanMove()) {
+                battleState.currentTurnStep = BattleState.TurnStep.Move;
+            }
+
+            actionMenu.SetActiveWithAnimation(false);
+        }
+    }
+
+    private void Action() {
+        battleState.currentTurnStep = BattleState.TurnStep.None;
+
+        if (currentFightBoardCharacter.value.CanDoAction()) {
+            actionMenu.Toggle();
+        }
+    }
+
+    private void Status() {
+        battleState.currentTurnStep = BattleState.TurnStep.Status;
+    }
+
+    private void Direction() {
+        battleState.currentTurnStep = BattleState.TurnStep.Direction;
+    }
+    
+    public void EndTurn() {
+        actionMenu.SetActiveWithAnimation(false);
+        // TODO [ALPHA] FlashMessage
+        // TODO [ALPHA] Disable inputs
+
+        /*if (currentFightBoardCharacter.value.glow != null) {
+            currentFightBoardCharacter.value.glow.Disable();
+        }*/
+
+        //EnterTurnStepEnemy();
+        endTurn.Raise();
     }
 
     public void SetActiveWithAnimation(bool active, HUD.Speed speed = HUD.Speed.Normal) {
@@ -59,7 +136,7 @@ public class FightHUD : MonoBehaviour {
 
         if (active) {
             isGoingEnabled = true;
-            gameObject.SetActive(true);
+            canvas.gameObject.SetActive(true);
 
             fightMenu.anchoredPosition3D = new Vector3(fightMenu.anchoredPosition3D.x, -120f, fightMenu.anchoredPosition3D.z);
             fightMenu.DOAnchorPos3D(new Vector3(fightMenu.anchoredPosition3D.x, fightMenu.sizeDelta.y / 2f, fightMenu.anchoredPosition3D.z), fSpeed).SetEase(Ease.OutCubic);
@@ -70,7 +147,7 @@ public class FightHUD : MonoBehaviour {
             selectedSquare.anchoredPosition3D = new Vector3(selectedSquare.anchoredPosition3D.x, -120f, selectedSquare.anchoredPosition3D.z);
             selectedSquare.DOAnchorPos3D(new Vector3(selectedSquare.anchoredPosition3D.x, selectedSquare.sizeDelta.y / 2f, selectedSquare.anchoredPosition3D.z), fSpeed).SetEase(Ease.OutCubic);
         } else {
-            if (!gameObject.activeSelf) return;
+            if (!canvas.gameObject.activeSelf) return;
 
             actionMenu.SetActiveWithAnimation(false);
 
@@ -85,7 +162,7 @@ public class FightHUD : MonoBehaviour {
     private void DisableGameObject() {
         if (isGoingEnabled) return;
 
-        gameObject.SetActive(false);
+        canvas.gameObject.SetActive(false);
     }
 
     public void SquareHovered(Square square) {
@@ -103,25 +180,13 @@ public class FightHUD : MonoBehaviour {
                 BoardCharacter boardCharacter = square.boardEntity.GetComponent<BoardCharacter>();
 
                 if (boardCharacter != null) {
-                    selectedSquareText.text += "\nCharacter: " + boardCharacter.character.name + " (" + boardCharacter.character.GetCurrentHP() + "/" + boardCharacter.character.GetMaxHP() + ")";
+                    selectedSquareText.text += "\nCharacter: " + boardCharacter.character.characterName + " (" + boardCharacter.character.currentHp + "/" + boardCharacter.character.maxHP + ")";
                 } else {
                     selectedSquareText.text += "\nCharacter: none";
                 }
             } else {
                 selectedSquareText.text += "\nCharacter: none";
             }
-        }
-    }
-
-    public void UpdateSelectedSquare() {
-        Text currentSquareText = currentSquare.GetComponentInChildren<Text>();
-
-        if (battleManager.fight.selectedPlayerCharacter != null) {
-            currentSquareText.text =
-                battleManager.fight.selectedPlayerCharacter.character.name +
-                "\n" + battleManager.fight.selectedPlayerCharacter.character.GetCurrentHP() + "/" + battleManager.fight.selectedPlayerCharacter.character.GetMaxHP() + " HP";
-        } else {
-            currentSquareText.text = "No currently selected character";
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using SF;
+using System.Collections;
 using UnityEngine;
 
 /**
@@ -11,14 +12,17 @@ public class AI : MonoBehaviour {
         Aggressive, // Always try to be in range and attack
         Passive // Only attack when a player character is in range + movements
     }
-
-    private BattleManager battleManager;
+    
     private BoardCharacter boardCharacter;
 
+    [Header("Dependencies")]
+    public BattleCharacters battleCharacters;
+    public Board board;
+
+    [Header("Data")]
     public Preset preset = Preset.Aggressive;
 
     private void Awake() {
-        battleManager = BattleManager.instance;
         boardCharacter = GetComponent<BoardCharacter>();
     }
 
@@ -65,12 +69,12 @@ public class AI : MonoBehaviour {
     private bool Action() {
         bool attacked = false;
 
-        while (boardCharacter.actionable.CanDoAction()) {
+        while (boardCharacter.CanDoAction()) {
             BoardCharacter target = null;
 
-            foreach (BoardCharacter playerCharacter in battleManager.playerCharacters) {
+            foreach (BoardCharacter playerCharacter in battleCharacters.player) {
                 if (playerCharacter.GetSquare().GetManhattanDistance(boardCharacter.GetSquare()) == 1) {
-                    if (target == null || target.character.GetCurrentHP() > playerCharacter.character.GetCurrentHP()) {
+                    if (target == null || target.character.currentHp > playerCharacter.character.currentHp) {
                         target = playerCharacter;
                     }
                 }
@@ -95,34 +99,34 @@ public class AI : MonoBehaviour {
         Path bestPath = null;
         int lowestCharHP = 0;
 
-        foreach (BoardCharacter playerCharacter in battleManager.playerCharacters) {
-            Path p = battleManager.board.pathFinder.FindPath(
+        foreach (BoardCharacter playerCharacter in battleCharacters.player) {
+            Path p = board.pathFinder.FindPath(
                 boardCharacter.GetSquare().x,
                 boardCharacter.GetSquare().y,
                 playerCharacter.GetSquare().x,
                 playerCharacter.GetSquare().y,
                 boardCharacter.side.value,
-                boardCharacter.character.movementPoints
+                boardCharacter.movementPoints
             );
 
             if (p != null) {
                 if (bestPath == null) {
                     bestPath = p;
-                    lowestCharHP = playerCharacter.character.GetCurrentHP();
+                    lowestCharHP = playerCharacter.character.currentHp;
                 } else {
-                    if (p.GetLength() > boardCharacter.character.movementPoints + 1) {
+                    if (p.GetLength() > boardCharacter.movementPoints + 1) {
                         if (p.GetLength() < bestPath.GetLength()) {
                             bestPath = p;
-                            lowestCharHP = playerCharacter.character.GetCurrentHP();
+                            lowestCharHP = playerCharacter.character.currentHp;
                         }
                     } else {
-                        if (bestPath.GetLength() > boardCharacter.character.movementPoints + 1) {
+                        if (bestPath.GetLength() > boardCharacter.movementPoints + 1) {
                             bestPath = p;
-                            lowestCharHP = playerCharacter.character.GetCurrentHP();
+                            lowestCharHP = playerCharacter.character.currentHp;
                         } else {
-                            if (playerCharacter.character.GetCurrentHP() < lowestCharHP) {
+                            if (playerCharacter.character.currentHp < lowestCharHP) {
                                 bestPath = p;
-                                lowestCharHP = playerCharacter.character.GetCurrentHP();
+                                lowestCharHP = playerCharacter.character.currentHp;
                             }
                         }
                     }

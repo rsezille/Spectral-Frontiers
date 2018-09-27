@@ -8,13 +8,17 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class BattleCutsceneManager {
+    public enum ActionType {
+        Wait, Show, Move, Dialogbox, Camera, Direction
+    }
+
     public enum Type {
         Opening, Ending
     }
 
-    private BattleManager battleManager; // Shortcut for BattleManager.instance
+    private BattleManager battleManager;
 
-    private RawMission.Action[] actions;
+    private Mission.CutsceneAction[] actions;
     private Type type;
     private List<BoardCharacter> instanciatedCharacters = new List<BoardCharacter>();
 
@@ -22,19 +26,15 @@ public class BattleCutsceneManager {
 
     private bool skipping = false;
 
-    public BattleCutsceneManager() {
-        battleManager = BattleManager.instance;
+    public BattleCutsceneManager(BattleManager battleManager) {
+        this.battleManager = battleManager;
     }
 
     // Called by BattleManager
-    public void Update() {
-        if (InputManager.Special1.IsKeyDown) {
-            SkipCutscene();
-        }
-    }
+    public void Update() { }
 
     public void SkipCutscene() {
-        if (skipping || battleManager.currentBattleStep != BattleManager.BattleStep.Cutscene) return;
+        if (skipping || battleManager.battleState.currentBattleStep != BattleState.BattleStep.Cutscene) return;
 
         skipping = true;
 
@@ -51,23 +51,28 @@ public class BattleCutsceneManager {
         this.type = type;
         instanciatedCharacters.Clear();
 
-        if (type == Type.Ending) {
-            GameObject transition = new GameObject("CutsceneTransition");
-            transition.transform.SetParent(GameManager.instance.transform);
-            transition.AddComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+        GameObject transition = new GameObject("CutsceneTransition");
+        transition.transform.SetParent(GameManager.instance.transform);
+        transition.AddComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
 
-            Image transitionImage = transition.AddComponent<Image>();
+        Image transitionImage = transition.AddComponent<Image>();
+
+        if (type == Type.Ending) {
             transitionImage.color = new Color(Color.black.r, Color.black.g, Color.black.b, 0f);
 
-            transitionImage.DOColor(Color.black, 0.5f).OnComplete(() => {
-                foreach (BoardCharacter playerCharacter in battleManager.playerCharacters) {
+            transitionImage.DOColor(Color.black, Globals.ShadeInOutCutsceneTime).OnComplete(() => {
+                foreach (BoardCharacter playerCharacter in battleManager.battleCharacters.player) {
                     playerCharacter.Remove();
                 }
                 
-                transitionImage.DOColor(new Color(Color.black.r, Color.black.g, Color.black.b, 0f), 0.5f).OnComplete(ProcessEnterCutscene);
+                transitionImage.DOColor(new Color(Color.black.r, Color.black.g, Color.black.b, 0f), Globals.ShadeInOutCutsceneTime).OnComplete(ProcessEnterCutscene);
             });
         } else {
-            ProcessEnterCutscene();
+            skipping = true;
+
+            transitionImage.color = new Color(Color.black.r, Color.black.g, Color.black.b, 1f);
+
+            transitionImage.DOColor(new Color(Color.black.r, Color.black.g, Color.black.b, 0f), 1f).OnComplete(ProcessEnterCutscene);
         }
     }
 
@@ -78,15 +83,12 @@ public class BattleCutsceneManager {
         }
 
         instanciatedCharacters.Clear();
-
-        battleManager.cutsceneHUD.gameObject.SetActive(false);
     }
 
     private void ProcessEnterCutscene() {
         skipping = false;
-        battleManager.cutsceneHUD.gameObject.SetActive(true);
 
-        actions = type == Type.Opening ? battleManager.mission.openingCutscene : battleManager.mission.endingCutscene;
+        actions = type == Type.Opening ? battleManager.missionToLoad.value.openingCutscene : battleManager.missionToLoad.value.endingCutscene;
 
         if (actions.Length > 0) {
             cutsceneCoroutine = battleManager.StartCoroutine(ProcessCutscene());
@@ -96,7 +98,7 @@ public class BattleCutsceneManager {
     }
 
     private IEnumerator ProcessCutscene() {
-        foreach (RawMission.Action action in actions) {
+        foreach (Mission.CutsceneAction action in actions) {
             yield return ProcessAction(action);
         }
 
@@ -115,7 +117,7 @@ public class BattleCutsceneManager {
             transitionImage.color = new Color(Color.black.r, Color.black.g, Color.black.b, 0f);
 
             transitionImage.DOColor(Color.black, 0.5f).OnComplete(() => {
-                battleManager.currentBattleStep = BattleManager.BattleStep.Placing;
+                battleManager.battleState.currentBattleStep = BattleState.BattleStep.Placing;
 
                 transitionImage.DOColor(new Color(Color.black.r, Color.black.g, Color.black.b, 0f), 0.5f).OnComplete(() => {
                     Object.Destroy(transition);
@@ -126,7 +128,7 @@ public class BattleCutsceneManager {
         }
     }
 
-    private IEnumerator ProcessAction(RawMission.Action action) {
+    private IEnumerator ProcessAction(Mission.CutsceneAction action) {
         NameValueCollection args = new NameValueCollection();
 
         foreach (string arg in action.args) {
@@ -136,22 +138,22 @@ public class BattleCutsceneManager {
         }
 
         switch (action.type) {
-            case "wait":
+            case ActionType.Wait:
                 yield return ActionWait(args);
                 break;
-            case "show":
+            case ActionType.Show:
                 yield return ActionShow(args);
                 break;
-            case "move":
+            case ActionType.Move:
                 yield return ActionMove(args);
                 break;
-            case "dialogbox":
+            case ActionType.Dialogbox:
                 yield return ActionDialogbox(args);
                 break;
-            case "camera":
+            case ActionType.Camera:
                 yield return ActionCamera(args);
                 break;
-            case "direction":
+            case ActionType.Direction:
                 yield return ActionDirection(args);
                 break;
             default:
@@ -198,19 +200,15 @@ public class BattleCutsceneManager {
                 break;
         }
 
-        BoardCharacter boardCharacterPrefab = Resources.Load<BoardCharacter>("CutsceneBoardCharacter");
-        boardCharacterPrefab.enemyOrNeutralSpritePrefab = Resources.Load<GameObject>("CharacterSprites/" + sprite);
-
-        float squareHeight = (float)battleManager.board.GetSquare(parsedX, parsedY).Height / Globals.TileHeight;
+        BoardCharacter boardCharacterPrefab = Resources.Load<BoardCharacter>("BoardCharacter");
 
         BoardCharacter boardCharacter = Object.Instantiate(boardCharacterPrefab, BoardUtil.CoordToWorldPosition(fromX, fromY, battleManager.board.GetSquare(parsedX, parsedY).GetWorldHeight()), Quaternion.identity);
-        boardCharacter.character = new Character(name);
         boardCharacter.direction = direction;
         boardCharacter.sprite.color = new Color(boardCharacter.sprite.color.r, boardCharacter.sprite.color.g, boardCharacter.sprite.color.b, 0f);
         boardCharacter.sprite.DOColor(new Color(boardCharacter.sprite.color.r, boardCharacter.sprite.color.g, boardCharacter.sprite.color.b, 1f), 1f);
 
         if (boardCharacter.shadow != null) {
-            boardCharacter.shadow.Show(1f);
+            boardCharacter.shadow.ShowCutscene(1f);
         }
 
         Tween move = boardCharacter.transform.DOMove(BoardUtil.CoordToWorldPosition(battleManager.board.GetSquare(parsedX, parsedY)), 1f).SetEase(Ease.Linear).OnComplete(() => {
@@ -263,10 +261,10 @@ public class BattleCutsceneManager {
         string characterIndex = args["charIndex"] ?? "0";
 
         if (target == "square") {
-            yield return battleManager.battleCamera.SetPosition(int.Parse(x), int.Parse(y), true).WaitForCompletion();
+            yield return battleManager.mainCameraPosition.SetPosition(battleManager.board.GetSquare(int.Parse(x), int.Parse(y)), true).WaitForCompletion();
         } else if (target == "character") {
             if (int.Parse(characterIndex) < instanciatedCharacters.Count) {
-                yield return battleManager.battleCamera.SetPosition(instanciatedCharacters[int.Parse(characterIndex)], true).WaitForCompletion();
+                yield return battleManager.mainCameraPosition.SetPosition(instanciatedCharacters[int.Parse(characterIndex)], true).WaitForCompletion();
             }
         }
 

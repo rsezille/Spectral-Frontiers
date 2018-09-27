@@ -1,9 +1,31 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
-public class CutsceneHUD : MonoBehaviour {
-    public GameObject skipButton;
+namespace SF {
+    public class CutsceneHUD : MonoBehaviour {
+        [Header("Direct references")]
+        public Canvas canvas;
 
-    private void Start() {
-        skipButton.AddListener(UnityEngine.EventSystems.EventTriggerType.PointerClick, BattleManager.instance.cutscene.SkipCutscene);
+        private void Awake() {
+            canvas.gameObject.SetActive(false);
+        }
+
+        public void OnEnterBattleStepEvent(BattleState.BattleStep battleStep) {
+            if (battleStep == BattleState.BattleStep.Cutscene) {
+                StartCoroutine(WaitForShadeIn());
+            }
+        }
+
+        public void OnLeaveBattleStepEvent(BattleState.BattleStep battleStep) {
+            if (battleStep == BattleState.BattleStep.Cutscene) {
+                canvas.gameObject.SetActive(false);
+            }
+        }
+
+        private IEnumerator WaitForShadeIn() {
+            yield return new WaitForSeconds(Globals.ShadeInOutCutsceneTime);
+
+            canvas.gameObject.SetActive(true);
+        }
     }
 }

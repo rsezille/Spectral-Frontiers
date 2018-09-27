@@ -26,12 +26,14 @@ public class DialogBox : MonoBehaviour, IWaitForCustom {
         Top, Bottom
     };
 
-    private GameManager gameManager; // Shortcut
-
     private DialogPreset[] presets; // 0 is the default one
     private BoardCharacter attachedCharacter;
     private DialogStyle dialogStyle;
 
+    [Header("Dependencies")]
+    public StringVariable playerName;
+
+    [Header("Data")]
     public TextSpeed textSpeed;
     public Color playerTagColor = new Color(0f, 0.5f, 1f);
     public Color specialTagColor = Color.red;
@@ -42,8 +44,6 @@ public class DialogBox : MonoBehaviour, IWaitForCustom {
     private string parsedText = "";
 
     private void Awake() {
-        gameManager = GameManager.instance;
-
         textSpeed = EnumUtil.ParseEnum(PlayerOptions.GetString(PlayerOptions.TextSpeed), TextSpeed.Fast);
 
         presets = GetComponentsInChildren<DialogPreset>();
@@ -85,14 +85,14 @@ public class DialogBox : MonoBehaviour, IWaitForCustom {
                 // The <alpha> tag is erased by the <color> tag, that's why we re-put it after </color>
                 if (alphaSymbol != -1) {
                     tmpText = tmpText.Remove(m.Index, m.Value.Length).Insert(m.Index,
-                        "<color=#" + ColorUtility.ToHtmlStringRGB(playerTagColor) + ">" + gameManager.player.playerName.Substring(0, alphaSymbol) + "</color>"
-                        + "<alpha=#00>" + gameManager.player.playerName.Substring(alphaSymbol)
+                        "<color=#" + ColorUtility.ToHtmlStringRGB(playerTagColor) + ">" + playerName.value.Substring(0, alphaSymbol) + "</color>"
+                        + "<alpha=#00>" + playerName.value.Substring(alphaSymbol)
                     );
                 } else {
                     if (countLetters < m.Index) { // If the alpha symbol is before, meaning that the tag is hidden, no need to put colors
-                        tmpText = tmpText.Remove(m.Index, m.Value.Length).Insert(m.Index, gameManager.player.playerName);
+                        tmpText = tmpText.Remove(m.Index, m.Value.Length).Insert(m.Index, playerName.value);
                     } else { // Otherwise if the alpha symbol is after, we need to set the color
-                        tmpText = tmpText.Remove(m.Index, m.Value.Length).Insert(m.Index, "<color=#" + ColorUtility.ToHtmlStringRGB(playerTagColor) + ">" + gameManager.player.playerName + "</color>");
+                        tmpText = tmpText.Remove(m.Index, m.Value.Length).Insert(m.Index, "<color=#" + ColorUtility.ToHtmlStringRGB(playerTagColor) + ">" + playerName.value + "</color>");
                     }
                 }
 
@@ -180,7 +180,7 @@ public class DialogBox : MonoBehaviour, IWaitForCustom {
             return null;
         }
 
-        PreShow(dialogId, presetIndex, boardCharacter.character.name);
+        PreShow(dialogId, presetIndex, boardCharacter.character.characterName);
         attachedCharacter = boardCharacter;
         dialogStyle = style;
 
@@ -229,7 +229,7 @@ public class DialogBox : MonoBehaviour, IWaitForCustom {
             currentShownPreset.nameImage.gameObject.SetActive(false);
         }
 
-        parsedText = LanguageManager.instance.GetDialog(dialogId).Replace("[player_name]", "".PadLeft(gameManager.player.playerName.Length, '£'));
+        parsedText = LanguageManager.instance.GetDialog(dialogId).Replace("[player_name]", "".PadLeft(playerName.value.Length, '£'));
         currentShownPreset.textMesh.SetText("");
     }
 

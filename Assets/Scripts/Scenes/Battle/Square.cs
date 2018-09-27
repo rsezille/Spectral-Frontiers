@@ -5,12 +5,23 @@ using UnityEngine.Rendering;
 
 [RequireComponent(typeof(SortingGroup))]
 public class Square : MonoBehaviour {
-    private BattleManager battleManager;
-
     public enum MarkType {
         None, Movement, Attack, Skill, Item, Placing
     };
 
+    [Header("Dependencies")]
+    public BattleState battleState;
+    public Board board;
+    public BoardCharacterVariable currentFightBoardCharacter;
+    public CharacterVariable currentPartyCharacter;
+    public BattleCharacters battleCharacters;
+    public MissionVariable missionToLoad;
+
+    [Header("Events")]
+    public SquareEvent hoverSquare;
+    public GameEvent checkSemiTransparent;
+
+    [Header("Data")]
     // Positionning
     public int x; // X coordinate of the tile inside the board
     public int y; // Y coordinate of the tile inside the board
@@ -51,7 +62,7 @@ public class Square : MonoBehaviour {
                     .Append(tileSelector.DOFade(0.55f, 0.8f).SetEase(Ease.Linear))
                     .Append(tileSelector.DOFade(maxAlpha, 0.8f).SetEase(Ease.Linear))
                     .SetLoops(-1);
-                battleManager.markedSquareAnimations.Add(colorAnimation);
+                board.markedSquareAnimations.Add(colorAnimation);
             } else {
                 if (colorAnimation != null) {
                     colorAnimation.Kill();
@@ -69,23 +80,18 @@ public class Square : MonoBehaviour {
     private EntityContainer _entityContainer;
 
     private void Awake() {
-        battleManager = BattleManager.instance;
-
         sortingGroup = GetComponent<SortingGroup>();
 
         tileSelector.color = defaultColor;
-
-        battleManager.OnEnterPlacing += OnEnterPlacing;
-        battleManager.OnLeavingMarkStep += OnLeavingMarkStep;
     }
 
-    private void OnEnterPlacing() {
+    public void RefreshMark() {
         if (markType != MarkType.None) {
             PlayColorAnimation();
         }
     }
 
-    private void OnLeavingMarkStep() {
+    public void RemoveMark() {
         if (colorAnimation != null) {
             colorAnimation.Kill();
             colorAnimation = null;
@@ -100,21 +106,21 @@ public class Square : MonoBehaviour {
      * Triggered by Board (TileSelector)
      */
     public void MouseEnter() {
-        if (battleManager.currentBattleStep == BattleManager.BattleStep.Cutscene) return;
+        if (battleState.currentBattleStep == BattleState.BattleStep.Cutscene) return;
 
         if (colorAnimation != null) {
             colorAnimation.Pause();
-            battleManager.markedSquareAnimations.Remove(colorAnimation);
+            board.markedSquareAnimations.Remove(colorAnimation);
         }
 
-        battleManager.fightHUD.SquareHovered(this);
+        hoverSquare.Raise(this);
         tileSelector.color = overingColor;
 
-        if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing && markType == MarkType.Placing) {
+        if (battleState.currentBattleStep == BattleState.BattleStep.Placing && markType == MarkType.Placing) {
             tileSelector.color = new Color(placingStartColor.r, placingStartColor.g, placingStartColor.b, placingStartColor.a + 0.2f);
-        } else if (battleManager.currentTurnStep == BattleManager.TurnStep.Move && markType == MarkType.Movement) {
+        } else if (battleState.currentTurnStep == BattleState.TurnStep.Move && markType == MarkType.Movement) {
             tileSelector.color = new Color(movementColor.r, movementColor.g + 0.2f, movementColor.b, movementColor.a);
-        } else if (battleManager.currentTurnStep == BattleManager.TurnStep.Attack && markType == MarkType.Attack) {
+        } else if (battleState.currentTurnStep == BattleState.TurnStep.Attack && markType == MarkType.Attack) {
             tileSelector.color = new Color(attackColor.r, attackColor.g, attackColor.b, attackColor.a + 0.2f);
         }
     }
@@ -123,9 +129,9 @@ public class Square : MonoBehaviour {
      * Triggered by Board (TileSelector)
      */
     public void MouseLeave() {
-        if (battleManager.currentBattleStep == BattleManager.BattleStep.Cutscene) return;
+        if (battleState.currentBattleStep == BattleState.BattleStep.Cutscene) return;
 
-        battleManager.fightHUD.SquareHovered(null);
+        hoverSquare.Raise(null);
 
         RefreshColor();
 
@@ -138,22 +144,55 @@ public class Square : MonoBehaviour {
      * Triggered by Board (TileSelector)
      */
     public void Click() {
-        switch (battleManager.currentBattleStep) {
-            case BattleManager.BattleStep.Placing:
+        switch (battleState.currentBattleStep) {
+            case BattleState.BattleStep.Placing:
                 if (markType == MarkType.Placing && IsNotBlocking()) {
-                    BattleManager.instance.placing.PlaceMapChar(this);
+                    PlaceMapChar();
                 }
 
                 break;
-            case BattleManager.BattleStep.Fight:
-                if (battleManager.currentTurnStep == BattleManager.TurnStep.Move && markType == MarkType.Movement) {
-                    battleManager.fight.selectedPlayerCharacter.MoveTo(this);
-                } else if (battleManager.currentTurnStep == BattleManager.TurnStep.Attack && markType == MarkType.Attack) {
-                    battleManager.fight.selectedPlayerCharacter.BasicAttack(boardEntity.GetComponent<BoardCharacter>());
-                    battleManager.EnterTurnStepNone();
+            case BattleState.BattleStep.Fight:
+                if (battleState.currentTurnStep == BattleState.TurnStep.Move && markType == MarkType.Movement) {
+                    currentFightBoardCharacter.value.MoveTo(this);
+                } else if (battleState.currentTurnStep == BattleState.TurnStep.Attack && markType == MarkType.Attack) {
+                    if (boardEntity != null) {
+                        currentFightBoardCharacter.value.BasicAttack(boardEntity.GetComponent<BoardCharacter>());
+                    }
+
+                    battleState.currentTurnStep = BattleState.TurnStep.None;
                 }
 
                 break;
+        }
+    }
+    
+    private void PlaceMapChar() {
+        if (battleState.currentBattleStep == BattleState.BattleStep.Placing) {
+            if (IsNotBlocking()) {
+                if (currentPartyCharacter.value.boardCharacter != null) {
+                    currentPartyCharacter.value.boardCharacter.SetSquare(this);
+                    currentPartyCharacter.value.boardCharacter.glow.Enable();
+                    currentPartyCharacter.value.boardCharacter.direction = startingDirection;
+                } else {
+                    if (battleCharacters.player.Count >= missionToLoad.value.maxPlayerCharacters) {
+                        return;
+                    }
+
+                    BoardCharacter playerTemplate = Resources.Load<BoardCharacter>("BoardCharacter");
+
+                    BoardCharacter playerBoardCharacter = Object.Instantiate(playerTemplate, transform.position, Quaternion.identity);
+                    playerBoardCharacter.Init(currentPartyCharacter.value, Side.Type.Player, startingDirection);
+                    playerBoardCharacter.SetSquare(this);
+                    playerBoardCharacter.character.boardCharacter = playerBoardCharacter;
+                    battleCharacters.player.Add(playerBoardCharacter);
+
+                    if (playerBoardCharacter.glow != null) {
+                        playerBoardCharacter.glow.Enable();
+                    }
+                }
+
+                checkSemiTransparent.Raise();
+            }
         }
     }
 
@@ -161,16 +200,16 @@ public class Square : MonoBehaviour {
         if (colorAnimation == null) return;
 
         // We're doing this to keep the current animation frame when leaving an hovering and marked square (which change the color)
-        if (battleManager.markedSquareAnimations.Count > 0) {
-            float elapsed = battleManager.markedSquareAnimations[0].Elapsed(false);
+        if (board.markedSquareAnimations.Count > 0) {
+            float elapsed = board.markedSquareAnimations[0].Elapsed(false);
 
             colorAnimation.Goto(elapsed);
         }
 
         colorAnimation.Play();
 
-        if (!battleManager.markedSquareAnimations.Contains(colorAnimation)) {
-            battleManager.markedSquareAnimations.Add(colorAnimation);
+        if (!board.markedSquareAnimations.Contains(colorAnimation)) {
+            board.markedSquareAnimations.Add(colorAnimation);
         }
     }
 
@@ -242,10 +281,5 @@ public class Square : MonoBehaviour {
 
     public float GetWorldHeight() {
         return (float)Height / Globals.TileHeight;
-    }
-
-    private void OnDestroy() {
-        battleManager.OnEnterPlacing -= OnEnterPlacing;
-        battleManager.OnLeavingMarkStep -= OnLeavingMarkStep;
     }
 }

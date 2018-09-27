@@ -37,13 +37,15 @@ GameObject:
   m_Component:
   - component: {fileID: 4099255348633514}
   - component: {fileID: 114114936206647602}
+  - component: {fileID: 114263785201542750}
+  - component: {fileID: 114056010931639952}
   m_Layer: 0
   m_Name: VictoryHUD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1395515615509366
 GameObject:
   m_ObjectHideFlags: 0
@@ -61,7 +63,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1421654521261394
 GameObject:
   m_ObjectHideFlags: 1
@@ -147,6 +149,34 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114056010931639952
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1311897700595286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4e55d59df1d72c479bdc64a2fdf32f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  battleStepEvent: {fileID: 11400000, guid: df0cb1bc652e4004a9cab67b8aaa49fb, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114114936206647602}
+        m_MethodName: OnLeaveBattleStepEvent
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: SF.BattleStepEventListener+BattleStepUnityEvent, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
 --- !u!114 &114114936206647602
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -158,8 +188,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9374d5dfe58b6d49bdac0946a02de15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  battleState: {fileID: 11400000, guid: 6f13aad577670964f9d877e5216305e0, type: 2}
+  canvas: {fileID: 223912880435517510}
   detailsText: {fileID: 114822058350630254}
-  nextButton: {fileID: 1617005398246326}
+--- !u!114 &114263785201542750
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1311897700595286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4e55d59df1d72c479bdc64a2fdf32f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  battleStepEvent: {fileID: 11400000, guid: 94db551fba820b34698904de5790ff72, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114114936206647602}
+        m_MethodName: OnEnterBattleStepEvent
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: SF.BattleStepEventListener+BattleStepUnityEvent, Assembly-CSharp,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
 --- !u!114 &114267698982131392
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -171,6 +230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a0ee8ea2e7f7f143976e407dd70b08c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  key: 
 --- !u!114 &114333827870619436
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -209,7 +269,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114946052781042980}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114114936206647602}
+        m_MethodName: Next
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114399442183972782
@@ -223,6 +294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a0ee8ea2e7f7f143976e407dd70b08c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  key: 
 --- !u!114 &114409569784010994
 MonoBehaviour:
   m_ObjectHideFlags: 1

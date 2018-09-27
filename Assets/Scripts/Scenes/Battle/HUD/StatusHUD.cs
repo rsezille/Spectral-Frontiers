@@ -5,6 +5,14 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class StatusHUD : MonoBehaviour {
+    [Header("Dependencies")]
+    public Party party;
+    public CharacterVariable currentPartyCharacter;
+    public BattleState battleState;
+    public BoardCharacterVariable currentFightBoardCharacter;
+
+    [Header("Direct references")]
+    public Canvas canvas;
     public RectTransform blockMiddle;
     public RectTransform blockTop;
     public RectTransform blockBottom;
@@ -20,8 +28,34 @@ public class StatusHUD : MonoBehaviour {
     private bool isGoingDisabled = false; // True during the disabling animation
     private bool isGoingEnabled = false;
 
+    private void Awake() {
+        canvas.gameObject.SetActive(false);
+    }
+
     private void Start() {
         backButton.AddListener(EventTriggerType.PointerClick, () => Hide());
+    }
+
+    private void Update() {
+        if (character != currentPartyCharacter.value && battleState.currentTurnStep == BattleState.TurnStep.Status) {
+            Show(currentPartyCharacter.value);
+        }
+    }
+
+    public void OnLeaveBattleStepEvent(BattleState.BattleStep battleStep) {
+        if (battleStep == BattleState.BattleStep.Fight) {
+            Hide();
+        }
+    }
+
+    public void OnEnterTurnStepEvent(BattleState.TurnStep turnStep) {
+        if (turnStep == BattleState.TurnStep.Status) {
+            if (battleState.currentBattleStep == BattleState.BattleStep.Fight) {
+                Show(currentFightBoardCharacter.value);
+            } else {
+                Show(currentPartyCharacter.value);
+            }
+        }
     }
 
     public void Show(BoardCharacter bc, HUD.Speed speed = HUD.Speed.Normal) {
@@ -35,7 +69,7 @@ public class StatusHUD : MonoBehaviour {
         character = c;
         
         // When switching characters but staying on the status HUD (can't switch during disabling animation)
-        if (gameObject.activeSelf && !isGoingDisabled) {
+        if (canvas.gameObject.activeSelf && !isGoingDisabled) {
             blockMiddle.DORotate(new Vector3(0f, 90f, 0f), rotationSpeed).SetEase(Ease.Linear)
             .OnComplete(() => {
                 UpdateText();
@@ -45,7 +79,7 @@ public class StatusHUD : MonoBehaviour {
             isGoingEnabled = true;
             isGoingDisabled = false; // In case we open/close the HUD too fast
 
-            gameObject.SetActive(true);
+            canvas.gameObject.SetActive(true);
             UpdateText();
 
             blockMiddle.anchoredPosition3D = new Vector3(blockMiddle.anchoredPosition3D.x, -1000f, blockMiddle.anchoredPosition3D.z);
@@ -79,18 +113,18 @@ public class StatusHUD : MonoBehaviour {
         blockBottom.DOAnchorPos3D(new Vector3(blockBottom.anchoredPosition3D.x, -blockBottom.sizeDelta.y, blockBottom.anchoredPosition3D.z), fSpeed).SetEase(Ease.OutCubic)
         .OnComplete(DisableGameObject);
 
-        BattleManager.instance.EnterTurnStepNone();
+        battleState.currentTurnStep = BattleState.TurnStep.None;
     }
 
     private void UpdateText() {
         statusText.SetText(
-            character.name + "\n" +
-            "HP: " + character.GetCurrentHP() + "/" + character.GetMaxHP() + "\n" +
-            "SP: " + character.GetCurrentMP() + "/" + character.GetMaxMP() + "\n" +
-            "PhyAtk: " + character.GetPhysicalAttack() + "\n" +
-            "PhyDef: " + character.GetPhysicalDefense() + "\n" +
-            "MagPow: " + character.GetMagicalPower() + "\n" +
-            "MagRes: " + character.GetMagicalResistance()
+            character.characterName + "\n" +
+            "HP: " + character.currentHp + "/" + character.maxHP + "\n" +
+            //"SP: " + character.GetCurrentMP() + "/" + character.GetMaxMP() + "\n" +
+            "PhyAtk: " + character.atk + "\n" +
+            //"Spd: " + character.spd.currentValue + "\n" +
+            //"MagPow: " + character.GetMagicalPower() + "\n" +
+            "Spd: " + character.spd
         );
     }
 
@@ -98,6 +132,6 @@ public class StatusHUD : MonoBehaviour {
         if (isGoingEnabled) return;
 
         isGoingDisabled = false;
-        gameObject.SetActive(false);
+        canvas.gameObject.SetActive(false);
     }
 }

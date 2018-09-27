@@ -114,8 +114,10 @@ MonoBehaviour:
   showGrid: 1
   gridColor: {r: 1, g: 0, b: 0, a: 1}
   scrollStep: 8
+  squarePrefab: {fileID: 1772213458754078, guid: 392874920ec4d5a4f87137285ff6e0b0,
+    type: 2}
   hoveredSquare: {fileID: 0}
-  currentMode: 0
+  currentMode: 2
   currentSelectMode: 0
   useWater: 0
   orange: {r: 1, g: 0.5, b: 0, a: 1}

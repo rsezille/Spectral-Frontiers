@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine;
 
 /**
- * Represent a board character on the board
+ * Represent a character on the board
  * The GameObject is placed in the attached Square inside the EntityContainer
  */
 [RequireComponent(typeof(BoardEntity), typeof(Side))]
@@ -12,13 +12,37 @@ public class BoardCharacter : MonoBehaviour {
     public enum Direction {
         North, East, South, West // Rotate a 2D plan by 90 degrees clockwise
     };
-
-    private BattleManager battleManager;
-
+    
     public Character character;
     private GameObject spriteContainer;
 
-    public GameObject enemyOrNeutralSpritePrefab;
+    public int tick;
+
+    [Header("Dependencies")]
+    public BattleState battleState;
+    public BattleCharacters battleCharacters;
+    public Board board;
+    public CharacterVariable currentPartyCharacter;
+    public BoardCharacterVariable currentFightBoardCharacter;
+    public CameraPosition mainCameraPosition;
+    public Party party;
+
+    [Header("Events")]
+    public GameEvent checkSemiTransparent;
+    public SquareEvent hoverSquare;
+    public GameEvent killCharacter;
+    public GameEvent endTurn;
+
+    [Header("Prefabs")]
+    public HealthBarHUDController healthBarHUD;
+    public CharacterNameHUDController characterNameHUD;
+    public float offset = 0.2f; // TODO: Do it in Character SO instead?
+    public FloatingText floatingText;
+
+    [Header("Data")]
+    public int movementPoints; // At the beginning of each turn, movementPoints = character.movementPoints
+    public int movementTokens; // At the beginning of each turn, movementTokens = character.movementTokens
+    public int actionTokens; // At the beginning of each turn, actionTokens = character.actionTokens
 
     // Components
     private BoardEntity boardEntity;
@@ -29,17 +53,13 @@ public class BoardCharacter : MonoBehaviour {
     public Side side;
     // Components which can be null
     [HideInInspector]
-    public CharacterGlow glow;
-    [HideInInspector]
-    public Movable movable;
-    [HideInInspector]
-    public Actionable actionable;
+    public Glow glow;
     [HideInInspector]
     public AI AI;
     [HideInInspector]
-    public Shadow shadow;
+    public ShadowController shadow;
 
-    [Tooltip("Do not touch this")]
+    [HideInInspector]
     public bool isMoving = false;
 
     private Direction _direction = Direction.South;
@@ -69,37 +89,46 @@ public class BoardCharacter : MonoBehaviour {
     }
 
     private void Awake() {
-        battleManager = BattleManager.instance;
-        battleManager.OnCheckSemiTransparent += OnCheckSemiTransparent;
-
         side = GetComponent<Side>();
-
-        // Enemies and neutrals have their spriteContainer already linked to the GameObject
-        if (side.value == Side.Type.Player) {
-            // TODO [ALPHA] Replace "Hero" by the main character or the job
-            spriteContainer = Instantiate(Resources.Load<GameObject>("CharacterSprites/Hero"), transform);
-        } else {
-            spriteContainer = Instantiate(enemyOrNeutralSpritePrefab, transform);
-        }
-
-        animator = spriteContainer.GetComponent<Animator>();
-        sprite = spriteContainer.GetComponent<SpriteRenderer>();
-        sprite.sortingOrder = 1;
-        glow = spriteContainer.GetComponent<CharacterGlow>();
-        shadow = spriteContainer.GetComponent<Shadow>();
-
         boardEntity = GetComponent<BoardEntity>();
-        movable = GetComponent<Movable>();
-        actionable = GetComponent<Actionable>();
         AI = GetComponent<AI>();
     }
 
     private void Start() {
-        gameObject.name = character.name; // To find it inside the editor
+        HealthBarHUDController healthBarHUDInstance = Instantiate(healthBarHUD, transform);
+        healthBarHUDInstance.character = character;
+        healthBarHUDInstance.transform.position += new Vector3(0f, sprite.bounds.size.y + offset);
+
+        CharacterNameHUDController characterNameHUDInstance = Instantiate(characterNameHUD, transform);
+        characterNameHUDInstance.character = character;
+        float offsetName = offset;
+        
+        //if (healthBarHUD) {
+            offsetName = 0.3f + offset;
+        //}
+
+        characterNameHUDInstance.transform.position += new Vector3(0f, sprite.bounds.size.y + offsetName);
+    }
+
+    public void Init(Character character, Side.Type side, Direction direction) {
+        this.character = character;
+
+        spriteContainer = Instantiate(character.template.spritePrefab, transform);
+
+        animator = spriteContainer.GetComponent<Animator>();
+        sprite = spriteContainer.GetComponent<SpriteRenderer>();
+        sprite.sortingOrder = 1;
+        glow = spriteContainer.GetComponent<Glow>();
+        shadow = spriteContainer.GetComponentInChildren<ShadowController>();
+
+        gameObject.name = character.characterName;
 
         if (glow) {
             glow.Disable();
         }
+
+        this.side.value = side;
+        this.direction = direction;
     }
 
     public Square GetSquare() {
@@ -119,12 +148,20 @@ public class BoardCharacter : MonoBehaviour {
         }
     }
 
+    public bool CanMove() {
+        return movementTokens > 0;
+    }
+
+    public bool CanDoAction() {
+        return actionTokens > 0;
+    }
+
     public void SetSortingParent(Square square) {
         transform.SetParent(square.entityContainer.transform);
         transform.localPosition = Vector3.zero;
     }
 
-    private void OnCheckSemiTransparent() {
+    public void CheckSemiTransparent() {
         // A sprite can have several colliders depending on its animations
         Collider2D[] spriteColliders = spriteContainer.GetComponents<Collider2D>();
 
@@ -160,7 +197,7 @@ public class BoardCharacter : MonoBehaviour {
      * Triggered by Board (SpriteManager)
      */
     public void MouseEnter() {
-        battleManager.fightHUD.SquareHovered(GetSquare());
+        hoverSquare.Raise(GetSquare());
 
         if (glow != null) {
             glow.Enable();
@@ -171,10 +208,10 @@ public class BoardCharacter : MonoBehaviour {
      * Triggered by Board (SpriteManager)
      */
     public void MouseLeave() {
-        battleManager.fightHUD.SquareHovered(null);
+        hoverSquare.Raise(null);
 
-        if ((battleManager.currentBattleStep == BattleManager.BattleStep.Placing && battleManager.placing.GetCurrentPlacingChar().boardCharacter != this
-                || battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleManager.fight.selectedPlayerCharacter != this) && glow != null) {
+        if ((battleState.currentBattleStep == BattleState.BattleStep.Placing && currentPartyCharacter.value.boardCharacter != this
+                || battleState.currentBattleStep == BattleState.BattleStep.Fight && currentFightBoardCharacter.value != this) && glow != null) {
             glow.Disable();
         }
     }
@@ -184,45 +221,89 @@ public class BoardCharacter : MonoBehaviour {
      */
     public void Click() {
         if (side.value == Side.Type.Player) {
-            if (battleManager.currentBattleStep == BattleManager.BattleStep.Placing) {
+            if (battleState.currentBattleStep == BattleState.BattleStep.Placing) {
                 // Focus the clicked character as the current one to place
-                battleManager.placing.SetCurrentPlacingChar(character);
-            } else if (battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleManager.currentTurnStep == BattleManager.TurnStep.None) {
-                battleManager.fight.selectedPlayerCharacter = this;
+                SetCurrentPlacingChar();
+            } else if (battleState.currentBattleStep == BattleState.BattleStep.Fight && battleState.currentTurnStep == BattleState.TurnStep.None) {
+                currentFightBoardCharacter.value = this;
             }
         }
 
-        if (battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleManager.currentTurnStep == BattleManager.TurnStep.Attack) {
+        if (battleState.currentBattleStep == BattleState.BattleStep.Fight && battleState.currentTurnStep == BattleState.TurnStep.Attack) {
             if (GetSquare().markType == Square.MarkType.Attack) {
-                battleManager.fight.selectedPlayerCharacter.BasicAttack(this);
-                battleManager.EnterTurnStepNone();
+                currentFightBoardCharacter.value.BasicAttack(this);
+                battleState.currentTurnStep = BattleState.TurnStep.None;
             }
+        }
+    }
+
+    private void SetCurrentPlacingChar() {
+        if (!party.characters.Contains(character)) {
+            return;
+        }
+
+        if (currentPartyCharacter.value.boardCharacter != null && currentPartyCharacter.value.boardCharacter.glow != null) {
+            currentPartyCharacter.value.boardCharacter.glow.Disable();
+        }
+
+        currentPartyCharacter.value = character;
+
+        if (currentPartyCharacter.value.boardCharacter != null) {
+            if (currentPartyCharacter.value.boardCharacter.glow != null) {
+                currentPartyCharacter.value.boardCharacter.glow.Enable();
+            }
+
+            mainCameraPosition.SetPosition(currentPartyCharacter.value.boardCharacter, true);
         }
     }
 
     public void NewTurn() {
-        if (actionable != null) {
-            actionable.actionTokens = character.actionTokens;
+        actionTokens = character.template.actionTokens;
+        
+        movementTokens = character.template.movementTokens;
+        movementPoints = character.template.movementPoints;
+
+        if (currentFightBoardCharacter.value != null && currentFightBoardCharacter.value.glow != null) {
+            currentFightBoardCharacter.value.glow.Disable();
         }
 
-        if (movable != null) {
-            movable.movementTokens = character.movementTokens;
-            movable.movementPoints = character.movementPoints;
+        currentFightBoardCharacter.value = this;
+
+        if (glow != null) {
+            glow.Enable();
         }
+
+        mainCameraPosition.SetPosition(this, true);
+
+        if (side.value != Side.Type.Player) {
+            StartCoroutine(StartAI());
+        }
+    }
+
+    private IEnumerator StartAI() {
+        if (AI != null) {
+            yield return AI.Process();
+        }
+
+        yield return new WaitForSeconds(0.5f);
+
+        endTurn.Raise();
+
+        yield return null;
     }
 
     private bool IsDead() {
-        return character.GetCurrentHP() <= 0;
+        return character.currentHp <= 0;
     }
 
     public void BasicAttack(BoardCharacter target) {
-        if (actionable.CanDoAction()) {
+        if (CanDoAction()) {
             int dmgDone = character.BasicAttack(target.character);
 
-            FloatingText floatingText = Instantiate(battleManager.floatingText, target.transform.position, Quaternion.identity);
-            floatingText.text = "-" + dmgDone;
+            FloatingText floatingTextInstance = Instantiate(floatingText, target.transform.position, Quaternion.identity);
+            floatingTextInstance.text = "-" + dmgDone;
             
-            actionable.actionTokens--;
+            actionTokens--;
 
             if (target.IsDead()) target.Remove();
             if (IsDead()) Remove();
@@ -230,7 +311,7 @@ public class BoardCharacter : MonoBehaviour {
     }
 
     public void MoveTo(Square target, bool cameraFollow = true) {
-        Path p = battleManager.board.pathFinder.FindPath(
+        Path p = board.pathFinder.FindPath(
             GetSquare().x,
             GetSquare().y,
             target.x,
@@ -244,7 +325,7 @@ public class BoardCharacter : MonoBehaviour {
     }
 
     public IEnumerator CutsceneMoveTo(Square target, bool cameraFollow = true) {
-        Path p = battleManager.board.pathFinder.FindPath(
+        Path p = board.pathFinder.FindPath(
             GetSquare().x,
             GetSquare().y,
             target.x,
@@ -260,10 +341,10 @@ public class BoardCharacter : MonoBehaviour {
     }
     
     public void MoveThroughPath(Path p, bool cameraFollow = true) {
-        if (movable != null && movable.CanMove()) {
+        if (CanMove()) {
             StartCoroutine(MoveCoroutine(p, false, cameraFollow));
             
-            movable.movementTokens--;
+            movementTokens--;
         }
     }
 
@@ -271,25 +352,24 @@ public class BoardCharacter : MonoBehaviour {
         isMoving = true;
         float duration = 0.5f;
 
-        if (battleManager.currentTurnStep != BattleManager.TurnStep.Enemy && !inCutscene) {
-            battleManager.EventOnLeavingMarkStep();
+        if (side.value == Side.Type.Player && !inCutscene) {
+            board.RemoveAllMarks();
         }
 
         if (cameraFollow) {
-            if (!battleManager.battleCamera.IsOnSquare(GetSquare())) {
-                Tween cameraAnimation = battleManager.battleCamera.SetPosition(this, true, duration);
+            if (!mainCameraPosition.IsOnSquare(GetSquare())) {
+                Tween cameraAnimation = mainCameraPosition.SetPosition(this, true, duration);
 
                 yield return cameraAnimation.WaitForCompletion();
             }
         }
 
         Square targetedSquare = null;
-
         Square previousSquare = GetSquare();
 
         // Check at 25% and 75% of each square the sorting order of the BoardChar to set the correct one
         for (int i = 0; i < path.steps.Count; i++) {
-            if (movable.movementPoints <= 0 && !inCutscene) break;
+            if (movementPoints <= 0 && !inCutscene) break;
             //if (!path.steps[i].IsNotBlocking()) break;
 
             if (i > 0) {
@@ -297,7 +377,7 @@ public class BoardCharacter : MonoBehaviour {
             }
 
             if (!inCutscene) {
-                movable.movementPoints--;
+                movementPoints--;
             }
 
             Tween characterAnimation;
@@ -314,7 +394,7 @@ public class BoardCharacter : MonoBehaviour {
             }
 
             if (cameraFollow) {
-                battleManager.battleCamera.SetPosition(path.steps[i], true, duration, Ease.Linear);
+                mainCameraPosition.SetPosition(path.steps[i], true, duration, Ease.Linear);
             }
 
             yield return characterAnimation.WaitForPosition(duration / 4);
@@ -338,9 +418,9 @@ public class BoardCharacter : MonoBehaviour {
 
         isMoving = false;
 
-        if (battleManager.currentTurnStep != BattleManager.TurnStep.Enemy && !inCutscene) {
-            battleManager.fight.EnterTurnStepDirection();
-            battleManager.EventOnSemiTransparentReset();
+        if (side.value == Side.Type.Player && !inCutscene) {
+            battleState.currentTurnStep = BattleState.TurnStep.Direction;
+            checkSemiTransparent.Raise();
         }
     }
 
@@ -350,20 +430,16 @@ public class BoardCharacter : MonoBehaviour {
 
         StopAllCoroutines();
 
-        if (side.value == Side.Type.Player && (battleManager.currentBattleStep == BattleManager.BattleStep.Placing || battleManager.currentBattleStep == BattleManager.BattleStep.Fight)) {
-            battleManager.playerCharacters.Remove(this);
-        } else if (side.value == Side.Type.Enemy && battleManager.currentBattleStep == BattleManager.BattleStep.Fight) {
-            battleManager.enemyCharacters.Remove(this);
+        if (side.value == Side.Type.Player && (battleState.currentBattleStep == BattleState.BattleStep.Placing || battleState.currentBattleStep == BattleState.BattleStep.Fight)) {
+            battleCharacters.player.Remove(this);
+        } else if (side.value == Side.Type.Enemy && battleState.currentBattleStep == BattleState.BattleStep.Fight) {
+            battleCharacters.enemy.Remove(this);
         }
 
-        if (battleManager.currentBattleStep == BattleManager.BattleStep.Fight) {
-            battleManager.CheckEndBattle();
+        if (battleState.currentBattleStep == BattleState.BattleStep.Fight) {
+            killCharacter.Raise();
         }
 
         Destroy(gameObject);
-    }
-
-    private void OnDestroy() {
-        battleManager.OnCheckSemiTransparent -= OnCheckSemiTransparent;
     }
 }

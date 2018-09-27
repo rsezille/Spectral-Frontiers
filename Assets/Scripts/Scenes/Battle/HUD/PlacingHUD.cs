@@ -5,51 +5,52 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class PlacingHUD : MonoBehaviour {
-    private BattleManager battleManager;
+    private Tween startBattleTextAnimation;
+    private bool isGoingEnabled = false;
 
+    [Header("Dependencies")]
+    public BattleState battleState;
+    public Party party;
+    public CharacterVariable currentPartyCharacter;
+    public BattleCharacters battleCharacters;
+
+    [Header("Direct references")]
+    public Canvas canvas;
     public Text previousCharText;
     public Text nextCharText;
     public Text currentCharText;
-
     public Text startBattleText;
 
     public GameObject removeButton;
-    public GameObject statusButton;
 
     public RectTransform placingHUDRect;
 
-    private bool isGoingEnabled = false;
-
     private void Awake() {
-        battleManager = BattleManager.instance;
-    }
-
-    private void Start() {
-        removeButton.AddListener(EventTriggerType.PointerClick, battleManager.placing.RemoveCurrentMapChar);
-        statusButton.AddListener(EventTriggerType.PointerClick, battleManager.EnterTurnStepStatus);
+        canvas.gameObject.SetActive(false);
     }
 
     private void Update() {
-        if (battleManager.currentBattleStep != BattleManager.BattleStep.Placing) return;
-
-        // Remove button
-        if (battleManager.placing.GetCurrentPlacingChar().boardCharacter != null && !removeButton.activeSelf) {
-            removeButton.SetActive(true);
-        } else if (battleManager.placing.GetCurrentPlacingChar().boardCharacter == null && removeButton.activeSelf) {
-            removeButton.SetActive(false);
-        }
+        if (battleState.currentBattleStep != BattleState.BattleStep.Placing) return;
 
         // Current character text
-        if (battleManager.placing.GetCurrentPlacingChar().boardCharacter != null) {
+        if (currentPartyCharacter.value.boardCharacter != null) {
             currentCharText.color = Color.gray;
+
+            if (!removeButton.activeSelf) {
+                removeButton.SetActive(true);
+            }
         } else {
             currentCharText.color = Color.white;
+
+            if (removeButton.activeSelf) {
+                removeButton.SetActive(false);
+            }
         }
 
-        currentCharText.text = battleManager.placing.GetCurrentPlacingChar().name;
+        currentCharText.text = currentPartyCharacter.value.characterName;
 
         // Previous character text
-        Character previousCharacter = battleManager.placing.GetPreviousPlacingChar();
+        Character previousCharacter = party.GetPreviousCharacter(currentPartyCharacter.value);
 
         if (previousCharacter.boardCharacter != null) {
             previousCharText.color = Color.gray;
@@ -57,10 +58,10 @@ public class PlacingHUD : MonoBehaviour {
             previousCharText.color = Color.white;
         }
 
-        previousCharText.text = "Previous [" + InputManager.Previous.bindedKey + "]\n" + previousCharacter.name; //TODO [BETA] LanguageManager with a multi key translation
+        previousCharText.text = "Previous [" + InputManager.Previous.bindedKey + "]\n" + previousCharacter.characterName; //TODO [BETA] LanguageManager with a multi key translation
 
         // Next character text
-        Character nextCharacter = battleManager.placing.GetNextPlacingChar();
+        Character nextCharacter = party.GetNextCharacter(currentPartyCharacter.value);
 
         if (nextCharacter.boardCharacter != null) {
             nextCharText.color = Color.gray;
@@ -68,7 +69,65 @@ public class PlacingHUD : MonoBehaviour {
             nextCharText.color = Color.white;
         }
 
-        nextCharText.text = "Next [" + InputManager.Next.bindedKey + "]\n" + nextCharacter.name; //TODO [BETA] LanguageManager with a multi key translation
+        nextCharText.text = "Next [" + InputManager.Next.bindedKey + "]\n" + nextCharacter.characterName; //TODO [BETA] LanguageManager with a multi key translation
+
+        // Start battle text
+        if (battleCharacters.player.Count <= 0 && startBattleText.gameObject.activeSelf) {
+            if (startBattleTextAnimation != null) {
+                startBattleTextAnimation.Pause();
+            }
+
+            startBattleText.gameObject.SetActive(false);
+        } else if (battleCharacters.player.Count > 0 && !startBattleText.gameObject.activeSelf) {
+            startBattleText.gameObject.SetActive(true);
+            startBattleText.color = new Color(startBattleText.color.r, startBattleText.color.g, startBattleText.color.b, 0.3f);
+
+            if (startBattleTextAnimation == null) {
+                startBattleTextAnimation = startBattleText.DOColor(new Color(startBattleText.color.r, startBattleText.color.g, startBattleText.color.b, 1f), 1f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear);
+            } else {
+                startBattleTextAnimation.Play();
+            }
+        }
+    }
+
+    public void OnEnterBattleStepEvent(BattleState.BattleStep battleStep) {
+        if (battleStep == BattleState.BattleStep.Placing) {
+            SetActiveWithAnimation(true, HUD.Speed.Slow);
+        }
+    }
+
+    public void OnLeaveBattleStepEvent(BattleState.BattleStep battleStep) {
+        if (battleStep == BattleState.BattleStep.Placing) {
+            canvas.gameObject.SetActive(false);
+        }
+    }
+
+    public void OnEnterTurnStepEvent(BattleState.TurnStep turnStep) {
+        if (battleState.currentBattleStep == BattleState.BattleStep.Placing) {
+            if (turnStep == BattleState.TurnStep.None) {
+                SetActiveWithAnimation(true);
+            } else if (turnStep == BattleState.TurnStep.Status) {
+                SetActiveWithAnimation(false);
+            }
+        }
+    }
+
+    public void Status() {
+        battleState.currentTurnStep = BattleState.TurnStep.Status;
+    }
+
+    public void RemoveCurrentMapChar() {
+        if (battleState.currentBattleStep != BattleState.BattleStep.Placing) {
+            return;
+        }
+
+        if (currentPartyCharacter.value.boardCharacter == null) return;
+
+        currentPartyCharacter.value.boardCharacter.Remove();
+
+        if (battleCharacters.player.Count <= 0) {
+            startBattleText.gameObject.SetActive(false);
+        }
     }
 
     public void SetActiveWithAnimation(bool active, HUD.Speed speed = HUD.Speed.Normal) {
@@ -76,12 +135,10 @@ public class PlacingHUD : MonoBehaviour {
 
         if (active) {
             isGoingEnabled = true;
-            gameObject.SetActive(true);
+            canvas.gameObject.SetActive(true);
 
             placingHUDRect.anchoredPosition3D = new Vector3(0f, -250f, 0f);
             placingHUDRect.DOAnchorPos3D(new Vector3(0f, 0f, 0f), fSpeed).SetEase(Ease.OutCubic);
-            
-            BattleManager.instance.placing.RefreshStartBattleText();
         } else {
             if (!gameObject.activeSelf) return;
             
@@ -92,9 +149,9 @@ public class PlacingHUD : MonoBehaviour {
         }
     }
 
-    void DisableGameObject() {
+    private void DisableGameObject() {
         if (isGoingEnabled) return;
         
-        gameObject.SetActive(false);
+        canvas.gameObject.SetActive(false);
     }
 }

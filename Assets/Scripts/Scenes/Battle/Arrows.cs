@@ -1,20 +1,22 @@
-﻿using UnityEngine;
+﻿using SF;
+using UnityEngine;
 using UnityEngine.Events;
 
 /**
  * TODO [FINAL] May have a leak, remove listeners OnDestroy
  */
 public class Arrows : MonoBehaviour {
-    private BattleManager battleManager; // Shortcut
+    [Header("Dependencies")]
+    public BattleState battleState;
+    public BoardCharacterVariable currentFightBoardCharacter;
 
+    [Header("References")]
     public GameObject north;
     public GameObject west;
     public GameObject east;
     public GameObject south;
 
     private void Awake() {
-        battleManager = BattleManager.instance;
-
         AddMouseReactive(north, BoardCharacter.Direction.North);
         AddMouseReactive(west, BoardCharacter.Direction.West);
         AddMouseReactive(east, BoardCharacter.Direction.East);
@@ -27,12 +29,12 @@ public class Arrows : MonoBehaviour {
         reactive.Click = new UnityEvent();
 
         reactive.MouseEnter.AddListener(() => ChangeDirection(direction));
-        reactive.Click.AddListener(battleManager.fight.EndTurnStepDirection);
+        reactive.Click.AddListener(() => battleState.currentTurnStep = BattleState.TurnStep.None);
     }
 
     private void ChangeDirection(BoardCharacter.Direction direction) {
-        if (battleManager.currentBattleStep == BattleManager.BattleStep.Fight && battleManager.currentTurnStep == BattleManager.TurnStep.Direction) {
-            battleManager.fight.selectedPlayerCharacter.direction = direction;
+        if (battleState.currentBattleStep == BattleState.BattleStep.Fight && battleState.currentTurnStep == BattleState.TurnStep.Direction) {
+            currentFightBoardCharacter.value.direction = direction;
         }
     }
 }

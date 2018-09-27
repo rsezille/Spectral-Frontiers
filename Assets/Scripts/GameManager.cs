@@ -1,6 +1,5 @@
 ﻿using DG.Tweening;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -14,21 +13,11 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour {
     public static GameManager instance = null;
 
-    public Player player;
-
-    private Dictionary<string, RawMission> missions;
-
-    [HideInInspector]
-    public string missionToLoad;
-
     [SerializeField]
     private DialogBox dialogBoxPrefab;
-    [SerializeField]
-    private OptionsHUD optionsPrefab;
 
     // The instantiated game object
     private DialogBox dialogBox;
-    public OptionsHUD options { get; private set; }
 
     // Transitions between scenes
     private GameObject transition;
@@ -46,45 +35,13 @@ public class GameManager : MonoBehaviour {
             Destroy(gameObject);
         }
 
-        // TODO [BETA] do it when starting a new game (don't when loading a previously saved game)
-        if (player == null) {
-            player = new Player();
-        }
-
         DontDestroyOnLoad(gameObject);
-
-        options = Instantiate(optionsPrefab, transform) as OptionsHUD;
-        options.gameObject.SetActive(false);
 
         SF.PlayerOptions.Load();
 
         Debug.Log("Game Manager awakes");
-
-        // TODO [BETA] Logs + time
-        InitMissions();
     }
-
-    private void InitMissions() {
-        missions = new Dictionary<string, RawMission>();
-
-        TextAsset[] jsonMissions = Resources.LoadAll<TextAsset>("Missions");
-
-        foreach (TextAsset jsonMission in jsonMissions) {
-            RawMission mission = JsonUtility.FromJson<RawMission>(jsonMission.text);
-            missions.Add(mission.id, mission);
-        }
-    }
-
-    public RawMission GetMissionToLoad() {
-        if (missions.ContainsKey(missionToLoad)) {
-            return missions[missionToLoad];
-        } else {
-            Debug.LogError("MissionToLoad not found");
-
-            return null;
-        }
-    }
-
+    
     /**
      * TODO [BETA] Add a loading screen between scenes (or on purpose, for example when loading a mission (BattleScene)
      */
@@ -131,14 +88,6 @@ public class GameManager : MonoBehaviour {
 
             return dialogBox;
         }
-    }
-
-    public void QuitGame() {
-        #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-        #else
-            Application.Quit();
-        #endif
     }
 
     public void EventOnLanguageChange() {

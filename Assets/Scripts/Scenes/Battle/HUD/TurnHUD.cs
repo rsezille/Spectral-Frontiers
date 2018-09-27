@@ -1,20 +1,107 @@
-﻿using SF;
+﻿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class TurnHUD : MonoBehaviour {
-    [Header("Direct references")]
-    public TextMeshProUGUI text;
+namespace SF {
+    public class TurnHUD : MonoBehaviour {
+        private class FakeTick {
+            public int tick;
+            public BoardCharacter boardCharacter;
 
-    private void Start() {
-        Check();
-    }
+            public FakeTick(int tick, BoardCharacter boardCharacter) {
+                this.tick = tick;
+                this.boardCharacter = boardCharacter;
+            }
+        }
 
-    public void Check() {
-        if (BattleManager.instance.currentTurnStep == BattleManager.TurnStep.Enemy) {
-            text.SetText(LanguageManager.instance.GetString("battle.hud.turn.enemy"));
-        } else {
-            text.SetText(LanguageManager.instance.GetString("battle.hud.turn.your"));
+        [Header("Dependencies")]
+        public BattleCharacters battleCharacters;
+        public IntVariable turnSpeed;
+        public Board board;
+
+        [Header("Direct references")]
+        public Canvas canvas;
+        public TextMeshProUGUI text;
+
+        [Header("Data")]
+        public int simulationTurns = 10;
+
+        private void Awake() {
+            canvas.gameObject.SetActive(false);
+        }
+
+        public void OnEnterBattleStepEvent(BattleState.BattleStep battleStep) {
+            if (battleStep == BattleState.BattleStep.Fight) {
+                canvas.gameObject.SetActive(true);
+            }
+        }
+
+        public void OnLeaveBattleStepEvent(BattleState.BattleStep battleStep) {
+            if (battleStep == BattleState.BattleStep.Fight) {
+                canvas.gameObject.SetActive(false);
+            }
+        }
+
+        /**
+         * /!\ Also update the turn algo to reflect changes, in BattleFightManager
+         */
+        public void Simulate() {
+            List<BoardCharacter> turnCharacters = new List<BoardCharacter>();
+
+            List<FakeTick> fakeTicks = new List<FakeTick>();
+
+            battleCharacters.player.ForEach(boardCharacter => {
+                fakeTicks.Add(new FakeTick(boardCharacter.tick, boardCharacter));
+            });
+
+            battleCharacters.enemy.ForEach(boardCharacter => {
+                fakeTicks.Add(new FakeTick(boardCharacter.tick, boardCharacter));
+            });
+
+            while (turnCharacters.Count < simulationTurns) {
+                while (!CharacterReadyTest(fakeTicks)) {
+                    fakeTicks.ForEach(test => {
+                        test.tick = test.tick + 1;
+                    });
+                }
+
+                BoardCharacter nextBoardCharacter = GetCharacterToPlayTest(fakeTicks);
+                turnCharacters.Add(nextBoardCharacter);
+
+                FakeTick fakeTickToReset = fakeTicks.Find(test => test.boardCharacter == nextBoardCharacter);
+                fakeTickToReset.tick = 0;
+            }
+
+            string t = "";
+
+            turnCharacters.ForEach(c => t += string.IsNullOrEmpty(t) ? c.name : " > " + c.name);
+            text.SetText(t);
+        }
+
+        private bool CharacterReadyTest(List<FakeTick> fakeTicks) {
+            foreach (FakeTick fakeTick in fakeTicks) {
+                if (fakeTick.tick >= turnSpeed - fakeTick.boardCharacter.character.spd) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private BoardCharacter GetCharacterToPlayTest(List<FakeTick> fakeTicks) {
+            BoardCharacter characterToPlay = null;
+
+            foreach (FakeTick fakeTick in fakeTicks) {
+                if (fakeTick.tick >= turnSpeed - fakeTick.boardCharacter.character.spd) {
+                    if (characterToPlay == null) {
+                        characterToPlay = fakeTick.boardCharacter;
+                    } else if (board.SquarePositionToIndex(fakeTick.boardCharacter.GetSquare()) < board.SquarePositionToIndex(characterToPlay.GetSquare())) {
+                        characterToPlay = fakeTick.boardCharacter;
+                    }
+                }
+            }
+
+            return characterToPlay;
         }
     }
 }

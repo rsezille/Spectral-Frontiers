@@ -27,7 +27,7 @@ public class Reflectable : MonoBehaviour {
         reflectionSpriteRenderer.flipX = spriteRenderer.flipX;
         reflectionSpriteRenderer.transform.localScale = Vector3.one;
 
-        if (distortionShader && BattleManager.instance.waterDistortion) {
+        if (distortionShader) {
             reflectionSpriteRenderer.material = distortionShader;
         }
     }

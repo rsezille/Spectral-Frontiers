@@ -24,6 +24,7 @@ namespace SF {
         [Range(1, 64)]
         public int scrollStep = 1;
 
+        public GameObject squarePrefab;
         public Square hoveredSquare;
 
         public Mode currentMode = Mode.Draw;
@@ -51,13 +52,13 @@ namespace SF {
         }
 
         public GameObject CreateSquare(int x, int y) {
-            GameObject squareGameObject = new GameObject("Square(" + x + "," + y + ")", typeof(Square));
+            GameObject squareGameObject = Instantiate(squarePrefab, map.transform);
             squareGameObject.transform.position = BoardUtil.CoordToWorldPosition(x, y);
+            squareGameObject.name = "Square(" + x + "," + y + ")";
             Square square = squareGameObject.GetComponent<Square>();
             square.x = x;
             square.y = y;
             squareGameObject.GetComponent<SortingGroup>().sortingOrder = -(size.x * y + x);
-            squareGameObject.transform.SetParent(map.transform);
 
             // Create the tile container
             GameObject tileContainer = new GameObject("TileContainer", typeof(TileContainer));

@@ -1,33 +1,16 @@
 ﻿using SF;
 
 public class BattleVictoryManager {
-    private BattleManager battleManager; // Shortcut for BattleManager.instance
+    private BattleManager battleManager;
 
-    public BattleVictoryManager() {
-        battleManager = BattleManager.instance;
+    public BattleVictoryManager(BattleManager battleManager) {
+        this.battleManager = battleManager;
     }
 
     // Called by BattleManager
     public void Update() {
         if (InputManager.Special1.IsKeyDown) {
-            Next();
+            battleManager.battleState.currentBattleStep = BattleState.BattleStep.Cutscene;
         }
-    }
-
-    public void Next() {
-        battleManager.currentBattleStep = BattleManager.BattleStep.Cutscene;
-    }
-
-    // Called by BattleManager
-    public void EnterTurnStepNone(BattleManager.TurnStep previousTurnStep) {}
-
-    // Called by BattleManager
-    public void EnterBattleStepVictory() {
-        battleManager.victoryHUD.SetActiveWithAnimation(true);
-    }
-
-    // Called by BattleManager
-    public void LeaveBattleStepVictory() {
-        battleManager.victoryHUD.SetActiveWithAnimation(false);
     }
 }

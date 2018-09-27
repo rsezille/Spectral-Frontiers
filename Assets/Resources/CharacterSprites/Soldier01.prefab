@@ -23,11 +23,11 @@ GameObject:
   - component: {fileID: 95481668620842874}
   - component: {fileID: 60227954618296632}
   - component: {fileID: 60935187836968706}
+  - component: {fileID: 114745763095533832}
+  - component: {fileID: 114007478901278514}
   - component: {fileID: 114289021745954006}
   - component: {fileID: 114201483773831714}
-  - component: {fileID: 114007478901278514}
-  - component: {fileID: 114134337053867782}
-  - component: {fileID: 114745763095533832}
+  - component: {fileID: 114806968254336358}
   m_Layer: 0
   m_Name: Soldier01
   m_TagString: Untagged
@@ -218,19 +218,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &114134337053867782
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1633512145816250}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa8bcffd534500847950c796020f2232, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadowPrefab: {fileID: 212033615980946702, guid: 7b90bfb2b0bc74b4a9c1a04ea8362d8c,
-    type: 2}
 --- !u!114 &114201483773831714
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -255,9 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f239a0c988648624b9f6600a3fcaa8a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minBrightness: 1
-  maxBrightness: 4.5
-  time: 1
+  glowSettings: {fileID: 11400000, guid: 3cfbf41008ee47841a703e8e9420de1d, type: 2}
 --- !u!114 &114745763095533832
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -273,6 +258,19 @@ MonoBehaviour:
   - {fileID: 60227954618296632}
   - {fileID: 60935187836968706}
   enabledColliderIndex: 0
+--- !u!114 &114806968254336358
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1633512145816250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29c967da6ede5074aa89cb89be989031, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shadowPrefab: {fileID: 114546563547070850, guid: 7b90bfb2b0bc74b4a9c1a04ea8362d8c,
+    type: 2}
 --- !u!212 &212660717856818408
 SpriteRenderer:
   m_ObjectHideFlags: 1
