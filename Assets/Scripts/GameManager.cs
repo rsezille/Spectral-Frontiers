@@ -1,6 +1,5 @@
 ﻿using DG.Tweening;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -13,8 +12,6 @@ using UnityEngine.UI;
  */
 public class GameManager : MonoBehaviour {
     public static GameManager instance = null;
-
-    public Dictionary<string, RawMission> missions;
 
     [SerializeField]
     private DialogBox dialogBoxPrefab;
@@ -43,20 +40,6 @@ public class GameManager : MonoBehaviour {
         SF.PlayerOptions.Load();
 
         Debug.Log("Game Manager awakes");
-
-        // TODO [BETA] Logs + time
-        InitMissions();
-    }
-
-    private void InitMissions() {
-        missions = new Dictionary<string, RawMission>();
-
-        TextAsset[] jsonMissions = Resources.LoadAll<TextAsset>("Missions");
-
-        foreach (TextAsset jsonMission in jsonMissions) {
-            RawMission mission = JsonUtility.FromJson<RawMission>(jsonMission.text);
-            missions.Add(mission.id, mission);
-        }
     }
     
     /**
