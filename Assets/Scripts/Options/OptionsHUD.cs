@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class OptionsHUD : MonoBehaviour {
+    [Header("Direct references")]
+    public Canvas canvas;
     public RectTransform keyBindingPrefab;
     public GameObject closeButton;
     public GameObject resetKeysButton;
@@ -17,6 +19,8 @@ public class OptionsHUD : MonoBehaviour {
     private KeyBind waitedKey;
 
     private void Awake() {
+        canvas.gameObject.SetActive(false);
+
         keyBindings = new Dictionary<string, TextMeshProUGUI>();
         waitingForKey.SetActive(false);
     }
@@ -55,15 +59,15 @@ public class OptionsHUD : MonoBehaviour {
     }
 
     public void Show() {
-        if (!gameObject.activeSelf) {
-            gameObject.SetActive(true);
-        }
+        canvas.gameObject.SetActive(true);
+        InputManager.Pause.enabled = false;
     }
 
     public void Close() {
-        if (gameObject.activeSelf) {
+        if (canvas.gameObject.activeSelf) {
             PlayerOptions.Save();
-            gameObject.SetActive(false);
+            canvas.gameObject.SetActive(false);
+            InputManager.Pause.enabled = true;
         }
     }
 

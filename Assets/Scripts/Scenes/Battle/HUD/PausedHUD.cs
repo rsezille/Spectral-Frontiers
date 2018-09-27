@@ -5,7 +5,6 @@ using UnityEngine.EventSystems;
 public class PausedHUD : MonoBehaviour {
     [Header("Direct references")]
     public Canvas canvas;
-    public GameObject optionsButton;
     public GameObject quitButton;
 
     private void Awake() {
@@ -13,7 +12,6 @@ public class PausedHUD : MonoBehaviour {
     }
 
     private void Start() {
-        optionsButton.AddListener(EventTriggerType.PointerClick, GameManager.instance.options.Show);
         quitButton.AddListener(EventTriggerType.PointerClick, GameManager.instance.QuitGame);
     }
 
