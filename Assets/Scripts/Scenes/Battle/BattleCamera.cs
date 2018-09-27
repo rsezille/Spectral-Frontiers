@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using DG.Tweening;
 using SF;
 
 [RequireComponent(typeof(Camera))]
@@ -10,6 +9,7 @@ public class BattleCamera : MonoBehaviour {
     public BattleState battleState;
     public Board board;
     public CameraPosition mainCameraPosition;
+    public BoardCharacterVariable currentFightBoardCharacter;
 
     [Header("Events")]
     public GameEvent zoomChange;
@@ -26,12 +26,7 @@ public class BattleCamera : MonoBehaviour {
     }
 
     private void Update() {
-        /*if (battleState.currentBattleStep == BattleState.BattleStep.Cutscene
-                || battleState.currentTurnStep == BattleState.TurnStep.Enemy) {
-            return;
-        }*/
-
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         // Do not use InputBinds as this code is for editor only
         if (Input.GetKeyDown(KeyCode.O)) {
             ResetCameraSize();
@@ -46,17 +41,20 @@ public class BattleCamera : MonoBehaviour {
 
             zoomChange.Raise();
         }
-        #endif
-        
-        if (InputManager.CameraHorizontalAxis() != 0 || InputManager.CameraVerticalAxis() != 0) {
-            float tmpSpeed = speed;
+#endif
 
-            // Lower the speed if the camera is going diagonally
-            if (InputManager.CameraHorizontalAxis() != 0 && InputManager.CameraVerticalAxis() != 0) {
-                tmpSpeed = speed / Mathf.Sqrt(2f);
+        if (!(battleState.currentBattleStep == BattleState.BattleStep.Cutscene
+                || (battleState.currentBattleStep == BattleState.BattleStep.Fight && currentFightBoardCharacter.value.side.value != Side.Type.Player))) {
+            if (InputManager.CameraHorizontalAxis() != 0 || InputManager.CameraVerticalAxis() != 0) {
+                float tmpSpeed = speed;
+
+                // Lower the speed if the camera is going diagonally
+                if (InputManager.CameraHorizontalAxis() != 0 && InputManager.CameraVerticalAxis() != 0) {
+                    tmpSpeed = speed / Mathf.Sqrt(2f);
+                }
+
+                mainCameraPosition.position += new Vector3(tmpSpeed * Time.deltaTime * InputManager.CameraHorizontalAxis(), tmpSpeed * Time.deltaTime * InputManager.CameraVerticalAxis());
             }
-
-            mainCameraPosition.position += new Vector3(tmpSpeed * Time.deltaTime * InputManager.CameraHorizontalAxis(), tmpSpeed * Time.deltaTime * InputManager.CameraVerticalAxis());
         }
 
         transform.position = mainCameraPosition.position;

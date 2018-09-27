@@ -263,20 +263,19 @@ public class BoardCharacter : MonoBehaviour {
         movementTokens = character.template.movementTokens;
         movementPoints = character.template.movementPoints;
 
-        if (side.value == Side.Type.Player) {
-            if (currentFightBoardCharacter.value != null && currentFightBoardCharacter.value.glow != null) {
-                currentFightBoardCharacter.value.glow.Disable();
-            }
+        if (currentFightBoardCharacter.value != null && currentFightBoardCharacter.value.glow != null) {
+            currentFightBoardCharacter.value.glow.Disable();
+        }
 
-            currentFightBoardCharacter.value = this;
-            
-            if (glow != null) {
-                glow.Enable();
-            }
-            
-            mainCameraPosition.SetPosition(this, true);
-        } else {
-            currentFightBoardCharacter.value = null;
+        currentFightBoardCharacter.value = this;
+
+        if (glow != null) {
+            glow.Enable();
+        }
+
+        mainCameraPosition.SetPosition(this, true);
+
+        if (side.value != Side.Type.Player) {
             StartCoroutine(StartAI());
         }
     }
