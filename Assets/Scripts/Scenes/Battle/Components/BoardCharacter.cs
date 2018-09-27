@@ -272,11 +272,11 @@ public class BoardCharacter : MonoBehaviour {
         if (glow != null) {
             glow.Enable();
         }
-
-        mainCameraPosition.SetPosition(this, true);
-
+        
         if (side.value != Side.Type.Player) {
             StartCoroutine(StartAI());
+        } else {
+            mainCameraPosition.SetPosition(this, true);
         }
     }
 
