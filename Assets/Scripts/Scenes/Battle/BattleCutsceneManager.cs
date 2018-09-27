@@ -8,6 +8,10 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class BattleCutsceneManager {
+    public enum ActionType {
+        Wait, Show, Move, Dialogbox, Camera, Direction
+    }
+
     public enum Type {
         Opening, Ending
     }
@@ -134,22 +138,22 @@ public class BattleCutsceneManager {
         }
 
         switch (action.type) {
-            case "wait":
+            case ActionType.Wait:
                 yield return ActionWait(args);
                 break;
-            case "show":
+            case ActionType.Show:
                 yield return ActionShow(args);
                 break;
-            case "move":
+            case ActionType.Move:
                 yield return ActionMove(args);
                 break;
-            case "dialogbox":
+            case ActionType.Dialogbox:
                 yield return ActionDialogbox(args);
                 break;
-            case "camera":
+            case ActionType.Camera:
                 yield return ActionCamera(args);
                 break;
-            case "direction":
+            case ActionType.Direction:
                 yield return ActionDirection(args);
                 break;
             default:

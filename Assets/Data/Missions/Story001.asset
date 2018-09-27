@@ -52,23 +52,23 @@ MonoBehaviour:
     posY: 3
     direction: 1
   openingCutscene:
-  - type: wait
+  - type: 0
     args:
     - time:0.5
-  - type: camera
+  - type: 4
     args:
     - target:square
     - x:0
     - y:5
   endingCutscene:
-  - type: wait
+  - type: 0
     args:
     - time:1.0
-  - type: dialogbox
+  - type: 3
     args:
     - target:global
     - id:prologue_01
-  - type: camera
+  - type: 4
     args:
     - target:square
     - x:10

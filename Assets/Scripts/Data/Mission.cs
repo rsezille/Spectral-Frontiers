@@ -32,7 +32,7 @@ namespace SF {
 
         [Serializable]
         public struct CutsceneAction {
-            public string type;
+            public BattleCutsceneManager.ActionType type;
             public string[] args;
         }
 
