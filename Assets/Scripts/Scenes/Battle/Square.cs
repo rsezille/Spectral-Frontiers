@@ -178,7 +178,7 @@ public class Square : MonoBehaviour {
                         return;
                     }
 
-                    BoardCharacter playerTemplate = Resources.Load<BoardCharacter>("NewBoardCharacter");
+                    BoardCharacter playerTemplate = Resources.Load<BoardCharacter>("BoardCharacter");
 
                     BoardCharacter playerBoardCharacter = Object.Instantiate(playerTemplate, transform.position, Quaternion.identity);
                     playerBoardCharacter.Init(currentPartyCharacter.value, Side.Type.Player, startingDirection);

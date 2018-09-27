@@ -200,13 +200,9 @@ public class BattleCutsceneManager {
                 break;
         }
 
-        BoardCharacter boardCharacterPrefab = Resources.Load<BoardCharacter>("NewBoardCharacter");
-        //boardCharacterPrefab.enemyOrNeutralSpritePrefab = Resources.Load<GameObject>("CharacterSprites/" + sprite);
-
-        //float squareHeight = (float)battleManager.board.GetSquare(parsedX, parsedY).Height / Globals.TileHeight;
+        BoardCharacter boardCharacterPrefab = Resources.Load<BoardCharacter>("BoardCharacter");
 
         BoardCharacter boardCharacter = Object.Instantiate(boardCharacterPrefab, BoardUtil.CoordToWorldPosition(fromX, fromY, battleManager.board.GetSquare(parsedX, parsedY).GetWorldHeight()), Quaternion.identity);
-        //boardCharacter.character = new CharacterPouet(name);
         boardCharacter.direction = direction;
         boardCharacter.sprite.color = new Color(boardCharacter.sprite.color.r, boardCharacter.sprite.color.g, boardCharacter.sprite.color.b, 0f);
         boardCharacter.sprite.DOColor(new Color(boardCharacter.sprite.color.r, boardCharacter.sprite.color.g, boardCharacter.sprite.color.b, 1f), 1f);

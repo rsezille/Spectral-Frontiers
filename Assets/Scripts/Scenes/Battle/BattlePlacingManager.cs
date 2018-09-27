@@ -24,7 +24,7 @@ public class BattlePlacingManager {
         battleManager.currentPartyCharacter.value = battleManager.party.characters[0];
 
         foreach (Mission.Enemy enemy in battleManager.missionToLoad.value.enemies) {
-            BoardCharacter enemyTemplate = Resources.Load<BoardCharacter>("NewBoardCharacter");
+            BoardCharacter enemyTemplate = Resources.Load<BoardCharacter>("BoardCharacter");
 
             BoardCharacter enemyBoardCharacter = Object.Instantiate(enemyTemplate, battleManager.board.GetSquare(enemy.posX, enemy.posY).transform.position, Quaternion.identity);
             enemyBoardCharacter.Init(new Character(enemy), Side.Type.Enemy, enemy.direction);
