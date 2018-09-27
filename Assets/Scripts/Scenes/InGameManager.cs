@@ -1,15 +1,15 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class InGameManager : MonoBehaviour {
-    public GameObject testMissionButton;
+namespace SF {
+    public class InGameManager : MonoBehaviour {
+        public Mission testMission;
 
-    private void Start() {
-        testMissionButton.AddListener(EventTriggerType.PointerClick, TestMission);
-    }
+        [Header("Dependencies")]
+        public MissionVariable missionToLoad;
 
-    private void TestMission() {
-        //GameManager.instance.missionToLoad = "story_01";
-        GameManager.instance.LoadSceneAsync(Scenes.Battle);
+        public void LoadTestMission() {
+            missionToLoad.value = testMission;
+            GameManager.instance.LoadSceneAsync(Scenes.Battle);
+        }
     }
 }
