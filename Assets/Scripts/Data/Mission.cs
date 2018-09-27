@@ -35,8 +35,9 @@ namespace SF {
             public BattleCutsceneManager.ActionType type;
             public string[] args;
         }
-
+        
         public Map map;
+        public bool isStoryline = false;
         [Tooltip("Should be inferior to the number of starting squares")]
         public int maxPlayerCharacters = 1;
         public StartingSquare[] startingSquares;
