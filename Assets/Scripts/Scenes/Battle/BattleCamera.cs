@@ -44,7 +44,7 @@ public class BattleCamera : MonoBehaviour {
 #endif
 
         if (!(battleState.currentBattleStep == BattleState.BattleStep.Cutscene
-                || (battleState.currentBattleStep == BattleState.BattleStep.Fight && currentFightBoardCharacter.value.side.value != Side.Type.Player))) {
+                || (battleState.currentBattleStep == BattleState.BattleStep.Fight && currentFightBoardCharacter.value.side.value != Side.Type.Player)) && !mainCameraPosition.isMoving) {
             if (InputManager.CameraHorizontalAxis() != 0 || InputManager.CameraVerticalAxis() != 0) {
                 float tmpSpeed = speed;
 

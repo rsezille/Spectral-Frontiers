@@ -6,12 +6,14 @@ namespace SF {
     public class CameraPosition : ScriptableObject {
         private float positionYOffset = 0.7f;
         public Vector3 position = new Vector3(0f, 0f, -10f);
+        public bool isMoving = false;
 
         public Tween SetPosition(BoardCharacter boardCharacter, bool smooth = false, float duration = 1f, Ease ease = Ease.OutCubic) {
             return SetPosition(boardCharacter.GetSquare(), smooth, duration, ease);
         }
 
         public Tween SetPosition(Square targetedSquare, bool smooth = false, float duration = 1f, Ease ease = Ease.OutCubic) {
+            isMoving = true;
             int height = targetedSquare != null ? targetedSquare.Height : 0;
 
             Vector3 target = new Vector3(
@@ -21,13 +23,13 @@ namespace SF {
             );
 
             if (!smooth) {
-                return DOTween.To(() => position, x => position = x, target, 0f);
+                return DOTween.To(() => position, x => position = x, target, 0f).OnComplete(() => isMoving = false);
             } else {
                 if (position == target) {
-                    return DOTween.To(() => position, x => position = x, target, 0f);
+                    return DOTween.To(() => position, x => position = x, target, 0f).OnComplete(() => isMoving = false);
                 }
 
-                return DOTween.To(() => position, x => position = x, target, duration).SetEase(ease);
+                return DOTween.To(() => position, x => position = x, target, duration).SetEase(ease).OnComplete(() => isMoving = false);
             }
         }
 
