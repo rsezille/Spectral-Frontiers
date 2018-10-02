@@ -189,6 +189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c6fc7aaff03e5e46ab4dd9e2cee4c00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sunIntensity: {fileID: 11400000, guid: b0709e55fba0576418830d6492ad8237, type: 2}
   nonVisibleIntensity: 0.8
   fullyVisibleIntensity: 0.2
 --- !u!212 &212061182465022310

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Name: Story001
   m_EditorClassIdentifier: 
   map: {fileID: 114406665022987872, guid: e8d499273679c8946b04864be7d84260, type: 2}
+  isStoryline: 0
   maxPlayerCharacters: 3
   startingSquares:
   - posX: 0
@@ -46,7 +47,7 @@ MonoBehaviour:
     posY: 0
     direction: 3
   - character: {fileID: 11400000, guid: 7291ed5c61e95d6479829e8dee9be169, type: 2}
-    overloadedName: PouetTrololo
+    overloadedName: 
     level: 1
     posX: 4
     posY: 3
