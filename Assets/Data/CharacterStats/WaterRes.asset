@@ -11,6 +11,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e97ddac0b57d94e829b51bbe3f2a2b, type: 3}
   m_Name: WaterRes
   m_EditorClassIdentifier: 
-  name: 
+  name: water resistance
   maxValue: 0
   minValue: 0
