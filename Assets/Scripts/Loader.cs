@@ -12,6 +12,8 @@ public class Loader : MonoBehaviour {
     [Header("Dependencies")]
     public MissionVariable missionToLoad;
     public Mission testingMission;
+    public Party party;
+    public CharacterTemplate[] testCharacters;
 
     // Initialization
     private void Awake() {
@@ -36,6 +38,12 @@ public class Loader : MonoBehaviour {
                     Debug.Log("First scene: InGame");
                     break;
                 case Scenes.Battle:
+                    party.characters.Clear();
+
+                    foreach (CharacterTemplate testCharacter in testCharacters) {
+                        party.characters.Add(new Character(testCharacter));
+                    }
+                    
                     Debug.Log("First scene: Battle");
                     missionToLoad.value = testingMission;
                     break;

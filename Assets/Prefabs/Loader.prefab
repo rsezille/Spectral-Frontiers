@@ -55,3 +55,7 @@ MonoBehaviour:
     type: 2}
   missionToLoad: {fileID: 11400000, guid: 68f1ff2b65824f24a98b59c7eb37bead, type: 2}
   testingMission: {fileID: 11400000, guid: 70a11399e5d76f144b24cd383b3a93b6, type: 2}
+  party: {fileID: 11400000, guid: 3f49d2433b01f0944817be5fef7f341e, type: 2}
+  testCharacters:
+  - {fileID: 11400000, guid: 9ecfdf837ff8b6042803e282824eab22, type: 2}
+  - {fileID: 11400000, guid: 4f154db35a4f49a4e860726d9dd5dcb5, type: 2}
