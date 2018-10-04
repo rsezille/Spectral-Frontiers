@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace SF {
     [CreateAssetMenu(menuName = "SF/Item")]
     public class Item : ScriptableObject {
+        public Sprite icon;
         public string name;
-
-        [Serializable]
-        public struct StatModifier {
-            public Stat stat;
-            public int increase;
-        }
-
-        public List<StatModifier> statModifier;
+        public string description;
     }
 }
