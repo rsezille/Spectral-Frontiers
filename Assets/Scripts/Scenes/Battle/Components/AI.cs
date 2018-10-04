@@ -74,7 +74,7 @@ public class AI : MonoBehaviour {
 
             foreach (BoardCharacter playerCharacter in battleCharacters.player) {
                 if (playerCharacter.GetSquare().GetManhattanDistance(boardCharacter.GetSquare()) == 1) {
-                    if (target == null || target.character.currentHp > playerCharacter.character.currentHp) {
+                    if (target == null || target.character.currentHP > playerCharacter.character.currentHP) {
                         target = playerCharacter;
                     }
                 }
@@ -112,21 +112,21 @@ public class AI : MonoBehaviour {
             if (p != null) {
                 if (bestPath == null) {
                     bestPath = p;
-                    lowestCharHP = playerCharacter.character.currentHp;
+                    lowestCharHP = playerCharacter.character.currentHP;
                 } else {
                     if (p.GetLength() > boardCharacter.movementPoints + 1) {
                         if (p.GetLength() < bestPath.GetLength()) {
                             bestPath = p;
-                            lowestCharHP = playerCharacter.character.currentHp;
+                            lowestCharHP = playerCharacter.character.currentHP;
                         }
                     } else {
                         if (bestPath.GetLength() > boardCharacter.movementPoints + 1) {
                             bestPath = p;
-                            lowestCharHP = playerCharacter.character.currentHp;
+                            lowestCharHP = playerCharacter.character.currentHP;
                         } else {
-                            if (playerCharacter.character.currentHp < lowestCharHP) {
+                            if (playerCharacter.character.currentHP < lowestCharHP) {
                                 bestPath = p;
-                                lowestCharHP = playerCharacter.character.currentHp;
+                                lowestCharHP = playerCharacter.character.currentHP;
                             }
                         }
                     }

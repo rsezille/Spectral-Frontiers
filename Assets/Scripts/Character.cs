@@ -22,25 +22,51 @@ namespace SF {
             }
         }
 
-        public int maxHP = 50; // TODO
-        public int currentHp = 30; // TODO
-        public int atk = 10; // TODO
-        public int spd = 100; // TODO
+        public CharacterStat maxHP;
+        public CharacterStat maxMP;
+        public CharacterStat atk;
+        public CharacterStat def;
+        public CharacterStat mag;
+        public CharacterStat eva;
+        public CharacterStat acc;
+        public CharacterStat spd;
 
-        public Character(Mission.Enemy enemy) {
-            template = enemy.character;
-            level = enemy.level;
-            overloadedName = enemy.overloadedName;
+        /*
+         * Those two variables could be in BoardCharacter as they are related to battles, but putting them here is more future-proof if we
+         * wanna put a mode without healing between battles for example.
+         */
+        public int currentHP;
+        public int currentMP;
 
-            this.spd = template.spd.baseValue;
-        }
+        public Item helmet;
 
         public Character(CharacterTemplate template, int level = 1) {
             this.template = template;
             this.level = level;
 
-            Debug.Log("template   " + template.spd.baseValue);
-            this.spd = template.spd.baseValue;
+            maxHP = new CharacterStat(this, template.maxHP);
+            maxMP = new CharacterStat(this, template.maxMP);
+            atk = new CharacterStat(this, template.atk);
+            def = new CharacterStat(this, template.def);
+            mag = new CharacterStat(this, template.mag);
+            eva = new CharacterStat(this, template.eva);
+            acc = new CharacterStat(this, template.acc);
+            spd = new CharacterStat(this, template.spd);
+
+            currentHP = maxHP.value;
+            currentMP = 0;
+        }
+
+        public Character(Mission.Enemy enemy): this(enemy.character, enemy.level) {
+            overloadedName = enemy.overloadedName;
+        }
+
+        public void Equip(Item item) {
+            /*if (item is EquippableItem) {
+                foreach (StatModifier sm in ((EquippableItem)item).statModifier) {
+                    if (sm.stat == def.stat) def.AddModifier(sm);
+                }
+            }*/
         }
 
         /**
@@ -50,9 +76,9 @@ namespace SF {
          */
         public int BasicAttack(Character defender) {
             //int damagesDone = atk.currentValue - defender.def.currentValue;
-            int damagesDone = atk;
+            int damagesDone = atk.value;
 
-            defender.currentHp = defender.currentHp - damagesDone;
+            defender.currentHP = defender.currentHP - damagesDone;
 
             return damagesDone;
         }

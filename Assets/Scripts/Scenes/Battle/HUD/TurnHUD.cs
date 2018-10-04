@@ -80,7 +80,7 @@ namespace SF {
 
         private bool CharacterReadyTest(List<FakeTick> fakeTicks) {
             foreach (FakeTick fakeTick in fakeTicks) {
-                if (fakeTick.tick >= turnSpeed - fakeTick.boardCharacter.character.spd) {
+                if (fakeTick.tick >= turnSpeed - fakeTick.boardCharacter.character.spd.value) {
                     return true;
                 }
             }
@@ -92,7 +92,7 @@ namespace SF {
             BoardCharacter characterToPlay = null;
 
             foreach (FakeTick fakeTick in fakeTicks) {
-                if (fakeTick.tick >= turnSpeed - fakeTick.boardCharacter.character.spd) {
+                if (fakeTick.tick >= turnSpeed - fakeTick.boardCharacter.character.spd.value) {
                     if (characterToPlay == null) {
                         characterToPlay = fakeTick.boardCharacter;
                     } else if (board.SquarePositionToIndex(fakeTick.boardCharacter.GetSquare()) < board.SquarePositionToIndex(characterToPlay.GetSquare())) {

@@ -119,7 +119,7 @@ public class StatusHUD : MonoBehaviour {
     private void UpdateText() {
         statusText.SetText(
             character.characterName + "\n" +
-            "HP: " + character.currentHp + "/" + character.maxHP + "\n" +
+            "HP: " + character.currentHP + "/" + character.maxHP.value + "\n" +
             //"SP: " + character.GetCurrentMP() + "/" + character.GetMaxMP() + "\n" +
             "PhyAtk: " + character.atk + "\n" +
             //"Spd: " + character.spd.currentValue + "\n" +

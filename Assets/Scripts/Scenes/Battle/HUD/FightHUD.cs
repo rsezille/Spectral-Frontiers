@@ -48,7 +48,7 @@ public class FightHUD : MonoBehaviour {
         if (currentFightBoardCharacter.value != null) {
             currentSquareText.text =
                 currentFightBoardCharacter.value.character.characterName +
-                "\n" + currentFightBoardCharacter.value.character.currentHp + "/" + currentFightBoardCharacter.value.character.maxHP + " HP";
+                "\n" + currentFightBoardCharacter.value.character.currentHP + "/" + currentFightBoardCharacter.value.character.maxHP.value + " HP";
 
             moveButton.GetComponent<Button>().interactable = currentFightBoardCharacter.value.CanMove();
 
@@ -180,7 +180,7 @@ public class FightHUD : MonoBehaviour {
                 BoardCharacter boardCharacter = square.boardEntity.GetComponent<BoardCharacter>();
 
                 if (boardCharacter != null) {
-                    selectedSquareText.text += "\nCharacter: " + boardCharacter.character.characterName + " (" + boardCharacter.character.currentHp + "/" + boardCharacter.character.maxHP + ")";
+                    selectedSquareText.text += "\nCharacter: " + boardCharacter.character.characterName + " (" + boardCharacter.character.currentHP + "/" + boardCharacter.character.maxHP.value + ")";
                 } else {
                     selectedSquareText.text += "\nCharacter: none";
                 }

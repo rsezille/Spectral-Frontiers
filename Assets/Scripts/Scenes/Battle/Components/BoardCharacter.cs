@@ -113,6 +113,9 @@ public class BoardCharacter : MonoBehaviour {
     public void Init(Character character, Side.Type side, Direction direction) {
         this.character = character;
 
+        this.character.currentHP = this.character.maxHP.value;
+        this.character.currentMP = 0;
+
         spriteContainer = Instantiate(character.template.spritePrefab, transform);
 
         animator = spriteContainer.GetComponent<Animator>();
@@ -293,7 +296,7 @@ public class BoardCharacter : MonoBehaviour {
     }
 
     private bool IsDead() {
-        return character.currentHp <= 0;
+        return character.currentHP <= 0;
     }
 
     public void BasicAttack(BoardCharacter target) {

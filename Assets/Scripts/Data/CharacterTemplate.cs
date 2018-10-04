@@ -2,22 +2,27 @@
 using UnityEngine;
 
 namespace SF {
+    [Serializable]
+    public struct TemplateStat {
+        public Stat stat;
+        public int baseValue;
+        public int perLevelValue;
+    }
+
     [CreateAssetMenu(menuName = "SF/Character")]
     public class CharacterTemplate : ScriptableObject {
-        [Serializable]
-        public struct CharacterStat {
-            public Stat statType;
-            public int baseValue;
-            public int perLevelValue;
-        }
-
         [Header("Basic")]
         public StringReference characterName;
 
         [Header("Stats")]
-        public CharacterStat maxHP;
-        public CharacterStat atk;
-        public CharacterStat spd;
+        public TemplateStat maxHP;
+        public TemplateStat maxMP;
+        public TemplateStat atk;
+        public TemplateStat def;
+        public TemplateStat mag;
+        public TemplateStat eva;
+        public TemplateStat acc;
+        public TemplateStat spd;
 
         [Header("Display")]
         public GameObject spritePrefab;
