@@ -23,7 +23,7 @@ namespace SF {
 
         private void UpdateHPScale() {
             hpScale.transform.localScale = new Vector3(
-                (float)character.currentHp / (float)character.maxHP,
+                (float)character.currentHP / (float)character.maxHP.value,
                 hpScale.transform.localScale.y,
                 hpScale.transform.localScale.z
             );
