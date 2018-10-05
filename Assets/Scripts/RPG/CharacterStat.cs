@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using UnityEngine;
 
 namespace SF {
     public class CharacterStat {
-        private readonly List<StatModifier> _statModifiers;
-        public readonly ReadOnlyCollection<StatModifier> statModifiers;
+        private readonly List<CharacterStatModifier> _statModifiers;
 
         private int _value;
         public int value {
@@ -25,15 +23,24 @@ namespace SF {
         public TemplateStat templateStat;
 
         public CharacterStat(Character character, TemplateStat templateStat) {
+            _statModifiers = new List<CharacterStatModifier>();
             this.character = character;
             this.templateStat = templateStat;
             _value = 1;
             isDirty = true;
         }
 
-        public void AddModifier(StatModifier modifier) {
+        public void AddModifier(CharacterStatModifier modifier) {
             _statModifiers.Add(modifier);
             isDirty = true;
+        }
+
+        public void RemoveModifiersFromSource(object source) {
+            int numRemovals = _statModifiers.RemoveAll(modifier => modifier.source == source);
+
+            if (numRemovals > 0) {
+                isDirty = true;
+            }
         }
 
         private int ComputeValue() {
