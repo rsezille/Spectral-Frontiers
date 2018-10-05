@@ -9,8 +9,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fa17d3ee8a69e4b4ba688867506ba12e, type: 3}
-  m_Name: Helmet
+  m_Name: Sword
   m_EditorClassIdentifier: 
-  name: helmet
-  slot: 2
+  name: sword
+  slot: 0
   twoHanded: 0

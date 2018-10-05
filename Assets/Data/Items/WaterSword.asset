@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 720e6e57cd6311d4fa60fa6692b71dd3, type: 3}
+  m_Name: WaterSword
+  m_EditorClassIdentifier: 
+  icon: {fileID: 0}
+  name: Water sword
+  description: Best sword
+  equipmentType: {fileID: 11400000, guid: 2f44042fab5558249bc2bf2638bf3fe1, type: 2}
+  statModifier:
+  - stat: {fileID: 11400000, guid: 46657856a51747c4387336340c7f41c2, type: 2}
+    value: 10
+    type: 0

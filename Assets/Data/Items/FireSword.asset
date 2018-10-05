@@ -11,9 +11,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8806aa27035bb484eb44bad1e18e28cb, type: 3}
   m_Name: FireSword
   m_EditorClassIdentifier: 
+  icon: {fileID: 0}
   name: Fire sword
-  statModifier:
-  - stat: {fileID: 11400000, guid: 46657856a51747c4387336340c7f41c2, type: 2}
-    increase: 50
-  - stat: {fileID: 11400000, guid: a365f769bd7804546a709d38d8ad9a6e, type: 2}
-    increase: 10
+  description: 

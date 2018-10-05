@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Name: Gloves
   m_EditorClassIdentifier: 
   name: gloves
+  slot: 5
+  twoHanded: 0
