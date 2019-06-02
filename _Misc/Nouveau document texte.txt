@@ -1,0 +1,24 @@
+3, 4 ou 5 characters par map selon la mission
+des items équipables qui peuvent donner des pouvoirs au porteur
+chaque character a ses propres catégories d'objets équipables
+faire une roue des forces/faiblesses
+
+
+
+
+
+tutoriel :
+au début du jeu, quand le héros est emmené par les gardes, on a le choix entre s'opposer (tutoriel) ou les suivre bien sagement.
+"Refuser de coopérer
+Oui (combat tutoriel)
+Non"
+
+
+
+
+
+
+L’histoire
+Spectral Frontiers se déroule dans un monde où deux royaumes s’affrontent. Celui où le personnage principal vit est de loin le plus imposant, et cherche à s’emparer de son voisin. Cependant celui-ci ne se laissant pas faire, notre héros est réquisitionné comme son défunt père 5 ans auparavant.
+Durant ses entrainements dans un camp de l’armée, il croisera la route d’un personnage emblématique du royaume qui le prendra sous son aile. Cependant, celui-ci retournera sa veste contre son empire natal, obligeant le personnage principal à un cruel choix.
+Peu après, celui-ci sauvera d’une mort certaine un œuf de Phoenix. Celui-ci lui donnera 
